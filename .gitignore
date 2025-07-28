@@ -3,7 +3,7 @@
 /public/storage
 /storage/*.key
 /vendor
-/download
+/SANDES
 .env
 .env.backup
 .phpunit.result.cache
