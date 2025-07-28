@@ -208,7 +208,7 @@
 
               
 
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <!-- Add dropdown class to this list item -->
                     <a class="verdana_txtnone nav-link dropdown" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -223,17 +223,17 @@
                         <li><a class="verdana_txtnone dropdown-item yellow-bg"
                                 href="{{ route('viewchangeApplicant') }}">Change Applicant</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <li class="nav-item">
                     <a class="verdana_txtnone nav-link" aria-current="page"
-                        href="{{ url('ddo-assist/viewStartEmp') }}">Submitted
-                        Application</a>
+                        href="{{ url('ddo-assist/viewApplicantsForVerification') }}">Forwarded
+                        Applicants</a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="verdana_txtnone nav-link"
                         href="{{ url('ddo-assist/viewRejectedListHODAssist') }}">Reverted List</a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatus') }}">File Status</a>
                 </li>
@@ -274,10 +274,10 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="verdana_txtnone nav-link" aria-current="page"
                         href="{{ url('ddo-assist/viewTransferListByHodAssistant') }}">Transfer Applicants</a>
-                </li>
+                </li> --}}
 
 
 
@@ -291,11 +291,11 @@
                         Forwarded Applicants
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewRejectedListHOD') }}">
                         Reverted List
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="nav-item">
                     <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatus') }}">
@@ -329,14 +329,14 @@
                                 href="{{ route('viewSeniorityStatus') }}">Seniority List</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="verdana_txtnone nav-link" aria-current="page"
                         href="{{ url('ddo-assist/viewTransferListByHod') }}">Transfer</a>
-                </li>
+                </li> --}}
 
                 @endif
 
-                @if(Auth::user()->role_id == 3 )
+                {{-- @if(Auth::user()->role_id == 3 )
                
 
                 <li class="nav-item">
@@ -382,9 +382,9 @@
                     </ul>
                 </li>
 
-                @endif
+                @endif --}}
 
-                @if(Auth::user()->role_id == 4 )
+                {{-- @if(Auth::user()->role_id == 4 )
               
                 <li class="nav-item">
                     <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewForwardToADNodal') }}">
@@ -431,7 +431,7 @@
                     </ul>
                 </li>
 
-                @endif
+                @endif --}}
 
                 @if(Auth::user()->role_id == 5 )
                <li class="nav-item">
@@ -495,11 +495,11 @@
                                 href="{{ route('viewSeniorityStatus') }}">Inter Seniority List</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/transfer_applicant_By_DPAssist') }}">
                         Transfer Applicant
                     </a>
-                </li>
+                </li> --}}
               
                 @endif
 

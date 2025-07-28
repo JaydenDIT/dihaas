@@ -332,9 +332,7 @@ class HomeController extends Controller
         return view('admin/removedEmpLists', compact('removed_emp_list'));
     }
 
-    // search
-
-    public function viewStartEmpSearch(Request $request)
+ public function viewStartEmpSearch(Request $request)
     {
         try {
             $empListArray = null;
@@ -343,24 +341,18 @@ class HomeController extends Controller
             $Remarks = RemarksModel::get()->toArray();
             $RemarksApprove = RemarksApproveModel::get()->toArray();
             $tempEmpList = null;
-            $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-             $statusArray = [1,2,3]; //status of Table Proforma
             // $rejected_status = [ null, 1 ];
-           //where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)
-            //$empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
-             $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
+            $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
             // Change for DIHAS below
-            //$empList = ProformaModel::where('form_status', 1)->where('dept_id', $getUser->dept_id)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
-             $empList = ProformaModel::where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)->whereIn('status', $statusArray)->where('rejected_status', '<=', 1)->paginate(10);
+            $empList = ProformaModel::where('form_status', 1)->where('dept_id', $getUser->dept_id)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
             if ($request->searchItem != null || trim($request->searchItem) != '') {
-                //$empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
-                 $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)->where('ein', $request->searchItem)->where('rejected_status', '<=', 1)->toArray();
-                $empList = ProformaModel::orderByRaw("expire_on_duty = 'no',deceased_doe,appl_date, applicant_dob")->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)->where('ein', $request->searchItem)->where('rejected_status', '<=', 1)->paginate(10);
+                $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
+                $empList = ProformaModel::orderByRaw("expire_on_duty = 'no',deceased_doe,appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
                 $tempEmpList = $empListArray;
                 if (count($tempEmpList) == 0) {
                     $tempEmpList = 0;
 
-                    return view('admin/viewStartEmp', compact('deptListArray','empList', 'empListArray', 'Remarks', 'RemarksApprove'));
+                    return view('admin/viewStartEmp', compact('empList', 'empListArray', 'Remarks', 'RemarksApprove'));
                 }
             }
             $stat = '';
@@ -409,7 +401,172 @@ class HomeController extends Controller
             }
             Session::put('einsearch', $request->searchItem);
 
-            return view('admin/viewStartEmp', compact('deptListArray','RemarksApprove', 'empList', 'empListArray', 'Remarks'));
+            return view('admin/viewStartEmp', compact('RemarksApprove', 'empList', 'empListArray', 'Remarks'));
+        } catch (Exception $e) {
+
+            return response()->json([
+                'status' => 0,
+                'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
+                //'errors' => $e->getMessage()
+            ]);
+        }
+    }
+
+    // Submitted Applicants list
+
+    public function viewApplicantsForVerification(Request $request)
+    {
+        // Change for DIHAS below
+        try {
+            $request->session()->forget(['ein', 'ein', 'einsearch']);
+
+            $user_id = Auth::user()->id;
+            $getUser = User::get()->where('id', $user_id)->first();
+
+            $Remarks = RemarksModel::get()->toArray();
+            $RemarksApprove = RemarksApproveModel::get()->toArray();
+            // $status = [ 1, 2 ];
+
+            $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
+
+            $empList = ProformaModel::orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(6);
+            //dd( $empList );
+            //expire_on_duty if yes top priority
+
+            $stat = '';
+
+            foreach ($empList as $data) {
+                if ($data->status == 0 && $data->form_status == 1) {
+                    $stat = 'started';
+                    $data->status = 'Incomplete';
+                }
+
+                if ($data->status == 1) {
+                    $stat = 'submitted';
+                    $data->status = 'Submitted';
+                }
+                if ($data->status == 2) {
+                    $stat = 'verified';
+                    $data->status = 'Verified';
+                }
+                if ($data->status == 3) {
+                    $stat = 'forapproval';
+                    $data->status = 'Put up for Approval';
+                }
+
+                if ($data->status == 4) {
+                    $stat = 'approved';
+                    $data->status = 'Approved';
+                }
+                if ($data->status == 5) {
+                    $stat = 'appointed';
+                    $data->status = 'Appointed';
+                }
+                if ($data->status == 6) {
+                    $stat = 'order';
+                    $data->status = 'Appointment Order';
+                }
+                if ($data->status == 7) {
+                    $stat = 'signed';
+                    $data->status = 'Signed by DP';
+                }
+                if ($data->status == 8) {
+                    $stat = 'transfer';
+                    $data->status = 'Transferred';
+                }
+
+                $data->formSubStat = $stat;
+            }
+
+            return view('admin/viewApplicantsForVerification', compact('RemarksApprove', 'empList', 'empListArray', 'Remarks'));
+        } catch (Exception $e) {
+
+            return response()->json([
+                'status' => 0,
+                'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
+                //'errors' => $e->getMessage()
+            ]);
+        }
+    }
+
+    // search
+
+    public function viewApplicantsForVerificationSearch(Request $request)
+    {
+        try {
+            $empListArray = null;
+            $user_id = Auth::user()->id;
+            $getUser = User::get()->where('id', $user_id)->first();
+            $Remarks = RemarksModel::get()->toArray();
+            $RemarksApprove = RemarksApproveModel::get()->toArray();
+            $tempEmpList = null;
+            $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
+             $statusArray = [1,2,3]; //status of Table Proforma
+            // $rejected_status = [ null, 1 ];
+           //where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)
+            //$empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
+             $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
+            // Change for DIHAS below
+            //$empList = ProformaModel::where('form_status', 1)->where('dept_id', $getUser->dept_id)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
+             $empList = ProformaModel::where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)->whereIn('status', $statusArray)->where('rejected_status', '<=', 1)->paginate(10);
+            if ($request->searchItem != null || trim($request->searchItem) != '') {
+                //$empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
+                 $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)->where('ein', $request->searchItem)->where('rejected_status', '<=', 1)->toArray();
+                $empList = ProformaModel::orderByRaw("expire_on_duty = 'no',deceased_doe,appl_date, applicant_dob")->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)->where('ein', $request->searchItem)->where('rejected_status', '<=', 1)->paginate(10);
+                $tempEmpList = $empListArray;
+                if (count($tempEmpList) == 0) {
+                    $tempEmpList = 0;
+
+                    return view('admin/viewApplicantsForVerification', compact('deptListArray','empList', 'empListArray', 'Remarks', 'RemarksApprove'));
+                }
+            }
+            $stat = '';
+
+            foreach ($empList as $data) {
+                if ($data->status == 0 && $data->form_status == 1) {
+                    $stat = 'started';
+                    $data->status = 'Incomplete';
+                }
+
+                if ($data->status == 1) {
+                    $stat = 'submitted';
+                    $data->status = 'Submitted';
+                }
+                if ($data->status == 2) {
+                    $stat = 'verified';
+                    $data->status = 'Verified';
+                }
+                if ($data->status == 3) {
+                    $stat = 'forapproval';
+                    $data->status = 'Put up for Approval';
+                }
+
+                if ($data->status == 4) {
+                    $stat = 'approved';
+                    $data->status = 'Approved';
+                }
+                if ($data->status == 5) {
+                    $stat = 'appointed';
+                    $data->status = 'Appointed';
+                }
+                if ($data->status == 6) {
+                    $stat = 'order';
+                    $data->status = 'Appointment Order';
+                }
+                if ($data->status == 7) {
+                    $stat = 'signed';
+                    $data->status = 'Signed by DP';
+                }
+                if ($data->status == 8) {
+                    $stat = 'transfer';
+                    $data->status = 'Transferred';
+                }
+
+                $data->formSubStat = $stat;
+            }
+            Session::put('einsearch', $request->searchItem);
+
+            return view('admin/viewApplicantsForVerification', compact('deptListArray','RemarksApprove', 'empList', 'empListArray', 'Remarks'));
         } catch (Exception $e) {
 
             return response()->json([

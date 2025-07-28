@@ -615,6 +615,10 @@ Route::prefix("ddo-assist")->group(function () {
     Route::get('/viewStartEmp/downloadPDFApplView', 'App\Http\Controllers\HomeController@downloadPDFApplView')->name('viewStartEmp.downloadPDFApplView');
 
 
+    Route::get('/viewApplicantsForVerification', [HomeController::class, 'viewApplicantsForVerification'])->name('viewApplicantsForVerification');
+    Route::post('/viewApplicantsForVerificationSearch', [HomeController::class, 'viewApplicantsForVerificationSearch'])->name('viewApplicantsForVerificationSearch');
+    Route::get('/viewApplicantsForVerification/downloadPDFApplView', 'App\Http\Controllers\HomeController@downloadPDFApplView')->name('viewApplicantsForVerification.downloadPDFApplView');
+
 
     //verify and forward
     Route::get('/viewEmpSubmitted', [HomeController::class, 'viewEmpSubmitted'])->name('viewEmpSubmitted');
