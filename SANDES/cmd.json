@@ -1,0 +1,13 @@
+{
+  "ClientServicePort": "8021",
+  "GatewayBaseURL": "https://dwar1.gims.gov.in/v2/api",
+  "ClientID":"dc053a6b-45bf-4566-a340-8c1ab88073aa" ,
+  "ClientSecret":"71d7f9d5b9e25428d5ff5dc5dc284e56",
+  "HMACKey":"7b7e5c2b49ecd3d3ee1cdda27999fe3955bec7489329dc6d5555fe73845a9695" ,
+  "DebugMode": true,
+  "DisableCache": false,
+  "MaxFileSize": 52428800,
+  "HttpUploadBaseURL": "https://sadhan1.gims.gov.in/v2/api/host/slot",
+  "FileShareTimeOut": 1,
+  "MultiTenantClient": false
+}

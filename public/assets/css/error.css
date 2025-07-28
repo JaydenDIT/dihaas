@@ -1,0 +1,7 @@
+.text-center img{ width:100%;}
+.four_zero_four_bg {
+    background-image: url('../images/dribbble_1.gif');
+    height: 300px;
+    background-position: center;
+    background-size: 100% 100%;
+}

@@ -1,0 +1,61 @@
+.color{
+    color:blue;
+}
+.textright{
+    text-align: right;
+}
+.marginright_textalign{
+    margin-right: -17px;
+    text-align:right;
+}
+.margin_text{
+    margin-right:-15px;
+    margin-left:0px; 
+    text-align:left;
+}
+.textcenter{
+    text-align:center;
+}
+.marginright{
+    margin-right:0px;
+}
+.width_height{
+    width: 6rem; 
+    height: 2.2rem;
+}
+.width_height4{
+    width: 7rem; 
+    height: 2.2rem;
+    font-size:15px;
+}
+
+
+
+.width_height2{
+    width: 5rem; 
+    height: 2.2rem;
+}
+.width_height3{
+    width:13rem; height:2.5rem ;
+}
+.display{
+    display:none;
+}
+.width{
+    width:120px;
+    
+}
+
+.approve_for_uo{
+    height:32px;
+}
+.margin{
+    margin-right:0px;
+}
+.textleft{
+    text-align: left;
+}
+
+.btnwidth{
+    width:80px;
+}

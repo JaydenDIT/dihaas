@@ -1,0 +1,153 @@
+/* 1 */
+.bg{
+  position:relative;min-height: 87vh;
+}
+/* 1 */
+.ps{
+  position: sticky;top:0;z-index:999;
+}
+/* 2 */
+.bg_cl{
+  background-color:#66ccff;
+  color:#fff;
+}
+/* 2 */
+.txtnone{
+  text-decoration:none;
+}
+/* 1 */
+.font35{
+  font-family: Verdana;font-size: 30px;
+  font-weight:bold;
+  /* line-height:66px ; */
+  color:#2d4b3f;
+  
+}
+/* 1 */
+.font30{
+  font-family: Verdana;
+  font-size: 30px;
+  font-weight:bold;
+  /* line-height:66px; */
+  color:darkgreen;
+  text-align: left;
+}
+/* 6 */
+.mediumblue{
+  font-family: Verdana;color:mediumblue;
+}
+/* 6 */
+.font20{
+  font-size:20px;
+  color:mediumblue;
+}
+.txtheader{
+  font-size:20px;
+  color:#f5fafa;
+}
+
+.color{
+  color:mediumblue;
+}
+/* 1 */
+.verdana{
+  font-family: Verdana;
+}
+
+/* 75 */
+.verdana_txtnone{
+  font-family: Verdana;text-decoration: none;
+}
+
+.fontncolor{
+  font-size:20px;
+  color:rgb(248, 248, 250);
+}
+.white{
+  color:rgb(250, 250, 252);
+}
+
+
+
+
+
+.imagesize{
+  width: 90px; 
+  }
+
+  /* header colour */
+.top-container_first{
+  /* background-color: #66ccff; */
+  background-color: #f1f4f5;
+  padding: 0px 0px;  
+  text-align: left;
+  /* height: 135px; */
+}
+
+
+.top-container {
+  /* background-color: #66ccff; */
+  background-color: #f1f4f5;
+  /* padding: 10px 30px;   */
+  text-align: left;
+  /* height: 100px; */
+}
+
+
+@media only screen and (max-width: 600px) {
+  .font35{
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .font35{
+    font-size: small;
+  }
+}
+
+#content {
+  min-height: calc(100vh - 192px);
+}
+
+
+.content {
+  padding: 16px;
+}
+
+.sticky {
+  position: fixed;
+  top: 90;
+  width: 100%;
+  z-index: 999;
+}
+
+.sticky+.content {
+  padding-top: 102px;
+}
+
+
+#myHeader2 {
+  margin: 0;
+  padding: 0px 30px !important;
+  /* background-color: #333; */
+}
+
+#myHeader2 a:hover {
+  background-color: #1580ec;
+}
+
+
+.nav-link {
+  color: #fff;
+}
+
+/* .background{
+  background-color:grey;
+} */
+.displaynone{
+display: none;
+}
+.round{
+ border-radius: 25px;
+}

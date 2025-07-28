@@ -1,0 +1,25 @@
+.input-box {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.login-header{
+    font-family: Elephant;
+    font-size: 20px;
+    font-weight:bold;
+    line-height:66px;
+    color: rgb(51, 51, 233);
+}
+
+.register-rsp{
+    border-style: solid;
+    border-color:dodgerblue;
+}
+
+
+.hidden{
+    display: none;
+}

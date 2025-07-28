@@ -1,0 +1,11 @@
+/* /views/admin/Form/filluoform.blade.php */
+.textleft{
+    text-align: left;
+}
+.textright{
+    text-align: right;
+}
+.textcenter{
+    text-align: center;
+}
+    

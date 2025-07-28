@@ -1,0 +1,143 @@
+.background1{
+    background: #ded1d1;
+}
+.background2{
+    margin-bottom: -16px;background: #429aa6;
+}
+.background3{
+    background: #429aa6;
+}
+.background4{
+    background: #429aa6;font-weight:regular;font-family: Verdana;color:white;
+}
+.background5{
+text-align:center; font-family: Verdana;color:white;
+}
+.background6{
+background-color: grey;color:white;border-radius:5px;text-align:center
+}
+.background7{
+color: blue; font-family: Verdana;
+}
+.blue{
+    color: blue;
+}
+.black{
+    color: rgb(253, 251, 251);
+    font-weight: bold;
+}
+.font{
+    font-family: Verdana;
+}
+.fontstyle{
+    font-style: italic; font-weight: bold;
+}
+.button {
+    color: white;
+    background-color: #7420ea;
+    border-color: #7420ea;
+
+
+}
+
+.submit {
+    align-items: right;
+}
+.flex{
+    display: flex;
+    margin-left: 30px;
+    
+}
+.form_floating_field{
+    height:4px;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.footer {
+    height: 100px;
+    background-color:rgb(5, 5, 5);
+
+}
+
+.words {
+    font-size: 1.2rem;
+color:white;
+margin: 0 10px;
+
+
+/* opacity: 0.75; */
+font-weight: 300;
+}
+
+.background {
+    /* background: linear-gradient(to top, #cc99ff 0%, #ccffff 100%); */
+    background: linear-gradient(to bottom, #88c3eb 0%, #ccffff 100%);
+}
+
+/* .container {
+    max-width: 100%;
+} */
+
+.card:hover{
+    /* transform: rotateY ; */
+    box-shadow:  2px 5px grey;
+    /* background-color: grey; */
+}
+
+
+    .blink {
+        animation: blinker 1.5s linear infinite;
+        color: red;
+        font-family: sans-serif;
+    }
+    @keyframes blinker {
+        50% {
+            opacity: 0;
+        }
+    }
+    .imagesizeFAQ{
+        width: 200px;
+      }
+
+      .font_verdana {
+        font-style: verdana;
+        text-align: justify;
+      }
+    .line{
+        line-height: 1.6;
+    }
+    
+    .line_height{
+        line-height: 1.8;
+    }
+    .marinleft{
+        margin-left:2px;
+    }
+    .paddingleft{
+        padding-left: 50px;
+    }
+    .paddingright{
+        padding-right: 50px;
+    }
+    #more {
+        display: none;
+    }
+    
+    #myBtn {
+        color: blue;
+        cursor:pointer;
+    }
+    
+    #more_details {display: none;
+    
+    }
+    .details{
+    color:blue;
+    cursor:pointer;
+    }
+    .line_height{
+        line-height:25px;
+    }

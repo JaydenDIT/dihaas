@@ -1,0 +1,25 @@
+.textright{
+    text-align: right;
+}
+.margin_textalign{
+    margin-right: -17px;
+     text-align:right;
+}
+.marginright{
+    margin-right:0px;
+}
+.margin_textalign2{
+    margin-right:-15px;
+    margin-left:0px; 
+    text-align:left;
+}
+
+.color{
+    color:blue;
+}
+.textcenter{
+    text-align: center;
+}
+.borderradius{
+    border-radius:50%;
+}

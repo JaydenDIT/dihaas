@@ -1,0 +1,14 @@
+Table Name - Field Name
+
+pension_eployee - client_ip
+original_data_update_log - id_address
+emp_service_end_reason - client_ip
+emp_qualifying_svc - client_ip
+emp_millitary_service_details - client_ip
+emp_govt_dues_other - client_id
+emp_govt_dues - client_id
+emp_form_submission_status - client_ip
+emp_docs_photos - user_ip
+emp_autonomus_body_service - client_ip
+emp_autonomous_body_service_new - client-ip
+family_members - client_ip

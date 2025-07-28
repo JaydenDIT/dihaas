@@ -1,0 +1,62 @@
+.rightstyle{
+    text-align: right;
+  }
+  .leftstyle{
+    text-align: right;
+  }
+
+  .marginright{
+    margin-right: -17px;
+    text-align: right;
+  }
+  .marginright1{
+    margin-right:-15px;
+    margin-left:0px; 
+    text-align:left;
+  }
+  .marginright2{
+    margin-right:0px;
+  }
+
+  .textdeconone{
+    text-decoration: none;
+  }
+  .textcenter{
+    text-align:center;
+  }
+ .blockstyle{
+  display:block;width:80px;
+ }
+ .buttonstyle{
+  width:80px;
+ }
+ .buttonstyle1{
+  width:120px;
+ }
+
+ 
+.textright{
+  text-align: right;
+}
+.marginright_textalign{
+  margin-right: -17px; text-align:right;
+}
+.margin_textleft{
+  margin-right:-15px;
+  margin-left:0px; 
+  text-align:left;
+}
+.textdecoration{
+  text-decoration: none;
+}
+
+.borderradius{
+  border-radius:50%;
+}
+
+.color{
+  color:blue;
+}
+.btn_width{
+  width:120px;
+}

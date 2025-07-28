@@ -1,0 +1,38 @@
+.margintop{
+    margin-top: 10px;
+}
+.displayshow{
+    display:show;
+}
+.textleft{
+    text-align: left;
+}
+.textright{
+    text-align: right;
+}
+.textalign_fontsize{
+    text-align: center;
+    font-size:22px;
+}
+.color_textalign{
+    color:green;text-align:center;
+}
+.color{
+    color:green;
+}
+.textcenter{
+    text-align: center;
+}
+.marginbottom{
+    margin-bottom: 3px;
+}
+.colorred{
+    color:red;
+}
+.stylewidth120{
+    width:120px;
+}
+.font_color{
+
+    color: red;
+  }

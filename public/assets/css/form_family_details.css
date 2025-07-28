@@ -1,0 +1,34 @@
+.margintop{
+    margin-top: 10px;
+}
+.textleft{
+    text-align: left;
+}
+.textcenter_fontsize{
+
+    text-align: center;
+    font-size:22px;
+}
+.displayshow{
+
+    display:show;
+}
+.bordercolor{
+    border-color: red;
+}
+
+.color{
+
+    color: red;
+}
+.textright{
+    text-align: right;
+}
+.marginbottom{
+    margin-bottom: 3px;
+}
+.whiteborder{
+    border-top-color:white;
+    border-left-color:white;
+    border-right-color:white;
+}

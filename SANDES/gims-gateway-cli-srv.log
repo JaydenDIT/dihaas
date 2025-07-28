@@ -1,0 +1,225 @@
+time="2023-03-21T16:46:27+05:30" level=error msg="Retrying on  Post \"https://dwar1.gims.gov.in/v2/api/app/client/version\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+time="2023-03-21T16:46:32+05:30" level=error msg="Retrying on  Post \"https://dwar1.gims.gov.in/v2/api/app/client/version\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+time="2023-03-21T16:46:32+05:30" level=fatal msg="[Post \"https://dwar1.gims.gov.in/v2/api/app/client/version\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)]"
+time="2023-03-21T18:31:13+05:30" level=info msg="Connected to Sandes Gateway."
+time="2023-03-21T18:31:13+05:30" level=info msg="App Name            : [IMS-Manipur]"
+time="2023-03-21T18:31:13+05:30" level=info msg="Active IP Whitelist : [10.178.0.18]"
+time="2023-03-21T18:31:13+05:30" level=info msg="Account status      : [Active]"
+time="2023-03-21T18:31:13+05:30" level=info msg="Rate Limiting Plan  : [Advanced]"
+time="2023-03-21T18:31:13+05:30" level=info msg="Sandes Gateway client version (running): [1.7]"
+time="2023-03-21T18:31:13+05:30" level=info msg="Sandes Gateway client version (current): [1.7]"
+time="2023-03-21T18:31:13+05:30" level=info msg="Gateway client service started and listening on port [8021]"
+time="2023-03-21T18:31:28+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-21T18:31:29+05:30" level=debug msg="HMAC:CoduzDHJIa3ASQLBmrLAF8QkmWqk3acUeZn6UoAP8C8="
+time="2023-03-21T18:31:29+05:30" level=debug msg="Request:{\"message\":{\"message\":\"q3lBnslR4gSqHc3NPAu7MQ==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAVxsZd44egwx3M9g0oYrq8flZ4ojjNt59UbjYCHKY3K9ne+rSbaro9Kt2q0Xfn8YyOJuF9mF1l3CselRyG+6yA==\",\"encrypted_secret\":\"\"}"
+time="2023-03-21T18:31:29+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-21T18:31:29+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"1874978b-a065-4c15-b977-07b6ca62baf1\"}}\n]"
+time="2023-03-21T18:32:58+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-21T18:32:58+05:30" level=debug msg="HMAC:iZNYH0OK9MfrXJWQe/0Fx/+ko1ZxIq2k2ceKW1rM9xs="
+time="2023-03-21T18:32:58+05:30" level=debug msg="Request:{\"message\":{\"message\":\"LrFzvIy46Ukzwc5YaEHp6Q==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECtD3N7ot5u58byugrR1YWtpR4KjmWxU9BFomTj4ndvNbwtjdDJD5rmKVsYNCe3B/HOU5OH62SDylEesCSBtDmg==\",\"encrypted_secret\":\"\"}"
+time="2023-03-21T18:32:58+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-21T18:32:58+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"85ddc589-b035-4b09-aeef-fafea77fda8f\"}}\n]"
+time="2023-03-21T18:33:56+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-21T18:33:56+05:30" level=debug msg="HMAC:1kzN+T8PH2wHX7A7R6F5Z1NbLQhny3xljzswBjxYrqc="
+time="2023-03-21T18:33:56+05:30" level=debug msg="Request:{\"message\":{\"message\":\"3n+6t8CLDYva3K/tXIM5jw==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAETcTJbqPBUhHMxDgCfPc2LdgiesLatVEMt0T0UYSWnfeN1IwVvanhxB18WUyYCeVsr4Dchs1GVbxkNtd3wHHiYQ==\",\"encrypted_secret\":\"\"}"
+time="2023-03-21T18:33:56+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-21T18:33:56+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"e39d4561-a204-41aa-ac01-5608feac7ed8\"}}\n]"
+time="2023-03-21T18:38:08+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-21T18:38:52+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T12:23:45+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T12:24:25+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T12:24:27+05:30" level=debug msg="HMAC:IZNfOWBOqA18nC0BBJNOUfJTh1Ld8QP5R5SnorRskEw="
+time="2023-03-30T12:24:27+05:30" level=debug msg="Request:{\"message\":{\"message\":\"O8OkeittEdN2XYNA5nbT8A==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"gopal.krishna@nic.in\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEMnnsDvsk/G3qLPrfmOjAAoBWsQVsjxVDG0PSzd4KrEUkTxbSFq8D802MA1ua7pcggV8RF/M6KFN28poMYU3yPw==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T12:24:27+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T12:24:27+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"799f9b8a-01b9-4cb2-8108-a9c91faef9fb\"}}\n]"
+time="2023-03-30T12:26:52+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T12:26:52+05:30" level=debug msg="HMAC:cXSANX3DgrdTmY6FRbCO5//ts6bTNESTnVeC2d23Z9Q="
+time="2023-03-30T12:26:52+05:30" level=debug msg="Request:{\"message\":{\"message\":\"XkNiwuM6ENt7YK3vWSurJQ==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"gopal.krishna@nic.in\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5297/sFK2yN4Y1YlUzEtvmSgQsHLTCLH1RsXYSdoYxMQ2bunWqZ/ZF+Gy/jKt7EBqEAvJ8qjNNudvqCT6BHmxg==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T12:26:52+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T12:26:52+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"12bb0df0-0e6f-4898-a28a-ef94b641e87e\"}}\n]"
+time="2023-03-30T12:35:27+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T12:35:27+05:30" level=debug msg="HMAC:UBtQ98iHt76ZDArFM5kWjU5cTq244RIWDhrUnod5IBI="
+time="2023-03-30T12:35:27+05:30" level=debug msg="Request:{\"message\":{\"message\":\"R0kfrM4/TW5QRtwK/K84Jg==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmXfcQCMip282PJ29O41W5WUpBem+aj+RsoR/sTiq2wOP4khkrFb4MEgroJNnvvXRuEI8OuqNOfUBpZhUD4KflA==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T12:35:27+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T12:35:27+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"a7f3df65-17ba-4d29-a118-6443d46f31d9\"}}\n]"
+time="2023-03-30T12:38:05+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T12:38:05+05:30" level=debug msg="HMAC:0c3QsHrGg+g6mdeAR1Z/DXzgn+wRuUlGomaV8KD9bgc="
+time="2023-03-30T12:38:05+05:30" level=debug msg="Request:{\"message\":{\"message\":\"OTP is 1234\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"\",\"app_pub_key\":\"\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T12:38:05+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T12:38:05+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"ed30959b-6966-4ea4-8008-c6c9488a6a64\"}}\n]"
+time="2023-03-30T12:40:24+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T12:40:24+05:30" level=debug msg="HMAC:LXZPF+Sr9tKqkZcO5S8T+kXu8QYIbDJNBsDP8uop22g="
+time="2023-03-30T12:40:24+05:30" level=debug msg="Request:{\"message\":{\"message\":\"zab0g4iTLijksJcPqYtYnCivhqzEQf+gS5pT3EXdmsg=\",\"type\":\"chat\",\"priority\":\"high-volatile\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8pxJMRDXVpMHgSioNtsmPN4mQ15ezo6D6NdaeVwNwWlOAZbsoEjmS7hTQgSli9E+e0aY/Wg6py5/ioOnq2/t/Q==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T12:40:24+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T12:40:24+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"8e6f26b0-0382-4dd1-8c6f-f879b26ab2b4\"}}\n]"
+time="2023-03-30T13:06:17+05:30" level=debug msg="Receieved Request" method=MessageProcessStatusHandler
+time="2023-03-30T13:06:18+05:30" level=debug msg="Request Processed" method=MessageProcessStatusHandler resp_code=200
+time="2023-03-30T13:06:18+05:30" level=error msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"8e6f26b0-0382-4dd1-8c6f-f879b26ab2b4\",\"req_type\":\"PERSONAL\",\"process_status\":true,\"process_error\":\"\",\"message_count\":1,\"processed_date\":\"2023-03-30T12:51:24Z\",\"dispatched_count\":1,\"dispatched_last_update_on\":\"2023-03-30T12:51:24Z\",\"delivered_count\":0,\"delivered_last_update_on\":\"\",\"read_count\":0,\"read_last_update_on\":\"\"}}\n]"
+time="2023-03-30T13:07:26+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T13:07:26+05:30" level=debug msg="HMAC:XZ8VVPulbTkpq/9Dp2JRC7r91jwtTa+7P3h28nmYc8M="
+time="2023-03-30T13:07:26+05:30" level=debug msg="Request:{\"message\":{\"message\":\"6HMbmC8skaAdFwXj5KDXk4jnQcWqKZQIeJOPIMDaWzY=\",\"type\":\"chat\",\"priority\":\"high-volatile\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9856979636\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAErUVOD3vef/OjAEmffHD6zfKMVT7hZamQZvjnwocjXIHaJAux4rS+CBgmRouTdOtswbVgbp0aFA9ev46nQ6wuEA==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T13:07:27+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T13:07:27+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"81b0df27-8b17-447d-aeef-319c81670ce7\"}}\n]"
+time="2023-03-30T13:08:38+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T13:08:38+05:30" level=debug msg="HMAC:JANnpX0pgdpO+1oh+822s4U4uLLxQKsL7guSlc5f/kU="
+time="2023-03-30T13:08:38+05:30" level=debug msg="Request:{\"message\":{\"message\":\"dSXRX6Tt+CMPTt+gEWiix98fYhs6/+k6XiDHk0oWU58=\",\"type\":\"chat\",\"priority\":\"high-volatile\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"gopal.krishna@nic.in\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmbbRNzfLKqA4Xdgrt829M2Mk/5Knx951DqrjaG/sida0cwY6KCvZL3QcSlpUWtDjqOxUBc9zJqbZpnz26qtMlA==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T13:08:38+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T13:08:38+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"8133484e-d101-4893-a353-8f27205eb4db\"}}\n]"
+time="2023-03-30T13:10:09+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T13:10:33+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T13:10:33+05:30" level=debug msg="HMAC:y18PCFB9uQ9gRm8LUfSenTWUtNc8bvAwL8P/OcZMPOc="
+time="2023-03-30T13:10:33+05:30" level=debug msg="Request:{\"message\":{\"message\":\"jTg473qs0YLj9GILtnZQyYryLvfkya1Do6W6G5YNMZs=\",\"type\":\"chat\",\"priority\":\"high-volatile\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"w.santisingh@nic.in\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnOZuxsMClf5sGoeMBWpLdR7bEf3mRAcPWMWqvbOM6wDM3O0C+akWmuQlcTWbou2kAc/3LUDX6K4CbVMcK+TxgQ==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T13:10:33+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T13:10:33+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"e8dc73a7-5c72-43df-8960-f4b84b6f9762\"}}\n]"
+time="2023-03-30T13:11:52+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T13:11:52+05:30" level=debug msg="HMAC:iIbiX7TuUcVCidC0Up38wItIe1GGDfLZL7KEdQ5KVn0="
+time="2023-03-30T13:11:52+05:30" level=debug msg="Request:{\"message\":{\"message\":\"5dDZe4/YL7dZ/obqjX85Rir54mUqRGtDSZpNeBhSBlg=\",\"type\":\"chat\",\"priority\":\"high-volatile\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"w.santisingh@nic.in\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEX14Zqvu5yRTXTvarZmQDKD8WOYu0PJT+eJAzH7vNS++KF6GsMv3IZQS/rwvRpert7fCO88IAhvxAcmHIqdPygQ==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T13:11:52+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T13:11:52+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"f5f03328-fd87-4bf2-93a3-f3d3dfb6e91c\"}}\n]"
+time="2023-03-30T15:21:51+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T15:21:51+05:30" level=debug msg="HMAC:kfCTmbyEomsp/ODPvZkbQDHqTGHVc1GxsxLVAv7w8qw="
+time="2023-03-30T15:21:51+05:30" level=debug msg="Request:{\"message\":{\"message\":\"fkduYL+r/KvG7a7cRM4gl/431AVf3TRxLgXNtoV4f+g=\",\"type\":\"chat\",\"priority\":\"high-volatile\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"8787404409\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAExpY+vIgSMgIJzf2hkMNLWsypJRFjynOOBD9n/6EJzNL6s9RYwGZnfsuRsl58Kmv5GPK/zqgM1v8tz+clYCsL4A==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T15:21:52+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T15:21:52+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"a6433b92-817c-4683-9d8b-0d9675914c1d\"}}\n]"
+time="2023-03-30T15:21:52+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T15:21:52+05:30" level=debug msg="HMAC:YTaRj2m4ZZiFeqCJc+y5WjJr7ZQ9azAebPMkhQn8vv0="
+time="2023-03-30T15:21:52+05:30" level=debug msg="Request:{\"message\":{\"message\":\"CHUT6pNl95hBc0jWbvu+5E0vINqtPdORLRPQ+qF3jbA=\",\"type\":\"chat\",\"priority\":\"high-volatile\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"8787404409\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1WeWycDLXXoO5M3VYqRxkONIGb/XlULTnq53H0XYt2JWv093eXkIUShA9b5rO7frfagM7a1tJM8Cd2x16r3YOg==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T15:21:53+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T15:21:53+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"db7c92ec-51fc-4c07-938c-e61375df97b5\"}}\n]"
+time="2023-03-30T15:44:41+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T15:44:41+05:30" level=debug msg="HMAC:B1mcSNQOm6KDmrHZiHfbUR39kS/+PSj990INdsASXWA="
+time="2023-03-30T15:44:41+05:30" level=debug msg="Request:{\"message\":{\"message\":\"CCr2Rn0vHSgPQ+DPM9QJySjxI0g6f+fouehvy2R12ik=\",\"type\":\"chat\",\"priority\":\"high-volatile\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9435264350\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEFKNHQl/pfT8el3LuUdnAEX7SFDzYU2/y5wK0Na8sTlvHwjUF3GYYZXjnx2IdJCsuXqqhtnofchERys6ZFaAmfQ==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T15:44:41+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T15:44:41+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"b4a38be7-f753-4e6a-9cc8-a53ca7ddc418\"}}\n]"
+time="2023-03-30T15:51:03+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T15:51:03+05:30" level=debug msg="HMAC:3SGMWEuqZ9sD8CSZHlJ84lYylRwuCd+fvJTqGCfIa/A="
+time="2023-03-30T15:51:03+05:30" level=debug msg="Request:{\"message\":{\"message\":\"vkijiGzDCatQAVUNb/JW2F42nRJqGVuYXcy1agNuz/Q=\",\"type\":\"chat\",\"priority\":\"high-volatile\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEjBhlLRLbrWJ0oPWllMYvNg2yGSjRXtLI01TLGHrgKWUKsVmO3QYrzmPvCsBjcQwDPcaBCfnuxTfXjg18WH/Lxg==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T15:51:03+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T15:51:03+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"2f2b1b0b-c8b0-484a-9770-d179c1c57628\"}}\n]"
+time="2023-03-30T16:16:27+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:16:27+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:16:28+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:16:28+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:19:50+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:19:50+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:19:50+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:19:50+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:30:24+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:30:24+05:30" level=debug msg="HMAC:5zjUKSqzDCk8PWZKrW2MC+H2PRamUel1dLOCVv9Gn0Q="
+time="2023-03-30T16:30:24+05:30" level=debug msg="Request:{\"message\":{\"message\":\"IdJRsPj5ChOTWbwB/YNBsg==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAETLEZCQiBg/DlN5cVo+6y0Opw1A1uSoxVM0l+gkQeiWysk9JZIAqqQg62xBT87V78KYSpN/stj1nHtPmhR/+1Mg==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:30:24+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:30:24+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"d6add979-a87f-4c67-a8d5-cf310a204dd4\"}}\n]"
+time="2023-03-30T16:30:24+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:30:24+05:30" level=debug msg="HMAC:79ksUPKudSNNRZeYt4cypPrQT46TWOdP9K32ZBw8EDw="
+time="2023-03-30T16:30:24+05:30" level=debug msg="Request:{\"message\":{\"message\":\"rG/He34JJL4sUm8BSxMTjw==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE2bzw79mdKZCG0XX2Dpv/IQrlyK4Lg82/hwDyGcWyZqQIc/ayQbFS5Qyria1dQVBvHP5xbePMEE8jmeBTNLQtxQ==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:30:24+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:30:24+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"8621ffc1-da64-4095-aedb-cd7c7febfeba\"}}\n]"
+time="2023-03-30T16:33:09+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:33:09+05:30" level=debug msg="HMAC:zNWZFouAjpP6mj8jYf8fLsMduldAeYwxrIDOoZdfNNY="
+time="2023-03-30T16:33:09+05:30" level=debug msg="Request:{\"message\":{\"message\":\"9GBgE6k99aTHJ9DLva9PRQ==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEcngSGViQIxus7iB/w5fx8B3DbSeCXJpkd4npBEoC3nvekfZ9q6N0hW0WwxcXZvYA5C/bk24CO+4WZrto0GPKsw==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:33:09+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:33:09+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"342eb342-dc02-4121-89e8-10e40c90c58f\"}}\n]"
+time="2023-03-30T16:33:09+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:33:09+05:30" level=debug msg="HMAC:rADulx9YM+HUgnVelnJkxu2eRQGbdnm8yCdLxosTdOs="
+time="2023-03-30T16:33:09+05:30" level=debug msg="Request:{\"message\":{\"message\":\"QEgn5tLcUm1qo39iiNvPyg==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE9bh36lylJUd3pswXS84vP9YR0K8Vrnuccn9kT9sBPsi4AAF2f92mussuPh0J1omsxSGc5kDX3u8b/iMrcixPeQ==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:33:09+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:33:09+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"64a16cfb-c847-4a04-9e80-cb3aae13c3ae\"}}\n]"
+time="2023-03-30T16:34:05+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:34:05+05:30" level=debug msg="HMAC:PzBL2cGv7he3VwzzHBX8Cc5ExRCFjg97CGwDzwLUQ3s="
+time="2023-03-30T16:34:05+05:30" level=debug msg="Request:{\"message\":{\"message\":\"GQnMXBoZJtURHZox/yHaMg==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERwWo6MWryXOtqZzlkQNJUL1n1+fKWwZvL9SovGwwMIYP7Ezl11xVV0Ffw4XwILgIMyvO7nzXSeperhrueM3zuw==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:34:05+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:34:05+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"16ab37e4-e84b-46b6-93de-c03ebd57a301\"}}\n]"
+time="2023-03-30T16:34:05+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:34:05+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:34:05+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:34:05+05:30" level=debug msg="HMAC:RTLQqYphSigBqvvPoeu/Q7TVNM2GHD7uWgtTB5HU1b0="
+time="2023-03-30T16:34:05+05:30" level=debug msg="Request:{\"message\":{\"message\":\"bgJnvQeJqxjQTxXi1ItwLA==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHu21+XBVFNmfwzVb7bG1a9ZfZ89XTxfEobURRpL/vXBGxFldNmjKgyW8KbHk/Ho15Wm5uXDhor8T3rCMI4r9kg==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:34:06+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:34:06+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"2c89e8ff-f426-4073-a82e-0043f671119a\"}}\n]"
+time="2023-03-30T16:34:06+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:34:06+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:34:18+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:34:18+05:30" level=debug msg="HMAC:rWJBO7AxlGBh9xa829MIOTN3qdPcznd+toWbNi6sDbc="
+time="2023-03-30T16:34:18+05:30" level=debug msg="Request:{\"message\":{\"message\":\"+VBKOeH4LeIzYd5v91osQw==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEOUmMcXCxq2AcKHfVN2qs7gR9ZifBuNDfgRiV7kLz20z6vuRIBGhx5/oX4ov0bzxegZ9dQyojqL9UFnRGPgxOZg==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:34:18+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:34:18+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"db3b4e7e-f087-4af4-b085-e622767691a3\"}}\n]"
+time="2023-03-30T16:34:18+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:34:18+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:34:18+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:34:18+05:30" level=debug msg="HMAC:jLxE8KBOhq7qTU+fGSr9ODvewA1TqvgEII6lmy6JQ1Y="
+time="2023-03-30T16:34:18+05:30" level=debug msg="Request:{\"message\":{\"message\":\"gOUFZeC1atBznwxWOqL73A==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE0CbTXeGJAmFKRaH+FphF4WkkcDCGgPzA+MI+aViDUNNT3mZDs3KjdloGoxt4+sEqSCjxv3PQEPBWjub7aMgdLQ==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:34:18+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:34:18+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"ae0138b0-6504-4c7f-a891-2a633346ce6d\"}}\n]"
+time="2023-03-30T16:34:18+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:34:19+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:35:23+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:35:23+05:30" level=debug msg="HMAC:w+wLfqGhzYbB20WKyHOKc+cyyJJe7uKIqbGwYwlCfsw="
+time="2023-03-30T16:35:23+05:30" level=debug msg="Request:{\"message\":{\"message\":\"r7rvXWr+aHwNSoDHZ6Z4kQ==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEOsol0uBXIiq+UR8bFdgiSBPhGLcyYOVT4z6OXCPuoCz84m3OJc06zXlvs3auvpDXsUb6I5Lfip/rzrY7IT2QaQ==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:35:23+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:35:23+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"6b9c34d4-b210-4cfc-9bcb-00351c153559\"}}\n]"
+time="2023-03-30T16:35:23+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:35:23+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:35:23+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:35:23+05:30" level=debug msg="HMAC:1P6uGov98jj0BA37Ink2HkbaoWzgXTL8F1ajaWQ5mKo="
+time="2023-03-30T16:35:23+05:30" level=debug msg="Request:{\"message\":{\"message\":\"D/zpviSaCweZg7AooST4bg==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEqEPUOq5iMH5o9tUKOvzr7/skJUCmRgU5i/tZvHhgBUyRulBo9/7+Kf5RGSVe2UmCJByH6dV+WNpgHZCPhL8Eug==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:35:23+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:35:23+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"58583b47-1c20-4f3f-badf-0da6a6bb9ffd\"}}\n]"
+time="2023-03-30T16:35:23+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:35:23+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:36:50+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:36:50+05:30" level=debug msg="HMAC:WQlPgdOOgfsFTAmr+QlGmDs0E9BoGD5HQx0XmYAEvkA="
+time="2023-03-30T16:36:50+05:30" level=debug msg="Request:{\"message\":{\"message\":\"eBQ9N6oKmrfWltyCw6PQ7w==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQwuV0iiIiy16vc2yoDiGxLOKaSC/QlOyTtcHvTTd6Yzb/Y30Hhf53sQkQZEnWvGoNMN1cOiVPDqIl+6Wc6sDRg==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:36:50+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:36:50+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"02f6b014-3d83-4b15-8dbd-a38345f63b18\"}}\n]"
+time="2023-03-30T16:36:50+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:36:51+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:36:51+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:36:51+05:30" level=debug msg="HMAC:9sH4ZTVkjFr3cA+KmNOPWCBb+nRzhE51Dv5YUdJPtO0="
+time="2023-03-30T16:36:51+05:30" level=debug msg="Request:{\"message\":{\"message\":\"JmLlJPXGC/Hk6vNZrJPSzQ==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEc61PpBwgB791Wq8tba+pcaS0K6OX9y5tZ5rA8su8OsRfC3/n4I5tJTGMBTc2vbiF23LVpdDeMrTLTKRIUqw/w==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:36:51+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:36:51+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"fbd110be-eee3-4122-80a0-484cec9fcbf5\"}}\n]"
+time="2023-03-30T16:36:51+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:36:51+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:40:04+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:40:04+05:30" level=debug msg="HMAC:a1stwt3tPYWDbzLJ6YblJfpK9I42ivSFocjVqlyEg2Y="
+time="2023-03-30T16:40:04+05:30" level=debug msg="Request:{\"message\":{\"message\":\"TI/u+6TyulsbQIbqERyFkQ==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEaNvPPhFUp+2JiSmQ2e3SQcBnN+YJ/YmBcnP64aKmR1scv2QT9KPMaGtcLc10XWvVFjWy3vwwQ5K8uO5JnhDFdQ==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:40:05+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:40:05+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"d712fb35-05c1-41ff-98af-8536b4077895\"}}\n]"
+time="2023-03-30T16:40:05+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:40:05+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:40:05+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:40:05+05:30" level=debug msg="HMAC:gfhsMhnCBwoSmnKyVdXvNQEF8ey87TafEk0IieHLggc="
+time="2023-03-30T16:40:05+05:30" level=debug msg="Request:{\"message\":{\"message\":\"Y6wacf6lByqHRZO8VxOZiQ==\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+IXOU0hV550bi0twoFzWsJ9iXjjLbc2rUwMFGGUwEJZdWfkM36AMtEfxwBkv3ak1TisP64n5/XrGXMGtTEXDog==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:40:05+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:40:05+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"bf665d36-12d4-47fe-8b84-540b4a32afb4\"}}\n]"
+time="2023-03-30T16:40:05+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:40:05+05:30" level=warning msg="Sandes Account of [9612159813] does not support encrypted messaging. Auto fallback to plain message"
+time="2023-03-30T16:43:13+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:43:13+05:30" level=debug msg="HMAC:KesFOeQEDS8MI3wVLaTbVnWK0hHyMtHk30mdrVDDE24="
+time="2023-03-30T16:43:13+05:30" level=debug msg="Request:{\"message\":{\"message\":\"G8T+v3Fsss0Y8/pq6TLatMKHRXoqqMrNcWnAgiap3pxUzIe6maky/gfuh1SLwNkz\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEtdpytfQZFG3oJ7333erWgpjif2Di/6TYAsZP3FsnWq1uDhPOrseh6z0yChwv1zUx62MDyMjXrU0iVlBB+M0AEA==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:43:13+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:43:13+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"8563aeb0-6d9e-4dec-8c43-eaa6b1bfcf29\"}}\n]"
+time="2023-03-30T16:43:13+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:43:13+05:30" level=debug msg="HMAC:0qqJvmJGdKQevcY1kQnmWeEFKKgHfUtmseoBglReKHE="
+time="2023-03-30T16:43:13+05:30" level=debug msg="Request:{\"message\":{\"message\":\"7h7k11ythgBA3mH/BJ8XSE9nU3OtM5bGMdSZdtbkou/1JecpRl7UTYkxsZpiPXMp\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEc3NMOS8awrux3ycsX3t0LrrXTlr1YfP6ceTGy0ImJJjeNuZEbvDVVVoUnAadQkhQ6Abm0Vf/eDMe7Cjtn+Qnjw==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:43:13+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:43:13+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"65b049a3-a467-4846-8ac5-fcecc8d44fde\"}}\n]"
+time="2023-03-30T16:44:13+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:44:13+05:30" level=debug msg="HMAC:FZ56eLAtAa9C9GEDZOSlyE9obYCmzX01NghORaovTdc="
+time="2023-03-30T16:44:13+05:30" level=debug msg="Request:{\"message\":{\"message\":\"8ebkSrJ0TvsgfE4mxzqYiTufkSqfY+E4Q2EYSc35I6xeyBrMWZ/fKn2YLi1Dkz+d\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE3zFZuIvrVc/ePWSlKsV3AxMUIzBTErN2pxu5a3JBWQHoeu7LaHungUrlIV6YR88VhdljUqdNK0p6IRyErv88Zg==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:44:13+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:44:13+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"9b7ccb33-b650-4a1a-b528-cfda8d558698\"}}\n]"
+time="2023-03-30T16:44:13+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2023-03-30T16:44:13+05:30" level=debug msg="HMAC:jFocuoGyQarpVMppp23y8Ws9mnJSj7jRX0Qz4rk0omU="
+time="2023-03-30T16:44:13+05:30" level=debug msg="Request:{\"message\":{\"message\":\"GPOcB2k5j8cjv2YXKvPrpEDbbqaZyMtc3ETe/jCvcuDmp7r1/M5qeF/RVD9BiWWt\",\"type\":\"chat\",\"priority\":\"low\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9612159812\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENVOfObAW+9qbmtTny0QF1EsZA6i+pJebXuq3xJoP2pFMO2teAoK2X+t7ECdfuinJtgRY+MvGHMtPBoY+V9q2Kg==\",\"encrypted_secret\":\"\"}"
+time="2023-03-30T16:44:13+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2023-03-30T16:44:13+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"435fa564-4c34-4a77-bca0-b504381c6f16\"}}\n]"
+time="2023-03-30T21:02:38+05:30" level=info msg="Sandes Gateway client server stopped."
+time="2023-03-30T21:04:02+05:30" level=info msg="Connected to Sandes Gateway."
+time="2023-03-30T21:04:02+05:30" level=info msg="App Name            : [IMS-Manipur]"
+time="2023-03-30T21:04:02+05:30" level=info msg="Active IP Whitelist : [10.178.0.18]"
+time="2023-03-30T21:04:02+05:30" level=info msg="Account status      : [Active]"
+time="2023-03-30T21:04:02+05:30" level=info msg="Rate Limiting Plan  : [Advanced]"
+time="2023-03-30T21:04:02+05:30" level=info msg="Sandes Gateway client version (running): [1.7]"
+time="2023-03-30T21:04:02+05:30" level=info msg="Sandes Gateway client version (current): [1.7]"
+time="2023-03-30T21:04:02+05:30" level=info msg="Gateway client service started and listening on port [8021]"

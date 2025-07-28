@@ -1,0 +1,27 @@
+.background_blue{
+    background-color: blue;width: 48px;height: 2px;margin-block: auto;
+}
+
+.background_green{
+    background-color: green;width: 48px;height: 2px;margin-block: auto;
+}
+
+
+.width_color{
+    width: 50px;height: 50px;border-radius:50%;padding-top:12px;background-color:#0d6efd;color: white;
+}
+
+.width_color2{
+    width: 50px;height: 50px;border-radius:50%;padding-top:12px;background-color:white;color: black;}
+
+.width_height_border_padding{
+    width: 50px;height: 50px;border-radius:50%;padding-top:12px;
+
+}
+.width_height_border_padding2{
+    width: 50px;height: 50px;border-radius:50%;padding-top:12px;background-color:green;color: white;
+}
+
+
+
+

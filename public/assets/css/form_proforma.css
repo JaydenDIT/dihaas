@@ -1,0 +1,64 @@
+.margintop{
+    margin-top: 10px;
+}
+
+.displayshow{
+    display:show;
+}
+.textleft{
+
+    text-align: left;
+}
+.textcenter_fontsize{
+    text-align: center;
+    font-size:22px;
+}
+.fontweight_color{
+    font-weight:bold;
+    color:blue;
+}
+
+.displayflex{
+    display:flex; 
+}
+.marginright{
+    
+    margin-right:50px;
+}
+.marginL{
+    
+    margin-left:50px;
+}
+.texttransform{
+    text-transform:uppercase;
+}
+
+.fontweight_color_textalign{
+    font-weight:bold;color:blue;text-align: left;
+}
+
+.textalign_fontsize_fontweight_color{
+    text-align: left;font-size:13px;font-weight:bold;color:#6c757d;
+}
+
+
+.textright{
+    text-align: right;
+}
+
+.marginbottom{
+    margin-bottom: 3px;
+}
+.red{
+    color:red;
+}
+.style200{
+    width:200px;
+}
+hr.new {
+    border: 1px solid rgb(10, 10, 10);
+  }
+  .font_color{
+
+    color: red;
+  }

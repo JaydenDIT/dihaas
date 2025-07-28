@@ -1,0 +1,35 @@
+.textright{
+    text-align: right;
+}
+.marginright_textalign{
+    margin-right: -17px;
+    text-align:right;
+}
+
+.marginright{
+    margin-right:0px;
+}
+.margin_textalign{
+    margin-right:-15px;
+    margin-left:0px; 
+    text-align:left;
+}
+.color{
+    color:blue;
+}
+.font_background_color{
+    font-size:18px; 
+    background-color:rgb(184,184,184);
+    color:white;
+}
+.fontsize_backgroundcolor_color{
+    font-size:18px;
+    background-color:rgb(184, 184, 184);
+    color:dodgerblue; 
+}
+.textcenter{
+    text-align: center;
+}
+.displaynone{
+    display:none;
+}

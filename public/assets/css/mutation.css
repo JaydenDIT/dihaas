@@ -1,0 +1,85 @@
+.header{
+    background-color: #7B7777;
+    min-height: 60px;
+}
+    
+.content{
+    background-color: #698bdf;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 0.8em;
+}
+.form1-label{
+    text-align: right;
+}
+.form1-input{
+    width: 100%;
+}
+.form1-group{
+    margin: 5px 0px;
+}
+.form1-table{
+    width: 100%;
+}
+#patta_panel_div{
+    border-radius: 15px 15px 0 0;
+}
+#search_left_div, #patta_container_div{
+    padding:15px 10px;
+}
+#patta_details_table tbody td, #patta_details_table thead td {
+    border: 1px solid #5c5656;
+    padding: 2px;
+}
+
+.border_color{
+    border: 2px solid #0945af;
+}
+#applicant_detail_div{
+    margin: 10px 15px;
+    width: 100%;
+}
+
+#u_address_detail_div{
+    margin: 10px 25px;
+}
+
+.strikethrough{
+    text-decoration: line-through;
+    color: #f32659;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+.selected_village{
+    text-decoration: underline !important;
+    color:#06a008;
+}
+
+/*** dropdown menu ****/
+.dropdown-item-sm{
+    font-size: 00.7em !important;
+}
+.dropdown-menu-sm{
+    min-width: 5rem !important;
+    padding: 0px !important;
+}
+/** css for the input textfield for mutating shared area */
+.shared_area{
+    box-sizing: border-box;
+    border: 1px solid #3b3b3b;
+    border-radius:5px;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+    width:100% !important;
+    float: right !important;
+    text-align: right;
+}
+.shared_area:focus{
+    border: 1px solid rgb(36, 159, 230);
+}
+.input-error{
+    border: 2px solid rgb(245, 59, 90);
+    color:  rgb(245, 59, 90);
+}
+    
