@@ -132,9 +132,9 @@
                                     <td>
                                         <a href="{{ route('verifyPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true" onclick="return confirm('Are You Sure that the Applicant File is OK?')">Verify</a>
                                     </td>
-                                    <td>
+                                    {{-- <td>
 
-                                        <!-- capturing the ein at click instant -->
+                                       
                                         @php
                                         $temp_array = [];
                                         $ein = $data->ein;
@@ -143,24 +143,24 @@
                                         $temp_array['appl_no'] = $appl_no;
                                         @endphp
                                         <button class="btn btn-danger btn-sm blockstyle" role="button" aria-disabled="true" id="edit_emp_name_btn" type="button" onclick='setRevertData(<?= json_encode($temp_array) ?>)'>Revert</button>
-                                        <!-- data-bs-toggle="modal" data-bs-target="#remarkModal"-->
-                                    </td>
-                                    <td>
+                                        
+                                    </td> --}}
+                                    {{-- <td>
                                         <a href="{{ route('discard-started-employee', Crypt::encryptString($data->ein)) }}" class="btn btn-danger btn-sm blockstyle" role="button" aria-disabled="true" onclick="return confirm('Are You Sure to Discard this Applicant?')">Delete</a>
 
 
-                                    </td>
+                                    </td> --}}
                                     @endif
 
                                     @if($data->formSubStat == "started")
                                     <td class="rightstyle">
                                         <a href="{{ route('Proforma_ApplicantDetails', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true">Update</a>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <a href="{{ route('discard-started-employee', Crypt::encryptString($data->ein)) }}" class="btn btn-danger btn-sm blockstyle" role="button" aria-disabled="true" onclick="return confirm('Are You Sure to Discard this Applicant?')">Delete</a>
 
 
-                                    </td>
+                                    </td> --}}
                                     @endif
                                     @if($data->formSubStat == "verified")
                                     <td class="rightstyle">
@@ -179,7 +179,7 @@
                                         @endphp
                                         <button class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true" id="edit_emp_name_btn" type="button" onclick='setForwardData(<?= json_encode($temp_array) ?>)'>Forward to HOD</button>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         @php
                                         $temp_array = [];
                                         $ein = $data->ein;
@@ -188,8 +188,8 @@
                                         $temp_array['appl_no'] = $appl_no;
                                         @endphp
                                         <button class="btn btn-danger btn-sm blockstyle" role="button" aria-disabled="true" id="edit_emp_name_btn" type="button" onclick='setRevertData(<?= json_encode($temp_array) ?>)'>Revert</button>
-                                        <!-- data-bs-toggle="modal" data-bs-target="#remarkModal"-->
-                                    </td>
+                                     
+                                    </td> --}}
 
                                     @endif
 

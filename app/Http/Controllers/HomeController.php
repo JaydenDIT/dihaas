@@ -332,7 +332,7 @@ class HomeController extends Controller
         return view('admin/removedEmpLists', compact('removed_emp_list'));
     }
 
- public function viewStartEmpSearch(Request $request)
+ public function viewApplicantsForVerificationSearch(Request $request)
     {
         try {
             $empListArray = null;
@@ -352,7 +352,7 @@ class HomeController extends Controller
                 if (count($tempEmpList) == 0) {
                     $tempEmpList = 0;
 
-                    return view('admin/viewStartEmp', compact('empList', 'empListArray', 'Remarks', 'RemarksApprove'));
+                    return view('admin/viewApplicantsForVerification', compact('empList', 'empListArray', 'Remarks', 'RemarksApprove'));
                 }
             }
             $stat = '';
@@ -401,7 +401,7 @@ class HomeController extends Controller
             }
             Session::put('einsearch', $request->searchItem);
 
-            return view('admin/viewStartEmp', compact('RemarksApprove', 'empList', 'empListArray', 'Remarks'));
+            return view('admin/viewApplicantsForVerification', compact('RemarksApprove', 'empList', 'empListArray', 'Remarks'));
         } catch (Exception $e) {
 
             return response()->json([
@@ -491,7 +491,7 @@ class HomeController extends Controller
 
     // search
 
-    public function viewApplicantsForVerificationSearch(Request $request)
+    public function viewStartEmpSearch(Request $request)
     {
         try {
             $empListArray = null;
@@ -517,7 +517,7 @@ class HomeController extends Controller
                 if (count($tempEmpList) == 0) {
                     $tempEmpList = 0;
 
-                    return view('admin/viewApplicantsForVerification', compact('deptListArray','empList', 'empListArray', 'Remarks', 'RemarksApprove'));
+                    return view('admin/viewStartEmp', compact('deptListArray','empList', 'empListArray', 'Remarks', 'RemarksApprove'));
                 }
             }
             $stat = '';
@@ -566,7 +566,7 @@ class HomeController extends Controller
             }
             Session::put('einsearch', $request->searchItem);
 
-            return view('admin/viewApplicantsForVerification', compact('deptListArray','RemarksApprove', 'empList', 'empListArray', 'Remarks'));
+            return view('admin/viewStartEmp', compact('deptListArray','RemarksApprove', 'empList', 'empListArray', 'Remarks'));
         } catch (Exception $e) {
 
             return response()->json([
