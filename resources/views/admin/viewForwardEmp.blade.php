@@ -59,8 +59,7 @@
 
                     <!-- CMIS Started employee list table -->
                     <!-- <div id="started_emp_table" style="display:show"><b>Started Employee List :</b><br> -->
-                    <b class="color">List of applicantions to forward for putting up to
-                        Administrative Department:</b>
+                    <b class="color">List of applicants to forward to Dealing Assistant for documents verification:</b>
                     <hr>
                     <a href="{{ route('viewForwardEmp.downloadPDFApplView') }}" class="btn btn-success"
                         target=”_blank”>Download Pdf</a>

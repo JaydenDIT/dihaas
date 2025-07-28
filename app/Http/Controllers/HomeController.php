@@ -342,12 +342,12 @@ class HomeController extends Controller
             $RemarksApprove = RemarksApproveModel::get()->toArray();
             $tempEmpList = null;
             // $rejected_status = [ null, 1 ];
-            $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
+            $empListArray = ProformaModel::get()->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
             // Change for DIHAS below
-            $empList = ProformaModel::where('form_status', 1)->where('dept_id', $getUser->dept_id)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
+            $empList = ProformaModel::where('form_status', 1)->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
             if ($request->searchItem != null || trim($request->searchItem) != '') {
-                $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
-                $empList = ProformaModel::orderByRaw("expire_on_duty = 'no',deceased_doe,appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
+                $empListArray = ProformaModel::get()->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
+                $empList = ProformaModel::orderByRaw("expire_on_duty = 'no',deceased_doe,appl_date, applicant_dob")->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
                 $tempEmpList = $empListArray;
                 if (count($tempEmpList) == 0) {
                     $tempEmpList = 0;
@@ -427,9 +427,9 @@ class HomeController extends Controller
             $RemarksApprove = RemarksApproveModel::get()->toArray();
             // $status = [ 1, 2 ];
 
-            $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
+            $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
 
-            $empList = ProformaModel::orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(6);
+            $empList = ProformaModel::orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(6);
             //dd( $empList );
             //expire_on_duty if yes top priority
 
