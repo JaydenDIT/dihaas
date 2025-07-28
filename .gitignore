@@ -4,7 +4,7 @@
 /storage/*.key
 /vendor
 /SANDES
-/download/
+/download
 .env
 .env.backup
 .phpunit.result.cache
