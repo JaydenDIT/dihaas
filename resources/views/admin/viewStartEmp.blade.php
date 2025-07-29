@@ -220,7 +220,7 @@
 
                                     </td> --}}
                                     @endif
-                                    @if($data->formSubStat == "verified")
+                                    @if($data->formSubStat == "verifieddp")
                                     <td class="rightstyle">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true">View</a>
                                         <!-- capturing the ein at click instant -->
@@ -250,6 +250,38 @@
                                     </td>
 
                                     @endif
+
+                                      @if($data->formSubStat == "verifieddept")
+                                    <td class="rightstyle">
+                                        <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true">View</a>
+                                        <!-- capturing the ein at click instant -->
+                                    </td>
+
+                                    <td class="rightstyle">
+                                        <!-- forward put -->
+                                        @php
+                                        $temp_array = [];
+                                        $ein = $data->ein;
+                                        $appl_no = $data->appl_number;
+                                        $temp_array['ein'] = $ein;
+                                        $temp_array['appl_no'] = $appl_no;
+                                        @endphp
+                                        <button class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true" id="edit_emp_name_btn" type="button" onclick='setForwardData(<?= json_encode($temp_array) ?>)'>Forward to DP Nodal</button>
+                                    </td>
+                                    <td>
+                                        @php
+                                        $temp_array = [];
+                                        $ein = $data->ein;
+                                        $appl_no = $data->appl_number;
+                                        $temp_array['ein'] = $ein;
+                                        $temp_array['appl_no'] = $appl_no;
+                                        @endphp
+                                        <button class="btn btn-danger btn-sm blockstyle" role="button" aria-disabled="true" id="edit_emp_name_btn" type="button" onclick='setRevertData(<?= json_encode($temp_array) ?>)'>Revert</button>
+                                        <!-- data-bs-toggle="modal" data-bs-target="#remarkModal"-->
+                                    </td>
+
+                                    @endif
+
                                 @if($data->formSubStat == "transfer")
                                     <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>

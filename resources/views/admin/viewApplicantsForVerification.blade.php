@@ -19,7 +19,7 @@
                             <h3>{{ __('Submitted Applications') }}</h3>
                         </div>
                         <div class="col-6">
-                            <form class="form-inline" id="ddoAststartEmpSearchBox" method="POST" action="{{ url('ddo-assist/viewStartEmpSearch') }}" enctype="multipart/form-data" class="was-validated">
+                            <form class="form-inline" id="ddoAststartEmpSearchBox" method="POST" action="{{ url('ddo-assist/viewApplicantsForVerificationSearch') }}" enctype="multipart/form-data" class="was-validated">
                                 <div class="row rightstyle">
                                     @csrf
 
@@ -87,7 +87,7 @@
                                     <th>Submitted Date</td>
                                     <th>Applicant Name</td>
                                     <th>DOB</td>
-                                    <th scope="col">status</th>
+                                    <th scope="col" style="color:red;">status</th>
                                     <th scope="col">Mode</th>
                                     <th scope="col" colspan="4" class="text-center" >Action</th>
                                 </tr>
@@ -121,7 +121,7 @@
                                     <td>{{$data->appl_date ? \Carbon\Carbon::parse($data->appl_date)->format('d/m/Y') : 'NA'}}</td>
                                     <td>{{$data->applicant_name}}</td>
                                     <td>{{$data->applicant_dob ? \Carbon\Carbon::parse($data->applicant_dob)->format('d/m/Y') : 'NA'}}</td>
-                                    <td>{{$data->status}}</td>
+                                    <td style="color:red;">{{$data->status}}</td>
                                     <td>{{$mode}}</td>
 
 

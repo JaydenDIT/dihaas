@@ -88,7 +88,7 @@
                                     <th>Currently With</td>
                                     <th>Remarks</td>
 
-                                    <th>status</td>
+                                    <th style="color:red;">status</td>
                                 </tr>
                             </thead>
                             <tbody class="">
@@ -116,7 +116,7 @@
                                     <td>{{$data->received_by}}</td>
                                     <td>{{$data->remark}}</td>
 
-                                    <td>{{$data->status}}</td>
+                                    <td style="color:red;">{{$data->status}}</td>
 
                                     @if($data->formSubStat == "submitted")
                                     <td class="textright">
@@ -137,7 +137,7 @@
 
                                 </td> -->
                                     @endif
-                                    @if($data->formSubStat == "verified")
+                                    @if($data->formSubStat == "verifieddp")
                                     <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
 
@@ -147,6 +147,18 @@
 
 
                                     @endif
+
+                                     @if($data->formSubStat == "verifieddept")
+                                    <td class="textright">
+                                        <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
+
+
+
+                                    </td>
+
+
+                                    @endif
+
                                     @if($data->formSubStat == "forapproval")
                                     <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
