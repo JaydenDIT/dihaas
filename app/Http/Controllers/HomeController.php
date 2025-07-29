@@ -2802,17 +2802,17 @@ class HomeController extends Controller
         }
         if (strlen(session()->get('deptId')) > 0) {
             $deptId = session()->get('deptId');
-            $empListArray = ProformaModel::get()->where('dept_id', $deptId)->where('file_status', 5)->toArray();
+            $empListArray = ProformaModel::get()->where('dept_id', $deptId)->where('file_status', 5)->where('status', 9)->toArray();
 
-            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->where('dept_id', $deptId)->where('file_status', 5)->paginate(10);
-            $empListprint = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->where('dept_id', $deptId)->where('file_status', 5)->get();
+            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->where('status', 9)->where('dept_id', $deptId)->where('file_status', 5)->paginate(10);
+            $empListprint = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->where('status', 9)->where('dept_id', $deptId)->where('file_status', 5)->get();
             //  dd( $empList );
         } else {
 
-            $empListArray = ProformaModel::get()->where('file_status', 5)->where('status', 2)->where('rejected_status', 0)->toArray();
+            $empListArray = ProformaModel::get()->where('file_status', 5)->where('status', 9)->where('rejected_status', 0)->toArray();
 
-            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->where('file_status', 5)->where('status', 2)->where('rejected_status', 0)->paginate(10);
-            $empListprint = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->where('file_status', 5)->where('status', 2)->where('rejected_status', 0)->get();
+            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->where('file_status', 5)->where('status', 9)->where('rejected_status', 0)->paginate(10);
+            $empListprint = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->where('file_status', 5)->where('status', 9)->where('rejected_status', 0)->get();
             //  dd( $empList );
         }
         //the list is not in order of seniority here but while download and print it's in seniority
@@ -2830,8 +2830,12 @@ class HomeController extends Controller
                 $data->status = "Submitted";
             }
             if ($data->status == 2) {
-                $stat = "verified";
-                $data->status = "Verified";
+                $stat = "verifieddp";
+                $data->status = "Verified By DP";
+            }
+              if ($data->status == 9) {
+                $stat = "verifieddept";
+                $data->status = "Verified By Department";
             }
             if ($data->status == 3) {
                 $stat = "forapproval";
@@ -2888,12 +2892,12 @@ class HomeController extends Controller
         }
         if (strlen(session()->get('deptId')) > 0) {
             $deptId = session()->get('deptId');
-            $empListArray = ProformaModel::get()->where('dept_id', $deptId)->where('file_status', 5)->toArray();
-            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->where('ein', $request->searchItem)->where('dept_id', $deptId)->where('file_status', 5)->paginate(10);
+            $empListArray = ProformaModel::get()->where('dept_id', $deptId)->where('file_status', 5)->where('status', 9)->toArray();
+            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->where('status', 9)->where('ein', $request->searchItem)->where('dept_id', $deptId)->where('file_status', 5)->paginate(10);
         } else {
 
-            $empListArray = ProformaModel::get()->where('file_status', 5)->where('status', 2)->where('rejected_status', 0)->toArray();
-            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->where('ein', $request->searchItem)->where('file_status', 5)->where('status', 2)->where('rejected_status', 0)->paginate(10);
+            $empListArray = ProformaModel::get()->where('file_status', 5)->where('status', 9)->where('rejected_status', 0)->toArray();
+            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->where('ein', $request->searchItem)->where('file_status', 5)->where('status', 9)->where('rejected_status', 0)->paginate(10);
         }
         //the list is not in order of seniority here but while download and print it's in seniority
 
@@ -2909,9 +2913,13 @@ class HomeController extends Controller
                 $stat = 'submitted';
                 $data->status = 'Submitted';
             }
-            if ($data->status == 2) {
-                $stat = 'verified';
-                $data->status = 'Verified';
+              if ($data->status == 2) {
+                $stat = "verifieddp";
+                $data->status = "Verified By DP";
+            }
+              if ($data->status == 9) {
+                $stat = "verifieddept";
+                $data->status = "Verified By Department";
             }
             if ($data->status == 3) {
                 $stat = 'forapproval';
@@ -2979,9 +2987,13 @@ class HomeController extends Controller
                 $stat = "submitted";
                 $data->status = "Submitted";
             }
-            if ($data->status == 2) {
-                $stat = "verified";
-                $data->status = "Verified";
+             if ($data->status == 2) {
+                $stat = "verifieddp";
+                $data->status = "Verified By DP";
+            }
+              if ($data->status == 9) {
+                $stat = "verifieddept";
+                $data->status = "Verified By Department";
             }
             if ($data->status == 3) {
                 $stat = "forapproval";
@@ -3057,9 +3069,13 @@ class HomeController extends Controller
                 $stat = 'submitted';
                 $data->status = 'Submitted';
             }
-            if ($data->status == 2) {
-                $stat = 'verified';
-                $data->status = 'Verified';
+             if ($data->status == 2) {
+                $stat = "verifieddp";
+                $data->status = "Verified By DP";
+            }
+              if ($data->status == 9) {
+                $stat = "verifieddept";
+                $data->status = "Verified By Department";
             }
             if ($data->status == 3) {
                 $stat = 'forapproval';
@@ -3206,9 +3222,13 @@ class HomeController extends Controller
                 $stat = "submitted";
                 $data->status = "Submitted";
             }
-            if ($data->status == 2) {
-                $stat = "verified";
-                $data->status = "Verified";
+             if ($data->status == 2) {
+                $stat = "verifieddp";
+                $data->status = "Verified By DP";
+            }
+              if ($data->status == 9) {
+                $stat = "verifieddept";
+                $data->status = "Verified By Department";
             }
             if ($data->status == 3) {
                 $stat = "forapproval";
@@ -3331,9 +3351,13 @@ class HomeController extends Controller
                 $stat = 'submitted';
                 $data->status = 'Submitted';
             }
-            if ($data->status == 2) {
-                $stat = 'verified';
-                $data->status = 'Verified';
+             if ($data->status == 2) {
+                $stat = "verifieddp";
+                $data->status = "Verified By DP";
+            }
+              if ($data->status == 9) {
+                $stat = "verifieddept";
+                $data->status = "Verified By Department";
             }
             if ($data->status == 3) {
                 $stat = 'forapproval';
@@ -5482,7 +5506,7 @@ class HomeController extends Controller
         //dd( $empDetails->toArray() );
         if ($empDetails != null) {
             $empDetails->update([
-                'status' => 0, //back to not submitted from hod to hod assistant
+                // 'status' => 1, //back to not submitted from hod to hod assistant
                 'received_by' => $receiver, //previous sender
                 'sent_by' => $getUser->name, //current sender
                 'forwarded_on' => $dateToday,

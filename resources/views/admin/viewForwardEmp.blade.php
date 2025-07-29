@@ -77,7 +77,7 @@
                                     <th>Applicant Name</td>
                                     <th>DOB</td>
                                     <th scope="col" style="color:red;">status</th>
-                                    {{-- <th scope="col">Mode</th> --}}
+                                    <th scope="col" style="color:green;">Remark</th>
                                     <th scope="col" colspan="4" class="textcenter">Action</th>
                                 </tr>
                             </thead>
@@ -125,7 +125,7 @@
                                     <td>{{$data->applicant_dob ? \Carbon\Carbon::parse($data->applicant_dob)->format('d/m/Y') : 'NA'}}
                                     </td>
                                     <td style="color:red;">{{$data->status}}</td>
-                                    {{-- <td>{{$mode}}</td> --}}
+                                    <td style="color:green;">{{$data->remark}}</td>
 
 
 

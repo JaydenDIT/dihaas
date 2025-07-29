@@ -126,7 +126,7 @@
                         <table class="table">
                             <thead class="thead-dark">
                                 <tr>
-                                     <th scope="col">Select</th>
+                                     {{-- <th scope="col">Select</th> --}}
                                     <th scope="col">Seniority List Order</th>
                                     <th scope="col">EIN</th>
                                     <th scope="col">Deceased Name</th>
@@ -135,7 +135,7 @@
                                     <th>Applicant Name</td>
                                     <th>DOB</td>
                                     <th scope="col" style="color:red;">status</th>
-                                    <th scope="col">Mode</th>
+                                    {{-- <th scope="col">Mode</th> --}}
                                     <th scope="col">Department</th>
                                     <th scope="col" colspan="4" class="text-center" >Action</th>
                                 </tr>
@@ -179,7 +179,7 @@
                                     <td>{{$data->applicant_name}}</td>
                                     <td>{{$data->applicant_dob ? \Carbon\Carbon::parse($data->applicant_dob)->format('d/m/Y') : 'NA'}}</td>
                                     <td style="color:red;">{{$data->status}}</td>
-                                    <td>{{$mode}}</td>
+                                    {{-- <td>{{$mode}}</td> --}}
                                      <td>{{$data->dept_name}}</td>
 
 

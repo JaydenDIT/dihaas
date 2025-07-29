@@ -135,12 +135,12 @@
                                     <th scope="col">EIN</th>
                                     <th scope="col">Deceased Name</th>
                                     <th scope="col">DOE</th>
-                                    <th>eFile No. AD</th>
-                                    <th>eFile put up By AD</th>
+                                    {{-- <th>eFile No. AD</th> --}}
+                                    <th>File put up By Department</th>
                                     <th>Applicant Name</td>
 
-                                    <th scope="col">Remark</th>
-                                    <th scope="col">Description</th>
+                                    <th scope="col" style="color:green;">Remark</th>
+                                    <th scope="col" style="color:red;">Status</th>
                                     <th scope="col">Department</th>
 
                                     <th scope="col" colspan="4" class="textcenter">Action</th>
@@ -183,14 +183,14 @@
                                     <td>{{$data->deceased_emp_name}}</td>
                                     <td>{{$data->deceased_doe ? \Carbon\Carbon::parse($data->deceased_doe)->format('d/m/Y') : 'NA'}}
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                     {{$data->efile_ad}}
-                                </td>
+                                </td> --}}
                                 <td>
-                                    @if(!empty($data->ad_file_link))
-                                    <a href="{{ route('viewFileForwardByADNodal', ['filename' => $data->ad_file_link]) }}"
+                                    @if(!empty($data->pdf_file))
+                                    <a href="{{ route('viewFileForwardByHODAssistant', ['filename' => $data->pdf_file]) }}"
                                         target="_blank">
-                                        {{ (strlen($data->ad_file_link) > 10) ? substr($data->ad_file_link, 0, 10)."..." : $data->ad_file_link }}
+                                        {{ (strlen($data->pdf_file) > 10) ? substr($data->pdf_file, 0, 10)."..." : $data->pdf_file }}
                                     </a>
                                     @else
                                   
@@ -201,8 +201,8 @@
                                     <td>{{$data->applicant_name}}</td>
                                     <!-- <td>{{$data->applicant_dob ? \Carbon\Carbon::parse($data->applicant_dob)->format('d/m/Y') : 'NA'}}</td>                                    -->
 
-                                    <td>{{$data->remark}}</td>
-                                    <td>{{$data->remark_details}}</td>
+                                    <td style="color:green;">{{$data->remark}}</td>
+                                    <td style="color:red;">{{$data->status}}</td>
                                     <td>{{$data->dept_name}}</td>
 
                                     @if($data->formSubStat == "submitted")
@@ -214,7 +214,28 @@
                                     @if($data->formSubStat == "started")
                                   
                                     @endif
-                                    @if($data->formSubStat == "verified")
+                                    @if($data->formSubStat == "verifieddp")
+                                    <td class="textright">
+                                        <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm" role="button" aria-disabled="true">View</a>
+                                        <!-- capturing the ein at click instant -->
+                                    </td>                                  
+
+                                    <td>
+                                        @php
+                                        $temp_array = [];
+                                        $ein = $data->ein;
+                                        $appl_no = $data->appl_number;
+                                        $temp_array['ein'] = $ein;
+                                        $temp_array['appl_no'] = $appl_no;
+                                        @endphp
+                                        <button class="btn btn-danger btn-sm" role="button" aria-disabled="true" id="edit_emp_name_btn" type="button" onclick='setRevertData(<?= json_encode($temp_array) ?>)'>Revert</button>
+                                        <!-- data-bs-toggle="modal" data-bs-target="#remarkModal"-->
+                                    </td>                               
+
+
+                                    @endif
+
+                                     @if($data->formSubStat == "verifieddept")
                                     <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm" role="button" aria-disabled="true">View</a>
                                         <!-- capturing the ein at click instant -->
