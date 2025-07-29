@@ -369,7 +369,11 @@ class HomeController extends Controller
                 }
                 if ($data->status == 2) {
                     $stat = 'verified';
-                    $data->status = 'Verified';
+                    $data->status = 'Verified by DP';
+                }
+                if ($data->status == 9) {
+                    $stat = 'verified';
+                    $data->status = 'Verified by Department';
                 }
                 if ($data->status == 3) {
                     $stat = 'forapproval';
@@ -447,7 +451,11 @@ class HomeController extends Controller
                 }
                 if ($data->status == 2) {
                     $stat = 'verified';
-                    $data->status = 'Verified';
+                    $data->status = 'Verified by DP';
+                }
+                if ($data->status == 9) {
+                    $stat = 'verified';
+                    $data->status = 'Verified by Department';
                 }
                 if ($data->status == 3) {
                     $stat = 'forapproval';
@@ -501,7 +509,7 @@ class HomeController extends Controller
             $RemarksApprove = RemarksApproveModel::get()->toArray();
             $tempEmpList = null;
             $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-            $file_status_array=[1, 9];
+            $file_status_array=[1, 5];
              $statusArray = [1,2,3]; //status of Table Proforma
             // $rejected_status = [ null, 1 ];
            //where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)
@@ -596,7 +604,7 @@ class HomeController extends Controller
             $Remarks = RemarksModel::get()->toArray();
             $RemarksApprove = RemarksApproveModel::get()->toArray();
             // $status = [ 1, 2 ];
-            $file_status_array=[1, 9];
+            $file_status_array=[1, 5];
             $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
             $statusArray = [1,2,3]; //status of Table Proforma
             //$empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
@@ -5170,7 +5178,7 @@ class HomeController extends Controller
 
         if ($empDetails) {
             $empDetails->update([
-                'file_status' => 9, //File verified by DP Assistant
+                'file_status' => 5, //File is with DP Assistant
                 // 'received_by'=> $receiver, //previous sender
                 // 'sent_by'=> $getUser->name, //current sender
                 'forwarded_on' => $dateToday,
@@ -5770,6 +5778,75 @@ class HomeController extends Controller
         return redirect()->route('selectDeptByDPNodal')->with('message', 'Applicant details is revert Succesfully!!!');
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
+public function forwardByDPAssistantToHODAssistant($id, Request $request)
+    {
+        //dd( $request->toArray() );
+        // $request->remark_details == null;
+
+        $user_id = Auth::user()->id;
+        $getUser = User::get()->where('id', $user_id)->first();
+        $dateToday = new DateTime(date('m/d/Y'));
+        // dd( $getUser );
+        $empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
+        $getUser1 = User::get()->where('role_id', $getUser->role_id, 6)->first();
+
+        $getUser2 = User::get()->where('role_id', $getUser->role_id, 6)->toArray();
+        //dd( $getUser1->name );
+       
+
+        // $empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
+        // $getUser1 = User::get()->where('dept_id', $getUser->dept_id)->where('role_id', $getUser->role_id, 2)->first();
+
+        // $getUser2 = User::get()->where('dept_id', $getUser->dept_id)->where('role_id', $getUser->role_id, 2)->toArray();
+        // dd( $getUser1, $getUser2 );
+        if (count($getUser2) == null) {
+            $receiver = null;
+            //previous sender
+        }
+        if (count($getUser2) != null) {
+            $receiver = $getUser1->name;
+            //previous sender
+        }
+        // new from here change 17 may 2024
+         // dd($request->all());
+         if ($request->hasFile('pdf_file')) {
+            $pdfFile = $request->file('pdf_file');
+            $pdfFileName = $pdfFile->getClientOriginalName();
+            $pdfFilePath = $pdfFile->storeAs('public', $pdfFileName);
+
+            // Update ProformaModel with file path
+            $empDetails->pdf_file = $pdfFileName;
+            $empDetails->save();
+        }
+       // dd($request->file('pdf_file'));
+        //end here change 17 may 2024
+
+        if ($empDetails != null) {
+            $empDetails->update([
+                'file_status' => 2, //move to HOD Assistant
+                'received_by' => $receiver, //previous sender
+                'sent_by' => $getUser->name, //current sender
+                'forwarded_by' => $getUser->id,
+                'forwarded_on' => $dateToday,
+                'remark' => $request->remark,
+                'remark_details' => $request->remark_details,
+                //2 is for verified and 1 for submitted and 0 back to start
+            ]);
+        }
+        //write save data for giving remarks
+        // dd( $empDetails->appl_number );
+
+        applicants_statusModel::create([
+            'ein' => $request->ein,
+            'appl_number' => $empDetails->appl_number,
+            'remark' => $request->remark,
+            'remark_details' => $request->remark_details,
+            'remark_date' => $dateToday,
+            'entered_by' => $getUser->id
+        ]);
+
+        return redirect()->route('viewStartEmp')->with('message', 'Applicant details is forwarded to HOD Succesfully!!!');
+    }
 
     //forward applicant to HOD by HOD Assistant
 

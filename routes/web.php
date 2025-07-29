@@ -935,6 +935,10 @@ Route::prefix("ddo-assist")->group(function () {
     Route::get('/revertDetailsFrom1/{id}', [HomeController::class, 'revertFormVerified'])->name('revertDetailsFrom1');
 
     //below is forward by hod assist to hod
+    Route::post('/forwardDetailsFromDP/{id}', [HomeController::class, 'forwardByDPAssistantToHODAssistant'])->name('forwardDetailsFromDP');
+
+
+    //below is forward by hod assist to hod
     Route::post('/forwardDetailsFrom/{id}', [HomeController::class, 'forwardHOD'])->name('forwardDetailsFrom');
 
     // below is revert by hod to hod assist

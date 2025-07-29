@@ -235,7 +235,7 @@
                                         $temp_array['ein'] = $ein;
                                         $temp_array['appl_no'] = $appl_no;
                                         @endphp
-                                        <button class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true" id="edit_emp_name_btn" type="button" onclick='setForwardData(<?= json_encode($temp_array) ?>)'>Forward to HOD</button>
+                                        <button class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true" id="edit_emp_name_btn" type="button" onclick='setForwardData(<?= json_encode($temp_array) ?>)'>Forward to Department</button>
                                     </td>
                                     <td>
                                         @php
@@ -303,7 +303,7 @@
                                 aria-labelledby="remarkForwardModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <form name="forwardForm"
-                                        action="{{ route('forwardDetailsFrom', Crypt::encryptString($data->ein)) }}"
+                                        action="{{ route('forwardDetailsFromDP', Crypt::encryptString($data->ein)) }}"
                                         method="Post" enctype="multipart/form-data">
                                         @csrf
                                         <!-- @method('GET') -->
