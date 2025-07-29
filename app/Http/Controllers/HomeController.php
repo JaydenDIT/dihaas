@@ -6040,7 +6040,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             'entered_by' => $getUser->id
         ]);
 
-        return redirect()->route('viewStartEmp')->with('message', 'Applicant details is forwarded to HOD Succesfully!!!');
+        return redirect()->route('viewApplicantsForVerification')->with('message', 'Applicant details is forwarded to HOD Succesfully!!!');
     }
 
     //forward applicant to HODToADAssist
