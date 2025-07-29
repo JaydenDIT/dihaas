@@ -76,8 +76,8 @@
                                         <th scope="col">Recruitment Rules</th>
                                     <th>Applicant Name</td>
                                     <th>DOB</td>
-                                    <th scope="col">status</th>
-                                    <th scope="col">Mode</th>
+                                    <th scope="col" style="color:red;">status</th>
+                                    {{-- <th scope="col">Mode</th> --}}
                                     <th scope="col" colspan="4" class="textcenter">Action</th>
                                 </tr>
                             </thead>
@@ -124,8 +124,8 @@
                                     <td>{{$data->applicant_name}}</td>
                                     <td>{{$data->applicant_dob ? \Carbon\Carbon::parse($data->applicant_dob)->format('d/m/Y') : 'NA'}}
                                     </td>
-                                    <td>{{$data->status}}</td>
-                                    <td>{{$mode}}</td>
+                                    <td style="color:red;">{{$data->status}}</td>
+                                    {{-- <td>{{$mode}}</td> --}}
 
 
 
@@ -161,7 +161,7 @@
 
                                 </td> -->
                                     @endif
-                                    @if($data->formSubStat == "verified")
+                                    @if($data->formSubStat == "verifieddept")
                                     <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}"
                                             class="btn btn-success btn-sm blockstyle" role="button"
@@ -187,12 +187,12 @@
                                         <button class="btn btn-danger btn-sm btn_width" role="button" aria-disabled="true"
                                             id="edit_emp_name_btn" type="button" disabled
                                             onclick='setForwardData(<?= json_encode($temp_array) ?>)'>Forward to
-                                            AD</button>
+                                            DP</button>
                                         @else
                                         <button class="btn btn-danger btn-sm btn_width" role="button" 
                                             id="edit_emp_name_btn" type="button"
                                             onclick='setForwardData(<?= json_encode($temp_array) ?>)'>Forward to
-                                            AD</button>
+                                            DP</button>
                                         @endif
                                         <!-- <button class="btn btn-danger btn-sm" role="button" aria-disabled="true" style="width:120px" id="edit_emp_name_btn" type="button" onclick='setForwardData(<?= json_encode($temp_array) ?>)'>Forward to AD</button> -->
                                     </td>
@@ -271,7 +271,7 @@
                                     aria-labelledby="remarkForwardModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <form name="forwardForm"
-                                            action="{{ route('forwardDetailsFromHOD', Crypt::encryptString($data->ein)) }}"
+                                            action="{{ route('forwardDetailsFromHODToDP', Crypt::encryptString($data->ein)) }}"
                                             method="Post">
                                             @csrf
                                             <!-- @method('GET') -->

@@ -982,6 +982,10 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/revertDetailsFromDPNodal1/{id}', [HomeController::class, 'revertDetailsFromDPNodal1'])->name('revertDetailsFromDPNodal1');
     Route::get('/revertDetailsFromDPNodal1/{id}', [HomeController::class, 'revertDetailsFromDPNodal1'])->name('revertDetailsFromDPNodal1');
 
+    // below is forward from hod to DP Assist
+    Route::post('/forwardDetailsFromHODToDP/{id}', [HomeController::class, 'forwardByHODToDPAssist'])->name('forwardDetailsFromHODToDP');
+    Route::get('/forwardDetailsFromHODToDP/{id}', [HomeController::class, 'forwardByHODToDPAssist'])->name('forwardDetailsFromHODToDP');
+
     // below is forward from hod to AD
     Route::post('/forwardDetailsFromHOD/{id}', [HomeController::class, 'forwardByHODToADAssist'])->name('forwardDetailsFromHOD');
     Route::get('/forwardDetailsFromHOD/{id}', [HomeController::class, 'forwardByHODToADAssist'])->name('forwardDetailsFromHOD');

@@ -342,15 +342,15 @@ class HomeController extends Controller
             $RemarksApprove = RemarksApproveModel::get()->toArray();
             $tempEmpList = null;
 
-            $file_status_array=[1, 2]; 
+           // $file_status_array=[1, 2]; 
             $statusArray = [1,2,3,9]; 
 
-            $empListArray = ProformaModel::get()->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->whereIn('status', $statusArray)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->toArray();
+            $empListArray = ProformaModel::get()->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->whereIn('status', $statusArray)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
             // Change for DIHAS below
-            $empList = ProformaModel::where('form_status', 1)->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->whereIn('status', $statusArray)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->paginate(10);
+            $empList = ProformaModel::where('form_status', 1)->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->whereIn('status', $statusArray)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
             if ($request->searchItem != null || trim($request->searchItem) != '') {
-                $empListArray = ProformaModel::get()->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->whereIn('status', $statusArray)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->toArray();
-                $empList = ProformaModel::orderByRaw("expire_on_duty = 'no',deceased_doe,appl_date, applicant_dob")->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->whereIn('status', $statusArray)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->paginate(10);
+                $empListArray = ProformaModel::get()->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->whereIn('status', $statusArray)->whereIn('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
+                $empList = ProformaModel::orderByRaw("expire_on_duty = 'no',deceased_doe,appl_date, applicant_dob")->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->whereIn('status', $statusArray)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
                 $tempEmpList = $empListArray;
                 if (count($tempEmpList) == 0) {
                     $tempEmpList = 0;
@@ -433,12 +433,12 @@ class HomeController extends Controller
             $Remarks = RemarksModel::get()->toArray();
             $RemarksApprove = RemarksApproveModel::get()->toArray();
             
-            $file_status_array=[1, 2]; 
+            //$file_status_array=[1, 2]; 
             $statusArray = [1,2,3,9]; 
       
-            $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('upload_status', 1)->where('form_status', 1)->whereIn('status', $statusArray)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->toArray();
+            $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('upload_status', 1)->where('form_status', 1)->whereIn('status', $statusArray)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
 
-            $empList = ProformaModel::orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->whereIn('status', $statusArray)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->paginate(6);
+            $empList = ProformaModel::orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->whereIn('status', $statusArray)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(6);
             //dd( $empList );
             //expire_on_duty if yes top priority
 
@@ -2392,8 +2392,12 @@ class HomeController extends Controller
                 $data->status = 'Submitted';
             }
             if ($data->status == 2) {
-                $stat = 'verified';
-                $data->status = 'Verified';
+                $stat = 'verifieddp';
+                $data->status = 'Verified By DP';
+            }
+            if ($data->status == 9) {
+                $stat = 'verifieddept';
+                $data->status = 'Verified By Department';
             }
             if ($data->status == 3) {
                 $stat = 'forapproval';
@@ -2457,8 +2461,12 @@ class HomeController extends Controller
                 $data->status = 'Submitted';
             }
             if ($data->status == 2) {
-                $stat = 'verified';
-                $data->status = 'Verified';
+                $stat = 'verifieddp';
+                $data->status = 'Verified By DP';
+            }
+            if ($data->status == 9) {
+                $stat = 'verifieddept';
+                $data->status = 'Verified By Department';
             }
             if ($data->status == 3) {
                 $stat = 'forapproval';
@@ -6045,7 +6053,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
     //forward applicant to HODToADAssist
 
-    public function forwardByHODToADAssist($id, Request $request)
+    public function forwardByHODToDPAssist($id, Request $request)
     {
         //dd( $request->toArray() );
         $user_id = Auth::user()->id;
@@ -6069,7 +6077,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         }
         if ($empDetails != null) {
             $empDetails->update([
-                'file_status' => 3, //move to HOD Assistant
+                'file_status' => 5, //move to DP Assistant
                 'received_by' => $receiver, //previous sender
                 'sent_by' => $getUser->name, //current sender
                 'forwarded_by' => $getUser->id,
