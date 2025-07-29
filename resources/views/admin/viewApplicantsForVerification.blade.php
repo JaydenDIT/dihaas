@@ -162,7 +162,29 @@
 
                                     </td> --}}
                                     @endif
-                                    @if($data->formSubStat == "verified")
+                                    @if($data->formSubStat == "verifieddp")
+                                    <td class="rightstyle">
+                                        <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true">View</a>
+                                        <!-- capturing the ein at click instant -->
+                                    </td>
+
+                                     <td>
+                                        <a href="{{ route('verifyPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true" onclick="return confirm('Are You Sure that the Applicant File is OK?')">Verify</a>
+                                    </td>
+                                    <td>
+                                        @php
+                                        $temp_array = [];
+                                        $ein = $data->ein;
+                                        $appl_no = $data->appl_number;
+                                        $temp_array['ein'] = $ein;
+                                        $temp_array['appl_no'] = $appl_no;
+                                        @endphp
+                                        <button class="btn btn-danger btn-sm blockstyle" role="button" aria-disabled="true" id="edit_emp_name_btn" type="button" onclick='setRevertData(<?= json_encode($temp_array) ?>)'>Revert</button>
+                                     
+                                    </td>
+
+                                    @endif
+                                     @if($data->formSubStat == "verifieddept")
                                     <td class="rightstyle">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true">View</a>
                                         <!-- capturing the ein at click instant -->
@@ -198,7 +220,7 @@
 
                                 <div class="modal fade" id="remarkModal" tabindex="-1" aria-labelledby="remarkModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
-                                        <form name="revertForm" action="{{ route('revertPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" method="Post">
+                                        <form name="revertFormToDP" action="{{ route('revertPersonalDetailsFromToDP', Crypt::encryptString($data->ein)) }}" method="Post">
                                             @csrf
                                             <!-- @method('GET') -->
 
@@ -429,7 +451,7 @@
             return;
         }
         $("#remarkModal").modal('show');
-        let form = document.forms['revertForm'];
+        let form = document.forms['revertFormToDP'];
         // form.appl_number.value = temp_array['appl_number'];
         form.ein.value = temp_array['ein'];
         console.log(temp_array['ein'])
