@@ -5214,11 +5214,49 @@ class HomeController extends Controller
 
         if ($empDetails) {
             $empDetails->update([
-                'file_status' => 5, //File is with DP Assistant
+                'file_status' => 1, //File is with DP Assistant
                 // 'received_by'=> $receiver, //previous sender
                 // 'sent_by'=> $getUser->name, //current sender
                 'forwarded_on' => $dateToday,
                 'status' => 2,
+                //2 is for verified and 1 for submitted
+
+            ]);
+        }
+
+        return redirect()->route('viewStartEmp')->with('message', 'Applicant details is verified Succesfully!!!');
+    }
+
+    public function verifyFormDept($id)
+    {
+        $user_id = Auth::user()->id;
+        $getUser = User::get()->where('id', $user_id)->first();
+
+        $id = Crypt::decryptString($id);
+        //dd( $id );
+        $dateToday = new DateTime(date('m/d/Y'));
+        //id is encrypted and send through URL
+        //Below ein is passed in the session
+        if (session()->has('ein')) {
+            $session_ein = session()->get('ein');
+            if ($session_ein != $id) {
+                session()->forget('ein');
+            }
+        }
+        // set a session emp EIN
+        session()->put('ein', $id);
+        $ein = session()->get('ein');
+        //dd( $ein );
+        $empDetails = ProformaModel::get()->where('ein', $ein)->first();
+       
+
+        if ($empDetails) {
+            $empDetails->update([
+                'file_status' => 1, //File is with DP Assistant
+                // 'received_by'=> $receiver, //previous sender
+                // 'sent_by'=> $getUser->name, //current sender
+                'forwarded_on' => $dateToday,
+                'status' => 9,
                 //2 is for verified and 1 for submitted
 
             ]);
@@ -5333,7 +5371,7 @@ class HomeController extends Controller
             'entered_by' => $getUser->id
         ]);
 
-        return redirect()->route('viewStartEmp')->with('message', 'Applicant details is revert Succesfully to DP!!!');
+        return redirect()->route('viewApplicantsForVerification')->with('message', 'Applicant details is revert Succesfully to DP!!!');
     }
 
 

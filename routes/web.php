@@ -921,6 +921,9 @@ Route::prefix("ddo-assist")->group(function () {
     //for Verify
     Route::get('/verifyPersonalDetailsFrom/{id}', [HomeController::class, 'verifyForm'])->name('verifyPersonalDetailsFrom');
 
+    //for Verify
+    Route::get('/verifyPersonalDetailsFromDept/{id}', [HomeController::class, 'verifyFormDept'])->name('verifyPersonalDetailsFromDept');
+
     //for Revert
     Route::post('/revertPersonalDetailsFromToDP/{id}', [HomeController::class, 'revertFormToDP'])->name('revertPersonalDetailsFromToDP');
     Route::get('/revertPersonalDetailsFromToDP/{id}', [HomeController::class, 'revertFormToDP'])->name('revertPersonalDetailsFromToDP');

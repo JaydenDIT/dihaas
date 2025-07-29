@@ -169,7 +169,7 @@
                                     </td>
 
                                      <td>
-                                        <a href="{{ route('verifyPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true" onclick="return confirm('Are You Sure that the Applicant File is OK?')">Verify</a>
+                                        <a href="{{ route('verifyPersonalDetailsFromDept', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm blockstyle" role="button" aria-disabled="true" onclick="return confirm('Are You Sure that the Applicant File is OK?')">Verify</a>
                                     </td>
                                     <td>
                                         @php
