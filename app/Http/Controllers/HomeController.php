@@ -4424,73 +4424,8 @@ class HomeController extends Controller
             }
 
             return view('admin/viewFileStatus', compact('empList', 'empListArray', 'Remarks', 'getUser'));
-        }
-
+        }    
       
-        // if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
-        //     $request->session()->forget(['deptId']);
-        //     $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array1)->whereIn('status', $statusArray1)->toArray();
-        //     // $Appl_List = count( $empListArray );
-        //     //dd( $Appl_List );
-        //     //$empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),dept_name,deceased_doe,appl_date, applicant_dob")->where('status', '!=', 0)->paginate(15);
-        //     $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),dept_name,deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array1)->whereIn('status', $statusArray1)->paginate(15);
-        //     $Remarks = RemarksModel::get()->toArray();
-        //     //expire_on_duty if yes top priority
-
-        //     //dd( $empList->toArray() );
-        //     $stat = '';
-
-        //     foreach ($empList as $data) {
-        //         // $getUser1 = User::get()->where( 'id', $data->forwarded_by )->first();
-
-        //         if ($data->status == 0 && $data->form_status == 1) {
-        //             $stat = 'started';
-        //             $data->status = 'Incomplete';
-        //         }
-
-        //         if ($data->status == 1) {
-        //             $stat = 'submitted';
-        //             $data->status = 'Submitted';
-        //         }
-        //         if ($data->status == 2) {
-        //             $stat = 'verifieddp';
-        //             $data->status = 'Verified By DP';
-        //         }
-        //          if ($data->status == 9) {
-        //             $stat = 'verifieddept';
-        //             $data->status = 'Verified By Department';
-        //         }
-        //         if ($data->status == 3) {
-        //             $stat = 'forapproval';
-        //             $data->status = 'Put up for Approval';
-        //         }
-
-        //         if ($data->status == 4) {
-        //             $stat = 'approved';
-        //             $data->status = 'Approved';
-        //         }
-        //         if ($data->status == 5) {
-        //             $stat = 'appointed';
-        //             $data->status = 'Appointed';
-        //         }
-        //         if ($data->status == 6) {
-        //             $stat = 'order';
-        //             $data->status = 'Appointment Order';
-        //         }
-        //         if ($data->status == 7) {
-        //             $stat = 'signed';
-        //             $data->status = 'Signed by DP';
-        //         }
-        //         // if ($data->status == 8) {
-        //         //     $stat = 'transfer';
-        //         //     $data->status = 'Transferred';
-        //         // }
-
-        //         $data->formSubStat = $stat;
-        //     }
-
-        //     return view('admin/viewFileStatusByDP', compact('deptListArray', 'empList', 'empListArray', 'Remarks', 'getUser'));
-        // }
     }
 
     public function viewFileStatusByDPDept(Request $request)
