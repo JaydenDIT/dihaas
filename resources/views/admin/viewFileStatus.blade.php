@@ -119,11 +119,11 @@
                                     <td style="color:red;">{{$data->status}}</td>
 
                                     @if($data->formSubStat == "submitted")
-                                    <td class="textright">
+                                    {{-- <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
 
 
-                                    </td>
+                                    </td> --}}
                                     @endif
 
 
