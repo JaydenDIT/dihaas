@@ -4262,10 +4262,10 @@ class HomeController extends Controller
                     $stat = 'signed';
                     $data->status = 'Signed by DP';
                 }
-                if ($data->status == 8) {
-                    $stat = 'transfer';
-                    $data->status = 'Transferred';
-                }
+                // if ($data->status == 8) {
+                //     $stat = 'transfer';
+                //     $data->status = 'Transferred';
+                // }
 
                 $data->formSubStat = $stat;
             }
@@ -4333,15 +4333,15 @@ class HomeController extends Controller
                     $stat = 'signed';
                     $data->status = 'Signed by DP';
                 }
-                if ($data->status == 8) {
-                    $stat = 'transfer';
-                    $data->status = 'Transferred';
-                }
+                // if ($data->status == 8) {
+                //     $stat = 'transfer';
+                //     $data->status = 'Transferred';
+                // }
 
                 $data->formSubStat = $stat;
             }
             Session::put('einsearch', $request->searchItem);
-            return view('admin/viewFileStatusByDP', compact('deptListArray', 'empList', 'empListArray', 'Remarks', 'getUser'));
+            return view('admin/viewFileStatus', compact('deptListArray', 'empList', 'empListArray', 'Remarks', 'getUser'));
         }
     }
 
@@ -4415,10 +4415,10 @@ class HomeController extends Controller
                     $stat = 'signed';
                     $data->status = 'Signed by DP';
                 }
-                if ($data->status == 8) {
-                    $stat = 'transfer';
-                    $data->status = 'Transferred';
-                }
+                // if ($data->status == 8) {
+                //     $stat = 'transfer';
+                //     $data->status = 'Transferred';
+                // }
 
                 $data->formSubStat = $stat;
             }
@@ -4481,10 +4481,10 @@ class HomeController extends Controller
                     $stat = 'signed';
                     $data->status = 'Signed by DP';
                 }
-                if ($data->status == 8) {
-                    $stat = 'transfer';
-                    $data->status = 'Transferred';
-                }
+                // if ($data->status == 8) {
+                //     $stat = 'transfer';
+                //     $data->status = 'Transferred';
+                // }
 
                 $data->formSubStat = $stat;
             }

@@ -87,8 +87,8 @@
                                     <th>Sent By</td>
                                     <th>Currently With</td>
                                     <th>Remarks</td>
-
                                     <th style="color:red;">status</td>
+                                    <th scope="col" colspan="4" class="textcenter">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="">

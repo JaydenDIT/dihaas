@@ -114,7 +114,7 @@
                                     <th>Currently With</td>
                                     <th scope="col">Remarks</th>
                                     <th scope="col">status</th>
-
+                                    <th scope="col" colspan="4" class="textcenter">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
