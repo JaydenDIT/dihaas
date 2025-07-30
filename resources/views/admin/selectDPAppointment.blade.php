@@ -94,9 +94,9 @@
                     <div class="row">
 
                         <div class="col-7">
-                            <b class="color">List of Approved Applicants for giving Appointment</b>
+                            <b class="color">List of Appointed Applicants</b>
                         </div>
-                        <div class="col-5">
+                        {{-- <div class="col-5">
                             <form class="form-inline" id="ddoAststartEmpSearchBox" method="POST"
                                 action="{{ url('ddo-assist/selectDeptByDPApproveSearch') }}"
                                 enctype="multipart/form-data" class="was-validated">
@@ -113,23 +113,23 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> --}}
 
                     </div>
                     <hr>
-                    <div class="row">
+                    {{-- <div class="row">
 
                         <div class="col-sm-12 d-flex justify-content-end">
                             <button id="forwardBtn" class="btn btn-success" >Fill UO Form</button>
                         </div>
-                    </div>
+                    </div> --}}
                     <hr>
 
                     <!-- Hidden form to submit selected EINs -->
-                    <form id="selectedEinForm" method="post" action="{{ route('check_fill_uo') }}">
+                    {{-- <form id="selectedEinForm" method="post" action="{{ route('check_fill_uo') }}">
                         @csrf
                         <input type="hidden" name="selectedEinIds" id="selectedEinIds" value="">
-                    </form>
+                    </form> --}}
                     <p>
                     <form name="frmGenerateUO" method="post" action="{{ route('viewApproveGroup') }}" novalidate
                         target="_blank">
@@ -165,9 +165,9 @@
                                 </button> -->
 
 
-                                <button id="btnGroupPdf" class="btn btn-success " role="button" aria-disabled="true"
+                                {{-- <button id="btnGroupPdf" class="btn btn-success " role="button" aria-disabled="true"
                                     disabled>Generate UO for Multiple Applicants
-                                </button>
+                                </button> --}}
                             </div>
 
 
@@ -264,7 +264,9 @@
                                                 aria-disabled="true">View</a>
                                            
                                         </td>
-                                       
+                                    
+
+
                                         @endif
                                         @if($data->formSubStat == "appointed")
 

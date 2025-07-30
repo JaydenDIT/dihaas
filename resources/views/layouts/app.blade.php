@@ -444,11 +444,12 @@
                         Forwarded Applicants
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatus') }}">
-                        Files Status
+                  <li class="nav-item">
+                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/selectDeptByDPApprove') }}">
+                        Approved List
                     </a>
                 </li>
+               
                 <li class="nav-item">
                     <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewRevertedListDP') }}">
                         Reverted List
@@ -470,12 +471,12 @@
                     </ul>
                 </li>
 
-
-                <li class="nav-item">
-                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/selectDeptByDPApprove') }}">
-                        Approved List
+ <li class="nav-item">
+                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatus') }}">
+                        Files Status
                     </a>
                 </li>
+              
                 <li class="nav-item">
                     <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/vacancy_list_dpview') }}">
                         Vacancy Status
@@ -516,11 +517,18 @@
                         Files Status
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/selectDeptByDPApprove') }}">
                         Approved List
                     </a>
+                </li> --}}
+
+                <li class="nav-item">
+                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/selectDPAppointment') }}">
+                        Appointed List
+                    </a>
                 </li>
+
                 <li class="nav-item">
                     <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/vacancy_list_dpview') }}">
                         Vacancy Status

@@ -3201,7 +3201,7 @@ class HomeController extends Controller
         $Sign1 = Sign1Model::get()->toArray();
         $Sign2 = Sign2Model::get()->toArray();
 
-        $statusArray = [4, 5, 6];
+        $statusArray = [4, 5];
         //Approve Appointed and Order
         //$statusArray = [ 5, 6 ];
         $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->toArray();
@@ -3326,7 +3326,7 @@ class HomeController extends Controller
 
 
 
-        $statusArray = [4, 5, 6];
+        $statusArray = [4, 5];
         //$statusArray = [5, 6];
         $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->toArray();
 
@@ -3390,6 +3390,215 @@ class HomeController extends Controller
 
         return view('admin/selectDeptByDPApprove', compact('empListprint', 'desigListArray', 'Sign1', 'Sign2', 'deptListArray', 'empListArray', 'empList', 'Remarks'));
     }
+
+
+    public function selectDPAppointment()
+    {
+        // Change for DIHAS below //After UO Generation back for appointment from DP Nodal
+        session()->forget('deptId');
+        $user_id = Auth::user()->id;
+        $getUser = User::get()->where('id', $user_id)->first();
+        $desigListArray = DesignationModel::orderBy('desig_name')->get()->unique('desig_name');
+
+        $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
+        //put designation from candidate proforma
+
+        $Remarks = RemarksApproveModel::get()->toArray();
+
+        $Sign1 = Sign1Model::get()->toArray();
+        $Sign2 = Sign2Model::get()->toArray();
+
+        $statusArray = [4, 5, 6];
+        //Approve Appointed and Order
+        //$statusArray = [ 5, 6 ];
+        $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->toArray();
+        $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->whereIn('status', $statusArray)->paginate(10);
+        $empListprint = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->whereIn('status', $statusArray)->get();
+        //the list is not in order of seniority here but while download and print it's in seniority
+
+        $stat = "";
+
+        foreach ($empList as $data) {
+            // dd( $data);
+            if ($data->status == 0 && $data->form_status == 1) {
+                $stat = "started";
+                $data->status = "Incomplete";
+            }
+
+            if ($data->status == 1) {
+                $stat = "submitted";
+                $data->status = "Submitted";
+            }
+             if ($data->status == 2) {
+                $stat = "verifieddp";
+                $data->status = "Verified By DP";
+            }
+              if ($data->status == 9) {
+                $stat = "verifieddept";
+                $data->status = "Verified By Department";
+            }
+            if ($data->status == 3) {
+                $stat = "forapproval";
+                $data->status = "Put up for Approval";
+            }
+
+            if ($data->status == 4) {
+                $stat = "approved";
+                $data->status = "Approved";
+            }
+            if ($data->status == 5) {
+                $stat = "appointed";
+                $data->status = "Appointed";
+            }
+            if ($data->status == 6) {
+                $stat = "order";
+                $data->status = "Appointment Order";
+            }
+            if ($data->status == 7) {
+                $stat = 'signed';
+                $data->status = 'Signed by DP';
+            }
+            if ($data->status == 8) {
+                $stat = 'transfer';
+                $data->status = 'Transferred';
+            }
+
+            $data->formSubStat = $stat;
+        }
+
+        $stat = "";
+
+        foreach ($empListprint as $data) {
+            // dd( $data);
+            if ($data->status == 0 && $data->form_status == 1) {
+                $stat = "started";
+                $data->status = "Incomplete";
+            }
+
+            if ($data->status == 1) {
+                $stat = "submitted";
+                $data->status = "Submitted";
+            }
+            if ($data->status == 2) {
+                $stat = "verified";
+                $data->status = "Verified";
+            }
+            if ($data->status == 3) {
+                $stat = "forapproval";
+                $data->status = "Put up for Approval";
+            }
+
+            if ($data->status == 4) {
+                $stat = "approved";
+                $data->status = "Approved";
+            }
+            if ($data->status == 5) {
+                $stat = "appointed";
+                $data->status = "Appointed";
+            }
+            if ($data->status == 6) {
+                $stat = "order";
+                $data->status = "Appointment Order";
+            }
+            if ($data->status == 7) {
+                $stat = 'signed';
+                $data->status = 'Signed by DP';
+            }
+            if ($data->status == 8) {
+                $stat = 'transfer';
+                $data->status = 'Transferred';
+            }
+
+            $data->formSubStat = $stat;
+        }
+        // dd($empListprint);
+        return view('admin/selectDPAppointment', compact("getUser", "empListprint", "desigListArray", "Sign1", "Sign2", "deptListArray", "empListArray", "empList", "Remarks"));
+    }
+
+    public function selectDPAppointmentSearch(Request $request) //After UO Generation back for appointment from DP Nodal
+    {
+        // Change for DIHAS below
+
+        $user_id = Auth::user()->id;
+        $getUser = User::get()->where('id', $user_id)->first();
+        $desigListArray = DesignationModel::orderBy('desig_name')->get()->unique('desig_name');
+
+
+
+        $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
+        $Remarks = RemarksApproveModel::get()->toArray();
+
+        $Sign1 = Sign1Model::get()->toArray();
+        $Sign2 = Sign2Model::get()->toArray();
+
+
+
+        $statusArray = [4, 5, 6];
+        //$statusArray = [5, 6];
+        $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->toArray();
+
+        //  if ($request->searchItem != null || trim($request->searchItem) != "") {
+        $ein = ProformaModel::get()->whereIn('ein', $empListArray)->toArray();
+
+        $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->where('ein', $request->searchItem)->whereIn('status', $statusArray)->paginate(10);
+        $empListprint = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->where('ein', $request->searchItem)->whereIn('status', $statusArray)->get();
+        // }
+        //the list is not in order of seniority here but while download and print it's in seniority
+
+        $stat = '';
+
+        foreach ($empList as $data) {
+            // dd( $data );
+            if ($data->status == 0 && $data->form_status == 1) {
+                $stat = 'started';
+                $data->status = 'Incomplete';
+            }
+
+            if ($data->status == 1) {
+                $stat = 'submitted';
+                $data->status = 'Submitted';
+            }
+             if ($data->status == 2) {
+                $stat = "verifieddp";
+                $data->status = "Verified By DP";
+            }
+              if ($data->status == 9) {
+                $stat = "verifieddept";
+                $data->status = "Verified By Department";
+            }
+            if ($data->status == 3) {
+                $stat = 'forapproval';
+                $data->status = 'Put up for Approval';
+            }
+
+            if ($data->status == 4) {
+                $stat = 'approved';
+                $data->status = 'Approved';
+            }
+            if ($data->status == 5) {
+                $stat = 'appointed';
+                $data->status = 'Appointed';
+            }
+            if ($data->status == 6) {
+                $stat = 'order';
+                $data->status = 'Appointment Order';
+            }
+            if ($data->status == 7) {
+                $stat = 'signed';
+                $data->status = 'Signed by DP';
+            }
+            if ($data->status == 8) {
+                $stat = 'transfer';
+                $data->status = 'Transferred';
+            }
+
+            $data->formSubStat = $stat;
+        }
+
+        return view('admin/selectDPAppointment', compact('empListprint', 'desigListArray', 'Sign1', 'Sign2', 'deptListArray', 'empListArray', 'empList', 'Remarks'));
+    }
+
+
     //////////////////////////////////////////UO Approve List///////////////////
     //////////////////////////////////////////UO Approve List///////////////////
 
@@ -5022,6 +5231,7 @@ class HomeController extends Controller
         ]);
         $cd_grade = json_decode($response->getBody(), true);
         $post = [];
+        // dd( $cd_grade );
         foreach ($cd_grade as $cdgrade) {
             if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
                 $post[] = $cdgrade;
@@ -11302,7 +11512,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             if ($empDetails != null) {
 
                 $empDetails->update([
-                    'file_status' => 6, //move to HOD Assistant
+                    'file_status' => 6, 
                     'received_by' => $receiver, //previous sender
                     'sent_by' => $getUser->name, //current sender
                     'forwarded_by' => $getUser->id,

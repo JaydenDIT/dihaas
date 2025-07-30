@@ -679,6 +679,10 @@ Route::prefix("ddo-assist")->group(function () {
     Route::get('/selectDeptByDPNodal/download-pdfNODAL', 'App\Http\Controllers\HomeController@downloadPDFNODAL')->name('selectDeptByDPNodal.downloadPDFNODAL');
     ////////////////////////////////////////
 
+    Route::get('/selectDPAppointment', [HomeController::class, 'selectDPAppointment'])->name('selectDPAppointment');
+    Route::post('/selectDPAppointmentSearch', [HomeController::class, 'selectDPAppointment'])->name('selectDPAppointmentSearch');
+
+
     Route::get('/selectDeptByDPApprove', [HomeController::class, 'selectDeptByDPApprove'])->name('selectDeptByDPApprove');
     Route::post('/selectDeptByDPApproveSearch', [HomeController::class, 'selectDeptByDPApproveSearch'])->name('selectDeptByDPApproveSearch');
 

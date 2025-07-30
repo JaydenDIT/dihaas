@@ -111,11 +111,11 @@
                                     <th scope="col">DOE</th>
                                     <th scope="col">Recruitment Rules</th>
                                     <th>Applicant Name</td>
-                                    <th>File put up By AD</th>
+                                    {{-- <th>File put up By AD</th> --}}
                                     <th>File put up By DP</th>
-                                    <th scope="col">Remark</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">status</th>
+                                    <th scope="col" style="color:green;">Remark</th>
+                                    {{-- <th scope="col">Description</th> --}}
+                                    <th scope="col" style="color:red;">status</th>
                                     <th scope="col" colspan="4" class="textcenter">Action</th>
                                 </tr>
                             </thead>
@@ -158,7 +158,7 @@
                                        @endif
                                 </td>
                                     <td>{{$data->applicant_name}}</td>
-                                    <td>
+                                    {{-- <td>
                                         @if(!empty($data->ad_file_link))
                                         <a href="{{ route('viewFileForwardByADNodal', ['filename' => $data->ad_file_link]) }}"
                                             target="_blank">
@@ -168,7 +168,7 @@
                                       
                                         File link is missing
                                         @endif
-                                    </td>
+                                    </td> --}}
 
                                     <td>
                                         @if(!empty($data->dp_file_link))
@@ -182,9 +182,9 @@
                                         @endif
                                     </td>
 
-                                    <td>{{$data->remark}}</td>
-                                    <td>{{$data->remark_details}}</td>
-                                    <td>{{$data->status}}</td>
+                                    <td style="color:green;">{{$data->remark}}</td>
+                                    {{-- <td>{{$data->remark_details}}</td> --}}
+                                    <td style="color:red;">{{$data->status}}</td>
 
 
                                     <!-- <td><button class="btn btn-primary approve_for_transfer " data-toggle="modal" data-target="#confirmationModal">Approve for transfer</button></td> -->
