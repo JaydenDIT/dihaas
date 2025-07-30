@@ -472,7 +472,7 @@
                 </li>
 
  <li class="nav-item">
-                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatus') }}">
+                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatusByDPDept') }}">
                         Files Status
                     </a>
                 </li>
@@ -513,7 +513,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatus') }}">
+                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatusByDPDept') }}">
                         Files Status
                     </a>
                 </li>
@@ -562,7 +562,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatus') }}">
+                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatusByDPDept') }}">
                         Files Status
                     </a>
                 </li>
@@ -597,7 +597,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatus') }}">
+                    <a class="verdana_txtnone nav-link" href="{{ url('ddo-assist/viewFileStatusByDPDept') }}">
                         Files Status
                     </a>
                 </li>

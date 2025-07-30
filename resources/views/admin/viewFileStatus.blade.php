@@ -126,16 +126,12 @@
                                     </td>
                                     @endif
 
-
-
-                                    {{-- @if($data->formSubStat == "started")
+                                    @if($data->formSubStat == "started")
                                     <!-- <td class="textright">
                                     <a href="{{ route('Proforma_ApplicantDetails', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius"  role="button" aria-disabled="true">Update</a>
+                                  
 
-                                   
-
-
-                                </td> --> --}}
+                                </td> -->
                                     @endif
                                     @if($data->formSubStat == "verifieddp")
                                     <td class="textright">

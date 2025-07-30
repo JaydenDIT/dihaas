@@ -748,6 +748,9 @@ Route::prefix("ddo-assist")->group(function () {
     ///////////////////////////////DP by DEpt
     Route::post('/viewFileStatusByDPDept', [HomeController::class, 'viewFileStatusByDPDept'])->name('viewFileStatusByDPDept');
     Route::get('/viewFileStatusByDPDept', [HomeController::class, 'viewFileStatusByDPDept'])->name('viewFileStatusByDPDept');
+
+    Route::post('/viewFileStatusByDPDeptSearch', [HomeController::class, 'viewFileStatusByDPDeptSearch'])->name('viewFileStatusByDPDeptSearch');
+    Route::get('/viewFileStatusByDPDeptSearch', [HomeController::class, 'viewFileStatusByDPDeptSearch'])->name('viewFileStatusByDPDeptSearch');
     ////////////////////////////////////////////
     ////////////////////DP Assistant Select Dept and display////////////////////////
 
