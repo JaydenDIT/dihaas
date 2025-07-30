@@ -4203,7 +4203,7 @@ class HomeController extends Controller
         $statusArray1 = [1,2,3,4,5,6,7,9];
         // $tempEmpList = null;
 
-        if ($getUser->role_id == 1) {
+        if ($getUser->role_id == 1 || $getUser->role_id == 2) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
 
                 $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('ein', $request->searchItem)->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
@@ -4272,72 +4272,7 @@ class HomeController extends Controller
             Session::put('einsearch', $request->searchItem);
             return view('admin/viewFileStatus', compact('empList', 'empListArray', 'Remarks', 'getUser'));
         }
-
-        // if ($getUser->role_id == 2 || $getUser->role_id == 3 || $getUser->role_id == 4 || $getUser->role_id == 9) {
-        //     if ($request->searchItem != null || trim($request->searchItem) != '') {
-
-        //         $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('ein', $request->searchItem)->where('status', '!=', 0)->toArray();
-        //         // $Appl_List = count( $empListArray );
-        //         //dd( $Appl_List );
-        //         $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->where('status', '!=', 0)->where('ein', $request->searchItem)->where('dept_id', $getUser->dept_id)->paginate(15);
-        //         $Remarks = RemarksModel::get()->toArray();
-        //     } else {
-        //         $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->toArray();
-        //         // $Appl_List = count( $empListArray );
-        //         // dd( $empListArray );
-        //         $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->paginate(15);
-        //         $Remarks = RemarksModel::get()->toArray();
-        //     }
-        //     $stat = '';
-
-        //     foreach ($empList as $data) {
-        //         // $getUser1 = User::get()->where( 'id', $data->forwarded_by )->first();
-
-        //         if ($data->status == 0 && $data->form_status == 1) {
-        //             $stat = 'started';
-        //             $data->status = 'Incomplete';
-        //         }
-
-        //         if ($data->status == 1) {
-        //             $stat = 'submitted';
-        //             $data->status = 'Submitted';
-        //         }
-        //         if ($data->status == 2) {
-        //             $stat = 'verified';
-        //             $data->status = 'Verified';
-        //         }
-        //         if ($data->status == 3) {
-        //             $stat = 'forapproval';
-        //             $data->status = 'Put up for Approval';
-        //         }
-
-        //         if ($data->status == 4) {
-        //             $stat = 'approved';
-        //             $data->status = 'Approved';
-        //         }
-        //         if ($data->status == 5) {
-        //             $stat = 'appointed';
-        //             $data->status = 'Appointed';
-        //         }
-        //         if ($data->status == 6) {
-        //             $stat = 'order';
-        //             $data->status = 'Appointment Order';
-        //         }
-        //         if ($data->status == 7) {
-        //             $stat = 'signed';
-        //             $data->status = 'Signed by DP';
-        //         }
-        //         if ($data->status == 8) {
-        //             $stat = 'transfer';
-        //             $data->status = 'Transferred';
-        //         }
-
-        //         $data->formSubStat = $stat;
-        //     }
-        //     Session::put('einsearch', $request->searchItem);
-        //     return view('admin/viewFileStatus', compact('empList', 'empListArray', 'Remarks', 'getUser'));
-        // }
-
+       
         // dd( $getUser->role_id );
         if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
@@ -4491,66 +4426,7 @@ class HomeController extends Controller
             return view('admin/viewFileStatus', compact('empList', 'empListArray', 'Remarks', 'getUser'));
         }
 
-        // if ($getUser->role_id == 2 || $getUser->role_id == 3 || $getUser->role_id == 4 || $getUser->role_id == 9) {
-           
-        //     $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->toArray();
-        //     // $Appl_List = count( $empListArray );
-        //     //dd( $Appl_List );
-        //     $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->where('status', '!=', 0)->where('dept_id', $getUser->dept_id)->paginate(15);
-        //     $Remarks = RemarksModel::get()->toArray();
-        //     //expire_on_duty if yes top priority
-
-        //     //dd( $empList->toArray() );
-        //     $stat = '';
-
-        //     foreach ($empList as $data) {
-        //         // $getUser1 = User::get()->where( 'id', $data->forwarded_by )->first();
-
-        //         if ($data->status == 0 && $data->form_status == 1) {
-        //             $stat = 'started';
-        //             $data->status = 'Incomplete';
-        //         }
-
-        //         if ($data->status == 1) {
-        //             $stat = 'submitted';
-        //             $data->status = 'Submitted';
-        //         }
-        //         if ($data->status == 2) {
-        //             $stat = 'verified';
-        //             $data->status = 'Verified';
-        //         }
-        //         if ($data->status == 3) {
-        //             $stat = 'forapproval';
-        //             $data->status = 'Put up for Approval';
-        //         }
-
-        //         if ($data->status == 4) {
-        //             $stat = 'approved';
-        //             $data->status = 'Approved';
-        //         }
-        //         if ($data->status == 5) {
-        //             $stat = 'appointed';
-        //             $data->status = 'Appointed';
-        //         }
-        //         if ($data->status == 6) {
-        //             $stat = 'order';
-        //             $data->status = 'Appointment Order';
-        //         }
-        //         if ($data->status == 7) {
-        //             $stat = 'signed';
-        //             $data->status = 'Signed by DP';
-        //         }
-        //         if ($data->status == 8) {
-        //             $stat = 'transfer';
-        //             $data->status = 'Transferred';
-        //         }
-
-        //         $data->formSubStat = $stat;
-        //     }
-
-        //     return view('admin/viewFileStatus', compact('empList', 'empListArray', 'Remarks', 'getUser'));
-        // }
-
+      
         if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
             $request->session()->forget(['deptId']);
             $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array1)->whereIn('status', $statusArray1)->toArray();
@@ -4625,6 +4501,7 @@ class HomeController extends Controller
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
+
         if (session()->get('deptId') != '' && $request->input('page') == '') {
             $request->session()->forget(['deptId']);
         }
@@ -4661,8 +4538,12 @@ class HomeController extends Controller
                 $data->status = 'Submitted';
             }
             if ($data->status == 2) {
-                $stat = 'verified';
-                $data->status = 'Verified';
+                $stat = 'verifieddp';
+                $data->status = 'Verified By DP';
+            }
+              if ($data->status == 9) {
+                $stat = 'verifieddept';
+                $data->status = 'Verified By Department';
             }
             if ($data->status == 3) {
                 $stat = 'forapproval';
