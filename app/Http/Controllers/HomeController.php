@@ -4359,7 +4359,7 @@ class HomeController extends Controller
         $file_status_array=[1, 2, 5, 6, 7,8, 9]; 
         $statusArray = [1,2,3,4,5,6,7,9];
 //Status for DP
-         $file_status_array1=[1,2,5,6,7,8,9]; 
+         $file_status_array1=[1,2,3,4,5,6,7,8,9]; 
         $statusArray1 = [1,2,3,4,5,6,7,9];
   
     
