@@ -118,80 +118,66 @@
 
                                     <td style="color:red;">{{$data->status}}</td>
 
-                                    @if($data->formSubStat == "submitted")
-                                    {{-- <td class="textright">
+                                    {{-- @if($data->formSubStat == "submitted")
+                                    <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
 
 
-                                    </td> --}}
-                                    @endif
+                                    </td>
+                                    @endif --}}
 
 
 
-                                    @if($data->formSubStat == "started")
+                                    {{-- @if($data->formSubStat == "started")
                                     <!-- <td class="textright">
                                     <a href="{{ route('Proforma_ApplicantDetails', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius"  role="button" aria-disabled="true">Update</a>
 
                                    
 
 
-                                </td> -->
-                                    @endif
-                                    @if($data->formSubStat == "verifieddp")
-                                    {{-- <td class="textright">
+                                </td> --> --}}
+                                    {{-- @endif --}}
+                                    {{-- @if($data->formSubStat == "verifieddp")
+                                    <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
+                                    </td>
+                                    @endif --}}
 
-
-
-                                    </td> --}}
-
-
-                                    @endif
-
-                                     @if($data->formSubStat == "verifieddept")
-                                    {{-- <td class="textright">
+                                     {{-- @if($data->formSubStat == "verifieddept")
+                                    <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
+                                   </td>
+                                    @endif --}}
 
-
-
-                                    </td> --}}
-
-
-                                    @endif
-
-                                    @if($data->formSubStat == "forapproval")
-                                    {{-- <td class="textright">
+                                    {{-- @if($data->formSubStat == "forapproval")
+                                    <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
                                         <!-- capturing the ein at click instant -->
 
 
                                     </td> --}}
-                                    @endif
-                                    @if($data->formSubStat == "approved")
-                                    {{-- <td class="textright">
+                                    {{-- @endif --}}
+                                    {{-- @if($data->formSubStat == "approved")
+                                    <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
                                         <!-- capturing the ein at click instant -->
-
-
-                                    </td> --}}
-                                    @endif
-                                    @if($data->formSubStat == "appointed")
-                                    {{-- <td class="textright">
+                                    </td>
+                                    @endif --}}
+                                    {{-- @if($data->formSubStat == "appointed")
+                                    <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
                                         <!-- capturing the ein at click instant -->
+                                    </td>
+                                    @endif --}}
 
-
-                                    </td> --}}
-                                    @endif
-
-                                    @if($data->formSubStat == "order")
-                                    {{-- <td class="textright">
+                                    {{-- @if($data->formSubStat == "order")
+                                    <td class="textright">
                                         <a href="{{ route('generate-pdf', Crypt::encryptString($data->ein)) }}" target=”_blank” class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View Order</a>
                                         <!-- capturing the ein at click instant -->
 
-                                    </td> --}}
+                                    </td>
 
-                                    @endif
+                                    @endif --}}
 
 
                                 </tr>
