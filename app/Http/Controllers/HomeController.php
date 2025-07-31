@@ -4088,10 +4088,9 @@ class HomeController extends Controller
     public function viewStatusApplicant(Request $request)
     {
         
-        //    $ein = session()->get('ein');
-       
+            
         
-        // try{
+         try{
         if (Auth::user()->role_id != 77) {
             // Show an error message
 
@@ -4206,24 +4205,18 @@ class HomeController extends Controller
                 }
                      return view('admin/viewBlankStatus', compact('status'));
             }
-             // Check if the ProformaModel instance exists
+             // Check if the ProformaModel instance exists           
+           
+     } catch (Exception $e) {
 
-                // return response()->json(['error' => 'Already Entered'], 409);
-            
-   
-
-//   } catch (Exception $e) {
-
-//             return response()->json([
-//                 'status' => 0,
-//                // 'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
-//                   'msg' => 'No Record Found!',
-//                 //'errors' => $e->getMessage()
-//             ]);
-//         }
+            return response()->json([
+                'status' => 0,
+               // 'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
+                  'msg' => 'No Record Found!',
+                //'errors' => $e->getMessage()
+            ]);
+        }
     }
-
-
 
     /////////////////////////////////////////////////////////////////////////////////////
 
