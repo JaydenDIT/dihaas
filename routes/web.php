@@ -787,6 +787,8 @@ Route::prefix("ddo-assist")->group(function () {
     ///////////////////////APPLICANT TASK/////////////
     Route::get('/viewStatusApplicant', [HomeController::class, 'viewStatusApplicant'])->name('viewStatusApplicant');
 
+    Route::get('/viewBlankStatus', [HomeController::class, 'viewStatusApplicant'])->name('viewBlankStatus');
+
     Route::get('/viewApplicantDetailsUpdate/{id}', [HomeController::class, 'viewApplicantUpdate'])->name('viewApplicantDetailsUpdate');
 
     Route::post('update_proforma_self', [HomeController::class, 'updateself'])->name('update_proforma_self');

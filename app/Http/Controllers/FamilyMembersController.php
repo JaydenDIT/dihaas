@@ -166,9 +166,11 @@ class FamilyMembersController extends Controller
 
             $emp_form_stat= ProformaModel::get()->where("ein", $ein)->first();
             $empDetails = $emp_form_stat;
-
+//dd($empDetails);
             $emp_fami_stat= ProformaModel::get()->where("ein", $ein)->first();
 
+           // dd($emp_form_stat);
+            
             if ($emp_form_stat->form_status == 1) {
                 $status = 1;
                 // return redirect()->back()->with('message', "Already proceeded! Click Form menu to view forms!");
@@ -185,8 +187,10 @@ class FamilyMembersController extends Controller
                 // return redirect()->back()->with('error_message', "No Data Found!");
             }
 
-            // check personal details submit or not
-            $emp_form_stat = EmpFormSubmissionStatus::get()->where("ein", $ein)->where('form_id', 1)->toArray();
+            // check personal details submit or not ->where('form_id', 1)->where("ein", $ein)
+            $emp_form_stat = EmpFormSubmissionStatus::get()->where('form_id', 1)->where("ein", $ein)->toArray();
+           
+            //dd($ein,  $emp_form_stat);
 
             if (count($emp_form_stat) == 0) {
                 return redirect()->route('Proforma_ApplicantDetails', Crypt::encryptString($ein))->with('errormessage', "Please Submit Personel Details & Deceased Information!");

@@ -56,7 +56,7 @@
                         </svg>
                     </div>
                     <div class="col-sm-10 background4">
-                        <h5><b>status of Application</b></h5>
+                        <h5><b>Status of Application</b></h5>
                     </div>
                 </div>
                 <br><br>

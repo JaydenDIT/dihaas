@@ -4087,37 +4087,54 @@ class HomeController extends Controller
 
     public function viewStatusApplicant(Request $request)
     {
-        // Change for DIHAS below
+        
+        //    $ein = session()->get('ein');
+       
+        
+        // try{
         if (Auth::user()->role_id != 77) {
             // Show an error message
 
             return view('errors.404');
-        }
+        }else{
 
         $user_id = Auth::user()->id;
+       
         $getUser = User::get()->where('id', $user_id)->first();
-       // dd($getUser->dept_id);
-    if($getUser->dept_id == null){
+      
+        $getStatus = ProformaModel::get()->where('uploaded_id', '=', $getUser->id)->first();
+        // dd( $getStatus);
+                if ($getStatus != null) {
+                   // dd( $getStatus->status);
+                    if ($getStatus->status >= 1) {
+
+                         if($getUser->dept_id == null){
+        
         $dept_id = ProformaModel::where('uploaded_id', $user_id)->first()->dept_id;
-        
-        $empListArray = ProformaModel::get()->where('dept_id', $dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
-        
-        $empList = ProformaModel::orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->where('dept_id', $dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(6);
-        
-        
 
+        $qry = ProformaModel::where('dept_id', $dept_id)->where('form_status', 1)->where('rejected_status', '<=', 1);
+         //dd($dept_id);
+        $empListArray = $qry->get()->toArray();
+        //
+        //dd( $empListArray);
 
-        $empList = $empList->map(function($empItem, $index){
+        $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+         
+        //dd( $empList1->toArray() ); 
+
+        $empList = $empList1->map(function($empItem, $index){
             //First dynamically assigning the seniority number (Sl No)
             $empItem->slNo = $index + 1;
             return $empItem;
         })->filter(function($empItem) use ($user_id){
             //Filter only the logged in (authenticated) user
             return($empItem->uploaded_id == $user_id);
-        });
-        
-        
+            //return $empItem;
 
+        });
+       
+        //dd( ['empList'=>$empList->toArray(), 'user_id'=>$user_id] );
+        
         //$empListArray = ProformaModel::get()->where('uploaded_id', $getUser->id)->where('uploader_role_id', 77)->toArray();
         
         //$empList = ProformaModel::where('uploaded_id', $getUser->id)->paginate(10);
@@ -4126,7 +4143,7 @@ class HomeController extends Controller
         $Remarks = RemarksModel::get()->toArray();
         //expire_on_duty if yes top priority
 
-        // dd( $empList->toArray() );
+       // dd( $empList->toArray() );
         $stat = '';
 
         foreach ($empList as $data) {
@@ -4178,9 +4195,35 @@ class HomeController extends Controller
         $ein = null;
 
         return view('admin/viewStatusApplicant', compact('empList', 'empListArray', 'Remarks', 'getUser'));
+      }
+    }
+                        
+                    } else {
+                
+                       // dd($getStatus);
+
+                    $status = "Not yet Applied";
+                }
+                     return view('admin/viewBlankStatus', compact('status'));
+            }
+             // Check if the ProformaModel instance exists
+
+                // return response()->json(['error' => 'Already Entered'], 409);
+            
+   
+
+//   } catch (Exception $e) {
+
+//             return response()->json([
+//                 'status' => 0,
+//                // 'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
+//                   'msg' => 'No Record Found!',
+//                 //'errors' => $e->getMessage()
+//             ]);
+//         }
     }
 
-}
+
 
     /////////////////////////////////////////////////////////////////////////////////////
 
@@ -5039,7 +5082,7 @@ class HomeController extends Controller
         return back()->with('message', 'EIN: ' . $geEmpDetails->ein . 'Deleted successfully!');
 
         session()->forget(['ein', 'from_emp_ein']);
-        // session()->flush();
+        session()->flush();
         $ein = null;
     }
 
@@ -6702,9 +6745,10 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         //Below ein is passed in the session
         // $notfound ='';
         $ein = session()->get('ein');
-
+       // dd($ein);
+  try {
         if ($ein != null) {
-            try {
+          // dd( $ein);
                 $user_id = Auth::user()->id;
                 $getUser = User::get()->where('id', $user_id)->first();
                 //the above code needed for menu of header as per user
@@ -6796,14 +6840,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
                     return view('admin/Form/form_proforma_update', compact('deptListArray', 'getUser', 'proformas', 'per_subdivision', 'cur_districts', 'per_districts', 'cur_subdivision', 'Caste', 'Relationship', 'getUploader', 'Gender', 'formStatArray', 'status', 'fieldCollection', 'data', 'stateDetails', 'post', 'educations'));
                 }
-            } catch (Exception $e) {
-
-                return response()->json([
-                    'status' => 0,
-                    'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
-                    //'errors' => $e->getMessage()
-                ]);
-            }
+            
         } else {
 
             // dd( $ein );
@@ -6979,7 +7016,8 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 ///////////////////////////////////////////////////////////////////////////////////////
 
                 return view('admin/Form/form_proforma', compact('deptListArray', 'Caste', 'Relationship', 'getUser', 'Gender', 'stateDetails', 'post', 'educations', 'data', 'notfound'));
-            }
+            }           
+                
 
             if ($getUser != null && $getUser->role_id == 77) {
                 // allow to enter data for fresh citizen
@@ -7026,17 +7064,19 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 $educations = EducationModel::get()->toArray();
                 $formattedDate = today()->format('Y-m-d');
                 return view('admin/Form/form_proforma', compact('deptListArray', 'formattedDate', 'Caste', 'Relationship', 'getUser', 'Gender', 'stateDetails', 'post', 'educations', 'data', 'notfound'));
+                }
             }
-            // } catch ( Exception $e ) {
+         } catch (Exception $e) {
 
-            //     return response()->json( [
-            //         'status' => 0,
-            //         'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
-            //         //'errors' => $e->getMessage()
-            // ] );
-            //   }
+                return response()->json([
+                    'status' => 0,
+                    'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
+                    //'errors' => $e->getMessage()
+                ]);
+            }
         }
-    }
+    
+    
 
     public function viewFormBacklog(Request $request)
     {
@@ -7661,7 +7701,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                      'rejected_status' => 0
                  ]);
  //////////////////////////////////////////TO RECORD SENDER AND RECEIVER////////////////
-$empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
+    $empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
         // $getUser1 = User::get()->where( 'id', $empDetails->forwarded_by )->first();
         $getUser1 = User::get()->where('id', $empDetails->uploaded_id)->first();
 
@@ -7678,27 +7718,19 @@ $empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
         //dd( $empDetails->toArray() );
         if ($empDetails != null) {
             $empDetails->update([
-                'status' => 0,
+              //  'status' => 0,
                 'received_by' => $receiver, //previous sender
                 'sent_by' => $getUser->name, //current sender
                 'forwarded_on' => $dateToday,
-                'rejected_status' => 1,
+               // 'rejected_status' => 1,
                 'remark' => $request->remark,
                 'remark_details' => $request->remark_details
                 //2 is for verified and 1 for submitted and 0 back to start
                 //reject 1 is for HOD Assistant back to citizen
             ]);
-        }
-        //write save data for giving remarks
+        }     
 
-        applicants_statusModel::create([
-            'ein' => $request->ein,
-            'appl_number' => $empDetails->appl_number,
-            'remark' => $request->remark,
-            'remark_details' => $request->remark_details,
-            'remark_date' => $dateToday,
-            'entered_by' => $getUser->id
-        ]);
+       
 
 
  /////////////////////////////////END///////////////////////////////////////////////////

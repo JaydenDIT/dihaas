@@ -14,7 +14,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h3>{{ __('Submitted Applicantion') }}</h3>
+                            <h3>{{ __('Application Status') }}</h3>
                         </div>
                         <div class="col-6">
                           
@@ -45,8 +45,12 @@
 
                     <!-- CMIS Started employee list table -->
                     <!-- <div id="started_emp_table" style="display:show"><b>Started Employee List :</b><br> -->
-                   
+                 
+
+
                     <p>
+                          
+
                     <div class="table-responsive">
                     <table class="table">
                         <thead class="thead-dark">
