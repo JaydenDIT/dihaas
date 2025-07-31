@@ -4114,9 +4114,7 @@ class HomeController extends Controller
         $qry = ProformaModel::where('dept_id', $dept_id)->where('form_status', 1)->where('rejected_status', '<=', 1);
          //dd($dept_id);
         $empListArray = $qry->get()->toArray();
-        //
-        //dd( $empListArray);
-
+      
         $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
          
         //dd( $empList1->toArray() ); 
@@ -4130,14 +4128,8 @@ class HomeController extends Controller
             return($empItem->uploaded_id == $user_id);
             //return $empItem;
 
-        });
-       
-        //dd( ['empList'=>$empList->toArray(), 'user_id'=>$user_id] );
-        
-        //$empListArray = ProformaModel::get()->where('uploaded_id', $getUser->id)->where('uploader_role_id', 77)->toArray();
-        
-        //$empList = ProformaModel::where('uploaded_id', $getUser->id)->paginate(10);
-
+        });     
+      
 
         $Remarks = RemarksModel::get()->toArray();
         //expire_on_duty if yes top priority
@@ -4394,7 +4386,7 @@ class HomeController extends Controller
         //Status for Dept
         $file_status_array=[1, 2, 3,4,5, 6, 7,8, 9]; 
         $statusArray = [1,2,3,4,5,6,7,9];
-//Status for DP
+            //Status for DP
          $file_status_array1=[1,2,3,4,5,6,7,8,9]; 
         $statusArray1 = [1,2,3,4,5,6,7,9];
   
