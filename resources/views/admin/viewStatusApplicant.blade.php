@@ -66,7 +66,7 @@
                                 <th>Currently With</td>
                                 <th>Remarks</td>                              
                                
-                                <th>status</td>
+                                <th style="color:red;">Status</td>
                                 <th scope="col" colspan="4" class="textcenter">Action</th>
                             </tr>
                         </thead>
@@ -93,7 +93,7 @@
                                 <td>{{$data->received_by}}</td>
                                 <td>{{$data->remark}}</td>
                                
-                                <td>{{$data->status}}</td>
+                                <td style="color:red;">{{$data->status}}</td>
 
                                 @if($data->formSubStat == "submitted")
                                 <td class="rightstyle">
@@ -111,7 +111,15 @@
                                     <a href="{{ route('discard-applicant', Crypt::encryptString($data->ein)) }}" class="btn btn-danger btn-sm borderradius" role="button" aria-disabled="true" onclick="return confirm('Are You Sure to Discard this Applicant?')">Delete</a>
                                 </td>
                                 @endif
-                                @if($data->formSubStat == "verified")
+                                @if($data->formSubStat == "verifieddp")
+                                <td class="rightstyle">
+                                    <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
+                                    <!-- capturing the ein at click instant -->
+
+
+                                </td>
+                                @endif
+                                  @if($data->formSubStat == "verifieddept")
                                 <td class="rightstyle">
                                     <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
                                     <!-- capturing the ein at click instant -->
