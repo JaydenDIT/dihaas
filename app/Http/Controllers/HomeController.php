@@ -2967,7 +2967,7 @@ class HomeController extends Controller
         $Sign1 = Sign1Model::get()->toArray();
         $Sign2 = Sign2Model::get()->toArray();
 
-        $statusArray = [4, 5, 6];
+        $statusArray = [4, 5];
         //$statusArray = [ 1, 2, 3, 4 ];
         $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('dept_id', $getUser->dept_id)->toArray();
         $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), dept_name, deceased_doe,appl_date, applicant_dob")->whereIn('status', $statusArray)->where('dept_id', $getUser->dept_id)->paginate(10);
@@ -3016,10 +3016,10 @@ class HomeController extends Controller
                 $stat = 'signed';
                 $data->status = 'Signed by DP';
             }
-            if ($data->status == 8) {
-                $stat = 'transfer';
-                $data->status = 'Transferred';
-            }
+            // if ($data->status == 8) {
+            //     $stat = 'transfer';
+            //     $data->status = 'Transferred';
+            // }
 
             $data->formSubStat = $stat;
         }
@@ -3042,7 +3042,7 @@ class HomeController extends Controller
         $Sign1 = Sign1Model::get()->toArray();
         $Sign2 = Sign2Model::get()->toArray();
 
-        $statusArray = [4, 5, 6];
+        $statusArray = [4, 5];
         //$statusArray = [1, 2, 3, 4];
         $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('dept_id', $getUser->dept_id)->toArray();
 
@@ -3098,10 +3098,10 @@ class HomeController extends Controller
                 $stat = 'signed';
                 $data->status = 'Signed by DP';
             }
-            if ($data->status == 8) {
-                $stat = 'transfer';
-                $data->status = 'Transferred';
-            }
+            // if ($data->status == 8) {
+            //     $stat = 'transfer';
+            //     $data->status = 'Transferred';
+            // }
 
             $data->formSubStat = $stat;
         }
@@ -7660,7 +7660,49 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                      'status' => 0,
                      'rejected_status' => 0
                  ]);
- 
+ //////////////////////////////////////////TO RECORD SENDER AND RECEIVER////////////////
+$empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
+        // $getUser1 = User::get()->where( 'id', $empDetails->forwarded_by )->first();
+        $getUser1 = User::get()->where('id', $empDetails->uploaded_id)->first();
+
+        $getUser2 = User::get()->where('id', $empDetails->uploaded_id)->toArray();
+        //dd( $getUser1->name );
+        if (count($getUser2) == null) {
+            $receiver = null;
+            //previous sender
+        }
+        if (count($getUser2) != null) {
+            $receiver = $getUser1->name;
+            //previous sender
+        }
+        //dd( $empDetails->toArray() );
+        if ($empDetails != null) {
+            $empDetails->update([
+                'status' => 0,
+                'received_by' => $receiver, //previous sender
+                'sent_by' => $getUser->name, //current sender
+                'forwarded_on' => $dateToday,
+                'rejected_status' => 1,
+                'remark' => $request->remark,
+                'remark_details' => $request->remark_details
+                //2 is for verified and 1 for submitted and 0 back to start
+                //reject 1 is for HOD Assistant back to citizen
+            ]);
+        }
+        //write save data for giving remarks
+
+        applicants_statusModel::create([
+            'ein' => $request->ein,
+            'appl_number' => $empDetails->appl_number,
+            'remark' => $request->remark,
+            'remark_details' => $request->remark_details,
+            'remark_date' => $dateToday,
+            'entered_by' => $getUser->id
+        ]);
+
+
+ /////////////////////////////////END///////////////////////////////////////////////////
+
                  // dd($newApplicant);
                  // insert to form submission status 
                  $formId = 1; // here we set familly details form id as 2 according to ui;
@@ -7679,6 +7721,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                      //  return back()->with('errormessage', "Already Submitted..........!");
                      return response()->json(['errormessage' => 'Already Submitted..........! ']);
                  }
+
  
                  Session::put('ein', $request->ein);
  

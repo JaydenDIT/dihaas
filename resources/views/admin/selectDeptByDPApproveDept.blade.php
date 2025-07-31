@@ -83,7 +83,7 @@
                                         <th>Applicant Name</td>
                                         <th scope="col">Mobile No.</th>
                                         
-                                        <th scope="col">status</th>
+                                        <th scope="col" style="color:red;">status</th>
                                         <th scope="col" colspan="4" colspan="4"  class="textcenter">Action</th>
                                     </tr>
                                 </thead>
@@ -118,7 +118,7 @@
 
                                         <td>{{$data->applicant_mobile}}</td>
                                         
-                                        <td>{{$data->status}}</td>
+                                        <td style="color:red;">{{$data->status}}</td>
 
 
                                         @if($data->formSubStat == "submitted")
@@ -183,7 +183,7 @@
                                         <th>Applicant Name</td>
                                         <th scope="col">Mobile No.</th>
 
-                                        <th scope="col">status</th>
+                                        <th scope="col" style="color:red;">status</th>
                                       
                                     </tr>
                                 </thead>
@@ -224,14 +224,14 @@
                                         <td>{{$data->applicant_mobile}}</td>
 
                                         @if($data->status == '5')
-                                        <td>
-                                         Appointted  
+                                        <td style="color:red;">
+                                         Appointed  
                                         </td>
                                         @endif
 
                                         @if($data->status == '4')
-                                        <td>
-Approved
+                                        <td style="color:red;">
+                                        Approved
                                         </td>
                                         @endif
 
@@ -267,13 +267,13 @@ Approved
 
                                         @endif
 
-                                        @if($data->formSubStat == "order")
+                                        {{-- @if($data->formSubStat == "order")
                                         <td class="textright">
                                             <a href="{{ route('viewOrder', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm width_height4" role="button" aria-disabled="true">View Order</a>
                                          
                                         </td>
 
-                                        @endif
+                                        @endif --}}
 
 
                                     </tr>
