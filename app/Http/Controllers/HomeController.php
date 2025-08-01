@@ -4475,10 +4475,10 @@ class HomeController extends Controller
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
         //Status for Dept
-        $file_status_array=[1, 2, 3,4,5, 6, 7,8, 9]; 
+        $file_status_array=[1, 2,5, 6, 7,8, 9]; 
         $statusArray = [1,2,3,4,5,6,7,9];
             //Status for DP
-         $file_status_array1=[1,2,3,4,5,6,7,8,9]; 
+         $file_status_array1=[1,2,5,6,7,8,9]; 
         $statusArray1 = [1,2,3,4,5,6,7,9];
   
     
@@ -4555,7 +4555,7 @@ class HomeController extends Controller
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-        $file_status_array=[1, 2, 3,4,5, 6, 7,8, 9]; 
+        $file_status_array=[1, 2, 5, 6, 7,8, 9]; 
         $statusArray = [1,2,3,4,5,6,7,9];
         if (session()->get('deptId') != '' && $request->input('page') == '') {
             $request->session()->forget(['deptId']);
@@ -4657,7 +4657,7 @@ class HomeController extends Controller
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-        $file_status_array=[1, 2, 3,4,5, 6, 7,8, 9]; 
+        $file_status_array=[1, 2,5, 6, 7,8, 9]; 
         $statusArray = [1,2,3,4,5,6,7,9];
         if (session()->get('deptId') != '' && $request->input('page') == '') {
             $request->session()->forget(['deptId']);
@@ -4671,12 +4671,30 @@ class HomeController extends Controller
             if ($request->searchItem != null || trim($request->searchItem) != '') {
 
                 $request->session()->forget(['deptId']);
-                $empListArray = ProformaModel::get()->where('ein', $request->searchItem)->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
+ 
+                $empListArray1 = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
+                $empList2 = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+        //dd($empList1);
+
+          $empListArray = ProformaModel::get()->where('ein', $request->searchItem)->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
                 // $Appl_List = count( $empListArray );
                 //dd( $Appl_List );
                 $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),dept_name,deceased_doe,appl_date, applicant_dob")->where('ein', $request->searchItem)->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
                 $Remarks = RemarksModel::get()->toArray();
 
+            $empList1 = $empList2->map(function($empItem1, $index){
+            //First dynamically assigning the seniority number (Sl No)
+            $empItem1->slNo = $index + 1;
+            return $empItem1;
+                      
+        })->filter(function($empItem1) use ($user_id){
+            //Filter only the logged in (authenticated) user
+            return($empItem1->uploaded_id == $user_id);
+            //return $empItem;
+
+        });    
+
+               // dd($empList);
  //$qry = ProformaModel::where('dept_id', $dept_id)->where('form_status', 1)->where('rejected_status', '<=', 1);
         
       //  $empListArray = $qry->get()->toArray();
@@ -4684,28 +4702,26 @@ class HomeController extends Controller
        // $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
          
         //dd( $empList1->toArray() ); 
- $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-            });
-dd($empList);
+ 
             } else {
+
+            $empListArray1 = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
+            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+
+            $empList1 = $empList1->map(function($empItem1, $index){
+            //First dynamically assigning the seniority number (Sl No)
+            $empItem1->slNo = $index + 1;
+            return $empItem1;
+            
+            });
+         
                 $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
                 // $Appl_List = count( $empListArray );
                 // dd( $empListArray );
                 $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
                 $Remarks = RemarksModel::get()->toArray();
-
-               $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-            });
-              dd($empList);  
+              
             }
-
-
 
 
             $stat = '';
@@ -4760,7 +4776,7 @@ dd($empList);
             }
             Session::put('einsearch', $request->searchItem);
 
-        return view('admin/viewFileStatusByDP', compact('deptListArray', 'empList', 'empListArray', 'Remarks', 'getUser'));
+        return view('admin/viewFileStatusByDP', compact('deptListArray', 'empList1', 'empListArray1', 'empList', 'empListArray', 'Remarks', 'getUser'));
     }
 }
 
@@ -10715,11 +10731,12 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-        if ($getUser->role_id == 1) {
-            $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->toArray();
+        if ($getUser->role_id == 1 || $getUser->role_id == 2) {
+            $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->toArray();
             // $Appl_List = count( $empListArray );
             //dd( $Appl_List );
-            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->paginate(15);
+            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->get();
+           
             $Remarks = RemarksModel::get()->toArray();
             //expire_on_duty if yes top priority
 
@@ -10763,10 +10780,10 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     $stat = 'signed';
                     $data->status = 'Signed by DP';
                 }
-                if ($data->status == 8) {
-                    $stat = 'transfer';
-                    $data->status = 'Transferred';
-                }
+                // if ($data->status == 8) {
+                //     $stat = 'transfer';
+                //     $data->status = 'Transferred';
+                // }
 
                 $data->formSubStat = $stat;
             }
@@ -10774,80 +10791,85 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             return view('admin/viewSeniorityStatusBySelf', compact('empList', 'empListArray', 'Remarks', 'getUser'));
         }
 
-        if ($getUser->role_id == 2 || $getUser->role_id == 3 || $getUser->role_id == 4 || $getUser->role_id == 9) {
-            // $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->whereNotIn('status', [0])->toArray();
-            // $Appl_List = count( $empListArray );
-            //dd( $Appl_List );
-            // $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->whereNotIn('status', [0])->where('dept_id', $getUser->dept_id)->paginate(15);
-             $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->toArray();
+        // if ($getUser->role_id == 2 || $getUser->role_id == 3 || $getUser->role_id == 4 || $getUser->role_id == 9) {
+        //     // $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->whereNotIn('status', [0])->toArray();
+        //     // $Appl_List = count( $empListArray );
+        //     //dd( $Appl_List );
+        //     // $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->whereNotIn('status', [0])->where('dept_id', $getUser->dept_id)->paginate(15);
+        //      $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->toArray();
              
            
 
-             $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->where('dept_id', $getUser->dept_id)->paginate(15);
-            $Remarks = RemarksModel::get()->toArray();
-            //expire_on_duty if yes top priority
+        //      $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->where('dept_id', $getUser->dept_id)->paginate(15);
+        //     $Remarks = RemarksModel::get()->toArray();
+        //     //expire_on_duty if yes top priority
 
-            //dd( $empList->toArray() );
-            $stat = '';
+        //     //dd( $empList->toArray() );
+        //     $stat = '';
 
-            foreach ($empList as $data) {
-                // $getUser1 = User::get()->where( 'id', $data->forwarded_by )->first();
+        //     foreach ($empList as $data) {
+        //         // $getUser1 = User::get()->where( 'id', $data->forwarded_by )->first();
 
-                if ($data->status == 0 && $data->form_status == 1) {
-                    $stat = 'started';
-                    $data->status = 'Incomplete';
-                }
+        //         if ($data->status == 0 && $data->form_status == 1) {
+        //             $stat = 'started';
+        //             $data->status = 'Incomplete';
+        //         }
 
-                if ($data->status == 1) {
-                    $stat = 'submitted';
-                    $data->status = 'Submitted';
-                }
-                if ($data->status == 2) {
-                    $stat = 'verified';
-                    $data->status = 'Verified';
-                }
-                if ($data->status == 3) {
-                    $stat = 'forapproval';
-                    $data->status = 'Put up for Approval';
-                }
+        //         if ($data->status == 1) {
+        //             $stat = 'submitted';
+        //             $data->status = 'Submitted';
+        //         }
+        //         if ($data->status == 2) {
+        //             $stat = 'verified';
+        //             $data->status = 'Verified';
+        //         }
+        //         if ($data->status == 3) {
+        //             $stat = 'forapproval';
+        //             $data->status = 'Put up for Approval';
+        //         }
 
-                if ($data->status == 4) {
-                    $stat = 'approved';
-                    $data->status = 'Approved';
-                }
-                if ($data->status == 5) {
-                    $stat = 'appointed';
-                    $data->status = 'Appointed';
-                }
-                if ($data->status == 6) {
-                    $stat = 'order';
-                    $data->status = 'Appointment Order';
-                }
-                if ($data->status == 7) {
-                    $stat = 'signed';
-                    $data->status = 'Signed by DP';
-                }
-                if ($data->status == 8) {
-                    $stat = 'transfer';
-                    $data->status = 'Transferred';
-                }
+        //         if ($data->status == 4) {
+        //             $stat = 'approved';
+        //             $data->status = 'Approved';
+        //         }
+        //         if ($data->status == 5) {
+        //             $stat = 'appointed';
+        //             $data->status = 'Appointed';
+        //         }
+        //         if ($data->status == 6) {
+        //             $stat = 'order';
+        //             $data->status = 'Appointment Order';
+        //         }
+        //         if ($data->status == 7) {
+        //             $stat = 'signed';
+        //             $data->status = 'Signed by DP';
+        //         }
+        //         if ($data->status == 8) {
+        //             $stat = 'transfer';
+        //             $data->status = 'Transferred';
+        //         }
 
-                $data->formSubStat = $stat;
-            }
+        //         $data->formSubStat = $stat;
+        //     }
 
-            return view('admin/viewSeniorityStatusBySelf', compact('empList', 'empListArray', 'Remarks', 'getUser'));
-        }
+        //     return view('admin/viewSeniorityStatusBySelf', compact('empList', 'empListArray', 'Remarks', 'getUser'));
+        // }
 
-        if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8) {
+        if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
             $request->session()->forget(['deptId']);
             $empListArray = ProformaModel::get()->toArray();
             // $Appl_List = count( $empListArray );
             //dd( $Appl_List );
-            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->paginate(15);
+            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->get();
             $Remarks = RemarksModel::get()->toArray();
             //expire_on_duty if yes top priority
-
-            //dd( $empList->toArray() );
+            
+            $empList = $empList->map(function($empItem, $index){
+            //First dynamically assigning the seniority number (Sl No)
+            $empItem->slNo = $index + 1;
+            return $empItem;
+            });
+           // dd( $empList->toArray() );
             $stat = '';
 
             foreach ($empList as $data) {
@@ -10913,19 +10935,19 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
         // $tempEmpList = null;
 
-        if ($getUser->role_id == 1) {
+        if ($getUser->role_id == 1 || $getUser->role_id == 2) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
 
-                $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('ein', $request->searchItem)->toArray();
+                $empListArray = ProformaModel::get()->where('status', '!=', 0)->where('dept_id', $getUser->dept_id)->where('ein', $request->searchItem)->toArray();
                 // $Appl_List = count( $empListArray );
                 // dd( $empListArray );
-                $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->where('ein', $request->searchItem)->paginate(15);
+                $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->where('dept_id', $getUser->dept_id)->where('ein', $request->searchItem)->get();
                 $Remarks = RemarksModel::get()->toArray();
             } else {
-                $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->toArray();
+                $empListArray = ProformaModel::get()->where('status', '!=', 0)->where('dept_id', $getUser->dept_id)->toArray();
                 // $Appl_List = count( $empListArray );
                 // dd( $empListArray );
-                $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->paginate(15);
+                $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->where('dept_id', $getUser->dept_id)->get();
                 $Remarks = RemarksModel::get()->toArray();
             }
 
@@ -10979,86 +11001,86 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             return view('admin/viewSeniorityStatusBySelf', compact('empList', 'empListArray', 'Remarks', 'getUser'));
         }
 
-        if ($getUser->role_id == 2 || $getUser->role_id == 3 || $getUser->role_id == 4 || $getUser->role_id == 9) {
-            if ($request->searchItem != null || trim($request->searchItem) != '') {
+        // if ($getUser->role_id == 2 || $getUser->role_id == 3 || $getUser->role_id == 4 || $getUser->role_id == 9) {
+        //     if ($request->searchItem != null || trim($request->searchItem) != '') {
 
-                $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('ein', $request->searchItem)->where('status', '!=', 0)->toArray();
-                // $Appl_List = count( $empListArray );
-                //dd( $Appl_List );
-                $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->where('ein', $request->searchItem)->where('dept_id', $getUser->dept_id)->paginate(15);
-                $Remarks = RemarksModel::get()->toArray();
-            } else {
-                $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->toArray();
-                // $Appl_List = count( $empListArray );
-                // dd( $empListArray );
-                $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->paginate(15);
-                $Remarks = RemarksModel::get()->toArray();
-            }
-            $stat = '';
+        //         $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('ein', $request->searchItem)->where('status', '!=', 0)->toArray();
+        //         // $Appl_List = count( $empListArray );
+        //         //dd( $Appl_List );
+        //         $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->where('ein', $request->searchItem)->where('dept_id', $getUser->dept_id)->paginate(15);
+        //         $Remarks = RemarksModel::get()->toArray();
+        //     } else {
+        //         $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->toArray();
+        //         // $Appl_List = count( $empListArray );
+        //         // dd( $empListArray );
+        //         $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->where('status', '!=', 0)->paginate(15);
+        //         $Remarks = RemarksModel::get()->toArray();
+        //     }
+        //     $stat = '';
 
-            foreach ($empList as $data) {
-                // $getUser1 = User::get()->where( 'id', $data->forwarded_by )->first();
+        //     foreach ($empList as $data) {
+        //         // $getUser1 = User::get()->where( 'id', $data->forwarded_by )->first();
 
-                if ($data->status == 0 && $data->form_status == 1) {
-                    $stat = 'started';
-                    $data->status = 'Incomplete';
-                }
+        //         if ($data->status == 0 && $data->form_status == 1) {
+        //             $stat = 'started';
+        //             $data->status = 'Incomplete';
+        //         }
 
-                if ($data->status == 1) {
-                    $stat = 'submitted';
-                    $data->status = 'Submitted';
-                }
-                if ($data->status == 2) {
-                    $stat = 'verified';
-                    $data->status = 'Verified';
-                }
-                if ($data->status == 3) {
-                    $stat = 'forapproval';
-                    $data->status = 'Put up for Approval';
-                }
+        //         if ($data->status == 1) {
+        //             $stat = 'submitted';
+        //             $data->status = 'Submitted';
+        //         }
+        //         if ($data->status == 2) {
+        //             $stat = 'verified';
+        //             $data->status = 'Verified';
+        //         }
+        //         if ($data->status == 3) {
+        //             $stat = 'forapproval';
+        //             $data->status = 'Put up for Approval';
+        //         }
 
-                if ($data->status == 4) {
-                    $stat = 'approved';
-                    $data->status = 'Approved';
-                }
-                if ($data->status == 5) {
-                    $stat = 'appointed';
-                    $data->status = 'Appointed';
-                }
-                if ($data->status == 6) {
-                    $stat = 'order';
-                    $data->status = 'Appointment Order';
-                }
-                if ($data->status == 7) {
-                    $stat = 'signed';
-                    $data->status = 'Signed by DP';
-                }
-                if ($data->status == 8) {
-                    $stat = 'transfer';
-                    $data->status = 'Transferred';
-                }
+        //         if ($data->status == 4) {
+        //             $stat = 'approved';
+        //             $data->status = 'Approved';
+        //         }
+        //         if ($data->status == 5) {
+        //             $stat = 'appointed';
+        //             $data->status = 'Appointed';
+        //         }
+        //         if ($data->status == 6) {
+        //             $stat = 'order';
+        //             $data->status = 'Appointment Order';
+        //         }
+        //         if ($data->status == 7) {
+        //             $stat = 'signed';
+        //             $data->status = 'Signed by DP';
+        //         }
+        //         if ($data->status == 8) {
+        //             $stat = 'transfer';
+        //             $data->status = 'Transferred';
+        //         }
 
-                $data->formSubStat = $stat;
-            }
+        //         $data->formSubStat = $stat;
+        //     }
 
-            return view('admin/viewSeniorityStatusBySelf', compact('empList', 'empListArray', 'Remarks', 'getUser'));
-        }
+        //     return view('admin/viewSeniorityStatusBySelf', compact('empList', 'empListArray', 'Remarks', 'getUser'));
+        // }
 
         // dd( $getUser->role_id );
-        if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8) {
+        if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
 
                 $request->session()->forget(['deptId']);
                 $empListArray = ProformaModel::get()->where('ein', $request->searchItem)->where('status', '!=', 0)->toArray();
                 // $Appl_List = count( $empListArray );
                 //dd( $Appl_List );
-                $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('ein', $request->searchItem)->where('status', '!=', 0)->paginate(10);
+                $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('ein', $request->searchItem)->where('status', '!=', 0)->get();
                 $Remarks = RemarksModel::get()->toArray();
             } else {
                 $empListArray = ProformaModel::get()->where('status', '!=', 0)->toArray();
                 // $Appl_List = count( $empListArray );
                 // dd( $empListArray );
-                $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->paginate(15);
+                $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->get();
                 $Remarks = RemarksModel::get()->toArray();
             }
             $stat = '';
@@ -11127,16 +11149,36 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         if (strlen($deptId) > 0) {
             session()->put('deptId', $deptId);
         }
+            $file_status_array = [ 1,2,5,6,7,8,9 ];
 
         if (strlen(session()->get('deptId')) > 0) {
             $deptId = session()->get('deptId');
-            $empListArray = ProformaModel::get()->where('dept_id', $deptId)->where('status', '!=', 0)->toArray();
-            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe, appl_date, applicant_dob")->where('dept_id', $deptId)->where('status', '!=', 0)->paginate(15);
+            
+             $qry = ProformaModel::whereIn('file_status',$file_status_array)->where('dept_id', $deptId)->where('status', '!=', 0);
+         //dd($deptId);
+            $empListArray = $qry->get()->toArray();
+     
+            $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+  //dd($empList);
+            $empList = $empList->map(function($empItem, $index){
+            //First dynamically assigning the seniority number (Sl No)
+            $empItem->slNo = $index + 1;
+            return $empItem;
+        });
+
         } else {
-            //$file_status = [ 5, 6 ];
-            // $empListArray = ProformaModel::get()->whereIn( 'file_status', $file_status )->toArray();
-            $empListArray = ProformaModel::get()->where('status', '!=', 0)->toArray();
-            $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->paginate(15);
+         
+           $qry = ProformaModel::whereIn('file_status',$file_status_array)->where('status', '!=', 0);
+        
+            $empListArray = $qry->get()->toArray();
+      // dd($empListArray);
+            $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+           
+            $empList = $empList->map(function($empItem, $index){
+            //First dynamically assigning the seniority number (Sl No)
+            $empItem->slNo = $index + 1;
+            return $empItem;
+        });
         }
         $Remarks = RemarksModel::get()->toArray();
         //expire_on_duty if yes top priority
@@ -11181,10 +11223,10 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 $stat = 'signed';
                 $data->status = 'Signed by DP';
             }
-            if ($data->status == 8) {
-                $stat = 'transfer';
-                $data->status = 'Transferred';
-            }
+            // if ($data->status == 8) {
+            //     $stat = 'transfer';
+            //     $data->status = 'Transferred';
+            // }
 
             $data->formSubStat = $stat;
         }
