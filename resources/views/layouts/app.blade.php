@@ -270,8 +270,10 @@
                         <li><a class="verdana_txtnone dropdown-item yellow-bg"
                                 href="{{ route('screening.view') }}">Screening Committee Report</a></li>
                         <li><a class=" verdana_txtnone dropdown-item yellow-bg"
-                                href="{{ route('viewSeniorityStatus') }}">Seniority List</a></li>
-                    </ul>
+                                href="{{ route('viewSeniorityStatus') }}">Department Seniority List</a></li>
+                                {{-- <li><a class=" verdana_txtnone dropdown-item yellow-bg"
+                                href="{{ route('viewSeniorityStatus') }}">Inter-Department Seniority List</a></li>
+                    </ul> --}}
                 </li>
 
                 {{-- <li class="nav-item">
@@ -325,8 +327,10 @@
                         <!-- Add dropdown menu items here -->
                         <li><a class="verdana_txtnone dropdown-item yellow-bg"
                                 href="{{ route('screening.view') }}">Screening Committee Report</a></li>
-                        <li><a class="verdana_txtnone dropdown-item yellow-bg"
-                                href="{{ route('viewSeniorityStatus') }}">Seniority List</a></li>
+                        <li><a class=" verdana_txtnone dropdown-item yellow-bg"
+                                href="{{ route('viewSeniorityStatus') }}">Department Seniority List</a></li>
+                                {{-- <li><a class=" verdana_txtnone dropdown-item yellow-bg"
+                                href="{{ route('viewSeniorityStatus') }}">Inter-Department Seniority List</a></li> --}}
                     </ul>
                 </li>
                 {{-- <li class="nav-item">
@@ -493,7 +497,7 @@
                         <li><a class="verdana_txtnone dropdown-item yellow-bg"
                                 href="{{ route('screening.view') }}">Screening Committee Report</a></li>
                         <li><a class="verdana_txtnone dropdown-item yellow-bg"
-                                href="{{ route('viewSeniorityStatus') }}">Inter Seniority List</a></li>
+                                href="{{ route('viewSeniorityStatus') }}">Inter-Department Seniority List</a></li>
                     </ul>
                 </li>
                 {{-- <li class="nav-item">

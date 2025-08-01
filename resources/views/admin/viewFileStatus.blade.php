@@ -62,23 +62,24 @@
                     @if(empty($empListArray))
 
                     <button class="btn btn-success" disabled>Download Pdf</button>
-                    <button id="myButton" name="myButton" type="button" class="btn btn-success" disabled>Print</button>
+                    {{-- <button id="myButton" name="myButton" type="button" class="btn btn-success" disabled>Print</button> --}}
                 @else
                 <a href="{{ route('viewFileStatus.downloadPDFStatus') }}" target=”_blank”>
 
                     <button id="myButton2" class="btn btn-success">Download Pdf</button>
                 </a>
-                <button id="myButton" name="myButton" type="button" class="btn btn-success">Print</button>
+                {{-- <button id="myButton" name="myButton" type="button" class="btn btn-success">Print</button> --}}
                  @endif
 
-                   
+                   {{-- <p>{{ json_encode($filteredArray) }}</p> --}}
 
                     <p>
                     <div class="table-responsive">
                         <table class="table table-bordered shadow table-sm display data-table">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col">Seniority List Order</th>
+                                    <th scope="col">Department Seniority List</th>
+                                    <th scope="col">Inter-Dept Seniority List</th>
                                     <th scope="col">EIN</th>
                                     <th scope="col">Deceased Name</th>
                                     <th scope="col">DOE</th>
@@ -100,10 +101,12 @@
                                 </tr>
                                 @else
 
-                                @foreach($empList as $key => $data)
+                                  {{-- @foreach ($filteredArray as $serial) --}}
+                                @foreach($empList as $data)
 
                                 <tr>
-                                    {{-- <td>{{ $empList->firstItem() + $key }}</td> --}}
+                                   {{-- <th scope="row">{{$deptDerial}}</th> --}}
+                                   <th scope="row">{{$data->slNo2}}</th>
                                     <th scope="row">{{$data->slNo}}</th>
                                     <td>{{$data->ein}}</td>
                                     <td>{{$data->deceased_emp_name}}</td>
@@ -164,7 +167,7 @@
                                     <td class="textright">
                                         <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
                                         <!-- capturing the ein at click instant -->
-\
+
 
                                     </td>
                                     @endif
@@ -180,6 +183,9 @@
 
 
                                 </tr>
+                                {{-- @php
+                                $cnt++;
+                                @endphp --}}
                                 <!-- MODAL FADE CODE BELOW FOR REVERT -->
 
                                 <!-- <div class="modal fade" id="remarkModal" tabindex="-1" aria-labelledby="remarkModalLabel" aria-hidden="true">
@@ -219,6 +225,7 @@
                                 </div>
                             </div> -->
                                 @endforeach
+                                 {{-- @endforeach --}}
 
                                 @endif
 

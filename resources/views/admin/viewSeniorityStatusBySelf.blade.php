@@ -80,7 +80,8 @@
 
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col">Seniority Serial</th>
+                                   <th scope="col">Department Seniority List</th>
+                                    <th scope="col">Inter-Dept Seniority List</th>
                                     <th scope="col">EIN</th>
                                     <th scope="col">Deceased Name</th>
                                     <th>DOE</th>
@@ -104,7 +105,9 @@
                                 </tr>
                                 @else
 
-
+                                @php
+                                $cnt = 1;
+                                @endphp
 
                                 @foreach($empList as $key => $data)
 
@@ -112,6 +115,7 @@
 
 
                                 <tr>
+                                      <th>{{ $cnt }}</th>
                                 <th scope="row">{{$data->slNo}}</th>
                                     <td>{{$data->ein}}</td>
                                     <td>{{$data->deceased_emp_name}}</td>
@@ -127,7 +131,9 @@
                                     
                                    
                                 </tr>
-                                
+                                 @php
+                                $cnt++;
+                                @endphp
                               
                                 @endforeach
 

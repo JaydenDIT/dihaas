@@ -55,7 +55,8 @@
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Seniority List Order</th>
+                                <th scope="col">Department Seniority List</th>
+                                <th scope="col">Inter-Dept Seniority List</th>
                                 <th scope="col">EIN</th>
                                 <th scope="col">Deceased Name</th>
                                 <th scope="col">DOE</th>
@@ -78,10 +79,20 @@
                                 </td>
                             </tr>
                             @else
+                            @php
+                            foreach ($filteredArray as $serial)
+                            {
+                                //   dd($serial['slNo2']);
+                                $deptDerial=$serial['slNo2'];                              
+                                                       
+                            }
+                            @endphp
 
                             @foreach($empList as $data)
            
                             <tr>
+                                 <th scope="row">{{$deptDerial}}</th>
+
                                 <th scope="row">{{$data->slNo}}</th>
                                 <td>{{$data->ein}}</td>
                                 <td>{{$data->deceased_emp_name}}</td>

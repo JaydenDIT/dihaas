@@ -104,7 +104,7 @@
 
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col">Seniority List Order</th>
+                                    <th scope="col">Inter-Dept Seniority List</th>
                                     <th scope="col">EIN</th>
                                     <th scope="col">Deceased Name</th>
                                     <th scope="col">Department Name</th>
