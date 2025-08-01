@@ -108,7 +108,7 @@ td {
 
         <thead class="thead-dark">
             <tr>
-                <th  scope="col">Sl.No.</th>
+                <th  scope="col">Seniority Serial</th>
                 <th  scope="col">EIN</th>
                 <th scope="col">Deceased Name</th>
                 <th>DOE</th>
@@ -135,7 +135,7 @@ td {
 
 
             <tr>
-            <td>{{ $empList->firstItem() + $key }}</td>
+           <th scope="row">{{$data->slNo}}</th>
                 <td >{{$data->ein}}</td>
                 <td >{{$data->deceased_emp_name}}</td>
                 <td>{{$data->deceased_doe ? \Carbon\Carbon::parse($data->deceased_doe)->format('d/m/Y') : 'NA'}}
@@ -153,11 +153,11 @@ td {
         </tbody>
     </table>
  </div>
-    @if($empList != null)
+    {{-- @if($empList != null)
     <div class="row">
         {!! $empList->links() !!}
     </div>
-    @endif
+    @endif --}}
   
 
 
