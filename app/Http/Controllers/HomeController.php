@@ -4100,14 +4100,18 @@ class HomeController extends Controller
       
         $getStatus = ProformaModel::get()->where('uploaded_id', '=', $getUser->id)->first();
         // dd( $getStatus);
-                if ($getStatus != null) {
+        if ($getStatus != null) {
                    // dd( $getStatus->status);
-                    if ($getStatus->status >= 1 && $getUser->dept_id == null) {
-
-                       //  if($getUser->dept_id == null){
+        if ($getStatus->status >= 1 && $getUser->dept_id == null) {
+        
         
         $dept_id = ProformaModel::where('uploaded_id', $user_id)->first()->dept_id;
 
+        //For Applicant Status
+        //get all data from database where status is 1
+
+
+        
          //To extract the inter dept seniority list
          $qry = ProformaModel::where('form_status', 1)->where('rejected_status', '<=', 1);
          //dd($dept_id);
