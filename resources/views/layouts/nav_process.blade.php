@@ -33,7 +33,7 @@
                 <li class="nav-item" id="loginli">
                     <a class="nav-link " href="#" role="button"
                         aria-expanded="false">
-                        {{ Auth::user()->name }}
+                        {{ Auth::user()->name??'' }}
                     </a>
 
                 </li>

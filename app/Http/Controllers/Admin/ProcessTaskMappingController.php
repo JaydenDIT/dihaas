@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class ProcessTaskMappingController extends Controller
 {
+
+    private $tasks_file = [
+        'verify_new_application' => 'Verification by DP',
+        'verify_physical_copy' => 'Verification of Documents by Department',
+        'uo_form_generation' => 'Fill and generate UO Form',
+    ];
+
     public function index()
     {
         $processes = Process::orderBy('process_name')->get();
@@ -20,28 +27,20 @@ class ProcessTaskMappingController extends Controller
 
     public function fetchData($id)
     {
+        $tasks_file = $this->tasks_file;
 
-        $task_duties = [
-            "view" => "View",
-            "apply" => "Apply",
-            "upload_casebody" => "Case Body Upload and Forward",
-            "prepare_cert" => "Preparation of Certicate",
-            "forward" => "Check and Forward",
-            "approve" => "Final Approver",
-            "esign" => "eSign the Certificate",
-        ];
         $included = ProcessTasksMapping::where('process_id', $id)
             ->with('task')
             ->orderBy('sequence')
             ->get()
-            ->map(function ($map) use ($task_duties) {
+            ->map(function ($map) use ($tasks_file) {
                 return [
                     'tasks_id' => $map->tasks_id,
                     'tasks_name' => $map->task->tasks_name,
                     'allow_drop' => $map->allow_drop,
                     'allow_reject' => $map->allow_reject,
                     'allow_esign' => $map->allow_esign,
-                    'tasks_duty' => $task_duties[$map->task->tasks_duty] ?? "Nothing",
+                    'tasks_duty' => $tasks_file[$map->task->tasks_duty] ?? "Nothing",
                     'tasks_description' => $map->task->tasks_description
 
                 ];
@@ -49,7 +48,7 @@ class ProcessTaskMappingController extends Controller
 
         $excluded = Task::whereNotIn('tasks_id', $included->pluck('tasks_id'))
             ->get()
-            ->map(function ($task)  use ($task_duties) {
+            ->map(function ($task)  use ($tasks_file) {
                 return [
                     'tasks_id' => $task->tasks_id,
                     'tasks_name' => $task->tasks_name,

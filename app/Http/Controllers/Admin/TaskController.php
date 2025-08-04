@@ -12,36 +12,37 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TaskController extends Controller
 {
+    private $tasks_file = [
+        'verify_new_application' => 'Verification by DP',
+        'verify_physical_copy' => 'Verification of Documents by Department',
+        'uo_form_generation' => 'Fill and generate UO Form',
+    ];
+
+
     public function index()
     {
         $roles = Role::all();
         return view('task.index', compact('roles'));
     }
+
     public function create()
     {
+        $tasks_file = $this->tasks_file;
         $roles = Role::all();
-        return view('task.create', compact('roles'));
+        return view('task.create', compact('roles', 'tasks_file'));
     }
 
     public function ajaxlist(Request $request)
     {
         $tasks = Task::with('roles');
-
+        $tasks_file =  $this->tasks_file;
         return DataTables::of($tasks)
             ->addIndexColumn()
             ->addColumn('roles', function ($task) {
                 return $task->roles->pluck('role_name')->implode(', ');
             })
-            ->addColumn('tasks_duty_label', function ($task) {
-                $map = [
-                    'upload_casebody' => 'Case Body Upload and Forward',
-                    'prepare_cert' => 'Preparation of Certificate',
-                    'forward' => 'Check and Forward',
-                    'approve' => 'Approve and Set Status',
-                    'esign' => 'eSign the Certificate',
-                    'hardcopy' => 'Hard Copy Dispatch',
-                ];
-                return $map[$task->tasks_duty] ?? $task->tasks_duty;
+            ->addColumn('tasks_duty_label', function ($task) use ($tasks_file) {
+                return $tasks_file[$task->tasks_duty] ?? $task->tasks_duty;
             })
             ->addColumn('action', function ($row) {
                 $data = urlencode(json_encode([
@@ -67,7 +68,9 @@ class TaskController extends Controller
         // Get associated role IDs for checkbox pre-checking
         $task_roles = $task->roles()->pluck('roles.role_id')->toArray();
 
-        return view('task.create', compact('task', 'roles', 'task_roles'));
+        $tasks_file = $this->tasks_file;
+
+        return view('task.create', compact('task', 'roles', 'task_roles', 'tasks_file'));
     }
 
 

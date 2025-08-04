@@ -43,14 +43,7 @@
                     <label><b>Activity of the Duty:</b></label>
                     <select name="tasks_duty" class="form-control" required>
                         <option value="" selected disabled>--Select--</option>
-                        @foreach([
-                        'upload_casebody' => 'Case Body Upload and Forward',
-                        'prepare_cert' => 'Preparation of Certificate',
-                        'forward' => 'Check and Forward',
-                        'approve' => 'Approve and Set Status',
-                        'esign' => 'eSign the Certificate',
-                        'hardcopy' => 'Hard Copy Dispatch',
-                        ] as $key => $label)
+                        @foreach($tasks_file as $key => $label)
                         <option value="{{ $key }}" {{ (isset($task) && $task->tasks_duty === $key) ? 'selected' : '' }}>{{ $label }}</option>
                         @endforeach
                     </select>

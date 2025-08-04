@@ -80,8 +80,8 @@ class ProcessController extends Controller
     {
         $existingProcesses = Process::all();
 
-        $criteria = Storage::disk('local')->exists('criteria.json')
-            ? json_decode(Storage::disk('local')->get('criteria.json'), true)
+        $criteria = Storage::disk('private')->exists('criteria.json')
+            ? json_decode(Storage::disk('private')->get('criteria.json'), true)
             : [];
 
         return view('processes.create', [
@@ -93,8 +93,8 @@ class ProcessController extends Controller
     public function edit($id)
     {
         $process = Process::findOrFail($id);
-        $criteria = Storage::disk('local')->exists('criteria.json')
-            ? json_decode(Storage::disk('local')->get('criteria.json'), true)
+        $criteria = Storage::disk('private')->exists('criteria.json')
+            ? json_decode(Storage::disk('private')->get('criteria.json'), true)
             : [];
         $existingProcesses = Process::where('process_id', '!=', $id)->get(); // to avoid matching with itself
 
