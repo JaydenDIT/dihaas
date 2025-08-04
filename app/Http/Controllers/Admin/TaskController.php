@@ -15,12 +15,12 @@ class TaskController extends Controller
     public function index()
     {
         $roles = Role::all();
-        return view('Task.index', compact('roles'));
+        return view('task.index', compact('roles'));
     }
     public function create()
     {
         $roles = Role::all();
-        return view('Task.create', compact('roles'));
+        return view('task.create', compact('roles'));
     }
 
     public function ajaxlist(Request $request)
@@ -67,7 +67,7 @@ class TaskController extends Controller
         // Get associated role IDs for checkbox pre-checking
         $task_roles = $task->roles()->pluck('roles.role_id')->toArray();
 
-        return view('Task.create', compact('task', 'roles', 'task_roles'));
+        return view('task.create', compact('task', 'roles', 'task_roles'));
     }
 
 
@@ -100,7 +100,7 @@ class TaskController extends Controller
         $roles = Role::all();
         $task_roles = $task->roles()->pluck('roles.role_id')->toArray();
 
-        return view('admin.task.index', compact('task', 'roles', 'task_roles'));
+        return view('task.index', compact('task', 'roles', 'task_roles'));
     }
 
     public function update(Request $request, $id)

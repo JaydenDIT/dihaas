@@ -11,7 +11,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        return view('Role.index');
+        return view('role_malem.index');
     }
 
     public function ajaxlist(Request $request)

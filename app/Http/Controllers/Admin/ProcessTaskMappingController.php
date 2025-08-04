@@ -14,7 +14,7 @@ class ProcessTaskMappingController extends Controller
     public function index()
     {
         $processes = Process::orderBy('process_name')->get();
-        return view('Process_task_mapping.index', compact('processes'));
+        return view('process_task_mapping.index', compact('processes'));
     }
 
 

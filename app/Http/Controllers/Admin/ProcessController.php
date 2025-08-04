@@ -19,7 +19,7 @@ class ProcessController extends Controller
     {
         $processes = Process::latest()->get();
 
-        return view('Processes.index', compact('processes'));
+        return view('processes.index', compact('processes'));
     }
 
     public function ajaxlist(Request $request)
@@ -84,7 +84,7 @@ class ProcessController extends Controller
             ? json_decode(Storage::disk('local')->get('criteria.json'), true)
             : [];
 
-        return view('Processes.create', [
+        return view('processes.create', [
             'existingProcesses' => $existingProcesses,
             'criteria' => $criteria,
             'action' => "create"
@@ -98,7 +98,7 @@ class ProcessController extends Controller
             : [];
         $existingProcesses = Process::where('process_id', '!=', $id)->get(); // to avoid matching with itself
 
-        return view('Processes.create', [ // reuse same Blade
+        return view('processes.create', [ // reuse same Blade
             'action' => 'update',
             'process' => $process,
             'criteria' => $criteria,
