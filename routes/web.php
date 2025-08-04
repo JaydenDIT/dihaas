@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\ProcessController;
+use App\Http\Controllers\Admin\ProcessTaskMappingController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\TaskController;
+
+
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\AuthSuperAdminController;
 use App\Http\Controllers\Auth\LoginController;
@@ -8,7 +14,7 @@ use App\Http\Controllers\Process\NotificationController;
 use App\Http\Controllers\Process\ScreeningController;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\Process\AddressController;
-use App\Http\Controllers\Authentication\CaptchaController;
+use App\Http\Controllers\Auth\CaptchaController;
 use App\Http\Controllers\CmisVacancyController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Auth;
@@ -585,15 +591,15 @@ Route::prefix("ddo-assist")->group(function () {
 
     Route::post('/transferFromDPAssistToAnyDepartment/{id}', [HomeController::class, 'transferFromDPAssistToAnyDepartment'])->name('transferFromDPAssistToAnyDepartment');
     Route::get('/transferFromDPAssistToAnyDepartment/{id}', [HomeController::class, 'transferFromDPAssistToAnyDepartment'])->name('transferFromDPAssistToAnyDepartment');
-    
+
     Route::get('/transfer_applicant_By_DPAssist', [HomeController::class, 'transfer_applicant_By_DPAssist'])->name('transfer_applicant_By_DPAssist');
     Route::get('/viewTransferListByHodAssistant', [HomeController::class, 'viewTransferListByHodAssistant'])->name('viewTransferListByHodAssistant');
-    
+
     Route::post('/viewTransferListByHodAssistantSearch', [HomeController::class, 'viewTransferListByHodAssistantSearch'])->name('viewTransferListByHodAssistantSearch');
     Route::get('/viewTransferListByHod', [HomeController::class, 'viewTransferListByHod'])->name('viewTransferListByHod');
 
     Route::post('/updateTransferStatus',  [HomeController::class, 'updateTransferStatus'])->name('updateTransferStatus');
-    
+
     Route::get('/vacancy_update', [VacancyUpdateController::class, 'vacancyUpdate'])->name('vacancy_update');
 
 
@@ -767,8 +773,8 @@ Route::prefix("ddo-assist")->group(function () {
     //////Dowload Pdf for Screening Report
     Route::get('/viewSeniorityStatus/downloadseniorityPDF', 'App\Http\Controllers\HomeController@downloadseniorityPDF')->name('viewSeniorityStatus.downloadseniorityPDF');
 
-   
-  
+
+
     ///////////////////////////////////////////////////////
 
     Route::post('/submitForm', [SubmitController::class, 'submitForm'])->name('submitForm');
@@ -1093,7 +1099,7 @@ Route::prefix("ddo-assist")->group(function () {
     Route::put('/vacancy/{id}', [VacancyController::class, 'update'])->name('vacancy.update');
 
     Route::get('/vacancySearch', [VacancyController::class, 'vacancySearch'])->name('vacancySearch');
-    
+
     Route::post('/vacancySearch', [VacancyController::class, 'vacancySearch'])->name('vacancySearch');
 
     Route::get('/vacancystatusSearch', [VacancyController::class, 'vacancystatusSearch'])->name('vacancystatusSearch');
@@ -1267,7 +1273,53 @@ Route::delete('/uploadimage/delete/{id}', 'App\Http\Controllers\UploadImageContr
 
 //new change on 17 may 2024
 Route::post('/transferFromDPNodal/{id}', [HomeController::class, 'transferFromDPNodal'])->name('transferFromDPNodal');
-    Route::get('/transferFromDPNodal/{id}', [HomeController::class, 'transferFromDPNodal'])->name('transferFromDPNodal');
-	
-	Route::get('/view-file/{filename}',  [HomeController::class, 'viewFileForwardByHODAssistant'])->name('viewFileForwardByHODAssistant');
-	
+Route::get('/transferFromDPNodal/{id}', [HomeController::class, 'transferFromDPNodal'])->name('transferFromDPNodal');
+
+Route::get('/view-file/{filename}',  [HomeController::class, 'viewFileForwardByHODAssistant'])->name('viewFileForwardByHODAssistant');
+
+
+
+
+/*
+* ADMIN ROUTES
+*/
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+
+    // Processes
+    Route::group(['prefix' => 'process', 'as' => 'process.'], function () {
+        Route::get('/', [ProcessController::class, 'index'])->name('index');
+        Route::get('/create', [ProcessController::class, 'create'])->name('create');
+        Route::post('/', [ProcessController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [ProcessController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [ProcessController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ProcessController::class, 'destroy'])->name('destroy');
+        Route::post('/ajax/list', [ProcessController::class, 'ajaxlist'])->name('ajaxlist');
+    });
+    //Role routes
+    Route::group(['prefix' => 'role', 'as' => 'role.'], function () {
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+        Route::post('list', [RoleController::class, 'ajaxlist'])->name('ajaxlist');
+        Route::post('/', [RoleController::class, 'store'])->name('store');
+        Route::get('{id}', [RoleController::class, 'show'])->name('show');
+        Route::put('{id}', [RoleController::class, 'update'])->name('update');
+        Route::delete('{id}', [RoleController::class, 'destroy'])->name('destroy');
+    });
+
+    //Tasks routes
+    Route::group(['prefix' => 'task', 'as' => 'task.'], function () {
+        Route::get('/', [TaskController::class, 'index'])->name('index');
+        Route::get('/create', [TaskController::class, 'create'])->name('create');
+        Route::post('/', [TaskController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [TaskController::class, 'edit'])->name('edit');
+        Route::post('/{id}/update', [TaskController::class, 'update'])->name('update');
+        Route::delete('/{id}', [TaskController::class, 'destroy'])->name('destroy');
+        Route::post('/ajaxlist', [TaskController::class, 'ajaxlist'])->name('ajaxlist');
+    });
+    //Tasks routes
+    Route::group(['prefix' => 'process-task-mapping', 'as' => 'processtaskmapping.'], function () {
+        Route::get('/', [ProcessTaskMappingController::class, 'index'])->name('index');
+        Route::post('/{id}/data', [ProcessTaskMappingController::class, 'fetchData'])->name('data');
+        Route::post('/save', [ProcessTaskMappingController::class, 'saveMapping'])->name('save');
+    });
+});

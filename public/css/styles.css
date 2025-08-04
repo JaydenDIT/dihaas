@@ -1,0 +1,129 @@
+@charset "UTF-8";
+
+/* Bootstrap Variables */
+:root {
+    --primary: #0d6efd;
+    --light-bg: #f8f9fa;
+    --dark-bg: #212529;
+    --white: #fff;
+    --gray: #6c757d;
+    --gray-light: #adb5bd;
+    --sidebar-width: 225px;
+    --navbar-height: 56px;
+}
+
+/* Basic Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background-color: var(--white);
+}
+
+.bg-green {
+    background-color: #355552 !important;
+    opacity: 0.8;
+}
+
+.bg-purple {
+    background-color: #240c4e !important;
+}
+
+.light-btn {
+    color: #ffffff !important;
+}
+
+/* Layout Flex */
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.guest-div {
+    padding: 5rem 0rem;
+}
+
+/* Sidebar */
+.sidenav {
+    display: flex;
+    flex-direction: column;
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--navbar-height));
+    position: fixed;
+    top: var(--navbar-height);
+    left: 0;
+    background-color: var(--light-bg);
+    box-shadow: 5px 0 5px -3px rgba(0, 0, 0, 0.1);
+    z-index: 1030;
+    overflow: hidden; /* prevents body scroll bleed */
+}
+
+.sidenav-menu {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 1rem 0;
+}
+
+.sidenav-footer {
+    flex-shrink: 0;
+    padding: 1rem;
+    background-color: var(--gray-light);
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--dark-bg);
+}
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    width: 100%;
+    padding-top: calc(var(--navbar-height) + 1rem);
+}
+
+/* Responsive handling */
+@media (max-width: 768px) {
+    .sidenav {
+        width: 0;
+        overflow: hidden;
+        transition: width 0.3s ease;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .sidenav.show {
+        width: var(--sidebar-width);
+    }
+}
+
+/* Sidebar collapsed state */
+.sidenav.collapsed {
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s ease;
+}
+
+.main-content.expanded {
+    margin-left: 0;
+    transition: margin 0.3s ease;
+}
+
+/* link of sidebar */
+.nav-link {
+    color: var(--dark-bg);
+    transition: all 0.2s ease;
+    display: block;
+    padding: 0.2rem 0.2rem 0.2rem 1rem;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 600;
+}
