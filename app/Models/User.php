@@ -50,27 +50,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getRoleName(){
-        if(!is_null($this->role_id)){
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function getRoleName()
+    {
+        if (!is_null($this->role_id)) {
             return RoleModel::getRoleName($this->role_id);
         }
         return "Role Not Defined";
     }
 
-    public function scopeGetUsers($query){
-       
-        $filterUser=[77, 999];
+    public function scopeGetUsers($query)
+    {
 
-        return $query->leftJoin("roles_tbl as R","R.role_id","=","users.role_id")
-        ->where('users.role_id', '!=', 77)
-        ->where('users.role_id', '!=', 999)
-        ->get([
-            'users.id',
-            'users.name',
-            'users.mobile',
-            'users.email',
-            'users.active_status',            
-            'R.role_name',
-        ]);
+        $filterUser = [77, 999];
+
+        return $query->leftJoin("roles_tbl as R", "R.role_id", "=", "users.role_id")
+            ->where('users.role_id', '!=', 77)
+            ->where('users.role_id', '!=', 999)
+            ->get([
+                'users.id',
+                'users.name',
+                'users.mobile',
+                'users.email',
+                'users.active_status',
+                'R.role_name',
+            ]);
     }
 }

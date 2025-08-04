@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class grade extends Model
+class Grade extends Model
 {
-    use HasFactory;
-    protected $table = 'grades';
+	use HasFactory;
+	protected $table = 'grades';
 	public $timestamps = true;
 	/**
 	 * The attributes that are mass assignable.
@@ -17,10 +17,10 @@ class grade extends Model
 	 */
 	protected $fillable = [
 		'id',
-    'grade_id',
+		'grade_id',
 		'grade_name',
 		'updated_at',
-        'created_at'
+		'created_at'
 
 	];
 }
