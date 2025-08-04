@@ -50,15 +50,14 @@ class LoginController extends Controller
      * @return void
      */
 
-     
+
 
     public function __construct(Request $request)
     {
-        if( isset($_REQUEST) ){
+        if (isset($_REQUEST)) {
             $_REQUEST = Senitizer::senitize($_REQUEST, $request);
-       }
+        }
         $this->middleware('guest')->except('logout');
-
     }
 
     public function username()
@@ -96,18 +95,18 @@ class LoginController extends Controller
         // $user->attempts += 1;
         // $user->last_attempt_date = now()->toDateString();
         // $user->save();
-        if( abs($user->role_id) > 10){
+        if (abs($user->role_id) > 10) {
             return response()->json([
                 'status' => 0,
                 'msg' => 'Failed',
-                'errors' => ['emailDept'=>'You are not authorized.',]
+                'errors' => ['emailDept' => 'You are not authorized.',]
             ]);
         }
-        if(3 <=  UserLogModel::getAttemptNumber($user->id)){
+        if (3 <=  UserLogModel::getAttemptNumber($user->id)) {
             return response()->json([
                 'status' => 0,
                 'msg' => 'Failed',
-                'errors' => ['emailDept'=>'Please try after 1 hour.',]
+                'errors' => ['emailDept' => 'Please try after 1 hour.',]
             ]);
         }
 
@@ -116,23 +115,23 @@ class LoginController extends Controller
             SmsSender::send_otp($user->mobile, 'login_otp_Dept');
 
             $mobile = substr_replace($user->mobile, "*******", 1, 7);
-           
+
             return response()->json([
                 'status' => 1,
                 'msg' => "OTP has been send to your mobile number: " . $mobile,
             ]);
         }
 
-        UserLogModel::create( [
+        UserLogModel::create([
             'user_id' => $user->id,
             'username' => $user->username,
             'mobile' => $user->mobile,
             'email' => $user->email,
-        
-           'attempts' => $user->attempts,
-           'last_attempt_date' => $user->last_attempt_date,
-       ] );
-       $this->insert_login_log($user,  "smsLoginOTP", false);
+
+            'attempts' => $user->attempts,
+            'last_attempt_date' => $user->last_attempt_date,
+        ]);
+        $this->insert_login_log($user,  "smsLoginOTP", false);
         return response()->json([
             'status' => 0,
             'msg' => 'Failed',
@@ -152,36 +151,38 @@ class LoginController extends Controller
         ]);
     }
 
-   /**
+    /**
      * Authenticate the user.
      */
     public function authenticate(Request $request)
-    {        
+    {
 
         $postArray = array(
             'email' => $request->post('emailDept'),
             'password' => $request->post('passwordDept')
         );
 
-        $validator =  Validator::make($postArray, 
-                    [ 'email' => ['required', 'exists:users,email'], 'password' => 'required' ], 
-                    [],  
-                    [ 'email' => "Given Email Id",  'password' => "Given Credential"  ]  );
-        
+        $validator =  Validator::make(
+            $postArray,
+            ['email' => ['required', 'exists:users,email'], 'password' => 'required'],
+            [],
+            ['email' => "Given Email Id",  'password' => "Given Credential"]
+        );
+
         $credentials = $validator->validate();
-        
+
 
         //user email exist 
-        $user = User::where("email",$request->post('emailDept'))->first();
+        $user = User::where("email", $request->post('emailDept'))->first();
 
         if (!$user->active_status) {
             return response()->json([
                 'status' => 0,
-                'msg' => 'Your account is inactive.', 
+                'msg' => 'Your account is inactive.',
             ]);
         }
-        
-        if(3 <=  UserLogModel::getAttemptNumber($user->id)){
+
+        if (3 <=  UserLogModel::getAttemptNumber($user->id)) {
             // return back()->withErrors([
             //     'email' => 'Please try after 1 hours.',
             // ])->onlyInput('email');
@@ -191,7 +192,7 @@ class LoginController extends Controller
             ]);
         }
 
-        if( !SmsSender::check_otp($request->post('login_otp_Dept'), "login_otp_Dept" ) ){
+        if (!SmsSender::check_otp($request->post('login_otp_Dept'), "login_otp_Dept")) {
             // return back()->withErrors([
             //     'Mismatch-OTP' => 'OTP does not match.',
             // ])->onlyInput('email');
@@ -203,42 +204,41 @@ class LoginController extends Controller
 
 
         //return $this->insert_login_log($user, false);
-        if(Auth::attempt($credentials))
-        {   
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $this->insert_login_log($user, true);
 
             ///////////////////////////////////////////////////////
-                                
+
             $user_id = $user->id;
             $username = $user->name;
 
             // Check if entry exists with status 'true'
             $existingEntry = CurrentSessionModel::where('user_id', $user_id)
-                                                ->orWhere('username', $username)
-                                                ->exists();
-            if ($existingEntry) {
-                // Entry already exists, show alert
-                return response()->json([
-                    'status' => 0,
-                    'msg' => 'Your account is logged in on another device.',
-                ]);
-            } else {
-                // Entry doesn't exist, proceed with insertion
-                CurrentSessionModel::create([
-                    'user_id' => $user_id,
-                    'username' => $username,
-                    'email' => $user->email,
-                    'status' => 'true',  
-                ]);
-                
-            }
+                ->orWhere('username', $username)
+                ->exists();
+            // if ($existingEntry) {
+            //     // Entry already exists, show alert
+            //     return response()->json([
+            //         'status' => 0,
+            //         'msg' => 'Your account is logged in on another device.',
+            //     ]);
+            // } else {
+            //     // Entry doesn't exist, proceed with insertion
+            //     CurrentSessionModel::create([
+            //         'user_id' => $user_id,
+            //         'username' => $username,
+            //         'email' => $user->email,
+            //         'status' => 'true',  
+            //     ]);
 
-           // return redirect()->route('dashboard');
-           return response()->json([
-            'status' => 1,
-            'msg' => "Login Success",
-        ]);
+            // }
+
+            // return redirect()->route('dashboard');
+            return response()->json([
+                'status' => 1,
+                'msg' => "Login Success",
+            ]);
         }
         $this->insert_login_log($user, false);
 
@@ -249,32 +249,29 @@ class LoginController extends Controller
             'status' => 0,
             'msg' => 'Your provided credentials do not match in our records.',
         ]);
-
-    } 
-
-    public function insert_login_log($user, $flag){
-        
-            $attempt_number =  UserLogModel::getAttemptNumber($user->id);
-            if($flag){
-                $attempt_number = 0;
-            }
-            else{
-                $attempt_number += 1;
-            }
-            UserLogModel::create([
-                'user_id' => $user->id,
-                'username' => $user->name,
-                'mobile' => $user->mobile,
-                'email' => $user->email,
-                'attempts' => $attempt_number,
-                'attempt_status' => $flag,
-                'ip_address' => get_client_ip()
-            ]);  
-      
-         
     }
-   
-    
+
+    public function insert_login_log($user, $flag)
+    {
+
+        $attempt_number =  UserLogModel::getAttemptNumber($user->id);
+        if ($flag) {
+            $attempt_number = 0;
+        } else {
+            $attempt_number += 1;
+        }
+        UserLogModel::create([
+            'user_id' => $user->id,
+            'username' => $user->name,
+            'mobile' => $user->mobile,
+            'email' => $user->email,
+            'attempts' => $attempt_number,
+            'attempt_status' => $flag,
+            'ip_address' => get_client_ip()
+        ]);
+    }
+
+
     /**
      * Log out the user from application.
      *
@@ -283,7 +280,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        if(Auth::check()){        
+        if (Auth::check()) {
             $this->insert_login_log(Auth::user(), true);
         }
 
@@ -296,77 +293,78 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('welcome');
-    }    
+    }
 
 
 
-    public function forgotPassword(Request $request){
+    public function forgotPassword(Request $request)
+    {
         return view("auth.forgotPassword");
     }
 
-    public function passwordResetEmail(Request $request){
+    public function passwordResetEmail(Request $request)
+    {
 
         $rules = [
-                'email' => ['required', 'exists:users,email']
-            ];
+            'email' => ['required', 'exists:users,email']
+        ];
         $niceNames = [
-                'email' => "Email"
-        ]; 
-        Validator::make($request->all(), $rules, [],  $niceNames  )->validate();
+            'email' => "Email"
+        ];
+        Validator::make($request->all(), $rules, [],  $niceNames)->validate();
 
-        try{
+        try {
             DB::beginTransaction();
             $str_result = '23456789ABCDEFGHJKMNPQRSTUVWXYZabcdefghkpqrtyz';
-            $password = substr(str_shuffle($str_result),
-                            0, 8);
+            $password = substr(
+                str_shuffle($str_result),
+                0,
+                8
+            );
 
-            $mailData=[ "view"=>"email.passwordReset",
-                        "subject"=>"Reset Password",
-                        "title"=>"Die-in-Harness Appointment System",
-                        "body"=> $password
-                    ];
+            $mailData = [
+                "view" => "email.passwordReset",
+                "subject" => "Reset Password",
+                "title" => "Die-in-Harness Appointment System",
+                "body" => $password
+            ];
 
-            if(!SmsSender::sendEmail($request->post("email"), $mailData)){            
-                throw new Exception("Failed to Reset"); 
+            if (!SmsSender::sendEmail($request->post("email"), $mailData)) {
+                throw new Exception("Failed to Reset");
             }
 
             $user = User::where('email', $request->post('email'))->first();
             $this->passwordHistorySave($user);
-            $user->password = Hash::make( $password );
+            $user->password = Hash::make($password);
             $user->save();
-
-
-        }     
-        catch (Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->withErrors(['msg' => 'Fail to Reset Password.']);
         }
         $email = explode('@', $request->post("email"));
-        $email = substr_replace( $email[0],"****",2,-3).'@'. $email[1] ;
+        $email = substr_replace($email[0], "****", 2, -3) . '@' . $email[1];
         //return success
         DB::commit();
-        return redirect()->back()->with(['success' => 'Your password has been send to '.$email]);
-
+        return redirect()->back()->with(['success' => 'Your password has been send to ' . $email]);
     }
 
-    public function passwordHistorySave($user){
-        try{
+    public function passwordHistorySave($user)
+    {
+        try {
             PasswordHistoryModel::create([
                 'user_id' => $user->user_id,
                 'old_password' => $user->password,
                 'ip_address' => get_client_ip(), //this function is at app/helpers
 
             ]);
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return false;
         }
 
         return true;
-
     }
 
-   
+
     /**
      * Calling Sandes API for sending OTP
      */

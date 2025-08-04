@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\DB;
 class ProcessTaskMappingController extends Controller
 {
 
-    private $tasks_file = [
-        'verify_new_application' => 'Verification by DP',
-        'verify_physical_copy' => 'Verification of Documents by Department',
-        'uo_form_generation' => 'Fill and generate UO Form',
-    ];
 
     public function index()
     {
@@ -27,7 +22,7 @@ class ProcessTaskMappingController extends Controller
 
     public function fetchData($id)
     {
-        $tasks_file = $this->tasks_file;
+        $tasks_file = config('tasks_file');
 
         $included = ProcessTasksMapping::where('process_id', $id)
             ->with('task')

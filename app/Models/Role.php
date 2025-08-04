@@ -10,10 +10,6 @@ class Role extends Model
     public $timestamps = false;
     protected $guarded = ['role_id'];
 
-    public function menus()
-    {
-        return $this->belongsToMany(Menu::class, 'menu_role_mapping', 'role_id', 'menu_id');
-    }
 
     public function duties()
     {

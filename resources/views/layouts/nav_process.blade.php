@@ -26,6 +26,9 @@
             <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="{{route('admin.processtaskmapping.index')}}">Process Tasks Mapping</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{{route('tasks.performa.all')}}">All My Process</a>
+            </li>
 
         </ul>
         <div class="d-flex">

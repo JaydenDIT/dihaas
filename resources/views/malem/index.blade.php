@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_process')
 
 @push('js')
 <script type="text/javascript">
@@ -9,16 +9,16 @@
     function applicationTable() {
         let columns = [
             "DT_RowIndex|nonorderable|nonsearchable",
-            "application_id",
+            "deceased_emp_name",
             "process_id",
-            "current_sequence",
+            "process_sequence",
             "task_sequence",
             "status"
         ];
         loadAjaxTable({
             id: "#application-table",
-            url: "{{ route('tasks.applications.ajaxlist', $task->tasks_id) }}",
-            message: "No Applications Found",
+            url: "{{ route('tasks.performa.ajaxlist', $task->tasks_id) }}",
+            message: "No Performa Found",
             columns: columns,
             action: false
         });

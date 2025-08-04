@@ -58,6 +58,7 @@ use App\Http\Controllers\CreatePdfController;
 use App\Http\Controllers\GenerateUOController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\SuccessStoriesController;
+use App\Http\Controllers\TaskApplicationController;
 use App\Models\NotificationModel;
 use App\Models\User;
 
@@ -1322,4 +1323,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('/{id}/data', [ProcessTaskMappingController::class, 'fetchData'])->name('data');
         Route::post('/save', [ProcessTaskMappingController::class, 'saveMapping'])->name('save');
     });
+});
+
+
+
+
+Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.'], function () {
+    // Optional route to view applications for a specific task
+    Route::get('/all/performa', [TaskApplicationController::class, 'allProcess'])->name('all');
+    Route::get('/{task_id}/performa', [TaskApplicationController::class, 'index'])->name('index');
+    Route::post('/{task_id}/performa/ajaxlist', [TaskApplicationController::class, 'ajaxlist'])->name('ajaxlist');
 });

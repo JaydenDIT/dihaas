@@ -12,11 +12,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TaskController extends Controller
 {
-    private $tasks_file = [
-        'verify_new_application' => 'Verification by DP',
-        'verify_physical_copy' => 'Verification of Documents by Department',
-        'uo_form_generation' => 'Fill and generate UO Form',
-    ];
 
 
     public function index()
@@ -27,7 +22,7 @@ class TaskController extends Controller
 
     public function create()
     {
-        $tasks_file = $this->tasks_file;
+        $tasks_file = config('tasks_file');
         $roles = Role::all();
         return view('task.create', compact('roles', 'tasks_file'));
     }
@@ -35,7 +30,7 @@ class TaskController extends Controller
     public function ajaxlist(Request $request)
     {
         $tasks = Task::with('roles');
-        $tasks_file =  $this->tasks_file;
+        $tasks_file =  config('tasks_file');
         return DataTables::of($tasks)
             ->addIndexColumn()
             ->addColumn('roles', function ($task) {
@@ -68,7 +63,7 @@ class TaskController extends Controller
         // Get associated role IDs for checkbox pre-checking
         $task_roles = $task->roles()->pluck('roles.role_id')->toArray();
 
-        $tasks_file = $this->tasks_file;
+        $tasks_file = config('tasks_file');
 
         return view('task.create', compact('task', 'roles', 'task_roles', 'tasks_file'));
     }
