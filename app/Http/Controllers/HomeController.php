@@ -4349,82 +4349,63 @@ class HomeController extends Controller
         if ($getUser->role_id == 1 || $getUser->role_id == 2) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
 
-                            
-                $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);         
-                $empListArray = $qry->get()->toArray();      
-                $empList2 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();    
-                //  dd($empList2)  ;
-                    $Remarks = RemarksModel::get()->toArray();
-                    $empList = $empList2->map(function($empItem, $index){
-                    //First dynamically assigning the seniority number (Sl No)
-                    $empItem->slNo = $index + 1;
-                    return $empItem;                            
-                })->filter(function($empItem) use ($request){
-                    //Filter only the logged in (authenticated) user
-                    return($empItem->ein == $request->searchItem);
-                    //return $empItem;
-                });    
+                $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
+            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+           
+            $Remarks = RemarksModel::get()->toArray();
 
-                //To extract the seniority list as per department
-                $qry2 = ProformaModel::where('dept_id', $getUser->dept_id)->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
-                $empListArray1 = $qry->get()->toArray();
-            
-                $empList3 = $qry2->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
-                $empList2 = $empList3->map(function($empItem1, $index){
-                    //First dynamically assigning the seniority number (Sl No)
-                    $empItem1->slNo2 = $index + 1;
-                    return $empItem1;
-                })->filter(function($empItem1) use ($request){
-                    //Filter only the logged in (authenticated) user
-                    return($empItem1->ein == $request->searchItem);
-                // return $empItem;           
-                }); 
-                $filteredArray = $empList2;
-                //dd($filteredArray);
-                foreach ($filteredArray as $serial)
-                {
-                    // dd($serial['slNo2']);
+            //Loading all the available employee records 
+            $empListAll = $empList1->map(function($empItem, $index){
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;            
+                return $empItem;            
+                            
+            });
+
+            //Pickup as per based on department ID
+
+             //Filtering based on ein
+            $empList = $empListAll->filter(function($empItem1) use ($request){
+                //Filter only the logged in (authenticated) user
+                return($empItem1->ein == $request->searchItem);
                     
-                }
-                    }else{         
+            })->map(function($emp, $index){
+                //Serializing employee list as per department
+                $emp->slNo2 = $index;
+                return $emp;
+            }); 
+              //dd($empList); 
+            
+        }else{         
 
-                        $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);         
-                        $empListArray = $qry->get()->toArray();      
-                        $empList2 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();    
+            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
+            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+           
+            $Remarks = RemarksModel::get()->toArray();
+
+            //Loading all the available employee records 
+            $empListAll = $empList1->map(function($empItem, $index){
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;            
+                return $empItem;            
                             
-                        $Remarks = RemarksModel::get()->toArray();
-                        $empList = $empList2->map(function($empItem, $index){
-                                //First dynamically assigning the seniority number (Sl No)
-                            $empItem->slNo = $index + 1;
-                            return $empItem;
-                                    
-                        })->filter(function($empItem) use ($getUser){
-                            //Filter only the logged in (authenticated) user
-                            return($empItem->dept_id == $getUser->dept_id);
-                            //return $empItem;
-                        });  
-                        
-                        //To extract the seniority list as per department
-                $qry2 = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
-                $empListArray1 = $qry2->get()->toArray();
+            });
+
+            //Filtering based on department ID
+            $empList = $empListAll->filter(function($empItem1) use ($getUser){
+                //Filter only the logged in (authenticated) user
+                return($empItem1->dept_id == $getUser->dept_id);
+                    
+            })->map(function($emp, $index){
+                //Serializing employee list as per department
+                $emp->slNo2 = $index;
+                return $emp;
+            }); 
+              // dd($empList); 
+        } 
             
-                $empList3 = $qry2->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
-                $empList2 = $empList3->map(function($empItem1, $index){
-                    //First dynamically assigning the seniority number (Sl No)
-                    $empItem1->slNo2 = $index + 1;
-                    return $empItem1;
-                })->filter(function($empItem1) use ($getUser){
-                    //Filter only the logged in (authenticated) user
-                    return($empItem1->dept_id == $getUser->dept_id);
-                // return $empItem;           
-                }); 
-                $filteredArray = $empList2->all();
-                foreach ($filteredArray as $serial)
-                {
-                    // dd($serial['slNo2']);            
-                }   
-            }       
-            
+     
+               
             $stat = '';
 
             foreach ($empList as $data) {
@@ -4479,12 +4460,16 @@ class HomeController extends Controller
 
            // dd($filteredArray);
 
-            return view('admin/viewFileStatus', compact('filteredArray', 'empList', 'empListArray', 'Remarks', 'getUser'));
+            return view('admin/viewFileStatus', compact('empList', 'empListArray', 'Remarks', 'getUser'));
             // session()->forget(['ein', 'from_emp_ein']);
             // $ein = null;
             // session().flush();
-        
-    }
+                
+    
+}
+
+
+
        
         // dd( $getUser->role_id );
         if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
@@ -10770,23 +10755,31 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
         if ($getUser->role_id == 1 || $getUser->role_id == 2) {
            
-            $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);        
-            $empListArray = $qry->get()->toArray();     
-            $empList1 = $qry->orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->get();            
-            $empList = $empList1->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-            })->filter(function($empItem) use ($getUser){
-                    //Filter only the logged in (authenticated) user
-                    return($empItem->dept_id == $getUser->dept_id);
-                    //return $empItem;
-                }); 
-
+            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
+            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+           
             $Remarks = RemarksModel::get()->toArray();
-            //expire_on_duty if yes top priority
 
-            //dd( $empList->toArray() );
+            //Loading all the available employee records 
+            $empListAll = $empList1->map(function($empItem, $index){
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;            
+                return $empItem;            
+                            
+            });
+
+            //Filtering based on department ID
+            $empList = $empListAll->filter(function($empItem1) use ($getUser){
+                //Filter only the logged in (authenticated) user
+                return($empItem1->dept_id == $getUser->dept_id);
+                    
+            })->map(function($emp, $index){
+                //Serializing employee list as per department
+                $emp->slNo2 = $index;
+                return $emp;
+            });   
+
+            //dd( $empList);
             $stat = '';
 
             foreach ($empList as $data) {
@@ -10924,54 +10917,62 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
         if ($getUser->role_id == 1 || $getUser->role_id == 2) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
+         
+            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
+            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+           
+            $Remarks = RemarksModel::get()->toArray();
 
-            $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
-         //dd($deptId);
-            $empListArray = $qry->get()->toArray();     
-            $empList1 = $qry->orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->get();            
-            $empList = $empList1->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-        })->filter(function($empItem) use ($request){
-                    //Filter only the logged in (authenticated) user
-                    return($empItem->ein == $request->searchItem);
-                    //return $empItem;
-                });  
-
-        // $qry = ProformaModel::whereIn('file_status', $file_status_array1)->whereIn('status', $statusArray1);         
-        //         $empListArray = $qry->get()->toArray();      
-        //         $empList2 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();    
-                    
-        //         $Remarks = RemarksModel::get()->toArray();
-        //         $empList = $empList2->map(function($empItem, $index){
-        //                 //First dynamically assigning the seniority number (Sl No)
-        //             $empItem->slNo = $index + 1;
-        //             return $empItem;
+            //Loading all the available employee records 
+            $empListAll = $empList1->map(function($empItem, $index){
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;            
+                return $empItem;            
                             
-        //         })->filter(function($empItem) use ($request){
-        //             //Filter only the logged in (authenticated) user
-        //             return($empItem->ein == $request->searchItem);
-        //             //return $empItem;
-        //         });  
+            });
 
-                $Remarks = RemarksModel::get()->toArray();
-            } else {
-            $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);        
-            $empListArray = $qry->get()->toArray();     
-            $empList1 = $qry->orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->get();            
-            $empList = $empList1->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-         })->filter(function($empItem) use ($getUser){
-                    //Filter only the logged in (authenticated) user
-                    return($empItem->dept_id == $getUser->dept_id);
-                    //return $empItem;
-                });  
+            //Pickup as per based on department ID
 
-                $Remarks = RemarksModel::get()->toArray();
-            }
+             //Filtering based on ein
+            $empList = $empListAll->filter(function($empItem1) use ($request, $getUser){
+                //Filter only the logged in (authenticated) user
+                return($empItem1->ein == $request->searchItem && $empItem1->dept_id == $getUser->dept_id);
+                    
+            })->map(function($emp, $index){
+                //Serializing employee list as per department
+                $emp->slNo2 = $index;
+                return $emp;
+            }); 
+              //dd($empList); 
+            
+        }else{         
+
+            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
+            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+           
+            $Remarks = RemarksModel::get()->toArray();
+
+            //Loading all the available employee records 
+            $empListAll = $empList1->map(function($empItem, $index){
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;            
+                return $empItem;            
+                            
+            });
+
+            //Filtering based on department ID
+            $empList = $empListAll->filter(function($empItem1) use ($getUser){
+                //Filter only the logged in (authenticated) user
+                return($empItem1->dept_id == $getUser->dept_id);
+                    
+            })->map(function($emp, $index){
+                //Serializing employee list as per department
+                $emp->slNo2 = $index;
+                return $emp;
+            }); 
+             // dd($empList); 
+        } 
+            
 
             $stat = '';
 
@@ -11012,10 +11013,10 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     $stat = 'signed';
                     $data->status = 'Signed by DP';
                 }
-                if ($data->status == 8) {
-                    $stat = 'transfer';
-                    $data->status = 'Transferred';
-                }
+                // if ($data->status == 8) {
+                //     $stat = 'transfer';
+                //     $data->status = 'Transferred';
+                // }
 
                 $data->formSubStat = $stat;
             }
@@ -11028,18 +11029,14 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             if ($request->searchItem != null || trim($request->searchItem) != '') {
 
                 $request->session()->forget(['deptId']);
-               // $empListArray = ProformaModel::get()->where('ein', $request->searchItem)->where('status', '!=', 0)->toArray();
-                // $Appl_List = count( $empListArray );
-                //dd( $Appl_List );
-              //  $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('ein', $request->searchItem)->where('status', '!=', 0)->get();
-            $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
-         //dd($deptId);
-            $empListArray = $qry->get()->toArray();     
-            $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();            
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
+                $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
+                //dd($deptId);
+                $empListArray = $qry->get()->toArray();     
+                $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();            
+                $empList = $empList->map(function($empItem, $index){
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;
+                return $empItem;
        })->filter(function($empItem) use ($request){
                     //Filter only the logged in (authenticated) user
                     return($empItem->ein == $request->searchItem);
@@ -11047,20 +11044,16 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 });  
                 $Remarks = RemarksModel::get()->toArray();
             } else {
-              //  $empListArray = ProformaModel::get()->where('status', '!=', 0)->toArray();
-                // $Appl_List = count( $empListArray );
-                // dd( $empListArray );
-               // $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->where('status', '!=', 0)->get();
-                
+            
                 $Remarks = RemarksModel::get()->toArray();
                  $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
          //dd($deptId);
-            $empListArray = $qry->get()->toArray();     
-            $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();            
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
+                $empListArray = $qry->get()->toArray();     
+                $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();            
+                $empList = $empList->map(function($empItem, $index){
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;
+                return $empItem;
        });
             }
             $stat = '';
