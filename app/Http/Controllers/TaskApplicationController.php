@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Application;
 use App\Models\DepartmentModel;
-use App\Models\ProcessTasksMapping;
 use App\Models\ProformaModel;
-use App\Models\RemarksApproveModel;
-use App\Models\RemarksModel;
 use App\Models\Task;
-use App\Services\VerifyNewApplication;
-use Exception;
+use App\Services\WorkflowHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Yajra\DataTables\DataTables;
 
 class TaskApplicationController extends Controller
@@ -22,17 +18,13 @@ class TaskApplicationController extends Controller
 
     public function index($task_id)
     {
+        $departments = DepartmentModel::orderBy('dept_id')->get()->unique('dept_id');
         $task = Task::findOrFail($task_id);
-
-        switch ($task->tasks_duty) {
-            case  'verify_new_application':
-                return   VerifyNewApplication::index($task);
+        /*switch ($task->tasks_duty) {
+            case  'verify_and_forward':
                 break;
-        }
-
-
-
-        return view('malem.index', compact('task'));
+        }*/
+        return view('duties.list_of_applications', compact('departments', 'task'));
     }
 
     public function allProcess()
@@ -78,74 +70,56 @@ class TaskApplicationController extends Controller
     public function ajaxlist(Request $request, $task_id)
     {
         $task = Task::findOrFail($task_id);
+        $data = WorkflowHandler::proformaTaskData($task);
+
         switch ($task->tasks_duty) {
-            case  'verify_new_application':
-                return   VerifyNewApplication::ajaxlist($task);
+
+            case  'verify_and_forward':
+                $dept_id = $request->input('dept_id');
+                if (!empty($dept_id)) {
+                    $data = $data->filter(function ($item) use ($dept_id) {
+                        return $item->dept_id == $dept_id;
+                    })->values(); // reset keys after filtering
+                }
                 break;
         }
 
 
-
-
-
-
-
-        $allApplications = $this->dataList($task_id);
-        return DataTables::of($allApplications)
+        return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn('status', function ($row) {
-                if ($row['status_label'] === 'Pending') {
-                    return '<span class="badge bg-warning">Pending</span>';
-                } elseif ($row['status_label'] === 'Completed') {
-                    return '<span class="badge bg-success">Completed</span>';
-                } else {
-                    return '<span class="badge bg-secondary">Not Reached</span>';
-                }
+            ->editColumn('deceased_doe', function ($row) {
+                return date('d M, Y', strtotime($row->deceased_doe));
             })
-            ->rawColumns(['status'])
+            ->editColumn('appl_date', function ($row) {
+                return date('d M, Y', strtotime($row->appl_date));
+            })
+            ->editColumn('applicant_dob', function ($row) {
+                return date('d M, Y', strtotime($row->applicant_dob));
+            })
+            ->addColumn('action', function ($row) {
+                $data = urlencode(json_encode($row));
+                return "<div class='d-flex gap-2'>
+                            <a href='" . route('viewPersonalDetailsFrom', Crypt::encryptString($row->ein)) . "' class='btn btn-sm btn-primary view-btn' data-row='{$data}'>View</a>
+                        
+                        </div>";
+            })
+            ->rawColumns(['status', 'action'])
             ->make(true);
     }
 
 
 
-    public function dataList($task_id)
+    public function dataList(Request $request, $task)
     {
-        $user = Auth::user();
-        $task = Task::findOrFail($task_id);
+        $data = WorkflowHandler::proformaTaskData($task);
+        $dept_id = $request->input('dept_id');
 
-        // Check permission
-        if (!$user->role->duties->contains('tasks_id', $task->tasks_id)) {
-            abort(403, 'Unauthorized');
+
+
+        if (!empty($dept_id)) {
+            $data = $data->filter(function ($item) use ($dept_id) {
+                return $item->dept_id == $dept_id;
+            })->values(); // reset keys after filtering
         }
-
-        $mappings = ProcessTasksMapping::where('tasks_id', $task->tasks_id)->get();
-
-        $allApplications = collect();
-
-        foreach ($mappings as $mapping) {
-            $apps = ProformaModel::where('process_id', $mapping->process_id)
-                ->where('process_sequence', '>=', $mapping->sequence)
-                ->get()
-                ->map(function ($app) use ($mapping) {
-
-                    /* return [
-                        'application_id' => $app->application_id,
-                        'status' => $app->application_status,
-                        'process_id' => $app->process_id,
-                        'current_sequence' => $app->process_sequence,
-                        'task_sequence' => $mapping->sequence,
-                        'status_label' => $app->process_sequence == $mapping->sequence ? 'Pending' : ($app->process_sequence > $mapping->sequence ? 'Completed' : 'Not Reached'),
-                    ]; */
-
-                    $app->task_sequence = $mapping->sequence;
-                    $app->status_label = $app->process_sequence == $mapping->sequence ? 'Pending' : ($app->process_sequence > $mapping->sequence ? 'Completed' : 'Not Reached');
-
-                    return $app;
-                });
-
-            $allApplications = $allApplications->merge($apps);
-        }
-
-        return $allApplications;
     }
 }

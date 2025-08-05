@@ -52,32 +52,30 @@ class OthersFormDetailsController extends Controller
 
             //return $ein;
             $RemarksApprove = RemarksApproveModel::get()->toArray();
-            $emp_form_stat = ProformaModel::get()->where("ein", $ein)->first();
+            $emp_form_stat = $proforma = ProformaModel::get()->where("ein", $ein)->first();
             $empDetails = $emp_form_stat;
-            
 
-            if (($emp_form_stat->status == 1  || $emp_form_stat->status == 2) && $emp_form_stat->file_status==1 && $emp_form_stat->uploader_role_id!=77) {
-               // dd($emp_form_stat->uploader_role_id);
+
+            if (($emp_form_stat->status == 1  || $emp_form_stat->status == 2) && $emp_form_stat->file_status == 1 && $emp_form_stat->uploader_role_id != 77) {
+                // dd($emp_form_stat->uploader_role_id);
                 $status = 1;
-               
-            }elseif(($emp_form_stat->file_status==2) && ($emp_form_stat->file_status!=0)) {
-                $status=2;
-            }
-            elseif(($emp_form_stat->file_status==3) && ($emp_form_stat->file_status!=0)) {
-                $status=3;
-            } elseif(($emp_form_stat->file_status==4) && ($emp_form_stat->file_status!=0)) {
-                $status=4;
-            } elseif(($emp_form_stat->file_status==5) && ($emp_form_stat->file_status!=0)) {
-                $status=5;
-            }elseif(($emp_form_stat->file_status==6) && ($emp_form_stat->file_status!=0)){
-                $status=6;
-            }elseif(($emp_form_stat->uploader_role_id==77) && ($emp_form_stat->file_status!=0)){
-                $status=7;
-            }else{
-                $status=0;
+            } elseif (($emp_form_stat->file_status == 2) && ($emp_form_stat->file_status != 0)) {
+                $status = 2;
+            } elseif (($emp_form_stat->file_status == 3) && ($emp_form_stat->file_status != 0)) {
+                $status = 3;
+            } elseif (($emp_form_stat->file_status == 4) && ($emp_form_stat->file_status != 0)) {
+                $status = 4;
+            } elseif (($emp_form_stat->file_status == 5) && ($emp_form_stat->file_status != 0)) {
+                $status = 5;
+            } elseif (($emp_form_stat->file_status == 6) && ($emp_form_stat->file_status != 0)) {
+                $status = 6;
+            } elseif (($emp_form_stat->uploader_role_id == 77) && ($emp_form_stat->file_status != 0)) {
+                $status = 7;
+            } else {
+                $status = 0;
             }
 
-           // dd($status);
+            // dd($status);
             // check personal details submit or not
             $emp_form_stat = EmpFormSubmissionStatus::get()->where("ein", $ein)->where('form_id', 1)->toArray();
             if (count($emp_form_stat) == 0) {
@@ -95,7 +93,7 @@ class OthersFormDetailsController extends Controller
                 $x = $x + 1;
             }
             //session()->put('ein', $ein);
-            return view('admin/Form/form_other_details', compact('getUser','RemarksApprove','empDetails', 'formStatArray', 'ein', 'status'));
+            return view('admin/Form/form_other_details', compact('getUser', 'RemarksApprove', 'empDetails', 'formStatArray', 'ein', 'status', 'proforma'));
         } else {
             return redirect()->route('viewStartEmp');
         }
@@ -129,15 +127,14 @@ class OthersFormDetailsController extends Controller
 
             $empDetails = ProformaModel::get()->where("ein", $ein)->first();
             return view('admin/Form/form_other_details_submit', compact('empDetails', 'status'));
-        }
-        else {
+        } else {
             //return 2;   
             return redirect()->back()->with('errormessage', 'EIN not found...');
         }
 
         return view('admin/Form/form_other_details_submit', compact('empDetails', 'status'));
     }
-    
+
 
     public function index2ndAppl()
     {
@@ -162,14 +159,12 @@ class OthersFormDetailsController extends Controller
 
             $empDetails = ProformaModel::get()->where("ein", $ein)->first();
             return view('admin/Form/form_other_details_submit2ndAppl', compact('empDetails', 'status'));
-        }
-        else {
+        } else {
             //return 2;   
             return redirect()->back()->with('errormessage', 'EIN not found...');
         }
 
         return view('admin/Form/form_other_details_submit2ndAppl', compact('empDetails', 'status'));
-    
     }
 
     public function indexUpdate()
@@ -195,14 +190,12 @@ class OthersFormDetailsController extends Controller
 
             $empDetails = ProformaModel::get()->where("ein", $ein)->first();
             return view('admin/Form/form_other_details_update', compact('empDetails', 'status'));
-        }
-        else {
+        } else {
             //return 2;   
             return redirect()->back()->with('errormessage', 'EIN not found...');
         }
 
         return view('admin/Form/form_other_details_update', compact('empDetails', 'status'));
-    
     }
 
     public function index2()
@@ -228,14 +221,12 @@ class OthersFormDetailsController extends Controller
 
             $empDetails = ProformaModel::get()->where("ein", $ein)->first();
             return view('admin/Form/form_other_details_submit_backlog', compact('empDetails', 'status'));
-        }
-        else {
+        } else {
             //return 2;   
             return redirect()->back()->with('errormessage', 'EIN not found...');
         }
 
         return view('admin/Form/form_other_details_submit_backlog', compact('empDetails', 'status'));
-    
     }
 
     // public function store(Request $request)
@@ -426,7 +417,7 @@ class OthersFormDetailsController extends Controller
 
             //dd($empDetails);
 
-          
+
             return redirect()->route('other_form_details_submit')->with('message', "Applicant details is Succesfully Submitted!");
             session()->forget(['ein', 'ein']);
             //session()->flush();
@@ -573,7 +564,7 @@ class OthersFormDetailsController extends Controller
 
             //dd($empDetails);
 
-           
+
             return redirect()->route('other_form_details_submit_backlog')->with('message', "Backlog Applicant details is Succesfully Submitted!");
             session()->forget(['ein', 'ein']);
         }
@@ -724,7 +715,6 @@ class OthersFormDetailsController extends Controller
             // return redirect()->route('viewStartEmp')->with('message', "Applicant details update is Succesfully Submitted!");
             return redirect()->route('other_form_details_submit2ndAppl')->with('message', "Applicant details Succesfully Submitted!");
             session()->forget(['ein', 'ein']);
-
         } else {
             return redirect()->route('other_form_details_submit2ndAppl')->with('message', "First fill all the Forms from 1 to 3 and then Submit!!!!!!");
         }
@@ -740,17 +730,17 @@ class OthersFormDetailsController extends Controller
 
         //check for uploader id and if 77 then update appl_date and appl_number else only appl_number
 
-        
+
 
 
         //$ein = null;
         //$empDetails=null;
         if (session()->has('ein')) {
 
-        
+
 
             $ein =  session()->get('ein');
-           // dd(  $ein );
+            // dd(  $ein );
             $empCheck = ProformaModel::get()->where("ein", $ein)->where("form_status", 1)->where("family_details_status", 1)->where("upload_status", 1)->toArray();
 
             if (count($empCheck) == 1) {
@@ -875,22 +865,18 @@ class OthersFormDetailsController extends Controller
                 //dd($empDetails);
 
                 session()->forget(['ein', 'from_emp_ein']);
-            $ein=null;
-if($getUser->role_id==1){
-                return redirect()->route('viewStartEmp')->with('message', "Applicant details Succesfully Submitted!");
-}else{
-    return redirect()->route('viewStatusApplicant')->with('message', "Applicant details Succesfully Submitted!");
-    
-}
-               // session()->forget(['ein', 'ein']);
+                $ein = null;
+                if ($getUser->role_id == 1) {
+                    return redirect()->route('viewStartEmp')->with('message', "Applicant details Succesfully Submitted!");
+                } else {
+                    return redirect()->route('viewStatusApplicant')->with('message', "Applicant details Succesfully Submitted!");
+                }
+                // session()->forget(['ein', 'ein']);
 
             } else {
                 return redirect()->route('other_form_details_dihas')->with('message', "First fill all the Forms from 1 to 3 and then Submit!!!!!!");
             }
         }
-   
-
-
     }
     //////////////////////////////////////////////////////APPLICANT/////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -926,7 +912,7 @@ if($getUser->role_id==1){
 
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
-       // dd($getUser->user_id);
+        // dd($getUser->user_id);
         //check for uploader id and if 77 then update appl_date and appl_number else only appl_number
 
         ////////////////////////////////////////application number/////////////////////////////////
@@ -948,7 +934,7 @@ if($getUser->role_id==1){
             $applicationNo = $prefixData . str_pad($nextNumber, $fix->suffix, '0', STR_PAD_LEFT);
         }
         //////////////////////////////////////////end here//////////////////////////////////////////////////////
-       
+
         //$ein = null;
         //$empDetails=null;
         if (session()->has('ein')) {
@@ -1023,7 +1009,7 @@ if($getUser->role_id==1){
 
                 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-               
+
                 return redirect()->route('other_form_applicant_update')->with('message', "Applicant details Succesfully Submitted!");
                 //return redirect()->route('viewStatusApplicant')->with('message', "Applicant details update is Succesfully Submitted!");
                 session()->forget(['ein', 'ein']);
@@ -1052,7 +1038,7 @@ if($getUser->role_id==1){
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
 
-      
+
         if (session()->has('ein')) {
             $ein = session()->get('ein');
             $empDetails = ProformaModel::get()->where("ein", $ein)->first();
@@ -1060,7 +1046,7 @@ if($getUser->role_id==1){
 
             $api_preference = array();
             // $notfound = "";
-    //  dd( $data['transfer_post_id'] );
+            //  dd( $data['transfer_post_id'] );
             $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd', [
                 'dept_code' => $empDetails->dept_id,
                 'token' => "b000e921eeb20a0d395e341dfcd6117a",
@@ -1071,7 +1057,7 @@ if($getUser->role_id==1){
 
             $api_preference_dept_id_option = array();
             // $notfound = "";
-    //  dd( $data['transfer_post_id'] );
+            //  dd( $data['transfer_post_id'] );
             $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd', [
                 'dept_code' => $empDetails->dept_id_option,
                 'token' => "b000e921eeb20a0d395e341dfcd6117a",
@@ -1079,9 +1065,9 @@ if($getUser->role_id==1){
             $api_preference_dept_id_option = json_decode($response->getBody(), true);
 
 
-            
 
-// dd($empDetails);
+
+            // dd($empDetails);
             if ($empDetails->emp_state != null) {
                 $stateDetails = State::get()->where('state_code_census', $empDetails->emp_state)->first();
             } else {
@@ -1105,13 +1091,13 @@ if($getUser->role_id==1){
                 foreach ($api_preference as $item) {
                     if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $empDetails['applicant_desig_id']) {
                         $post = $item['dsg_desc'];
-    
-                    
-    
-                        break; 
+
+
+
+                        break;
                     }
                 }
-//   dd($post);
+                //   dd($post);
 
 
             } else {
@@ -1129,10 +1115,10 @@ if($getUser->role_id==1){
                 foreach ($api_preference as $item) {
                     if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $empDetails['second_post_id']) {
                         $secondpost = $item['dsg_desc'];
-    
-                    
-    
-                        break; 
+
+
+
+                        break;
                     }
                 }
             } else {
@@ -1142,7 +1128,7 @@ if($getUser->role_id==1){
             if ($empDetails->dept_id_option != null) {
                 // $diff_dept = DepartmentModel::get()->where('id', $empDetails->dept_id_option)->first();
 
-                
+
                 //for third preference 
                 $diff_dept = null; // Initialize the variable to store deg_desc
 
@@ -1151,7 +1137,7 @@ if($getUser->role_id==1){
                         $diff_dept = $item['field_dept_desc'];
 
                         //   dd( $diff_dept);
-                        break; 
+                        break;
                     }
                 }
             } else {
@@ -1165,13 +1151,12 @@ if($getUser->role_id==1){
                 foreach ($api_preference_dept_id_option as $item) {
                     if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $empDetails['third_post_id']) {
                         $thirdpost = $item['dsg_desc'];
-    
-                    
-    
-                        break; 
+
+
+
+                        break;
                     }
                 }
-                
             } else {
                 $thirdpost = null;
             }
@@ -1219,7 +1204,7 @@ if($getUser->role_id==1){
             ////////Family members Extract/////////////////////////////////
             $newFamilyArray = array();
             $familyCount = FamilyMembers::get()->where("ein", $ein)->toArray();
-             if ($familyCount != null) {
+            if ($familyCount != null) {
                 foreach ($familyCount as $familyMember) {
                     if ($familyMember['relation'] != null) {
                         $RelationshipF = RelationshipModel::get()->where('id', $familyMember['relation'])->first();
@@ -1230,7 +1215,7 @@ if($getUser->role_id==1){
                 }
             }
             $familyCount = $newFamilyArray;
-           // dd($familyCount);
+            // dd($familyCount);
             /////////////////////////////////////////////////////////////////////////////////////////////
             ////////Uploaded file name Extract/////////////////////////////////
             $newFileArray = array();
@@ -1240,7 +1225,6 @@ if($getUser->role_id==1){
 
                     if ($fileCount['doc_id'] != null) {
                         $files = FilesToUploadModel::get()->where("doc_id", $fileCount['doc_id'])->first();
-                       
                     } else {
                         $files = null;
                     }
@@ -1272,7 +1256,7 @@ if($getUser->role_id==1){
                     'diff_dept' => $diff_dept,
 
                     'educations' => $educations->edu_name,
-                   // 'grades' => $empDetails->grade_name,
+                    // 'grades' => $empDetails->grade_name,
                     'Relationship' => $Relationship->relationship,
                     'gender' => $gender,
                     'familyCount' => $familyCount,

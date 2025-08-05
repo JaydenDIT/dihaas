@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Traits;
+
+namespace App\Services;
 
 
 use App\Models\ProcessTasksMapping;
 use App\Models\ProformaModel;
 use Illuminate\Support\Facades\Auth;
 
-trait WorkflowHandler
+class WorkflowHandler
 {
-
 
     public static function forwardApplication(ProformaModel $app)
     {

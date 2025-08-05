@@ -55,6 +55,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\SubmitController;
 use App\Http\Controllers\FillUOController;
 use App\Http\Controllers\CreatePdfController;
+use App\Http\Controllers\Duties\VerificationController;
 use App\Http\Controllers\GenerateUOController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\SuccessStoriesController;
@@ -1326,7 +1327,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 });
 
 
-
+Route::group(['prefix' => 'duty', 'as' => 'duty.personal.'], function () {
+    Route::get('/viewPersonalDetailsFrom/{id}', [VerificationController::class, 'viewDetail'])->name('detail');
+});
 
 Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.'], function () {
     // Optional route to view applications for a specific task

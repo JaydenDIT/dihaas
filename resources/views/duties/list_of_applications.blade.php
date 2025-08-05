@@ -4,9 +4,10 @@
 <script type="text/javascript">
     $(function() {
         applicationTable();
+        reinitSelect2();
     });
 
-    function applicationTable() {
+    function applicationTable(dept_id = '') {
         let columns = [
             "DT_RowIndex|nonorderable|nonsearchable",
             "ein",
@@ -15,7 +16,7 @@
             "appl_date",
             "applicant_name",
             "applicant_dob",
-            "status_label",
+            "tasks_status",
             "dept_name"
         ];
         loadAjaxTable({
@@ -23,9 +24,18 @@
             url: "{{ route('tasks.performa.ajaxlist', $task->tasks_id) }}",
             message: "No Performa Found",
             columns: columns,
-            action: true
+            action: true,
+            param: {
+                dept_id: dept_id
+            }
         });
     }
+
+    $(document).on('change', '#dept_id', function(e) {
+        let dept_id = $(this).val();
+        $('#application-table').DataTable().destroy(); // Destroy previous instance
+        applicationTable(dept_id); // Reload with selected dept
+    });
 </script>
 @endpush
 
@@ -52,11 +62,6 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-success">
-                    {{ __('Submit') }}
-                </button>
-            </div>
         </div>
 
 
@@ -65,7 +70,7 @@
     <table class="report-table" id="application-table">
         <thead>
             <tr>
-                <th>Seniority List Order</th>
+                <th>Seniority<br />List<br />Order</th>
                 <th>EIN</th>
                 <th>Deceased Name</th>
                 <th>DOE</th>

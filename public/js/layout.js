@@ -147,11 +147,20 @@ function loadAjaxTable(data, callbackfn = "") {
     }
 
     // Parameter function for server-side data
-    let param = function (d) {
-        d._token = _token;
-    };
+    let param;
     if (typeof data["param"] === "function") {
         param = data["param"];
+    } else if (typeof data["param"] === "object") {
+        // If param is a plain object, convert to function that merges with DataTable's `d`
+        param = function (d) {
+            d._token = _token;
+            Object.assign(d, data["param"]);
+        };
+    } else {
+        // Default fallback
+        param = function (d) {
+            d._token = _token;
+        };
     }
 
     // Default DOM structure and length menu
@@ -165,6 +174,8 @@ function loadAjaxTable(data, callbackfn = "") {
         [10, 25, 50],
         [10, 25, 50],
     ];
+
+    let select = data["select"] || false;
 
     // Destroy any existing DataTable instance on the table
     if ($.fn.DataTable.isDataTable(table)) {
@@ -269,7 +280,7 @@ function loadAjaxTable(data, callbackfn = "") {
         },
         dom: dom,
         buttons: exportButtonOptions,
-        select: true,
+        select: select,
         stateSave: false,
         lengthMenu: lengthMenu,
     });
