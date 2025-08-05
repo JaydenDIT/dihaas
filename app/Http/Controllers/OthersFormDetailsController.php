@@ -22,6 +22,7 @@ use App\Models\ProformaHistoryModel;
 use App\Models\ProformaModel;
 use App\Models\RelationshipModel;
 use App\Models\RemarksApproveModel;
+use App\Models\RemarksModel;
 use App\Models\State;
 use App\Models\StateModel;
 use App\Models\SubDivision;
@@ -41,7 +42,7 @@ class OthersFormDetailsController extends Controller
     //
     public function index()
     {
-
+        $Remarks = RemarksModel::get()->toArray();
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
 
@@ -93,7 +94,7 @@ class OthersFormDetailsController extends Controller
                 $x = $x + 1;
             }
             //session()->put('ein', $ein);
-            return view('admin/Form/form_other_details', compact('getUser', 'RemarksApprove', 'empDetails', 'formStatArray', 'ein', 'status', 'proforma'));
+            return view('admin/Form/form_other_details', compact('getUser', 'Remarks', 'RemarksApprove', 'empDetails', 'formStatArray', 'ein', 'status', 'proforma'));
         } else {
             return redirect()->route('viewStartEmp');
         }

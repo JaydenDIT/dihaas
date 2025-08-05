@@ -87,6 +87,7 @@ use App\Models\EmpFormSubmissionStatusHistoryModel;
 use App\Models\FileHistoryModel;
 use App\Models\State;
 use App\Models\TransferModel;
+use App\Services\WorkflowHandler;
 
 class HomeController extends Controller
 {
@@ -332,7 +333,7 @@ class HomeController extends Controller
         return view('admin/removedEmpLists', compact('removed_emp_list'));
     }
 
- public function viewApplicantsForVerificationSearch(Request $request)
+    public function viewApplicantsForVerificationSearch(Request $request)
     {
         try {
             $empListArray = null;
@@ -342,8 +343,8 @@ class HomeController extends Controller
             $RemarksApprove = RemarksApproveModel::get()->toArray();
             $tempEmpList = null;
 
-           // $file_status_array=[1, 2]; 
-            $statusArray = [1,2,3,9]; 
+            // $file_status_array=[1, 2]; 
+            $statusArray = [1, 2, 3, 9];
 
             $empListArray = ProformaModel::get()->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->whereIn('status', $statusArray)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
             // Change for DIHAS below
@@ -432,10 +433,10 @@ class HomeController extends Controller
 
             $Remarks = RemarksModel::get()->toArray();
             $RemarksApprove = RemarksApproveModel::get()->toArray();
-            
+
             //$file_status_array=[1, 2]; 
-            $statusArray = [1,2,3,9]; 
-      
+            $statusArray = [1, 2, 3, 9];
+
             $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('upload_status', 1)->where('form_status', 1)->whereIn('status', $statusArray)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
 
             $empList = ProformaModel::orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->where('upload_status', 1)->where('dept_id', $getUser->dept_id)->where('form_status', 1)->whereIn('status', $statusArray)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(6);
@@ -514,24 +515,24 @@ class HomeController extends Controller
             $RemarksApprove = RemarksApproveModel::get()->toArray();
             $tempEmpList = null;
             $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-            $file_status_array=[1, 5];
-             $statusArray = [1,2,3]; //status of Table Proforma
+            $file_status_array = [1, 5];
+            $statusArray = [1, 2, 3]; //status of Table Proforma
             // $rejected_status = [ null, 1 ];
-           //where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)
+            //where('upload_status', 1)->where('form_status', 1)->where('file_status', 1)
             //$empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
-             $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->toArray();
+            $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->toArray();
             // Change for DIHAS below
             //$empList = ProformaModel::where('form_status', 1)->where('dept_id', $getUser->dept_id)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(10);
-             $empList = ProformaModel::where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->where('rejected_status', '<=', 1)->paginate(10);
+            $empList = ProformaModel::where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->where('rejected_status', '<=', 1)->paginate(10);
             if ($request->searchItem != null || trim($request->searchItem) != '') {
                 //$empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('ein', $request->searchItem)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
-                 $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->where('ein', $request->searchItem)->where('rejected_status', '<=', 1)->toArray();
+                $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->where('ein', $request->searchItem)->where('rejected_status', '<=', 1)->toArray();
                 $empList = ProformaModel::orderByRaw("expire_on_duty = 'no',deceased_doe,appl_date, applicant_dob")->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->where('ein', $request->searchItem)->where('rejected_status', '<=', 1)->paginate(10);
                 $tempEmpList = $empListArray;
                 if (count($tempEmpList) == 0) {
                     $tempEmpList = 0;
 
-                    return view('admin/viewStartEmp', compact('deptListArray','empList', 'empListArray', 'Remarks', 'RemarksApprove'));
+                    return view('admin/viewStartEmp', compact('deptListArray', 'empList', 'empListArray', 'Remarks', 'RemarksApprove'));
                 }
             }
             $stat = '';
@@ -584,7 +585,7 @@ class HomeController extends Controller
             }
             Session::put('einsearch', $request->searchItem);
 
-            return view('admin/viewStartEmp', compact('deptListArray','RemarksApprove', 'empList', 'empListArray', 'Remarks'));
+            return view('admin/viewStartEmp', compact('deptListArray', 'RemarksApprove', 'empList', 'empListArray', 'Remarks'));
         } catch (Exception $e) {
 
             return response()->json([
@@ -609,27 +610,27 @@ class HomeController extends Controller
             $Remarks = RemarksModel::get()->toArray();
             $RemarksApprove = RemarksApproveModel::get()->toArray();
             // $status = [ 1, 2 ];
-            $file_status_array=[1, 5];
+            $file_status_array = [1, 5];
             $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-            $statusArray = [1,2,3]; //status of Table Proforma
+            $statusArray = [1, 2, 3]; //status of Table Proforma
             //$empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
-              $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->toArray();
+            $empListArray = ProformaModel::get()->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->toArray();
 
             //$empList = ProformaModel::orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->paginate(6);
-             $empList = ProformaModel::orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->paginate(6);
+            $empList = ProformaModel::orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->whereIn('status', $statusArray)->where('upload_status', 1)->where('form_status', 1)->whereIn('file_status', $file_status_array)->where('rejected_status', '<=', 1)->paginate(6);
             //dd( $empList );
             //expire_on_duty if yes top priority
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-        });
-        
-        // ->filter(function($empItem) use ($user_id){
-        //     //Filter only the logged in (authenticated) user
-        //     return($empItem->uploaded_id == $user_id);
-        // });
-        
+            $empList = $empList->map(function ($empItem, $index) {
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;
+                return $empItem;
+            });
+
+            // ->filter(function($empItem) use ($user_id){
+            //     //Filter only the logged in (authenticated) user
+            //     return($empItem->uploaded_id == $user_id);
+            // });
+
             $stat = '';
 
             foreach ($empList as $data) {
@@ -679,7 +680,7 @@ class HomeController extends Controller
                 $data->formSubStat = $stat;
             }
 
-            return view('admin/viewStartEmp', compact('deptListArray','RemarksApprove', 'empList', 'empListArray', 'Remarks'));
+            return view('admin/viewStartEmp', compact('deptListArray', 'RemarksApprove', 'empList', 'empListArray', 'Remarks'));
         } catch (Exception $e) {
 
             return response()->json([
@@ -750,7 +751,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-          //  $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
+            //  $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
         }
         if ($getUser->role_id == 2) {
             $Remarks = RemarksModel::get()->toArray();
@@ -806,7 +807,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
         }
         if ($getUser->role_id == 3) {
             $Remarks = RemarksModel::get()->toArray();
@@ -858,7 +859,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
         }
         if ($getUser->role_id == 4) {
             $Remarks = RemarksModel::get()->toArray();
@@ -910,23 +911,23 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
         }
     }
 
     ////////////////////////////////////////////////////////////////////
 
     public function downloadPDFApplView()
-        {
+    {
 
-              $user_id = Auth::user()->id;
-            $getUser = User::get()->where('id', $user_id)->first();
+        $user_id = Auth::user()->id;
+        $getUser = User::get()->where('id', $user_id)->first();
 
         if (Session::has('einsearch')) {
             // Get data from session
             $einsearch = Session::get('einsearch');
 
-          
+
             if ($getUser->role_id == 1) {
                 $Remarks = RemarksModel::get()->toArray();
                 $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', 1)->where('file_status', 1)->where('rejected_status', '<=', 1)->toArray();
@@ -945,13 +946,13 @@ class HomeController extends Controller
                         $data->status = 'Submitted';
                     }
                     if ($data->status == 2) {
-                    $stat = 'verified';
-                    $data->status = 'Verified by DP';
-                }
-                if ($data->status == 9) {
-                    $stat = 'verified';
-                    $data->status = 'Verified by Department';
-                }
+                        $stat = 'verified';
+                        $data->status = 'Verified by DP';
+                    }
+                    if ($data->status == 9) {
+                        $stat = 'verified';
+                        $data->status = 'Verified by Department';
+                    }
                     if ($data->status == 3) {
                         $stat = 'forapproval';
                         $data->status = 'Put up for Approval';
@@ -989,7 +990,7 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-               // $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
+                // $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
             }
             if ($getUser->role_id == 2) {
                 $Remarks = RemarksModel::get()->toArray();
@@ -1009,13 +1010,13 @@ class HomeController extends Controller
                         $data->status = 'Submitted';
                     }
                     if ($data->status == 2) {
-                    $stat = 'verified';
-                    $data->status = 'Verified by DP';
-                }
-                if ($data->status == 9) {
-                    $stat = 'verified';
-                    $data->status = 'Verified by Department';
-                }
+                        $stat = 'verified';
+                        $data->status = 'Verified by DP';
+                    }
+                    if ($data->status == 9) {
+                        $stat = 'verified';
+                        $data->status = 'Verified by Department';
+                    }
                     if ($data->status == 3) {
                         $stat = 'forapproval';
                         $data->status = 'Put up for Approval';
@@ -1053,7 +1054,7 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-               // $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
+                // $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
             }
             if ($getUser->role_id == 3) {
                 $Remarks = RemarksModel::get()->toArray();
@@ -1113,7 +1114,7 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-               // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
+                // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
             }
             if ($getUser->role_id == 4) {
                 $Remarks = RemarksModel::get()->toArray();
@@ -1173,7 +1174,7 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-               // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
+                // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
             }
         } else {
             //////not search
@@ -1199,13 +1200,13 @@ class HomeController extends Controller
                         $data->status = 'Submitted';
                     }
                     if ($data->status == 2) {
-                    $stat = 'verified';
-                    $data->status = 'Verified by DP';
-                }
-                if ($data->status == 9) {
-                    $stat = 'verified';
-                    $data->status = 'Verified by Department';
-                }
+                        $stat = 'verified';
+                        $data->status = 'Verified by DP';
+                    }
+                    if ($data->status == 9) {
+                        $stat = 'verified';
+                        $data->status = 'Verified by Department';
+                    }
                     if ($data->status == 3) {
                         $stat = 'forapproval';
                         $data->status = 'Put up for Approval';
@@ -1243,7 +1244,7 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-              //  $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
+                //  $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
             }
             if ($getUser->role_id == 2) {
                 $Remarks = RemarksModel::get()->toArray();
@@ -1263,13 +1264,13 @@ class HomeController extends Controller
                         $data->status = 'Submitted';
                     }
                     if ($data->status == 2) {
-                    $stat = 'verified';
-                    $data->status = 'Verified by DP';
-                }
-                if ($data->status == 9) {
-                    $stat = 'verified';
-                    $data->status = 'Verified by Department';
-                }
+                        $stat = 'verified';
+                        $data->status = 'Verified by DP';
+                    }
+                    if ($data->status == 9) {
+                        $stat = 'verified';
+                        $data->status = 'Verified by Department';
+                    }
                     if ($data->status == 3) {
                         $stat = 'forapproval';
                         $data->status = 'Put up for Approval';
@@ -1307,7 +1308,7 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-              //  $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
+                //  $dompdf->stream('admin.generatedHODpdf', ['Attachment' => false]);
             }
             if ($getUser->role_id == 3) {
                 $Remarks = RemarksModel::get()->toArray();
@@ -1367,7 +1368,7 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-               // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
+                // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
             }
             if ($getUser->role_id == 4) {
                 $Remarks = RemarksModel::get()->toArray();
@@ -1428,7 +1429,7 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-              //  $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
+                //  $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
             }
         }
     }
@@ -1593,7 +1594,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
         } else {
 
             $Remarks = RemarksModel::get()->toArray();
@@ -1623,7 +1624,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
         }
     }
     ///////////////////AD ASSISTANT REVERT SEEN BY HOD/////////////////////////////////////
@@ -1787,7 +1788,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-          //  $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
+            //  $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
         } else {
 
             $Remarks = RemarksModel::get()->toArray();
@@ -1817,7 +1818,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
         }
     }
 
@@ -1949,7 +1950,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
         } else {
 
             $Remarks = RemarksModel::get()->toArray();
@@ -1980,7 +1981,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
         }
     }
 
@@ -2114,7 +2115,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
         } else {
             $Remarks = RemarksModel::get()->toArray();
 
@@ -2144,7 +2145,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-          //  $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
+            //  $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
         }
     }
 
@@ -2242,7 +2243,7 @@ class HomeController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $dompdf->stream();
-       // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
+        // $dompdf->stream('admin.generatedRevertPDF', ['Attachment' => false]);
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -2833,7 +2834,7 @@ class HomeController extends Controller
                 $stat = "verifieddp";
                 $data->status = "Verified By DP";
             }
-              if ($data->status == 9) {
+            if ($data->status == 9) {
                 $stat = "verifieddept";
                 $data->status = "Verified By Department";
             }
@@ -2913,11 +2914,11 @@ class HomeController extends Controller
                 $stat = 'submitted';
                 $data->status = 'Submitted';
             }
-              if ($data->status == 2) {
+            if ($data->status == 2) {
                 $stat = "verifieddp";
                 $data->status = "Verified By DP";
             }
-              if ($data->status == 9) {
+            if ($data->status == 9) {
                 $stat = "verifieddept";
                 $data->status = "Verified By Department";
             }
@@ -2987,11 +2988,11 @@ class HomeController extends Controller
                 $stat = "submitted";
                 $data->status = "Submitted";
             }
-             if ($data->status == 2) {
+            if ($data->status == 2) {
                 $stat = "verifieddp";
                 $data->status = "Verified By DP";
             }
-              if ($data->status == 9) {
+            if ($data->status == 9) {
                 $stat = "verifieddept";
                 $data->status = "Verified By Department";
             }
@@ -3069,11 +3070,11 @@ class HomeController extends Controller
                 $stat = 'submitted';
                 $data->status = 'Submitted';
             }
-             if ($data->status == 2) {
+            if ($data->status == 2) {
                 $stat = "verifieddp";
                 $data->status = "Verified By DP";
             }
-              if ($data->status == 9) {
+            if ($data->status == 9) {
                 $stat = "verifieddept";
                 $data->status = "Verified By Department";
             }
@@ -3222,11 +3223,11 @@ class HomeController extends Controller
                 $stat = "submitted";
                 $data->status = "Submitted";
             }
-             if ($data->status == 2) {
+            if ($data->status == 2) {
                 $stat = "verifieddp";
                 $data->status = "Verified By DP";
             }
-              if ($data->status == 9) {
+            if ($data->status == 9) {
                 $stat = "verifieddept";
                 $data->status = "Verified By Department";
             }
@@ -3351,11 +3352,11 @@ class HomeController extends Controller
                 $stat = 'submitted';
                 $data->status = 'Submitted';
             }
-             if ($data->status == 2) {
+            if ($data->status == 2) {
                 $stat = "verifieddp";
                 $data->status = "Verified By DP";
             }
-              if ($data->status == 9) {
+            if ($data->status == 9) {
                 $stat = "verifieddept";
                 $data->status = "Verified By Department";
             }
@@ -3429,11 +3430,11 @@ class HomeController extends Controller
                 $stat = "submitted";
                 $data->status = "Submitted";
             }
-             if ($data->status == 2) {
+            if ($data->status == 2) {
                 $stat = "verifieddp";
                 $data->status = "Verified By DP";
             }
-              if ($data->status == 9) {
+            if ($data->status == 9) {
                 $stat = "verifieddept";
                 $data->status = "Verified By Department";
             }
@@ -3558,11 +3559,11 @@ class HomeController extends Controller
                 $stat = 'submitted';
                 $data->status = 'Submitted';
             }
-             if ($data->status == 2) {
+            if ($data->status == 2) {
                 $stat = "verifieddp";
                 $data->status = "Verified By DP";
             }
-              if ($data->status == 9) {
+            if ($data->status == 9) {
                 $stat = "verifieddept";
                 $data->status = "Verified By Department";
             }
@@ -3715,7 +3716,7 @@ class HomeController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $dompdf->stream();
-       // $dompdf->stream('admin.generatedDPpdf', ['Attachment' => false]);
+        // $dompdf->stream('admin.generatedDPpdf', ['Attachment' => false]);
     }
 
     public function downloadPDFNODAL()
@@ -3781,7 +3782,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedDPpdf', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedDPpdf', ['Attachment' => false]);
         } else {
 
             $empListArray = ProformaModel::get()->where('file_status', 6)->toArray();
@@ -3831,7 +3832,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedDPpdf', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedDPpdf', ['Attachment' => false]);
         }
     }
 
@@ -3895,7 +3896,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedDPpdf', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedDPpdf', ['Attachment' => false]);
         } else {
 
             $empListArray = ProformaModel::get()->where('status', 3)->toArray();
@@ -3945,7 +3946,7 @@ class HomeController extends Controller
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.generatedDPpdf', ['Attachment' => false]);
+            // $dompdf->stream('admin.generatedDPpdf', ['Attachment' => false]);
         }
     }
 
@@ -4086,247 +4087,245 @@ class HomeController extends Controller
     // Submitted Applicants list
 
     public function viewStatusApplicant(Request $request)
-    {                   
+    {
         // try{
         if (Auth::user()->role_id != 77) {
             // Show an error message
 
             return view('errors.404');
-        }else{
+        } else {
 
-        $user_id = Auth::user()->id;
-       
-        $getUser = User::get()->where('id', $user_id)->first();
-      
-        $getStatus = ProformaModel::get()->where('uploaded_id', '=', $getUser->id)->first();
-        // dd( $getStatus);
-        if ($getStatus != null) {
-                   // dd( $getStatus->status);
-        if ($getStatus->status >= 1 && $getUser->dept_id == null) {
-        
-        
-        $dept_id = ProformaModel::where('uploaded_id', $user_id)->first()->dept_id;
+            $user_id = Auth::user()->id;
 
-        //For Applicant Status
-        //get all data from database where status is 1
+            $getUser = User::get()->where('id', $user_id)->first();
+
+            $getStatus = ProformaModel::get()->where('uploaded_id', '=', $getUser->id)->first();
+            // dd( $getStatus);
+            if ($getStatus != null) {
+                // dd( $getStatus->status);
+                if ($getStatus->status >= 1 && $getUser->dept_id == null) {
 
 
-        
-         //To extract the inter dept seniority list
-         $qry = ProformaModel::where('form_status', 1)->where('rejected_status', '<=', 1);
-         //dd($dept_id);
-        $empListArray = $qry->get()->toArray();
-      
-        $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
-         
-        //dd( $empList1->toArray() ); 
+                    $dept_id = ProformaModel::where('uploaded_id', $user_id)->first()->dept_id;
 
-        $empList = $empList1->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-        })->filter(function($empItem) use ($user_id){
-            //Filter only the logged in (authenticated) user
-            return($empItem->uploaded_id == $user_id);
-            //return $empItem;
-        });  
-       // dd( $dept_id);
-       
-       //To extract the seniority list as per department
-        $qry2 = ProformaModel::where('dept_id', $dept_id)->where('form_status', 1)->where('rejected_status', '<=', 1);
-        $empListArray1 = $qry2->get()->toArray();
-      
-        $empList3 = $qry2->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
-        $empList2 = $empList3->map(function($empItem1, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem1->slNo2 = $index + 1;
-            return $empItem1;
-        })->filter(function($empItem1) use ($user_id){
-            //Filter only the logged in (authenticated) user
-            return($empItem1->uploaded_id == $user_id);
-           // return $empItem;           
-        }); 
-        $filteredArray = $empList2->all();
-        foreach ($filteredArray as $serial)
-        {
-            // dd($serial['slNo2']);
-            
-        }
+                    //For Applicant Status
+                    //get all data from database where status is 1
 
-       
 
-        $Remarks = RemarksModel::get()->toArray();
-        //expire_on_duty if yes top priority
 
-       // dd( $empList->toArray() );
-        $stat = '';
+                    //To extract the inter dept seniority list
+                    $qry = ProformaModel::where('form_status', 1)->where('rejected_status', '<=', 1);
+                    //dd($dept_id);
+                    $empListArray = $qry->get()->toArray();
 
-        foreach ($empList as $data) {
-            //sent back file user
+                    $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
 
-            if ($data->status == 0 && $data->form_status == 1) {
-                $stat = 'started';
-                $data->status = 'Incomplete';
-            }
+                    //dd( $empList1->toArray() ); 
 
-            if ($data->status == 1) {
-                $stat = 'submitted';
-                $data->status = 'Submitted';
-            }
-            if ($data->status == 2) {
-                $stat = 'verifieddp';
-                $data->status = 'Verified By DP';
-            }
-             if ($data->status == 9) {
-                $stat = 'verifieddept';
-                $data->status = 'Verified By Department';
-            }
-            if ($data->status == 3) {
-                $stat = 'forapproval';
-                $data->status = 'Put up for Approval';
-            }
+                    $empList = $empList1->map(function ($empItem, $index) {
+                        //First dynamically assigning the seniority number (Sl No)
+                        $empItem->slNo = $index + 1;
+                        return $empItem;
+                    })->filter(function ($empItem) use ($user_id) {
+                        //Filter only the logged in (authenticated) user
+                        return ($empItem->uploaded_id == $user_id);
+                        //return $empItem;
+                    });
+                    // dd( $dept_id);
 
-            if ($data->status == 4) {
-                $stat = 'approved';
-                $data->status = 'Approved';
-            }
-            if ($data->status == 5) {
-                $stat = 'appointed';
-                $data->status = 'Appointed';
-            }
-            if ($data->status == 6) {
-                $stat = 'order';
-                $data->status = 'Appointment Order';
-            }
-            if ($data->status == 7) {
-                $stat = 'signed';
-                $data->status = 'Signed by DP';
-            }
-            // if ($data->status == 8) {
-            //     $stat = 'transfer';
-            //     $data->status = 'Transferred';
-            // }
+                    //To extract the seniority list as per department
+                    $qry2 = ProformaModel::where('dept_id', $dept_id)->where('form_status', 1)->where('rejected_status', '<=', 1);
+                    $empListArray1 = $qry2->get()->toArray();
 
-            $data->formSubStat = $stat;
-        }
- 
-        return view('admin/viewStatusApplicant', compact('filteredArray', 'empList', 'empListArray', 'Remarks', 'getUser'));
-        session()->forget(['ein', 'from_emp_ein']);
-        $ein = null;
-        session().flush();
+                    $empList3 = $qry2->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+                    $empList2 = $empList3->map(function ($empItem1, $index) {
+                        //First dynamically assigning the seniority number (Sl No)
+                        $empItem1->slNo2 = $index + 1;
+                        return $empItem1;
+                    })->filter(function ($empItem1) use ($user_id) {
+                        //Filter only the logged in (authenticated) user
+                        return ($empItem1->uploaded_id == $user_id);
+                        // return $empItem;           
+                    });
+                    $filteredArray = $empList2->all();
+                    foreach ($filteredArray as $serial) {
+                        // dd($serial['slNo2']);
 
-       
-     // }
-    }
+                    }
 
-     if ($getStatus->form_status == 1 && $getStatus->status == 0 && $getUser->dept_id == null) {
 
-                       //  if($getUser->dept_id == null){
-        
-        $dept_id = ProformaModel::where('uploaded_id', $user_id)->first()->dept_id;
 
-        $qry = ProformaModel::where('dept_id', $dept_id)->where('form_status', 1)->where('rejected_status', '<=', 1);
-         //dd($dept_id);
-        $empListArray = $qry->get()->toArray();
-      
-        $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
-         
-        //dd( $empList1->toArray() ); 
+                    $Remarks = RemarksModel::get()->toArray();
+                    //expire_on_duty if yes top priority
 
-        $empList = $empList1->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-        })->filter(function($empItem) use ($user_id){
-            //Filter only the logged in (authenticated) user
-            return($empItem->uploaded_id == $user_id);
-            //return $empItem;
+                    // dd( $empList->toArray() );
+                    $stat = '';
 
-        });     
-      
+                    foreach ($empList as $data) {
+                        //sent back file user
 
-        $Remarks = RemarksModel::get()->toArray();
-        //expire_on_duty if yes top priority
+                        if ($data->status == 0 && $data->form_status == 1) {
+                            $stat = 'started';
+                            $data->status = 'Incomplete';
+                        }
 
-       // dd( $empList->toArray() );
-        $stat = '';
+                        if ($data->status == 1) {
+                            $stat = 'submitted';
+                            $data->status = 'Submitted';
+                        }
+                        if ($data->status == 2) {
+                            $stat = 'verifieddp';
+                            $data->status = 'Verified By DP';
+                        }
+                        if ($data->status == 9) {
+                            $stat = 'verifieddept';
+                            $data->status = 'Verified By Department';
+                        }
+                        if ($data->status == 3) {
+                            $stat = 'forapproval';
+                            $data->status = 'Put up for Approval';
+                        }
 
-        foreach ($empList as $data) {
-            //sent back file user
+                        if ($data->status == 4) {
+                            $stat = 'approved';
+                            $data->status = 'Approved';
+                        }
+                        if ($data->status == 5) {
+                            $stat = 'appointed';
+                            $data->status = 'Appointed';
+                        }
+                        if ($data->status == 6) {
+                            $stat = 'order';
+                            $data->status = 'Appointment Order';
+                        }
+                        if ($data->status == 7) {
+                            $stat = 'signed';
+                            $data->status = 'Signed by DP';
+                        }
+                        // if ($data->status == 8) {
+                        //     $stat = 'transfer';
+                        //     $data->status = 'Transferred';
+                        // }
 
-            if ($data->status == 0 && $data->form_status == 1) {
-                $stat = 'started';
-                $data->status = 'Incomplete';
-            }
+                        $data->formSubStat = $stat;
+                    }
 
-            if ($data->status == 1) {
-                $stat = 'submitted';
-                $data->status = 'Submitted';
-            }
-            if ($data->status == 2) {
-                $stat = 'verifieddp';
-                $data->status = 'Verified By DP';
-            }
-             if ($data->status == 9) {
-                $stat = 'verifieddept';
-                $data->status = 'Verified By Department';
-            }
-            if ($data->status == 3) {
-                $stat = 'forapproval';
-                $data->status = 'Put up for Approval';
-            }
+                    return view('admin/viewStatusApplicant', compact('filteredArray', 'empList', 'empListArray', 'Remarks', 'getUser'));
+                    session()->forget(['ein', 'from_emp_ein']);
+                    $ein = null;
+                    session() . flush();
 
-            if ($data->status == 4) {
-                $stat = 'approved';
-                $data->status = 'Approved';
-            }
-            if ($data->status == 5) {
-                $stat = 'appointed';
-                $data->status = 'Appointed';
-            }
-            if ($data->status == 6) {
-                $stat = 'order';
-                $data->status = 'Appointment Order';
-            }
-            if ($data->status == 7) {
-                $stat = 'signed';
-                $data->status = 'Signed by DP';
-            }
-            // if ($data->status == 8) {
-            //     $stat = 'transfer';
-            //     $data->status = 'Transferred';
-            // }
 
-            $data->formSubStat = $stat;
-        }
- 
-        return view('admin/viewStatusApplicant', compact('empList', 'empListArray', 'Remarks', 'getUser'));
-        session()->forget(['ein', 'from_emp_ein']);
-        $ein = null;
-        session().flush();     
-         }               
-     }
-                    // dd($getStatus->form_status);
-                     if ($getStatus->form_status == 1 && $getStatus->status == 0 && $getUser->dept_id == null) {
-                
-                       // dd($getStatus);
-
-                    $status = "Not yet Applied";
-                     return view('admin/viewBlankStatus', compact('status'));
+                    // }
                 }
-                    
-            }
-             // Check if the ProformaModel instance exists           
-           
-    //  } catch (Exception $e) {
 
-    //         return response()->json([
-    //             'status' => 0,
-    //            // 'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
-    //               'msg' => 'No Record Found!',
-    //             //'errors' => $e->getMessage()
-    //         ]);
-    //     }
+                if ($getStatus->form_status == 1 && $getStatus->status == 0 && $getUser->dept_id == null) {
+
+                    //  if($getUser->dept_id == null){
+
+                    $dept_id = ProformaModel::where('uploaded_id', $user_id)->first()->dept_id;
+
+                    $qry = ProformaModel::where('dept_id', $dept_id)->where('form_status', 1)->where('rejected_status', '<=', 1);
+                    //dd($dept_id);
+                    $empListArray = $qry->get()->toArray();
+
+                    $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+
+                    //dd( $empList1->toArray() ); 
+
+                    $empList = $empList1->map(function ($empItem, $index) {
+                        //First dynamically assigning the seniority number (Sl No)
+                        $empItem->slNo = $index + 1;
+                        return $empItem;
+                    })->filter(function ($empItem) use ($user_id) {
+                        //Filter only the logged in (authenticated) user
+                        return ($empItem->uploaded_id == $user_id);
+                        //return $empItem;
+
+                    });
+
+
+                    $Remarks = RemarksModel::get()->toArray();
+                    //expire_on_duty if yes top priority
+
+                    // dd( $empList->toArray() );
+                    $stat = '';
+
+                    foreach ($empList as $data) {
+                        //sent back file user
+
+                        if ($data->status == 0 && $data->form_status == 1) {
+                            $stat = 'started';
+                            $data->status = 'Incomplete';
+                        }
+
+                        if ($data->status == 1) {
+                            $stat = 'submitted';
+                            $data->status = 'Submitted';
+                        }
+                        if ($data->status == 2) {
+                            $stat = 'verifieddp';
+                            $data->status = 'Verified By DP';
+                        }
+                        if ($data->status == 9) {
+                            $stat = 'verifieddept';
+                            $data->status = 'Verified By Department';
+                        }
+                        if ($data->status == 3) {
+                            $stat = 'forapproval';
+                            $data->status = 'Put up for Approval';
+                        }
+
+                        if ($data->status == 4) {
+                            $stat = 'approved';
+                            $data->status = 'Approved';
+                        }
+                        if ($data->status == 5) {
+                            $stat = 'appointed';
+                            $data->status = 'Appointed';
+                        }
+                        if ($data->status == 6) {
+                            $stat = 'order';
+                            $data->status = 'Appointment Order';
+                        }
+                        if ($data->status == 7) {
+                            $stat = 'signed';
+                            $data->status = 'Signed by DP';
+                        }
+                        // if ($data->status == 8) {
+                        //     $stat = 'transfer';
+                        //     $data->status = 'Transferred';
+                        // }
+
+                        $data->formSubStat = $stat;
+                    }
+
+                    return view('admin/viewStatusApplicant', compact('empList', 'empListArray', 'Remarks', 'getUser'));
+                    session()->forget(['ein', 'from_emp_ein']);
+                    $ein = null;
+                    session() . flush();
+                }
+            }
+            // dd($getStatus->form_status);
+            if ($getStatus->form_status == 1 && $getStatus->status == 0 && $getUser->dept_id == null) {
+
+                // dd($getStatus);
+
+                $status = "Not yet Applied";
+                return view('admin/viewBlankStatus', compact('status'));
+            }
+        }
+        // Check if the ProformaModel instance exists           
+
+        //  } catch (Exception $e) {
+
+        //         return response()->json([
+        //             'status' => 0,
+        //            // 'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
+        //               'msg' => 'No Record Found!',
+        //             //'errors' => $e->getMessage()
+        //         ]);
+        //     }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -4343,73 +4342,69 @@ class HomeController extends Controller
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
 
-          $file_status_array=[1,2,5,6,7,8,9]; 
-        $statusArray = [1,2,3,4,5,6,7,9];
-//Status for DP
-         $file_status_array1=[1,2,5,6,7,8,9]; 
-        $statusArray1 = [1,2,3,4,5,6,7,9];
+        $file_status_array = [1, 2, 5, 6, 7, 8, 9];
+        $statusArray = [1, 2, 3, 4, 5, 6, 7, 9];
+        //Status for DP
+        $file_status_array1 = [1, 2, 5, 6, 7, 8, 9];
+        $statusArray1 = [1, 2, 3, 4, 5, 6, 7, 9];
         // $tempEmpList = null;
 
         if ($getUser->role_id == 1 || $getUser->role_id == 2) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
 
-                $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
-            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
-           
-            $Remarks = RemarksModel::get()->toArray();
+                $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
+                $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
 
-            //Loading all the available employee records 
-            $empListAll = $empList1->map(function($empItem, $index){
-                //First dynamically assigning the seniority number (Sl No)
-                $empItem->slNo = $index + 1;            
-                return $empItem;            
-                            
-            });
+                $Remarks = RemarksModel::get()->toArray();
 
-            //Pickup as per based on department ID
+                //Loading all the available employee records 
+                $empListAll = $empList1->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                });
 
-             //Filtering based on ein
-            $empList = $empListAll->filter(function($empItem1) use ($request){
-                //Filter only the logged in (authenticated) user
-                return($empItem1->ein == $request->searchItem);
-                    
-            })->map(function($emp, $index){
-                //Serializing employee list as per department
-                $emp->slNo2 = $index;
-                return $emp;
-            }); 
-              //dd($empList); 
-            
-        }else{         
+                //Pickup as per based on department ID
 
-            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
-            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
-           
-            $Remarks = RemarksModel::get()->toArray();
+                //Filtering based on ein
+                $empList = $empListAll->filter(function ($empItem1) use ($request) {
+                    //Filter only the logged in (authenticated) user
+                    return ($empItem1->ein == $request->searchItem);
+                })->map(function ($emp, $index) {
+                    //Serializing employee list as per department
+                    $emp->slNo2 = $index;
+                    return $emp;
+                });
+                //dd($empList); 
 
-            //Loading all the available employee records 
-            $empListAll = $empList1->map(function($empItem, $index){
-                //First dynamically assigning the seniority number (Sl No)
-                $empItem->slNo = $index + 1;            
-                return $empItem;            
-                            
-            });
+            } else {
 
-            //Filtering based on department ID
-            $empList = $empListAll->filter(function($empItem1) use ($getUser){
-                //Filter only the logged in (authenticated) user
-                return($empItem1->dept_id == $getUser->dept_id);
-                    
-            })->map(function($emp, $index){
-                //Serializing employee list as per department
-                $emp->slNo2 = $index;
-                return $emp;
-            }); 
-              // dd($empList); 
-        } 
-            
-     
-               
+                $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
+                $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+
+                $Remarks = RemarksModel::get()->toArray();
+
+                //Loading all the available employee records 
+                $empListAll = $empList1->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                });
+
+                //Filtering based on department ID
+                $empList = $empListAll->filter(function ($empItem1) use ($getUser) {
+                    //Filter only the logged in (authenticated) user
+                    return ($empItem1->dept_id == $getUser->dept_id);
+                })->map(function ($emp, $index) {
+                    //Serializing employee list as per department
+                    $emp->slNo2 = $index;
+                    return $emp;
+                });
+                // dd($empList); 
+            }
+
+
+
             $stat = '';
 
             foreach ($empList as $data) {
@@ -4428,7 +4423,7 @@ class HomeController extends Controller
                     $stat = 'verifieddp';
                     $data->status = 'Verified By DP';
                 }
-                if($data->status == 9){
+                if ($data->status == 9) {
                     $stat = 'verifieddept';
                     $data->status = 'Verified By Department';
                 }
@@ -4462,58 +4457,55 @@ class HomeController extends Controller
             }
             Session::put('einsearch', $request->searchItem);
 
-           // dd($filteredArray);
+            // dd($filteredArray);
 
             return view('admin/viewFileStatus', compact('empList', 'empListArray', 'Remarks', 'getUser'));
             // session()->forget(['ein', 'from_emp_ein']);
             // $ein = null;
             // session().flush();
-                
-    
-}
+
+
+        }
 
 
 
-       
+
         // dd( $getUser->role_id );
         if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
 
                 $request->session()->forget(['deptId']);
-               
-                $qry = ProformaModel::whereIn('file_status', $file_status_array1)->whereIn('status', $statusArray1);         
-                $empListArray = $qry->get()->toArray();      
-                $empList2 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();    
-                    
-                $Remarks = RemarksModel::get()->toArray();
-                $empList = $empList2->map(function($empItem, $index){
-                        //First dynamically assigning the seniority number (Sl No)
-                    $empItem->slNo = $index + 1;
-                    return $empItem;
-                            
-                })->filter(function($empItem) use ($request){
-                    //Filter only the logged in (authenticated) user
-                    return($empItem->ein == $request->searchItem);
-                    //return $empItem;
-                });  
 
-            } else {
-               
-                $qry = ProformaModel::whereIn('file_status', $file_status_array1)->whereIn('status', $statusArray1);         
-                $empListArray = $qry->get()->toArray();      
-                $empList2 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();    
-                    
+                $qry = ProformaModel::whereIn('file_status', $file_status_array1)->whereIn('status', $statusArray1);
+                $empListArray = $qry->get()->toArray();
+                $empList2 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+
                 $Remarks = RemarksModel::get()->toArray();
-                $empList = $empList2->map(function($empItem, $index){
-                        //First dynamically assigning the seniority number (Sl No)
+                $empList = $empList2->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
                     $empItem->slNo = $index + 1;
                     return $empItem;
-                            
-                })->filter(function($empItem) use ($request){
+                })->filter(function ($empItem) use ($request) {
                     //Filter only the logged in (authenticated) user
-                    return($empItem->ein == $request->searchItem);
+                    return ($empItem->ein == $request->searchItem);
                     //return $empItem;
-                });  
+                });
+            } else {
+
+                $qry = ProformaModel::whereIn('file_status', $file_status_array1)->whereIn('status', $statusArray1);
+                $empListArray = $qry->get()->toArray();
+                $empList2 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+
+                $Remarks = RemarksModel::get()->toArray();
+                $empList = $empList2->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                })->filter(function ($empItem) use ($request) {
+                    //Filter only the logged in (authenticated) user
+                    return ($empItem->ein == $request->searchItem);
+                    //return $empItem;
+                });
             }
             $stat = '';
 
@@ -4533,7 +4525,7 @@ class HomeController extends Controller
                     $stat = 'verifieddp';
                     $data->status = 'Verified By DP';
                 }
-                 if ($data->status == 9) {
+                if ($data->status == 9) {
                     $stat = 'verifieddept';
                     $data->status = 'Verified By Department';
                 }
@@ -4581,41 +4573,39 @@ class HomeController extends Controller
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
         //Status for Dept
-        $file_status_array=[1, 2,5, 6, 7,8, 9]; 
-        $statusArray = [1,2,3,4,5,6,7,9]; //8 is for transferred to other dept but not use
-             
-    
+        $file_status_array = [1, 2, 5, 6, 7, 8, 9];
+        $statusArray = [1, 2, 3, 4, 5, 6, 7, 9]; //8 is for transferred to other dept but not use
+
+
         if ($getUser->role_id == 1 || $getUser->role_id == 2) {
-            
-            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
+
+            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
             $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
-           
+
             $Remarks = RemarksModel::get()->toArray();
 
             //Loading all the available employee records 
-            $empListAll = $empList1->map(function($empItem, $index){
+            $empListAll = $empList1->map(function ($empItem, $index) {
                 //First dynamically assigning the seniority number (Sl No)
-                $empItem->slNo = $index + 1;            
-                return $empItem;            
-                            
+                $empItem->slNo = $index + 1;
+                return $empItem;
             });
 
             //Filtering based on department ID
-            $empList = $empListAll->filter(function($empItem1) use ($getUser){
+            $empList = $empListAll->filter(function ($empItem1) use ($getUser) {
                 //Filter only the logged in (authenticated) user
-                return($empItem1->dept_id == $getUser->dept_id);
-                    
-            })->map(function($emp, $index){
+                return ($empItem1->dept_id == $getUser->dept_id);
+            })->map(function ($emp, $index) {
                 //Serializing employee list as per department
                 $emp->slNo2 = $index;
                 return $emp;
-            });   
+            });
 
             $stat = '';
 
             foreach ($empList as $data) {
 
-                
+
                 // $getUser1 = User::get()->where( 'id', $data->forwarded_by )->first();
 
                 if ($data->status == 0 && $data->form_status == 1) {
@@ -4631,7 +4621,7 @@ class HomeController extends Controller
                     $stat = 'verifieddp';
                     $data->status = 'Verified By DP';
                 }
-                 if ($data->status == 9) {
+                if ($data->status == 9) {
                     $stat = 'verifieddept';
                     $data->status = 'Verified By Department';
                 }
@@ -4665,8 +4655,7 @@ class HomeController extends Controller
             }
 
             return view('admin/viewFileStatus', compact('empList', 'empListArray', 'Remarks', 'getUser'));
-        }    
-      
+        }
     }
 
     public function viewFileStatusByDPDept(Request $request)
@@ -4677,8 +4666,8 @@ class HomeController extends Controller
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-        $file_status_array=[1, 2, 5, 6, 7,8, 9]; 
-        $statusArray = [1,2,3,4,5,6,7,9];
+        $file_status_array = [1, 2, 5, 6, 7, 8, 9];
+        $statusArray = [1, 2, 3, 4, 5, 6, 7, 9];
         if (session()->get('deptId') != '' && $request->input('page') == '') {
             $request->session()->forget(['deptId']);
         }
@@ -4690,31 +4679,28 @@ class HomeController extends Controller
             $deptId = session()->get('deptId');
             $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
             $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
-// dd($empList);
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-            
-            })->filter(function($empItem) use ($deptId){
-                    //Filter only the logged in (authenticated) user
-                    return($empItem->dept_id == $deptId);
-                    //return $empItem;
-                });  
-           
+            // dd($empList);
+            $empList = $empList->map(function ($empItem, $index) {
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;
+                return $empItem;
+            })->filter(function ($empItem) use ($deptId) {
+                //Filter only the logged in (authenticated) user
+                return ($empItem->dept_id == $deptId);
+                //return $empItem;
+            });
         } else {
             //$file_status = [ 5, 6 ];
             // $empListArray = ProformaModel::get()->whereIn( 'file_status', $file_status )->toArray();
             $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
             $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
 
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-            
+            $empList = $empList->map(function ($empItem, $index) {
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;
+                return $empItem;
             });
-        //   dd($empList);
+            //   dd($empList);
         }
         $Remarks = RemarksModel::get()->toArray();
         //expire_on_duty if yes top priority
@@ -4738,7 +4724,7 @@ class HomeController extends Controller
                 $stat = 'verifieddp';
                 $data->status = 'Verified By DP';
             }
-              if ($data->status == 9) {
+            if ($data->status == 9) {
                 $stat = 'verifieddept';
                 $data->status = 'Verified By Department';
             }
@@ -4779,63 +4765,58 @@ class HomeController extends Controller
         // Change for DIHAS below
         $request->session()->forget(['ein', 'ein']);
         $deptId = $request->input('dept_id');
-       // dd($deptId);
+        // dd($deptId);
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-        $file_status_array=[1, 2,5, 6, 7,8, 9]; 
-        $statusArray = [1,2,3,4,5,6,7,9];
+        $file_status_array = [1, 2, 5, 6, 7, 8, 9];
+        $statusArray = [1, 2, 3, 4, 5, 6, 7, 9];
         if (session()->get('deptId') != '' && $request->input('page') == '') {
             $request->session()->forget(['deptId']);
         }
         if (strlen($deptId) > 0) {
             session()->put('deptId', $deptId);
-        }      
+        }
         $Remarks = RemarksModel::get()->toArray();
-       
-          if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
+
+        if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
 
                 $request->session()->forget(['deptId']);
- 
-               // $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
+
+                // $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
                 //$empList2 = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
-                
-                $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);         
-                $empListArray = $qry->get()->toArray();      
-                $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();    
-                  //dd($empList2 )  ;
+
+                $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
+                $empListArray = $qry->get()->toArray();
+                $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+                //dd($empList2 )  ;
                 $Remarks = RemarksModel::get()->toArray();
-                $empList = $empList1->map(function($empItem, $index){
-                        //First dynamically assigning the seniority number (Sl No)
+                $empList = $empList1->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
                     $empItem->slNo = $index + 1;
                     return $empItem;
-                            
-                })->filter(function($empItem) use ($request){
+                })->filter(function ($empItem) use ($request) {
                     //Filter only the logged in (authenticated) user
-                    return($empItem->ein == $request->searchItem);
+                    return ($empItem->ein == $request->searchItem);
                     //return $empItem;
-                });    
-
-              
+                });
             } else {
 
-            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
-            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
-//dd($empList1 )  ;
-            $empList = $empList1->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-            
-            });
-         
-              //  $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
+                $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
+                $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'), deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+                //dd($empList1 )  ;
+                $empList = $empList1->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                });
+
+                //  $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
                 // $Appl_List = count( $empListArray );
                 // dd( $empListArray );
-               // $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+                // $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
                 $Remarks = RemarksModel::get()->toArray();
-              
             }
 
 
@@ -4857,7 +4838,7 @@ class HomeController extends Controller
                     $stat = 'verifieddp';
                     $data->status = 'Verified By DP';
                 }
-                 if ($data->status == 9) {
+                if ($data->status == 9) {
                     $stat = 'verifieddept';
                     $data->status = 'Verified By Department';
                 }
@@ -4891,39 +4872,38 @@ class HomeController extends Controller
             }
             Session::put('einsearch', $request->searchItem);
 
-        return view('admin/viewFileStatusByDP', compact('deptListArray',  'empList', 'empListArray', 'Remarks', 'getUser'));
+            return view('admin/viewFileStatusByDP', compact('deptListArray',  'empList', 'empListArray', 'Remarks', 'getUser'));
+        }
     }
-}
 
 
     public function downloadPDFStatus()
     {
 
         $user_id = Auth::user()->id;
-            $getUser = User::get()->where('id', $user_id)->first();
+        $getUser = User::get()->where('id', $user_id)->first();
         //dd($getUser);
         if (Session::has('einsearch')) {
             // Get data from session
             $einsearch = Session::get('einsearch');
-          
+
             if ($getUser->role_id == 1 || $getUser->role_id == 2) {
                 $empListArray = ProformaModel::get()->where('dept_id', $getUser->dept_id)->where('form_status', '!=', 0)->toArray();
-              
-              
+
+
                 $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->where('form_status', '!=', 0)->where('dept_id', $getUser->dept_id)->get();
                 $Remarks = RemarksModel::get()->toArray();
 
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-            
-            })->filter(function($empItem) use ($einsearch){
-            //Filter only the logged in (authenticated) user
-            return($empItem->ein == $einsearch);
-            //return $empItem;
+                $empList = $empList->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                })->filter(function ($empItem) use ($einsearch) {
+                    //Filter only the logged in (authenticated) user
+                    return ($empItem->ein == $einsearch);
+                    //return $empItem;
 
-        });   
+                });
 
                 $stat = '';
 
@@ -4978,28 +4958,27 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-               // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
+                // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
             }
-           
+
 
             if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 ||  $getUser->role_id == 9) {
                 $empListArray = ProformaModel::get()->where('status', '!=', 0)->toArray();
-               // $Appl_List = count($empListArray);
+                // $Appl_List = count($empListArray);
                 //dd( $Appl_List );
                 $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),dept_name,deceased_doe,appl_date, applicant_dob")->where('status', '!=', 0)->get();
                 $Remarks = RemarksModel::get()->toArray();
 
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-            
-            })->filter(function($empItem) use ($einsearch){
-            //Filter only the logged in (authenticated) user
-            return($empItem->ein == $einsearch);
-            //return $empItem;
+                $empList = $empList->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                })->filter(function ($empItem) use ($einsearch) {
+                    //Filter only the logged in (authenticated) user
+                    return ($empItem->ein == $einsearch);
+                    //return $empItem;
 
-        });   
+                });
                 $stat = '';
                 // dd( $empList );
                 foreach ($empList as $data) {
@@ -5057,7 +5036,7 @@ class HomeController extends Controller
             }
         } else {
             // $deptListArray = DepartmentModel::orderBy( 'dept_name' )->get()->unique( 'dept_name' );
-           // dd('einsearch');
+            // dd('einsearch');
             if ($getUser->role_id == 1 || $getUser->role_id == 2) {
                 $empListArray = ProformaModel::get()->where('status', '!=', 0)->where('dept_id', $getUser->dept_id)->toArray();
                 // $Appl_List = count( $empListArray );
@@ -5065,17 +5044,16 @@ class HomeController extends Controller
                 $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->where('status', '!=', 0)->where('dept_id', $getUser->dept_id)->get();
                 $Remarks = RemarksModel::get()->toArray();
 
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-            
-            })->filter(function($empItem) use ($getUser){
-            //Filter only the logged in (authenticated) user
-            return($empItem->dept_id == $getUser->dept_id);
-            //return $empItem;
+                $empList = $empList->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                })->filter(function ($empItem) use ($getUser) {
+                    //Filter only the logged in (authenticated) user
+                    return ($empItem->dept_id == $getUser->dept_id);
+                    //return $empItem;
 
-        });   
+                });
 
                 $stat = '';
 
@@ -5130,19 +5108,19 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-               // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
+                // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
             }
-           
+
             if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
                 $empListArray = ProformaModel::get()->where('status', '!=', 0)->toArray();
-               // $Appl_List = count($empListArray);
+                // $Appl_List = count($empListArray);
                 //dd( $Appl_List );
                 $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),dept_name,deceased_doe,appl_date, applicant_dob")->where('status', '!=', 0)->get();
                 $Remarks = RemarksModel::get()->toArray();
-                $empList = $empList->map(function($empItem, $index){
-                //First dynamically assigning the seniority number (Sl No)
-                $empItem->slNo = $index + 1;
-                return $empItem;                
+                $empList = $empList->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
                 });
                 $stat = '';
                 // dd( $empList );
@@ -5197,7 +5175,7 @@ class HomeController extends Controller
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-               // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
+                // $dompdf->stream('admin.generatedPDFStatus', ['Attachment' => false]);
             }
         }
     }
@@ -5562,7 +5540,7 @@ class HomeController extends Controller
         $ein = session()->get('ein');
         //dd( $ein );
         $empDetails = ProformaModel::get()->where('ein', $ein)->first();
-       
+
 
         if ($empDetails) {
             $empDetails->update([
@@ -5600,7 +5578,7 @@ class HomeController extends Controller
         $ein = session()->get('ein');
         //dd( $ein );
         $empDetails = ProformaModel::get()->where('ein', $ein)->first();
-       
+
 
         if ($empDetails) {
             $empDetails->update([
@@ -5646,6 +5624,7 @@ class HomeController extends Controller
         }
         //dd( $empDetails->toArray() );
         if ($empDetails != null) {
+
             $empDetails->update([
                 'status' => 0,
                 'received_by' => $receiver, //previous sender
@@ -5657,6 +5636,8 @@ class HomeController extends Controller
                 //2 is for verified and 1 for submitted and 0 back to start
                 //reject 1 is for HOD Assistant back to citizen
             ]);
+
+            WorkflowHandler::dropApplication($empDetails);
         }
         //write save data for giving remarks
 
@@ -5672,7 +5653,7 @@ class HomeController extends Controller
         return redirect()->route('viewStartEmp')->with('message', 'Applicant details is revert Succesfully!!!');
     }
 
-     public function revertFormtoDP($id, Request $request)
+    public function revertFormtoDP($id, Request $request)
     {
         // dd( $request->toArray() );
         $user_id = Auth::user()->id;
@@ -6259,7 +6240,7 @@ class HomeController extends Controller
         return redirect()->route('selectDeptByDPNodal')->with('message', 'Applicant details is revert Succesfully!!!');
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
-public function forwardByDPAssistantToHODAssistant($id, Request $request)
+    public function forwardByDPAssistantToHODAssistant($id, Request $request)
     {
         //dd( $request->toArray() );
         // $request->remark_details == null;
@@ -6273,7 +6254,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
         $getUser2 = User::get()->where('role_id', $getUser->role_id, 6)->toArray();
         //dd( $getUser1->name );
-       
+
 
         // $empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
         // $getUser1 = User::get()->where('dept_id', $getUser->dept_id)->where('role_id', $getUser->role_id, 2)->first();
@@ -6289,8 +6270,8 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             //previous sender
         }
         // new from here change 17 may 2024
-         // dd($request->all());
-         if ($request->hasFile('pdf_file')) {
+        // dd($request->all());
+        if ($request->hasFile('pdf_file')) {
             $pdfFile = $request->file('pdf_file');
             $pdfFileName = $pdfFile->getClientOriginalName();
             $pdfFilePath = $pdfFile->storeAs('public', $pdfFileName);
@@ -6299,7 +6280,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             $empDetails->pdf_file = $pdfFileName;
             $empDetails->save();
         }
-       // dd($request->file('pdf_file'));
+        // dd($request->file('pdf_file'));
         //end here change 17 may 2024
 
         if ($empDetails != null) {
@@ -6355,8 +6336,8 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             //previous sender
         }
         // new from here change 17 may 2024
-         // dd($request->all());
-         if ($request->hasFile('pdf_file')) {
+        // dd($request->all());
+        if ($request->hasFile('pdf_file')) {
             $pdfFile = $request->file('pdf_file');
             $pdfFileName = $pdfFile->getClientOriginalName();
             $pdfFilePath = $pdfFile->storeAs('public', $pdfFileName);
@@ -6365,7 +6346,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             $empDetails->pdf_file = $pdfFileName;
             $empDetails->save();
         }
-       // dd($request->file('pdf_file'));
+        // dd($request->file('pdf_file'));
         //end here change 17 may 2024
 
         if ($empDetails != null) {
@@ -6909,10 +6890,10 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         //Below ein is passed in the session
         // $notfound ='';
         $ein = session()->get('ein');
-       // dd($ein);
-  try {
-        if ($ein != null) {
-          // dd( $ein);
+        // dd($ein);
+        try {
+            if ($ein != null) {
+                // dd( $ein);
                 $user_id = Auth::user()->id;
                 $getUser = User::get()->where('id', $user_id)->first();
                 //the above code needed for menu of header as per user
@@ -7004,243 +6985,242 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
                     return view('admin/Form/form_proforma_update', compact('deptListArray', 'getUser', 'proformas', 'per_subdivision', 'cur_districts', 'per_districts', 'cur_subdivision', 'Caste', 'Relationship', 'getUploader', 'Gender', 'formStatArray', 'status', 'fieldCollection', 'data', 'stateDetails', 'post', 'educations'));
                 }
-            
-        } else {
+            } else {
 
-            // dd( $ein );
-            //  try {
-            $request->session()->forget(['ein']);
-            //close previous session
-            // $notfound ='';
-            ////////////////////////////////////////////////////////////////////////////////////////
-            $deptId = $request->input('dept_id_option');
+                // dd( $ein );
+                //  try {
+                $request->session()->forget(['ein']);
+                //close previous session
+                // $notfound ='';
+                ////////////////////////////////////////////////////////////////////////////////////////
+                $deptId = $request->input('dept_id_option');
 
-            if (session()->get('deptId') != '' && $request->input('page') == '') {
-                $request->session()->forget(['deptId']);
-            }
+                if (session()->get('deptId') != '' && $request->input('page') == '') {
+                    $request->session()->forget(['deptId']);
+                }
 
-            if (strlen($deptId) > 0) {
-                session()->put('deptId', $deptId);
-            }
-            if (strlen(session()->get('deptId')) > 0) {
-                $deptId = session()->get('deptId');
-            }
-            ///////////////////////////////////////////////////////////////////////////////
-            $desigId = $request->input('third_post_id');
+                if (strlen($deptId) > 0) {
+                    session()->put('deptId', $deptId);
+                }
+                if (strlen(session()->get('deptId')) > 0) {
+                    $deptId = session()->get('deptId');
+                }
+                ///////////////////////////////////////////////////////////////////////////////
+                $desigId = $request->input('third_post_id');
 
-            if (session()->get('desigId') != '' && $request->input('page') == '') {
-                $request->session()->forget(['desigId']);
-            }
+                if (session()->get('desigId') != '' && $request->input('page') == '') {
+                    $request->session()->forget(['desigId']);
+                }
 
-            if (strlen($desigId) > 0) {
-                session()->put('desigId', $desigId);
-            }
-            if (strlen(session()->get('desigId')) > 0) {
-                $desigId = session()->get('desigId');
-            }
+                if (strlen($desigId) > 0) {
+                    session()->put('desigId', $desigId);
+                }
+                if (strlen(session()->get('desigId')) > 0) {
+                    $desigId = session()->get('desigId');
+                }
 
-            //above for dept and desig in part of form for different dept selection
+                //above for dept and desig in part of form for different dept selection
 
-            $user_id = Auth::user()->id;
-            // dd( Auth::user()->id );
-            $getUser = User::get()->where('id', $user_id)->first();
-            //dd( $getUser );
-            $getData = ProformaModel::get()->where('uploaded_id', $user_id)->where('uploader_role_id', 77)->first();
-            // dd( $getUser );
-            if ($getData != null) {
+                $user_id = Auth::user()->id;
+                // dd( Auth::user()->id );
+                $getUser = User::get()->where('id', $user_id)->first();
+                //dd( $getUser );
+                $getData = ProformaModel::get()->where('uploaded_id', $user_id)->where('uploader_role_id', 77)->first();
+                // dd( $getUser );
+                if ($getData != null) {
 
-                return back()->with('error_message', 'You have already applied!!!!');
-                //check for citizen who have applied twice reject
-            }
+                    return back()->with('error_message', 'You have already applied!!!!');
+                    //check for citizen who have applied twice reject
+                }
 
-            $data = array();
-            //dd( $data[ 'field_dept_desc' ] );
-            $notfound = '';
+                $data = array();
+                //dd( $data[ 'field_dept_desc' ] );
+                $notfound = '';
 
-            if ($request->input('ein') != '') {
-                $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-employee-profile', [
-                    'ein' => $request->input('ein'),
-                    'token' => 'b000e921eeb20a0d395e341dfcd6117a',
-                ]);
-                $data = json_decode($response->getBody(), true);
+                if ($request->input('ein') != '') {
+                    $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-employee-profile', [
+                        'ein' => $request->input('ein'),
+                        'token' => 'b000e921eeb20a0d395e341dfcd6117a',
+                    ]);
+                    $data = json_decode($response->getBody(), true);
+                    //dd( $data );
+
+                    if (count($data) > 0)
+                        $data = $data[0];
+                    else
+                        //dd( $request->input( 'ein' ) );
+                        $notfound = 'EIN ' . $request->input('ein') . ' not found in CMIS';
+                }
+
                 //dd( $data );
 
-                if (count($data) > 0)
-                    $data = $data[0];
-                else
-                    //dd( $request->input( 'ein' ) );
-                    $notfound = 'EIN ' . $request->input('ein') . ' not found in CMIS';
-            }
+                if ($data != null) {
+                    $getDept_id = DepartmentModel::get()->where('dept_name', $data['field_dept_desc'])->first();
+                    //dd( $getDept_id );
+                    $cmis_dept_id_int = intval($getDept_id->dept_id);
+                    // dd( $getUser->dept_id, $cmis_dept_id_int );
 
-            //dd( $data );
-
-            if ($data != null) {
-                $getDept_id = DepartmentModel::get()->where('dept_name', $data['field_dept_desc'])->first();
-                //dd( $getDept_id );
-                $cmis_dept_id_int = intval($getDept_id->dept_id);
-                // dd( $getUser->dept_id, $cmis_dept_id_int );
-
-                if ($getUser->dept_id != null && $getUser->dept_id > 0) {
-                    if ($getUser->dept_id != $cmis_dept_id_int) {
-                        $notfound = '';
-                        $data = array();
-                        $notfound = 'EIN ' . $request->input('ein') . ' has department which is not same as the User Department!!!!!';
-                        // dd( $notfound );
+                    if ($getUser->dept_id != null && $getUser->dept_id > 0) {
+                        if ($getUser->dept_id != $cmis_dept_id_int) {
+                            $notfound = '';
+                            $data = array();
+                            $notfound = 'EIN ' . $request->input('ein') . ' has department which is not same as the User Department!!!!!';
+                            // dd( $notfound );
+                        }
                     }
-                }
-                // if ( $getUser->dept_id == null && $getUser->dept_id == 0 ) {
+                    // if ( $getUser->dept_id == null && $getUser->dept_id == 0 ) {
 
-                // }
-            }
-
-            $getData1 = ProformaModel::get()->where('uploaded_id', $user_id)->where('ein', $request->input('ein'))->first();
-            //dd( $getData );
-            if ($getData1 != null) {
-
-                return back()->with('error_message', 'You have already applied!!!!');
-                //check for citizen who have applied twice reject
-            }
-
-            //to check whether getUser->dept_id is equal to ata[ 'field_dept_desc' ] if not alert
-
-            if ($getData == null && $getUser->role_id != 77) {
-                //allow to enter data for departments
-                // $notfound ='';
-                $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-
-                $stateDetails = State::getOption()->get();
-
-                $cd_grade = array();
-                //dd( $data[ 'field_dept_desc' ] );
-
-                //  try {
-                $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd', [
-                    'dept_code' => $getUser->dept_id,
-                    'token' => 'b000e921eeb20a0d395e341dfcd6117a',
-                ]);
-                $cd_grade = json_decode($response->getBody(), true);
-
-                // dd( $post );
-
-                $post = [];
-                foreach ($cd_grade as $cdgrade) {
-                    if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
-                        $post[] = $cdgrade;
-                    }
-                    // else {
-                    //     $post[] = [];
                     // }
                 }
 
-                // } catch ( Exception $e ) {
+                $getData1 = ProformaModel::get()->where('uploaded_id', $user_id)->where('ein', $request->input('ein'))->first();
+                //dd( $getData );
+                if ($getData1 != null) {
 
-                //     return response()->json( [
-                //         'status' => 0,
-                //         'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
-                //         //'errors' => $e->getMessage()
-                // ] );
-                // }
+                    return back()->with('error_message', 'You have already applied!!!!');
+                    //check for citizen who have applied twice reject
+                }
 
-                $educations = EducationModel::get()->toArray();
-                $Gender = GenderModel::get()->toArray();
-                $Caste = CasteModel::get()->toArray();
-                $Relationship = RelationshipModel::get()->toArray();
+                //to check whether getUser->dept_id is equal to ata[ 'field_dept_desc' ] if not alert
 
-                $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
+                if ($getData == null && $getUser->role_id != 77) {
+                    //allow to enter data for departments
+                    // $notfound ='';
+                    $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
 
-                //TODO
+                    $stateDetails = State::getOption()->get();
 
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                //get session for select_deptid
-
-                // $selected_deptid = session()->get( 'select_deptid' );
-                // if ( $selected_deptid != '' ) {
-                //    // dd( $selected_deptid );
-                //     $cd_grade1 = array();
-                //     $response = Http::post( 'http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd', [
-                //         'dept_code' => $selected_deptid,
-                //         'token' => 'b000e921eeb20a0d395e341dfcd6117a',
-                // ] );
-                //     $cd_grade1 = json_decode( $response->getBody(), true );
-
-                //     $postdept = [];
-                //     foreach ( $cd_grade1 as $cdgrade ) {
-                //         if ( $cdgrade[ 'group_code' ] == 'C' || $cdgrade[ 'group_code' ] == 'D' ) {
-                //             $postdept[] = $cdgrade;
-                //         }
-                //     }
-                //     session()->forget( [ 'select_deptid' ] );
-
-                // } else {
-                //    // dd( $selected_deptid );
-                //    session()->forget( [ 'select_deptid' ] );
-                //     $postdept = [];
-
-                // }
-                ///////////////////////////////////////////////////////////////////////////////////////
-
-                return view('admin/Form/form_proforma', compact('deptListArray', 'Caste', 'Relationship', 'getUser', 'Gender', 'stateDetails', 'post', 'educations', 'data', 'notfound'));
-            }           
-                
-
-            if ($getUser != null && $getUser->role_id == 77) {
-                // allow to enter data for fresh citizen
-                // $notfound ='';
-                $stateDetails = State::getOption()->get();
-
-                $Gender = GenderModel::get()->toArray();
-                $Caste = CasteModel::get()->toArray();
-                $Relationship = RelationshipModel::get()->toArray();
-                $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-                // dd( count( $data ) );
-                //  try {
-                if (count($data) > 0) {
-                    //After EIN pass the designation of concern department will populate in the drop down
                     $cd_grade = array();
+                    //dd( $data[ 'field_dept_desc' ] );
 
+                    //  try {
                     $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd', [
-                        'dept_code' => $data['dept_cd'],
+                        'dept_code' => $getUser->dept_id,
                         'token' => 'b000e921eeb20a0d395e341dfcd6117a',
                     ]);
                     $cd_grade = json_decode($response->getBody(), true);
-                } else {
-                    $cd_grade = [];
-                }
 
-                $post = [];
-                foreach ($cd_grade as $cdgrade) {
-                    if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
-                        $post[] = $cdgrade;
+                    // dd( $post );
+
+                    $post = [];
+                    foreach ($cd_grade as $cdgrade) {
+                        if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                            $post[] = $cdgrade;
+                        }
+                        // else {
+                        //     $post[] = [];
+                        // }
                     }
-                    // else {
-                    //     $post[] = [];
+
+                    // } catch ( Exception $e ) {
+
+                    //     return response()->json( [
+                    //         'status' => 0,
+                    //         'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
+                    //         //'errors' => $e->getMessage()
+                    // ] );
                     // }
+
+                    $educations = EducationModel::get()->toArray();
+                    $Gender = GenderModel::get()->toArray();
+                    $Caste = CasteModel::get()->toArray();
+                    $Relationship = RelationshipModel::get()->toArray();
+
+                    $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
+
+                    //TODO
+
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //get session for select_deptid
+
+                    // $selected_deptid = session()->get( 'select_deptid' );
+                    // if ( $selected_deptid != '' ) {
+                    //    // dd( $selected_deptid );
+                    //     $cd_grade1 = array();
+                    //     $response = Http::post( 'http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd', [
+                    //         'dept_code' => $selected_deptid,
+                    //         'token' => 'b000e921eeb20a0d395e341dfcd6117a',
+                    // ] );
+                    //     $cd_grade1 = json_decode( $response->getBody(), true );
+
+                    //     $postdept = [];
+                    //     foreach ( $cd_grade1 as $cdgrade ) {
+                    //         if ( $cdgrade[ 'group_code' ] == 'C' || $cdgrade[ 'group_code' ] == 'D' ) {
+                    //             $postdept[] = $cdgrade;
+                    //         }
+                    //     }
+                    //     session()->forget( [ 'select_deptid' ] );
+
+                    // } else {
+                    //    // dd( $selected_deptid );
+                    //    session()->forget( [ 'select_deptid' ] );
+                    //     $postdept = [];
+
+                    // }
+                    ///////////////////////////////////////////////////////////////////////////////////////
+
+                    return view('admin/Form/form_proforma', compact('deptListArray', 'Caste', 'Relationship', 'getUser', 'Gender', 'stateDetails', 'post', 'educations', 'data', 'notfound'));
                 }
-                // } catch ( Exception $e ) {
 
-                //     return response()->json( [
-                //         'status' => 0,
-                //         'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
-                //         //'errors' => $e->getMessage()
-                // ] );
-                // }
 
-                $educations = EducationModel::get()->toArray();
-                $formattedDate = today()->format('Y-m-d');
-                return view('admin/Form/form_proforma', compact('deptListArray', 'formattedDate', 'Caste', 'Relationship', 'getUser', 'Gender', 'stateDetails', 'post', 'educations', 'data', 'notfound'));
+                if ($getUser != null && $getUser->role_id == 77) {
+                    // allow to enter data for fresh citizen
+                    // $notfound ='';
+                    $stateDetails = State::getOption()->get();
+
+                    $Gender = GenderModel::get()->toArray();
+                    $Caste = CasteModel::get()->toArray();
+                    $Relationship = RelationshipModel::get()->toArray();
+                    $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
+                    // dd( count( $data ) );
+                    //  try {
+                    if (count($data) > 0) {
+                        //After EIN pass the designation of concern department will populate in the drop down
+                        $cd_grade = array();
+
+                        $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd', [
+                            'dept_code' => $data['dept_cd'],
+                            'token' => 'b000e921eeb20a0d395e341dfcd6117a',
+                        ]);
+                        $cd_grade = json_decode($response->getBody(), true);
+                    } else {
+                        $cd_grade = [];
+                    }
+
+                    $post = [];
+                    foreach ($cd_grade as $cdgrade) {
+                        if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                            $post[] = $cdgrade;
+                        }
+                        // else {
+                        //     $post[] = [];
+                        // }
+                    }
+                    // } catch ( Exception $e ) {
+
+                    //     return response()->json( [
+                    //         'status' => 0,
+                    //         'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
+                    //         //'errors' => $e->getMessage()
+                    // ] );
+                    // }
+
+                    $educations = EducationModel::get()->toArray();
+                    $formattedDate = today()->format('Y-m-d');
+                    return view('admin/Form/form_proforma', compact('deptListArray', 'formattedDate', 'Caste', 'Relationship', 'getUser', 'Gender', 'stateDetails', 'post', 'educations', 'data', 'notfound'));
                 }
             }
-         } catch (Exception $e) {
+        } catch (Exception $e) {
 
-                return response()->json([
-                    'status' => 0,
-                    'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
-                    //'errors' => $e->getMessage()
-                ]);
-            }
+            return response()->json([
+                'status' => 0,
+                'msg' => 'Server not responding!!Pls see your internet connection!!or CMIS portal down',
+                //'errors' => $e->getMessage()
+            ]);
         }
-    
-    
+    }
+
+
 
     public function viewFormBacklog(Request $request)
     {
@@ -7676,273 +7656,273 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
      * @return \Illuminate\Http\Response
      */
 
-     public function store(Request $request)
-     {
- 
-         $user_id = Auth::user()->id;
-         $getUser = User::get()->where('id', $user_id)->first();
- 
-         // http://manipurtemp02.nic.in/cmis_api/public/api/get-employee-profile?ein=088323&token=b000e921eeb20a0d395e341dfcd6117a
-         //////////////////////////////////////////////////////////////////////////
- 
-         // Calculates the difference between DateTime objects
- 
-         $entryDate = entryAgeModel::get()->first();
-         //return $entryDate;
-         $dateToday = date('Y-m-d');
-         // $dateToday = new DateTime(date("m/d/Y")); //confusion here what about other system       
-         $appl_DOB = date($request->applicant_dob);
-         //$difference = $appl_DOB->diff($dateToday);
- 
-         $difference = strtotime($dateToday) - strtotime($appl_DOB);
- 
-         //Calculate difference in days
-         $days = abs($difference / (60 * 60) / 24);
- 
- 
-         $ageLimit = ($entryDate->eligible_age * 365) + 3;
-         //return $ageLimit;
- 
-         //Calculate the date of submission which is valid only upto 6 months
- 
-         $SubmissionDate = TimeLineModel::get()->first();
- 
- 
-         $dateofsubmission = new DateTime($request->appl_date); //confusion here what about other system    
- 
-         $dateofexpiry = new DateTime($request->deceased_doe);
- 
-         $difference = $dateofexpiry->diff($dateofsubmission);
- 
-         $DaysDifferent = $difference->format('%R%a days'); //result comes as +5606 days
- 
-         $diffExplode = explode(' days', $DaysDifferent); //remove space days
-         $dateDiff = explode('+', $diffExplode['0']); //remove +
- 
-         //return  $resultDays;//display only days
- 
-         $AllowPeriod = ($SubmissionDate->timeline_months * 30) + 3;
- 
-         $validatedData = $request->validate([
-             'ein' => 'required',
-             'deceased_emp_name' => 'required',
-             'dept_name' => 'required|string',
-             'deceased_doa' => 'required',
-             'desig_name' => 'required|string',
-             'grade_name' => 'required|string',
-             'expire_on_duty' => 'required',
-             'deceased_doe' => 'required|string',
-             'deceased_causeofdeath' => 'required|string',
-             'applicant_name' => 'required|string',
-             'appl_date' => 'required|string',
-             'applicant_dob' => 'required',
-             'relationship' => 'required', // This part of the rule checks the existence
-             //  of the relationship field's value in the id column of the relationship table in the database.
-             'applicant_mobile' => 'required|string',
-             'applicant_edu_id' => 'required',
-             'physically_handicapped' => 'required',
-             'applicant_email_id' => 'required|string',
-             'caste_id' => 'required',
-             'sex' => 'required',
-             'emp_addr_lcality' => 'required|string',
-             'emp_addr_district' => 'required',
-             'emp_addr_subdiv' => 'required',
-             'emp_state' => 'required',
-             'deceased_emp_name' => 'required',
-             'dept_name' => 'required|string',
-             'deceased_doa' => 'required',
-             'desig_name' => 'required|string',
-             'grade_name' => 'required|string',
-             'emp_pincode' => 'required',
-             'emp_addr_lcality_ret' => 'required|string',
-             'emp_addr_district_ret' => 'required',
-             'emp_addr_subdiv_ret' => 'required',
-             'emp_state_ret' => 'required',
-             'emp_pincode_ret' => 'required',
-             'applicant_desig_id' => 'required',
-             'applicant_grade' => 'required',
-             'ministry' => 'required',
-             'deceased_dob' => 'required',
- 
-             'second_post_id' => 'required',
-             'second_grade_id' => 'required',
-             'dept_id_option' => 'required',
-             'third_post_id' => 'required',
-             'third_grade_id' => 'required',
-             'other_qualification'=>''
- 
- 
- 
-             // Add other fields and validation rules as needed
-         ]);
- 
- 
-         if (($days >= $ageLimit) && ($dateDiff['1'] <= $AllowPeriod)) {
- 
-             // Get the EIN and relationship from the request
-             $ein = $request->input('ein');
- 
-             // Find the ProformaModel instance by EIN
-             $proforma = ProformaModel::where('ein', $ein)->first();
- 
-             // Check if the ProformaModel instance exists
-             if ($proforma) {
-                 return response()->json(['error' => 'Already Entered'], 409);
-             }
- 
- 
-             $emp = ProformaModel::get()->where("ein", $request->ein)->toArray(); // form not yet submitted
- 
-             $emp_desig = DepartmentModel::get()->where("dept_name", $request->dept_name)->unique('dept_name')->first();
- 
-             /////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 
-             if ($getUser->role_id != 77) {
-                 $submitDate = $request->appl_date;
-                 $fileStatus = 1;
-             }
-             if ($getUser->role_id == 77) {
-                 $submitDate = null;
-                 $fileStatus = 0;
-             }
- 
-             // if (count($emp) == 0) {
-             if (!$proforma) {
- 
-                 ProformaModel::create([
- 
-                     'ein' => $validatedData['ein'],
-                     'deceased_emp_name' => $validatedData['deceased_emp_name'],
-                     'dept_name' => $validatedData['dept_name'],
-                     'desig_name' => $validatedData['desig_name'],
-                     'deceased_doa' => $validatedData['deceased_doa'],
-                     'ministry' =>  $validatedData['ministry'],
-                     'grade_name' =>  $validatedData['grade_name'],
-                     'deceased_dob' =>  $validatedData['deceased_dob'],
- 
-                     'relationship' => $validatedData['relationship'],
-                     'expire_on_duty' => $validatedData['expire_on_duty'],
-                     'deceased_doe' => $validatedData['deceased_doe'],
-                     'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-                     'applicant_name' => $validatedData['applicant_name'],
-                     'appl_date' => $validatedData['appl_date'],
-                     'applicant_dob' => $validatedData['applicant_dob'],
-                     'applicant_mobile' => $validatedData['applicant_mobile'],
-                     'applicant_edu_id' => $validatedData['applicant_edu_id'],
-                     'physically_handicapped' => $validatedData['physically_handicapped'],
-                     'applicant_email_id' => $validatedData['applicant_email_id'],
-                     'caste_id' => $validatedData['caste_id'],
-                     'sex' =>  $validatedData['sex'],
-                     'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-                     'emp_addr_district' => $validatedData['emp_addr_district'],
-                     'emp_addr_subdiv' => $validatedData['emp_addr_subdiv'],
-                     'emp_state' => $validatedData['emp_state'],
-                     'emp_pincode' => $validatedData['emp_pincode'],
-                     'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-                     'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-                     'emp_addr_subdiv_ret' => $validatedData['emp_addr_subdiv_ret'],
-                     'emp_state_ret' => $validatedData['emp_state_ret'],
-                     'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-                     'applicant_desig_id' => $validatedData['applicant_desig_id'],
-                     'applicant_grade' => $validatedData['applicant_grade'],
- 
-                     'second_post_id' => $validatedData['second_post_id'],
-                     'second_grade_id' => $validatedData['second_grade_id'],
-                     'dept_id_option' => $validatedData['dept_id_option'],
-                     'third_post_id' => $validatedData['third_post_id'],
-                     'third_grade_id' => $validatedData['third_grade_id'],
-                     'other_qualification' => $validatedData['other_qualification'],
- 
-                     'uploaded_id' => $getUser->id,
-                     'uploader_role_id' => $getUser->role_id,
-                     'dept_id' => $emp_desig->dept_id,
-                     'ministry_id' => $emp_desig->ministry_id,
-                     'file_status' => $fileStatus,
-                     'form_status' => 1,
-                     'upload_status' => 0,
-                     'change_status' => 0,
-                     'status' => 0,
-                     'rejected_status' => 0
-                 ]);
- //////////////////////////////////////////TO RECORD SENDER AND RECEIVER////////////////
-    $empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
-        // $getUser1 = User::get()->where( 'id', $empDetails->forwarded_by )->first();
-        $getUser1 = User::get()->where('id', $empDetails->uploaded_id)->first();
+    public function store(Request $request)
+    {
 
-        $getUser2 = User::get()->where('id', $empDetails->uploaded_id)->toArray();
-        //dd( $getUser1->name );
-        if (count($getUser2) == null) {
-            $receiver = null;
-            //previous sender
+        $user_id = Auth::user()->id;
+        $getUser = User::get()->where('id', $user_id)->first();
+
+        // http://manipurtemp02.nic.in/cmis_api/public/api/get-employee-profile?ein=088323&token=b000e921eeb20a0d395e341dfcd6117a
+        //////////////////////////////////////////////////////////////////////////
+
+        // Calculates the difference between DateTime objects
+
+        $entryDate = entryAgeModel::get()->first();
+        //return $entryDate;
+        $dateToday = date('Y-m-d');
+        // $dateToday = new DateTime(date("m/d/Y")); //confusion here what about other system       
+        $appl_DOB = date($request->applicant_dob);
+        //$difference = $appl_DOB->diff($dateToday);
+
+        $difference = strtotime($dateToday) - strtotime($appl_DOB);
+
+        //Calculate difference in days
+        $days = abs($difference / (60 * 60) / 24);
+
+
+        $ageLimit = ($entryDate->eligible_age * 365) + 3;
+        //return $ageLimit;
+
+        //Calculate the date of submission which is valid only upto 6 months
+
+        $SubmissionDate = TimeLineModel::get()->first();
+
+
+        $dateofsubmission = new DateTime($request->appl_date); //confusion here what about other system    
+
+        $dateofexpiry = new DateTime($request->deceased_doe);
+
+        $difference = $dateofexpiry->diff($dateofsubmission);
+
+        $DaysDifferent = $difference->format('%R%a days'); //result comes as +5606 days
+
+        $diffExplode = explode(' days', $DaysDifferent); //remove space days
+        $dateDiff = explode('+', $diffExplode['0']); //remove +
+
+        //return  $resultDays;//display only days
+
+        $AllowPeriod = ($SubmissionDate->timeline_months * 30) + 3;
+
+        $validatedData = $request->validate([
+            'ein' => 'required',
+            'deceased_emp_name' => 'required',
+            'dept_name' => 'required|string',
+            'deceased_doa' => 'required',
+            'desig_name' => 'required|string',
+            'grade_name' => 'required|string',
+            'expire_on_duty' => 'required',
+            'deceased_doe' => 'required|string',
+            'deceased_causeofdeath' => 'required|string',
+            'applicant_name' => 'required|string',
+            'appl_date' => 'required|string',
+            'applicant_dob' => 'required',
+            'relationship' => 'required', // This part of the rule checks the existence
+            //  of the relationship field's value in the id column of the relationship table in the database.
+            'applicant_mobile' => 'required|string',
+            'applicant_edu_id' => 'required',
+            'physically_handicapped' => 'required',
+            'applicant_email_id' => 'required|string',
+            'caste_id' => 'required',
+            'sex' => 'required',
+            'emp_addr_lcality' => 'required|string',
+            'emp_addr_district' => 'required',
+            'emp_addr_subdiv' => 'required',
+            'emp_state' => 'required',
+            'deceased_emp_name' => 'required',
+            'dept_name' => 'required|string',
+            'deceased_doa' => 'required',
+            'desig_name' => 'required|string',
+            'grade_name' => 'required|string',
+            'emp_pincode' => 'required',
+            'emp_addr_lcality_ret' => 'required|string',
+            'emp_addr_district_ret' => 'required',
+            'emp_addr_subdiv_ret' => 'required',
+            'emp_state_ret' => 'required',
+            'emp_pincode_ret' => 'required',
+            'applicant_desig_id' => 'required',
+            'applicant_grade' => 'required',
+            'ministry' => 'required',
+            'deceased_dob' => 'required',
+
+            'second_post_id' => 'required',
+            'second_grade_id' => 'required',
+            'dept_id_option' => 'required',
+            'third_post_id' => 'required',
+            'third_grade_id' => 'required',
+            'other_qualification' => ''
+
+
+
+            // Add other fields and validation rules as needed
+        ]);
+
+
+        if (($days >= $ageLimit) && ($dateDiff['1'] <= $AllowPeriod)) {
+
+            // Get the EIN and relationship from the request
+            $ein = $request->input('ein');
+
+            // Find the ProformaModel instance by EIN
+            $proforma = ProformaModel::where('ein', $ein)->first();
+
+            // Check if the ProformaModel instance exists
+            if ($proforma) {
+                return response()->json(['error' => 'Already Entered'], 409);
+            }
+
+
+            $emp = ProformaModel::get()->where("ein", $request->ein)->toArray(); // form not yet submitted
+
+            $emp_desig = DepartmentModel::get()->where("dept_name", $request->dept_name)->unique('dept_name')->first();
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            if ($getUser->role_id != 77) {
+                $submitDate = $request->appl_date;
+                $fileStatus = 1;
+            }
+            if ($getUser->role_id == 77) {
+                $submitDate = null;
+                $fileStatus = 0;
+            }
+
+            // if (count($emp) == 0) {
+            if (!$proforma) {
+
+                ProformaModel::create([
+
+                    'ein' => $validatedData['ein'],
+                    'deceased_emp_name' => $validatedData['deceased_emp_name'],
+                    'dept_name' => $validatedData['dept_name'],
+                    'desig_name' => $validatedData['desig_name'],
+                    'deceased_doa' => $validatedData['deceased_doa'],
+                    'ministry' =>  $validatedData['ministry'],
+                    'grade_name' =>  $validatedData['grade_name'],
+                    'deceased_dob' =>  $validatedData['deceased_dob'],
+
+                    'relationship' => $validatedData['relationship'],
+                    'expire_on_duty' => $validatedData['expire_on_duty'],
+                    'deceased_doe' => $validatedData['deceased_doe'],
+                    'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                    'applicant_name' => $validatedData['applicant_name'],
+                    'appl_date' => $validatedData['appl_date'],
+                    'applicant_dob' => $validatedData['applicant_dob'],
+                    'applicant_mobile' => $validatedData['applicant_mobile'],
+                    'applicant_edu_id' => $validatedData['applicant_edu_id'],
+                    'physically_handicapped' => $validatedData['physically_handicapped'],
+                    'applicant_email_id' => $validatedData['applicant_email_id'],
+                    'caste_id' => $validatedData['caste_id'],
+                    'sex' =>  $validatedData['sex'],
+                    'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                    'emp_addr_district' => $validatedData['emp_addr_district'],
+                    'emp_addr_subdiv' => $validatedData['emp_addr_subdiv'],
+                    'emp_state' => $validatedData['emp_state'],
+                    'emp_pincode' => $validatedData['emp_pincode'],
+                    'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                    'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                    'emp_addr_subdiv_ret' => $validatedData['emp_addr_subdiv_ret'],
+                    'emp_state_ret' => $validatedData['emp_state_ret'],
+                    'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                    'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                    'applicant_grade' => $validatedData['applicant_grade'],
+
+                    'second_post_id' => $validatedData['second_post_id'],
+                    'second_grade_id' => $validatedData['second_grade_id'],
+                    'dept_id_option' => $validatedData['dept_id_option'],
+                    'third_post_id' => $validatedData['third_post_id'],
+                    'third_grade_id' => $validatedData['third_grade_id'],
+                    'other_qualification' => $validatedData['other_qualification'],
+
+                    'uploaded_id' => $getUser->id,
+                    'uploader_role_id' => $getUser->role_id,
+                    'dept_id' => $emp_desig->dept_id,
+                    'ministry_id' => $emp_desig->ministry_id,
+                    'file_status' => $fileStatus,
+                    'form_status' => 1,
+                    'upload_status' => 0,
+                    'change_status' => 0,
+                    'status' => 0,
+                    'rejected_status' => 0
+                ]);
+                //////////////////////////////////////////TO RECORD SENDER AND RECEIVER////////////////
+                $empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
+                // $getUser1 = User::get()->where( 'id', $empDetails->forwarded_by )->first();
+                $getUser1 = User::get()->where('id', $empDetails->uploaded_id)->first();
+
+                $getUser2 = User::get()->where('id', $empDetails->uploaded_id)->toArray();
+                //dd( $getUser1->name );
+                if (count($getUser2) == null) {
+                    $receiver = null;
+                    //previous sender
+                }
+                if (count($getUser2) != null) {
+                    $receiver = $getUser1->name;
+                    //previous sender
+                }
+                //dd( $empDetails->toArray() );
+                if ($empDetails != null) {
+                    $empDetails->update([
+                        //  'status' => 0,
+                        'received_by' => $receiver, //previous sender
+                        'sent_by' => $getUser->name, //current sender
+                        'forwarded_on' => $dateToday,
+                        // 'rejected_status' => 1,
+                        'remark' => $request->remark,
+                        'remark_details' => $request->remark_details
+                        //2 is for verified and 1 for submitted and 0 back to start
+                        //reject 1 is for HOD Assistant back to citizen
+                    ]);
+                }
+
+
+
+
+                /////////////////////////////////END///////////////////////////////////////////////////
+
+                // dd($newApplicant);
+                // insert to form submission status 
+                $formId = 1; // here we set familly details form id as 2 according to ui;
+                $getFormSubmisiondetails = EmpFormSubmissionStatus::get()->where('ein', $request->ein)->where('form_id', $formId)->toArray();
+                if (count($getFormSubmisiondetails) == 0) {
+                    EmpFormSubmissionStatus::create([
+                        'ein' => $request->ein,
+                        'form_id' => $formId,
+                        'submit_status' => 1 // status 1 = submitted
+                    ]);
+                } else {
+                    //  $emp_form_stat_row = EmpFormSubmissionStatus::get()->where('ein', $request->ein)->where('form_id', $formId)->first();
+                    //  $row = EmpFormSubmissionStatus::find($emp_form_stat_row->id);
+                    //  $row->submit_status = 1;
+                    //  $row->save();
+                    //  return back()->with('errormessage', "Already Submitted..........!");
+                    return response()->json(['errormessage' => 'Already Submitted..........! ']);
+                }
+
+
+                Session::put('ein', $request->ein);
+
+                // return $plusRemove['1'];
+                //return back()->with('status', "Data save successfully...."); 
+                // Return a response, for example, a success message
+                return response()->json(['message' => 'Data save successfully ']);
+                // return response()->json(['message' => '']);
+                //ANAND BELOW
+            } else {
+                // return $plusRemove['1'];
+                // return back()->with('duplicate', "Deceased EIN already entered!............");
+                return response()->json(['duplicate' => 'Already Entered'], 409);
+            }
+        } else {
+            // return redirect()->route('enterProformaDetails')
+            // // ->withInput($request->except('appl_date'))
+            // ->with('error', 'Your application cannot be accepted!!!! Please check the DOB and Date of Submission');
+            return response()->json(['eligible' => 'Your application cannot be accepted!!!! Please check the DOB and Date of Submission']);
+            // return back()->with(
+            //     'eligible',
+            //     "Your application cannot be accepted!!!! Please check the DOB and Date of Submission"
+            // );
         }
-        if (count($getUser2) != null) {
-            $receiver = $getUser1->name;
-            //previous sender
-        }
-        //dd( $empDetails->toArray() );
-        if ($empDetails != null) {
-            $empDetails->update([
-              //  'status' => 0,
-                'received_by' => $receiver, //previous sender
-                'sent_by' => $getUser->name, //current sender
-                'forwarded_on' => $dateToday,
-               // 'rejected_status' => 1,
-                'remark' => $request->remark,
-                'remark_details' => $request->remark_details
-                //2 is for verified and 1 for submitted and 0 back to start
-                //reject 1 is for HOD Assistant back to citizen
-            ]);
-        }     
-
-       
-
-
- /////////////////////////////////END///////////////////////////////////////////////////
-
-                 // dd($newApplicant);
-                 // insert to form submission status 
-                 $formId = 1; // here we set familly details form id as 2 according to ui;
-                 $getFormSubmisiondetails = EmpFormSubmissionStatus::get()->where('ein', $request->ein)->where('form_id', $formId)->toArray();
-                 if (count($getFormSubmisiondetails) == 0) {
-                     EmpFormSubmissionStatus::create([
-                         'ein' => $request->ein,
-                         'form_id' => $formId,
-                         'submit_status' => 1 // status 1 = submitted
-                     ]);
-                 } else {
-                     //  $emp_form_stat_row = EmpFormSubmissionStatus::get()->where('ein', $request->ein)->where('form_id', $formId)->first();
-                     //  $row = EmpFormSubmissionStatus::find($emp_form_stat_row->id);
-                     //  $row->submit_status = 1;
-                     //  $row->save();
-                     //  return back()->with('errormessage', "Already Submitted..........!");
-                     return response()->json(['errormessage' => 'Already Submitted..........! ']);
-                 }
-
- 
-                 Session::put('ein', $request->ein);
- 
-                 // return $plusRemove['1'];
-                 //return back()->with('status', "Data save successfully...."); 
-                 // Return a response, for example, a success message
-                 return response()->json(['message' => 'Data save successfully ']);
-                 // return response()->json(['message' => '']);
-                 //ANAND BELOW
-             } else {
-                 // return $plusRemove['1'];
-                 // return back()->with('duplicate', "Deceased EIN already entered!............");
-                 return response()->json(['duplicate' => 'Already Entered'], 409);
-             }
-         } else {
-             // return redirect()->route('enterProformaDetails')
-             // // ->withInput($request->except('appl_date'))
-             // ->with('error', 'Your application cannot be accepted!!!! Please check the DOB and Date of Submission');
-             return response()->json(['eligible' => 'Your application cannot be accepted!!!! Please check the DOB and Date of Submission']);
-             // return back()->with(
-             //     'eligible',
-             //     "Your application cannot be accepted!!!! Please check the DOB and Date of Submission"
-             // );
-         }
-     }
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -8091,7 +8071,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 'applicant_desig_id' => 'required',
                 'applicant_grade' => 'required',
                 'caste_id' => 'required',
-                'other_qualification'=>''
+                'other_qualification' => ''
 
 
             ],
@@ -8244,7 +8224,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     'second_grade_id' => "NA",
                     'dept_id_option' => 0,
                     'third_post_id' => 0,
-                    'third_grade_id'=>"NA",
+                    'third_grade_id' => "NA",
                 ]);
 
 
@@ -8359,261 +8339,261 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
 
 
-     public function store2ndAppl(Request $request)
-     {
- 
-         // dd($request->all());
-         $ein = session()->get('ein');
- 
- 
-         $user_id = Auth::user()->id;
-         $getUser = User::get()->where('id', $user_id)->first();
- 
-         // http://manipurtemp02.nic.in/cmis_api/public/api/get-employee-profile?ein=088323&token=b000e921eeb20a0d395e341dfcd6117a
-         //////////////////////////////////////////////////////////////////////////
- 
-         // Calculates the difference between DateTime objects
- 
-         $entryDate = entryAgeModel::get()->first();
-         //return $entryDate;
-         $dateToday = date('Y-m-d');
-         // $dateToday = new DateTime(date("m/d/Y")); //confusion here what about other system       
-         $appl_DOB = date($request->applicant_dob);
-         //$difference = $appl_DOB->diff($dateToday);
- 
-         $difference = strtotime($dateToday) - strtotime($appl_DOB);
- 
-         //Calculate difference in days
-         $days = abs($difference / (60 * 60) / 24);
- 
-         // $resultDays = $difference->format('%R%a days'); //result comes as +5606 days
- 
-         // $dateExplode = explode(' days', $resultDays); //remove space days
-         // $dateDifference = explode('+', $dateExplode['0']); //remove +
- 
- 
-         $ageLimit = ($entryDate->eligible_age * 365) + 3;
-         //return $ageLimit;
- 
-         //Calculate the date of submission which is valid only upto 6 months
- 
-         $SubmissionDate = TimeLineModel::get()->first();
- 
- 
-         $dateofsubmission = new DateTime($request->appl_date); //confusion here what about other system    
- 
-         $dateofexpiry = new DateTime($request->deceased_doe);
- 
-         $difference = $dateofexpiry->diff($dateofsubmission);
- 
-         $DaysDifferent = $difference->format('%R%a days'); //result comes as +5606 days
- 
-         $diffExplode = explode(' days', $DaysDifferent); //remove space days
-         $dateDiff = explode('+', $diffExplode['0']); //remove +
- 
-         //return  $resultDays;//display only days
- 
-         $AllowPeriod = ($SubmissionDate->timeline_months * 30) + 3;
-         // dd($AllowPeriod);
- 
-         //dd($dateToday,$appl_DOB,$difference,$days);
- 
-         $request->validate(
-             [
-                 'ein' => 'required|numeric',
-                 'deceased_emp_name' => 'required',
-                 'dept_name' => 'required|string',
-                 'deceased_doa' => 'required',
-                 'desig_name' => 'required|string',
-                 'grade_name' => 'required|string',
-                 'expire_on_duty' => 'required',
-                 'deceased_doe' => 'required',
-                 'deceased_causeofdeath' => 'required|string',
-                 'deceased_dob' => 'required',
- 
-                 // 'appl_number' => 'required|numeric',
-                 //  'appl_date' => 'required',
-                 'applicant_name' => 'required',
-                 'relationship' => 'required|string',
-                 'applicant_dob' => 'required',
-                 'applicant_edu_id' => 'required',
-                 'applicant_mobile' => 'required|numeric|digits:10',
-                 'applicant_email_id' => 'required|email|unique:proforma,applicant_email_id',
-                 'physically_handicapped' => 'required',
-                 'emp_addr_lcality' => 'required|string',
-                 'emp_addr_district' => 'required',
-                 'sex' => 'required',
-                 'emp_state' => 'required',
-                 'emp_pincode' => 'required',
-                 'applicant_desig_id' => 'required',
-                 'applicant_grade' => 'required',
-                 'caste_id' => 'required',
-                 'second_post_id' => 'required',
-                 'second_grade_id' =>'required',
-                 'dept_id_option' =>'required',
-                 'third_post_id' => 'required',
-                 'third_grade_id' =>'required',
-                 'other_qualification'=>''
- 
-             ],
-             [
- 
-                 'ein.required' => 'Please fill up this field',
-                 'deceased_emp_name.required' => 'Please fill up this field',
-                 'dept_name.required' => 'Please fill up this field',
-                 'deceased_doa.required' => 'Please fill up this field',
-                 'desig_name.required' => 'Please fill up this field',
-                 'grade_name.required' => 'Please fill up this field',
-                 'expire_on_duty.required' => 'Please fill up this field',
-                 'deceased_doe.required' => 'Please fill up this field',
-                 'deceased_causeofdeath.required' => 'Please fill up this field',
-                 'deceased_dob.required' => 'Please fill up this field',
- 
-                 // 'appl_number.required' => 'Please fill up this field',
-                 // 'appl_date.required' => 'Please fill up this field',
-                 'relationship.required' => 'Please select relationship',
-                 'applicant_name.required' => 'Please fill up this field',
-                 'applicant_dob.required' => 'Please fill up this field',
-                 'applicant_edu_id.required' => 'Please fill up this field',
-                 'applicant_mobile.required' => 'Please fill up this field',
-                 'applicant_email_id.required' => 'Please fill up this field',
-                 'physically_handicapped.required' => 'Please fill up this field',
-                 'emp_addr_lcality.required' => 'Please fill up this field',
-                 'emp_addr_district.required' => 'Please fill up this field',
-                 'emp_state.required' => 'Please fill up this field',
-                 'emp_pincode.required' => 'Please fill up this field',
-                 'sex' => 'Please select rrsex',
- 
-                 'applicant_desig_id.required' => 'Please fill up this field',
-                 'applicant_grade.required' => 'Please fill up this field',
-                 'caste_id.required' => 'Please select caste',
-                 'second_post_id' =>  'Please fill up this field',
-                 'second_grade_id' =>  'Please fill up this field',
-                 'dept_id_option' => 'Please fill up this field',
-                 'third_post_id' =>  'Please fill up this field',
-                 'third_grade_id' =>  'Please fill up this field',
- 
-             ]
-         );
-         // if ($dateDifference['1']<5478){
-         //     return back()->with('eligible', "Your Date of Birth is not Eligible to apply!!!!");
- 
-         // }
- 
- 
-         if (($days >= $ageLimit) && ($dateDiff['1'] <= $AllowPeriod)) {
- 
- 
-             $emp = ProformaModel::get()->where("ein", $request->ein)->toArray(); // form not yet submitted
- 
-             $emp_desig = DepartmentModel::get()->where("dept_name", $request->dept_name)->unique('dept_name')->first();
- 
- 
-             if (count($emp) == 0) {
- 
-                 $newApplicant = ProformaModel::create([
- 
-                     // 'id'=>$request->id,
-                     'ein' => $request->ein,
-                     'deceased_emp_name' => $request->deceased_emp_name,
-                     'ministry' => $request->ministry,
-                     'dept_name' => $request->dept_name,
-                     'desig_name' => $request->desig_name,
-                     'grade_name' => $request->grade_name,
-                     'deceased_doa' => $request->deceased_doa,
-                     'deceased_doe' => $request->deceased_doe,
-                     'deceased_dob' => $request->deceased_dob,
-                     'deceased_causeofdeath' => $request->deceased_causeofdeath,
-                     //'is_gazetted' => $request->input('is_gazetted'),
-                     'caste_id' => $request->caste_id,
-                     'sex' => $request->sex,
- 
-                     // 'appl_number' => $applicationNo, // this 2 should update at final submit
-                     'appl_date' => $request->appl_date,
- 
-                     'applicant_name' => $request->applicant_name,
-                     'relationship' => $request->relationship,
-                     'applicant_dob' => $request->applicant_dob,
-                     'applicant_edu_id' => $request->applicant_edu_id,
-                     'applicant_mobile' => $request->applicant_mobile,
-                     'applicant_email_id' => $request->applicant_email_id,
-                     'emp_addr_lcality' => $request->emp_addr_lcality,
-                     'emp_addr_subdiv' => $request->emp_addr_subdiv,
-                     'emp_addr_district' => $request->emp_addr_district,
-                     'emp_state' => $request->emp_state,
-                     'emp_pincode' => $request->emp_pincode,
-                     'emp_addr_lcality_ret' => $request->emp_addr_lcality_ret,
-                     'emp_addr_subdiv_ret' => $request->emp_addr_subdiv_ret,
-                     'emp_addr_district_ret' => $request->emp_addr_district_ret,
-                     'emp_state_ret' => $request->emp_state_ret,
-                     'emp_pincode_ret' => $request->emp_pincode_ret,
-                     'applicant_desig_id' => $request->applicant_desig_id,
-                     'applicant_grade' => $request->applicant_grade,
-                   
-                     'expire_on_duty' => $request->input('expire_on_duty'),
-                    
-                     // 'accept_transfer' => $request->input('accept_transfer'),
-                     'physically_handicapped' => $request->input('physically_handicapped'),
-                     'uploaded_id' => $getUser->id,
-                     'uploader_role_id' => $getUser->role_id,
-                     'dept_id' => $emp_desig->dept_id,
-                     'ministry_id' => $emp_desig->ministry_id,
-                     'file_status' => 1,
-                     'rejected_status' => 0,
-                     'upload_status' => 0,
-                     'family_details_status' => 1,
-                     'status' => 0,
-                     'change_status' => 2,
-                     'form_status' => 1,
-                     'second_post_id' =>  $request->second_post_id,
-                     'second_grade_id' =>  $request->second_grade_id,
-                     'dept_id_option' => $request->dept_id_option,
-                     'third_post_id' => $request->third_post_id,
-                     'third_grade_id'=> $request->third_grade_id,
-                     'other_qualification' => $request->other_qualification,
-                 ]);
- 
- 
-                 // insert to form submission status 
-                 $formId = 1; // here we set familly details form id as 2 according to ui;
-                 $getFormSubmisiondetails = EmpFormSubmissionStatus::get()->where('ein', $request->ein)->where('form_id', $formId)->toArray();
-                 if (count($getFormSubmisiondetails) == 0) {
-                     EmpFormSubmissionStatus::create([
-                         'ein' => $request->ein,
-                         'form_id' => $formId,
-                         'submit_status' => 1 // status 1 = submitted
-                     ]);
-                 } else {
-                     //  $emp_form_stat_row = EmpFormSubmissionStatus::get()->where('ein', $request->ein)->where('form_id', $formId)->first();
-                     //  $row = EmpFormSubmissionStatus::find($emp_form_stat_row->id);
-                     //  $row->submit_status = 1;
-                     //  $row->save();
-                     //return redirect()->back()->with('error', "Already Submitted..........!");
-                     return response()->json(['error' => 'Already Submitted..........!']);
-                 }
- 
-                 // Session::put('ein', $request->ein);
-                 Session::put('ein', $request->ein);
- 
-                 ProformaHistoryModel::where('ein', $ein)->delete();
-                 FileHistoryModel::where('ein', $ein)->delete();
-                 EmpFormSubmissionStatusHistoryModel::where('ein', $ein)->delete();
- 
-                 //  return back()->with('status', "Data save successfully....");
-                  return response()->json(['message' => 'Second applicant data save successfully ']);
-                 //return redirect('ddo-assist/enter-family-details-backlog')->with('status', "Data save successfully....");;
-                 //ANAND BELOW
-             } else {
-                 // return $plusRemove['1'];
-                 // return redirect()->back()->with('duplicate', "Deceased EIN already entered!............");
-                  return response()->json(['error' => '"Deceased EIN already entered!............"']);
-             }
-         } else {
-             //return $plusRemove['1'];
-              return response()->json(['error' => '"You are not Eligible to apply!!!!..Needs to Complete 15 Years!"']);
-             // return back()->with('eligible', "You are not Eligible to apply!!!!..Needs to Complete 15 Years!");
-         }
-     }
+    public function store2ndAppl(Request $request)
+    {
+
+        // dd($request->all());
+        $ein = session()->get('ein');
+
+
+        $user_id = Auth::user()->id;
+        $getUser = User::get()->where('id', $user_id)->first();
+
+        // http://manipurtemp02.nic.in/cmis_api/public/api/get-employee-profile?ein=088323&token=b000e921eeb20a0d395e341dfcd6117a
+        //////////////////////////////////////////////////////////////////////////
+
+        // Calculates the difference between DateTime objects
+
+        $entryDate = entryAgeModel::get()->first();
+        //return $entryDate;
+        $dateToday = date('Y-m-d');
+        // $dateToday = new DateTime(date("m/d/Y")); //confusion here what about other system       
+        $appl_DOB = date($request->applicant_dob);
+        //$difference = $appl_DOB->diff($dateToday);
+
+        $difference = strtotime($dateToday) - strtotime($appl_DOB);
+
+        //Calculate difference in days
+        $days = abs($difference / (60 * 60) / 24);
+
+        // $resultDays = $difference->format('%R%a days'); //result comes as +5606 days
+
+        // $dateExplode = explode(' days', $resultDays); //remove space days
+        // $dateDifference = explode('+', $dateExplode['0']); //remove +
+
+
+        $ageLimit = ($entryDate->eligible_age * 365) + 3;
+        //return $ageLimit;
+
+        //Calculate the date of submission which is valid only upto 6 months
+
+        $SubmissionDate = TimeLineModel::get()->first();
+
+
+        $dateofsubmission = new DateTime($request->appl_date); //confusion here what about other system    
+
+        $dateofexpiry = new DateTime($request->deceased_doe);
+
+        $difference = $dateofexpiry->diff($dateofsubmission);
+
+        $DaysDifferent = $difference->format('%R%a days'); //result comes as +5606 days
+
+        $diffExplode = explode(' days', $DaysDifferent); //remove space days
+        $dateDiff = explode('+', $diffExplode['0']); //remove +
+
+        //return  $resultDays;//display only days
+
+        $AllowPeriod = ($SubmissionDate->timeline_months * 30) + 3;
+        // dd($AllowPeriod);
+
+        //dd($dateToday,$appl_DOB,$difference,$days);
+
+        $request->validate(
+            [
+                'ein' => 'required|numeric',
+                'deceased_emp_name' => 'required',
+                'dept_name' => 'required|string',
+                'deceased_doa' => 'required',
+                'desig_name' => 'required|string',
+                'grade_name' => 'required|string',
+                'expire_on_duty' => 'required',
+                'deceased_doe' => 'required',
+                'deceased_causeofdeath' => 'required|string',
+                'deceased_dob' => 'required',
+
+                // 'appl_number' => 'required|numeric',
+                //  'appl_date' => 'required',
+                'applicant_name' => 'required',
+                'relationship' => 'required|string',
+                'applicant_dob' => 'required',
+                'applicant_edu_id' => 'required',
+                'applicant_mobile' => 'required|numeric|digits:10',
+                'applicant_email_id' => 'required|email|unique:proforma,applicant_email_id',
+                'physically_handicapped' => 'required',
+                'emp_addr_lcality' => 'required|string',
+                'emp_addr_district' => 'required',
+                'sex' => 'required',
+                'emp_state' => 'required',
+                'emp_pincode' => 'required',
+                'applicant_desig_id' => 'required',
+                'applicant_grade' => 'required',
+                'caste_id' => 'required',
+                'second_post_id' => 'required',
+                'second_grade_id' => 'required',
+                'dept_id_option' => 'required',
+                'third_post_id' => 'required',
+                'third_grade_id' => 'required',
+                'other_qualification' => ''
+
+            ],
+            [
+
+                'ein.required' => 'Please fill up this field',
+                'deceased_emp_name.required' => 'Please fill up this field',
+                'dept_name.required' => 'Please fill up this field',
+                'deceased_doa.required' => 'Please fill up this field',
+                'desig_name.required' => 'Please fill up this field',
+                'grade_name.required' => 'Please fill up this field',
+                'expire_on_duty.required' => 'Please fill up this field',
+                'deceased_doe.required' => 'Please fill up this field',
+                'deceased_causeofdeath.required' => 'Please fill up this field',
+                'deceased_dob.required' => 'Please fill up this field',
+
+                // 'appl_number.required' => 'Please fill up this field',
+                // 'appl_date.required' => 'Please fill up this field',
+                'relationship.required' => 'Please select relationship',
+                'applicant_name.required' => 'Please fill up this field',
+                'applicant_dob.required' => 'Please fill up this field',
+                'applicant_edu_id.required' => 'Please fill up this field',
+                'applicant_mobile.required' => 'Please fill up this field',
+                'applicant_email_id.required' => 'Please fill up this field',
+                'physically_handicapped.required' => 'Please fill up this field',
+                'emp_addr_lcality.required' => 'Please fill up this field',
+                'emp_addr_district.required' => 'Please fill up this field',
+                'emp_state.required' => 'Please fill up this field',
+                'emp_pincode.required' => 'Please fill up this field',
+                'sex' => 'Please select rrsex',
+
+                'applicant_desig_id.required' => 'Please fill up this field',
+                'applicant_grade.required' => 'Please fill up this field',
+                'caste_id.required' => 'Please select caste',
+                'second_post_id' =>  'Please fill up this field',
+                'second_grade_id' =>  'Please fill up this field',
+                'dept_id_option' => 'Please fill up this field',
+                'third_post_id' =>  'Please fill up this field',
+                'third_grade_id' =>  'Please fill up this field',
+
+            ]
+        );
+        // if ($dateDifference['1']<5478){
+        //     return back()->with('eligible', "Your Date of Birth is not Eligible to apply!!!!");
+
+        // }
+
+
+        if (($days >= $ageLimit) && ($dateDiff['1'] <= $AllowPeriod)) {
+
+
+            $emp = ProformaModel::get()->where("ein", $request->ein)->toArray(); // form not yet submitted
+
+            $emp_desig = DepartmentModel::get()->where("dept_name", $request->dept_name)->unique('dept_name')->first();
+
+
+            if (count($emp) == 0) {
+
+                $newApplicant = ProformaModel::create([
+
+                    // 'id'=>$request->id,
+                    'ein' => $request->ein,
+                    'deceased_emp_name' => $request->deceased_emp_name,
+                    'ministry' => $request->ministry,
+                    'dept_name' => $request->dept_name,
+                    'desig_name' => $request->desig_name,
+                    'grade_name' => $request->grade_name,
+                    'deceased_doa' => $request->deceased_doa,
+                    'deceased_doe' => $request->deceased_doe,
+                    'deceased_dob' => $request->deceased_dob,
+                    'deceased_causeofdeath' => $request->deceased_causeofdeath,
+                    //'is_gazetted' => $request->input('is_gazetted'),
+                    'caste_id' => $request->caste_id,
+                    'sex' => $request->sex,
+
+                    // 'appl_number' => $applicationNo, // this 2 should update at final submit
+                    'appl_date' => $request->appl_date,
+
+                    'applicant_name' => $request->applicant_name,
+                    'relationship' => $request->relationship,
+                    'applicant_dob' => $request->applicant_dob,
+                    'applicant_edu_id' => $request->applicant_edu_id,
+                    'applicant_mobile' => $request->applicant_mobile,
+                    'applicant_email_id' => $request->applicant_email_id,
+                    'emp_addr_lcality' => $request->emp_addr_lcality,
+                    'emp_addr_subdiv' => $request->emp_addr_subdiv,
+                    'emp_addr_district' => $request->emp_addr_district,
+                    'emp_state' => $request->emp_state,
+                    'emp_pincode' => $request->emp_pincode,
+                    'emp_addr_lcality_ret' => $request->emp_addr_lcality_ret,
+                    'emp_addr_subdiv_ret' => $request->emp_addr_subdiv_ret,
+                    'emp_addr_district_ret' => $request->emp_addr_district_ret,
+                    'emp_state_ret' => $request->emp_state_ret,
+                    'emp_pincode_ret' => $request->emp_pincode_ret,
+                    'applicant_desig_id' => $request->applicant_desig_id,
+                    'applicant_grade' => $request->applicant_grade,
+
+                    'expire_on_duty' => $request->input('expire_on_duty'),
+
+                    // 'accept_transfer' => $request->input('accept_transfer'),
+                    'physically_handicapped' => $request->input('physically_handicapped'),
+                    'uploaded_id' => $getUser->id,
+                    'uploader_role_id' => $getUser->role_id,
+                    'dept_id' => $emp_desig->dept_id,
+                    'ministry_id' => $emp_desig->ministry_id,
+                    'file_status' => 1,
+                    'rejected_status' => 0,
+                    'upload_status' => 0,
+                    'family_details_status' => 1,
+                    'status' => 0,
+                    'change_status' => 2,
+                    'form_status' => 1,
+                    'second_post_id' =>  $request->second_post_id,
+                    'second_grade_id' =>  $request->second_grade_id,
+                    'dept_id_option' => $request->dept_id_option,
+                    'third_post_id' => $request->third_post_id,
+                    'third_grade_id' => $request->third_grade_id,
+                    'other_qualification' => $request->other_qualification,
+                ]);
+
+
+                // insert to form submission status 
+                $formId = 1; // here we set familly details form id as 2 according to ui;
+                $getFormSubmisiondetails = EmpFormSubmissionStatus::get()->where('ein', $request->ein)->where('form_id', $formId)->toArray();
+                if (count($getFormSubmisiondetails) == 0) {
+                    EmpFormSubmissionStatus::create([
+                        'ein' => $request->ein,
+                        'form_id' => $formId,
+                        'submit_status' => 1 // status 1 = submitted
+                    ]);
+                } else {
+                    //  $emp_form_stat_row = EmpFormSubmissionStatus::get()->where('ein', $request->ein)->where('form_id', $formId)->first();
+                    //  $row = EmpFormSubmissionStatus::find($emp_form_stat_row->id);
+                    //  $row->submit_status = 1;
+                    //  $row->save();
+                    //return redirect()->back()->with('error', "Already Submitted..........!");
+                    return response()->json(['error' => 'Already Submitted..........!']);
+                }
+
+                // Session::put('ein', $request->ein);
+                Session::put('ein', $request->ein);
+
+                ProformaHistoryModel::where('ein', $ein)->delete();
+                FileHistoryModel::where('ein', $ein)->delete();
+                EmpFormSubmissionStatusHistoryModel::where('ein', $ein)->delete();
+
+                //  return back()->with('status', "Data save successfully....");
+                return response()->json(['message' => 'Second applicant data save successfully ']);
+                //return redirect('ddo-assist/enter-family-details-backlog')->with('status', "Data save successfully....");;
+                //ANAND BELOW
+            } else {
+                // return $plusRemove['1'];
+                // return redirect()->back()->with('duplicate', "Deceased EIN already entered!............");
+                return response()->json(['error' => '"Deceased EIN already entered!............"']);
+            }
+        } else {
+            //return $plusRemove['1'];
+            return response()->json(['error' => '"You are not Eligible to apply!!!!..Needs to Complete 15 Years!"']);
+            // return back()->with('eligible', "You are not Eligible to apply!!!!..Needs to Complete 15 Years!");
+        }
+    }
 
 
     public function store2ndApplhannagi(Request $request)
@@ -9188,7 +9168,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     // }
                 }
                 $Gender = GenderModel::get()->toArray();
-                
+
                 $Caste = CasteModel::get()->toArray();
                 $Relationship = RelationshipModel::get()->toArray();
                 $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
@@ -9201,9 +9181,9 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         }
     }
 
-   
 
-    
+
+
     public function update(Request $request)
     {
 
@@ -9221,7 +9201,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         $proforma = ProformaModel::where('ein', $ein)->first();
         if ($proforma->second_post_id != 0) {
             if ($getUser->role_id == 1) {
-             
+
                 $validatedData = $request->validate([
                     'expire_on_duty' => 'required',
                     'deceased_doe' => 'required|string',
@@ -9252,7 +9232,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     'third_post_id' => 'required',
                     'third_grade_id' => 'required',
                     'dept_id_option' => 'required',
-                    'other_qualification' =>'',
+                    'other_qualification' => '',
                     // Add other fields and validation rules as needed
                 ]);
 
@@ -9266,151 +9246,211 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     return response()->json(['error' => 'Proforma not found'], 404);
                 }
 
-              
+
                 //dd($educations);
-                if($educations->edu_name== "Others"){
-                        
-               
-                ///PUTTING ALL DATA IN SESSION////////////
-                session()->put([
-                    'ein' => $ein, 'deceased_emp_name' => $proforma->deceased_emp_name, 'ministry' => $proforma->ministry, 'dept_name' => $proforma->dept_name,
-                    'desig_name' => $proforma->desig_name, 'grade_name' => $proforma->grade_name, 'deceased_doa' => $proforma->deceased_doa,
-                    'deceased_doe' => $proforma->deceased_doe, 'deceased_dob' => $proforma->deceased_dob, 'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
-                    'caste_id' => $proforma->caste_id, 'sex' => $proforma->sex, 'appl_date' => $proforma->appl_date, 'applicant_name' => $proforma->applicant_name,
-                    'relationship' => $proforma->relationship, 'applicant_dob' => $proforma->applicant_dob, 'applicant_edu_id' => $proforma->applicant_edu_id,
-                    'applicant_mobile' => $proforma->applicant_mobile, 'applicant_email_id' => $proforma->applicant_email_id, 'emp_addr_lcality' => $proforma->emp_addr_lcality,
-                    'emp_addr_subdiv' => $proforma->emp_addr_subdiv, 'emp_addr_district' => $proforma->emp_addr_district, 'emp_state' => $proforma->emp_state,
-                    'emp_pincode' => $proforma->emp_pincode, 'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret, 'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
-                    'emp_addr_district_ret' => $proforma->emp_addr_district_ret, 'emp_state_ret' => $proforma->emp_state_ret, 'emp_pincode_ret' => $proforma->emp_pincode_ret,
-                    'applicant_desig_id' => $proforma->applicant_desig_id, 'applicant_grade' => $proforma->applicant_grade, 'expire_on_duty' => $proforma->expire_on_duty,
-                    'physically_handicapped' => $proforma->physically_handicapped, 'uploaded_id' => $proforma->uploaded_id, 'uploader_role_id' => $proforma->uploader_role_id,
-                    'dept_id' => $proforma->dept_id, 'ministry_id' => $proforma->ministry_id, 'file_status' => $proforma->file_status, 'rejected_status' => $proforma->rejected_status,
-                    'upload_status' => $proforma->upload_status, 'family_details_status' => $proforma->family_details_status, 'status' => $proforma->status,
-                    'change_status' => $proforma->change_status, 'form_status' => $proforma->form_status,
-                    'second_post_id' => $proforma->second_post_id,
-                    'second_grade_id' => $proforma->second_grade_id,
-                    'dept_id_option' => $proforma->dept_id_option,
-                    'third_post_id' => $proforma->third_post_id,
-                    'third_grade_id' => $proforma->third_grade_id,
-                    'other_qualification' => $proforma->other_qualification,
-                ]);
-                ////END OF SESSION
-                //dd($proforma);
-              
-                // Update the relationship and other columns in the ProformaModel instance
-                $proforma->update([
-                    'relationship' => $validatedData['relationship'],
-                    'expire_on_duty' => $validatedData['expire_on_duty'],
-                    'deceased_doe' => $validatedData['deceased_doe'],
-                    'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-                    'applicant_name' => $validatedData['applicant_name'],
-                    'appl_date' => $validatedData['appl_date'],
-                    'applicant_dob' => $validatedData['applicant_dob'],
-                    'applicant_mobile' => $validatedData['applicant_mobile'],
-                    'applicant_edu_id' => $validatedData['applicant_edu_id'],
-                   
+                if ($educations->edu_name == "Others") {
 
-                    'physically_handicapped' => $validatedData['physically_handicapped'],
-                    'applicant_email_id' => $validatedData['applicant_email_id'],
-                    'caste_id' => $validatedData['caste_id'],
-                    'sex' =>  $validatedData['sex'],
-                    'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-                    'emp_addr_district' => $validatedData['emp_addr_district'],
-                    'emp_state' => $validatedData['emp_state'],
-                    'emp_pincode' => $validatedData['emp_pincode'],
-                    'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-                    'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-                    'emp_state_ret' => $validatedData['emp_state_ret'],
-                    'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-                    'applicant_desig_id' => $validatedData['applicant_desig_id'],
-                    'applicant_grade' => $validatedData['applicant_grade'],
 
-                    'second_post_id' => $validatedData['second_post_id'],
-                    'second_grade_id' => $validatedData['second_grade_id'],
-                    'dept_id_option' => $validatedData['dept_id_option'],
-                    'third_post_id' => $validatedData['third_post_id'],
-                    'third_grade_id' => $validatedData['third_grade_id'],
-                    'other_qualification' => $validatedData['other_qualification'],
+                    ///PUTTING ALL DATA IN SESSION////////////
+                    session()->put([
+                        'ein' => $ein,
+                        'deceased_emp_name' => $proforma->deceased_emp_name,
+                        'ministry' => $proforma->ministry,
+                        'dept_name' => $proforma->dept_name,
+                        'desig_name' => $proforma->desig_name,
+                        'grade_name' => $proforma->grade_name,
+                        'deceased_doa' => $proforma->deceased_doa,
+                        'deceased_doe' => $proforma->deceased_doe,
+                        'deceased_dob' => $proforma->deceased_dob,
+                        'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
+                        'caste_id' => $proforma->caste_id,
+                        'sex' => $proforma->sex,
+                        'appl_date' => $proforma->appl_date,
+                        'applicant_name' => $proforma->applicant_name,
+                        'relationship' => $proforma->relationship,
+                        'applicant_dob' => $proforma->applicant_dob,
+                        'applicant_edu_id' => $proforma->applicant_edu_id,
+                        'applicant_mobile' => $proforma->applicant_mobile,
+                        'applicant_email_id' => $proforma->applicant_email_id,
+                        'emp_addr_lcality' => $proforma->emp_addr_lcality,
+                        'emp_addr_subdiv' => $proforma->emp_addr_subdiv,
+                        'emp_addr_district' => $proforma->emp_addr_district,
+                        'emp_state' => $proforma->emp_state,
+                        'emp_pincode' => $proforma->emp_pincode,
+                        'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret,
+                        'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
+                        'emp_addr_district_ret' => $proforma->emp_addr_district_ret,
+                        'emp_state_ret' => $proforma->emp_state_ret,
+                        'emp_pincode_ret' => $proforma->emp_pincode_ret,
+                        'applicant_desig_id' => $proforma->applicant_desig_id,
+                        'applicant_grade' => $proforma->applicant_grade,
+                        'expire_on_duty' => $proforma->expire_on_duty,
+                        'physically_handicapped' => $proforma->physically_handicapped,
+                        'uploaded_id' => $proforma->uploaded_id,
+                        'uploader_role_id' => $proforma->uploader_role_id,
+                        'dept_id' => $proforma->dept_id,
+                        'ministry_id' => $proforma->ministry_id,
+                        'file_status' => $proforma->file_status,
+                        'rejected_status' => $proforma->rejected_status,
+                        'upload_status' => $proforma->upload_status,
+                        'family_details_status' => $proforma->family_details_status,
+                        'status' => $proforma->status,
+                        'change_status' => $proforma->change_status,
+                        'form_status' => $proforma->form_status,
+                        'second_post_id' => $proforma->second_post_id,
+                        'second_grade_id' => $proforma->second_grade_id,
+                        'dept_id_option' => $proforma->dept_id_option,
+                        'third_post_id' => $proforma->third_post_id,
+                        'third_grade_id' => $proforma->third_grade_id,
+                        'other_qualification' => $proforma->other_qualification,
+                    ]);
+                    ////END OF SESSION
+                    //dd($proforma);
 
-                    'rejected_status' => 0
+                    // Update the relationship and other columns in the ProformaModel instance
+                    $proforma->update([
+                        'relationship' => $validatedData['relationship'],
+                        'expire_on_duty' => $validatedData['expire_on_duty'],
+                        'deceased_doe' => $validatedData['deceased_doe'],
+                        'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                        'applicant_name' => $validatedData['applicant_name'],
+                        'appl_date' => $validatedData['appl_date'],
+                        'applicant_dob' => $validatedData['applicant_dob'],
+                        'applicant_mobile' => $validatedData['applicant_mobile'],
+                        'applicant_edu_id' => $validatedData['applicant_edu_id'],
 
-                    // Add other columns as needed
-                ]);
-                //dd($request->all());
-                // Return a response, for example, a success message
-                return response()->json(['message' => 'Data updated successfully ']);
-                //return back()->with('status', "1 Data save successfully....");
-            }else{
-                session()->put([
-                    'ein' => $ein, 'deceased_emp_name' => $proforma->deceased_emp_name, 'ministry' => $proforma->ministry, 'dept_name' => $proforma->dept_name,
-                    'desig_name' => $proforma->desig_name, 'grade_name' => $proforma->grade_name, 'deceased_doa' => $proforma->deceased_doa,
-                    'deceased_doe' => $proforma->deceased_doe, 'deceased_dob' => $proforma->deceased_dob, 'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
-                    'caste_id' => $proforma->caste_id, 'sex' => $proforma->sex, 'appl_date' => $proforma->appl_date, 'applicant_name' => $proforma->applicant_name,
-                    'relationship' => $proforma->relationship, 'applicant_dob' => $proforma->applicant_dob, 'applicant_edu_id' => $proforma->applicant_edu_id,
-                    'applicant_mobile' => $proforma->applicant_mobile, 'applicant_email_id' => $proforma->applicant_email_id, 'emp_addr_lcality' => $proforma->emp_addr_lcality,
-                    'emp_addr_subdiv' => $proforma->emp_addr_subdiv, 'emp_addr_district' => $proforma->emp_addr_district, 'emp_state' => $proforma->emp_state,
-                    'emp_pincode' => $proforma->emp_pincode, 'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret, 'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
-                    'emp_addr_district_ret' => $proforma->emp_addr_district_ret, 'emp_state_ret' => $proforma->emp_state_ret, 'emp_pincode_ret' => $proforma->emp_pincode_ret,
-                    'applicant_desig_id' => $proforma->applicant_desig_id, 'applicant_grade' => $proforma->applicant_grade, 'expire_on_duty' => $proforma->expire_on_duty,
-                    'physically_handicapped' => $proforma->physically_handicapped, 'uploaded_id' => $proforma->uploaded_id, 'uploader_role_id' => $proforma->uploader_role_id,
-                    'dept_id' => $proforma->dept_id, 'ministry_id' => $proforma->ministry_id, 'file_status' => $proforma->file_status, 'rejected_status' => $proforma->rejected_status,
-                    'upload_status' => $proforma->upload_status, 'family_details_status' => $proforma->family_details_status, 'status' => $proforma->status,
-                    'change_status' => $proforma->change_status, 'form_status' => $proforma->form_status,
-                    'second_post_id' => $proforma->second_post_id,
-                    'second_grade_id' => $proforma->second_grade_id,
-                    'dept_id_option' => $proforma->dept_id_option,
-                    'third_post_id' => $proforma->third_post_id,
-                    'third_grade_id' => $proforma->third_grade_id,
-                   // 'other_qualification' => $proforma->other_qualification,
-                ]);
-                ////END OF SESSION
-                //dd($proforma);
-              
-                // Update the relationship and other columns in the ProformaModel instance
-                $proforma->update([
-                    'relationship' => $validatedData['relationship'],
-                    'expire_on_duty' => $validatedData['expire_on_duty'],
-                    'deceased_doe' => $validatedData['deceased_doe'],
-                    'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-                    'applicant_name' => $validatedData['applicant_name'],
-                    'appl_date' => $validatedData['appl_date'],
-                    'applicant_dob' => $validatedData['applicant_dob'],
-                    'applicant_mobile' => $validatedData['applicant_mobile'],
-                    'applicant_edu_id' => $validatedData['applicant_edu_id'],
-                   
 
-                    'physically_handicapped' => $validatedData['physically_handicapped'],
-                    'applicant_email_id' => $validatedData['applicant_email_id'],
-                    'caste_id' => $validatedData['caste_id'],
-                    'sex' =>  $validatedData['sex'],
-                    'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-                    'emp_addr_district' => $validatedData['emp_addr_district'],
-                    'emp_state' => $validatedData['emp_state'],
-                    'emp_pincode' => $validatedData['emp_pincode'],
-                    'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-                    'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-                    'emp_state_ret' => $validatedData['emp_state_ret'],
-                    'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-                    'applicant_desig_id' => $validatedData['applicant_desig_id'],
-                    'applicant_grade' => $validatedData['applicant_grade'],
+                        'physically_handicapped' => $validatedData['physically_handicapped'],
+                        'applicant_email_id' => $validatedData['applicant_email_id'],
+                        'caste_id' => $validatedData['caste_id'],
+                        'sex' =>  $validatedData['sex'],
+                        'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                        'emp_addr_district' => $validatedData['emp_addr_district'],
+                        'emp_state' => $validatedData['emp_state'],
+                        'emp_pincode' => $validatedData['emp_pincode'],
+                        'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                        'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                        'emp_state_ret' => $validatedData['emp_state_ret'],
+                        'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                        'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                        'applicant_grade' => $validatedData['applicant_grade'],
 
-                    'second_post_id' => $validatedData['second_post_id'],
-                    'second_grade_id' => $validatedData['second_grade_id'],
-                    'dept_id_option' => $validatedData['dept_id_option'],
-                    'third_post_id' => $validatedData['third_post_id'],
-                    'third_grade_id' => $validatedData['third_grade_id'],
-                    'other_qualification' =>  "",
+                        'second_post_id' => $validatedData['second_post_id'],
+                        'second_grade_id' => $validatedData['second_grade_id'],
+                        'dept_id_option' => $validatedData['dept_id_option'],
+                        'third_post_id' => $validatedData['third_post_id'],
+                        'third_grade_id' => $validatedData['third_grade_id'],
+                        'other_qualification' => $validatedData['other_qualification'],
 
-                    'rejected_status' => 0
+                        'rejected_status' => 0
 
-                    // Add other columns as needed
-                ]);
-                //dd($request->all());
-                // Return a response, for example, a success message
-                return response()->json(['message' => 'Data updated successfully ']);
-               // return back()->with('status', "2 Data save successfully....");
-            }
-        }else {
+                        // Add other columns as needed
+                    ]);
+                    //dd($request->all());
+                    // Return a response, for example, a success message
+                    return response()->json(['message' => 'Data updated successfully ']);
+                    //return back()->with('status', "1 Data save successfully....");
+                } else {
+                    session()->put([
+                        'ein' => $ein,
+                        'deceased_emp_name' => $proforma->deceased_emp_name,
+                        'ministry' => $proforma->ministry,
+                        'dept_name' => $proforma->dept_name,
+                        'desig_name' => $proforma->desig_name,
+                        'grade_name' => $proforma->grade_name,
+                        'deceased_doa' => $proforma->deceased_doa,
+                        'deceased_doe' => $proforma->deceased_doe,
+                        'deceased_dob' => $proforma->deceased_dob,
+                        'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
+                        'caste_id' => $proforma->caste_id,
+                        'sex' => $proforma->sex,
+                        'appl_date' => $proforma->appl_date,
+                        'applicant_name' => $proforma->applicant_name,
+                        'relationship' => $proforma->relationship,
+                        'applicant_dob' => $proforma->applicant_dob,
+                        'applicant_edu_id' => $proforma->applicant_edu_id,
+                        'applicant_mobile' => $proforma->applicant_mobile,
+                        'applicant_email_id' => $proforma->applicant_email_id,
+                        'emp_addr_lcality' => $proforma->emp_addr_lcality,
+                        'emp_addr_subdiv' => $proforma->emp_addr_subdiv,
+                        'emp_addr_district' => $proforma->emp_addr_district,
+                        'emp_state' => $proforma->emp_state,
+                        'emp_pincode' => $proforma->emp_pincode,
+                        'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret,
+                        'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
+                        'emp_addr_district_ret' => $proforma->emp_addr_district_ret,
+                        'emp_state_ret' => $proforma->emp_state_ret,
+                        'emp_pincode_ret' => $proforma->emp_pincode_ret,
+                        'applicant_desig_id' => $proforma->applicant_desig_id,
+                        'applicant_grade' => $proforma->applicant_grade,
+                        'expire_on_duty' => $proforma->expire_on_duty,
+                        'physically_handicapped' => $proforma->physically_handicapped,
+                        'uploaded_id' => $proforma->uploaded_id,
+                        'uploader_role_id' => $proforma->uploader_role_id,
+                        'dept_id' => $proforma->dept_id,
+                        'ministry_id' => $proforma->ministry_id,
+                        'file_status' => $proforma->file_status,
+                        'rejected_status' => $proforma->rejected_status,
+                        'upload_status' => $proforma->upload_status,
+                        'family_details_status' => $proforma->family_details_status,
+                        'status' => $proforma->status,
+                        'change_status' => $proforma->change_status,
+                        'form_status' => $proforma->form_status,
+                        'second_post_id' => $proforma->second_post_id,
+                        'second_grade_id' => $proforma->second_grade_id,
+                        'dept_id_option' => $proforma->dept_id_option,
+                        'third_post_id' => $proforma->third_post_id,
+                        'third_grade_id' => $proforma->third_grade_id,
+                        // 'other_qualification' => $proforma->other_qualification,
+                    ]);
+                    ////END OF SESSION
+                    //dd($proforma);
+
+                    // Update the relationship and other columns in the ProformaModel instance
+                    $proforma->update([
+                        'relationship' => $validatedData['relationship'],
+                        'expire_on_duty' => $validatedData['expire_on_duty'],
+                        'deceased_doe' => $validatedData['deceased_doe'],
+                        'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                        'applicant_name' => $validatedData['applicant_name'],
+                        'appl_date' => $validatedData['appl_date'],
+                        'applicant_dob' => $validatedData['applicant_dob'],
+                        'applicant_mobile' => $validatedData['applicant_mobile'],
+                        'applicant_edu_id' => $validatedData['applicant_edu_id'],
+
+
+                        'physically_handicapped' => $validatedData['physically_handicapped'],
+                        'applicant_email_id' => $validatedData['applicant_email_id'],
+                        'caste_id' => $validatedData['caste_id'],
+                        'sex' =>  $validatedData['sex'],
+                        'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                        'emp_addr_district' => $validatedData['emp_addr_district'],
+                        'emp_state' => $validatedData['emp_state'],
+                        'emp_pincode' => $validatedData['emp_pincode'],
+                        'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                        'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                        'emp_state_ret' => $validatedData['emp_state_ret'],
+                        'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                        'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                        'applicant_grade' => $validatedData['applicant_grade'],
+
+                        'second_post_id' => $validatedData['second_post_id'],
+                        'second_grade_id' => $validatedData['second_grade_id'],
+                        'dept_id_option' => $validatedData['dept_id_option'],
+                        'third_post_id' => $validatedData['third_post_id'],
+                        'third_grade_id' => $validatedData['third_grade_id'],
+                        'other_qualification' =>  "",
+
+                        'rejected_status' => 0
+
+                        // Add other columns as needed
+                    ]);
+                    //dd($request->all());
+                    // Return a response, for example, a success message
+                    return response()->json(['message' => 'Data updated successfully ']);
+                    // return back()->with('status', "2 Data save successfully....");
+                }
+            } else {
                 $validatedData = $request->validate([
                     'expire_on_duty' => 'required',
                     'deceased_doe' => 'required|string',
@@ -9441,7 +9481,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     'dept_id_option' => 'required',
                     'third_post_id' => 'required',
                     'third_grade_id' => 'required',
-                    'other_qualification' =>'',
+                    'other_qualification' => '',
                     // Add other fields and validation rules as needed
                 ]);
 
@@ -9458,143 +9498,203 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 if (!$proforma) {
                     return response()->json(['error' => 'Proforma not found'], 404);
                 }
-             
-               // dd($educations);
-               if($educations->edu_name== "Others"){
 
-                ///PUTTING ALL DATA IN SESSION////////////
-                session()->put([
-                    'ein' => $ein, 'deceased_emp_name' => $proforma->deceased_emp_name, 'ministry' => $proforma->ministry, 'dept_name' => $proforma->dept_name,
-                    'desig_name' => $proforma->desig_name, 'grade_name' => $proforma->grade_name, 'deceased_doa' => $proforma->deceased_doa,
-                    'deceased_doe' => $proforma->deceased_doe, 'deceased_dob' => $proforma->deceased_dob, 'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
-                    'caste_id' => $proforma->caste_id, 'sex' => $proforma->sex, 'appl_date' => $proforma->appl_date, 'applicant_name' => $proforma->applicant_name,
-                    'relationship' => $proforma->relationship, 'applicant_dob' => $proforma->applicant_dob, 'applicant_edu_id' => $proforma->applicant_edu_id,
-                    'applicant_mobile' => $proforma->applicant_mobile, 'applicant_email_id' => $proforma->applicant_email_id, 'emp_addr_lcality' => $proforma->emp_addr_lcality,
-                    'emp_addr_subdiv' => $proforma->emp_addr_subdiv, 'emp_addr_district' => $proforma->emp_addr_district, 'emp_state' => $proforma->emp_state,
-                    'emp_pincode' => $proforma->emp_pincode, 'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret, 'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
-                    'emp_addr_district_ret' => $proforma->emp_addr_district_ret, 'emp_state_ret' => $proforma->emp_state_ret, 'emp_pincode_ret' => $proforma->emp_pincode_ret,
-                    'applicant_desig_id' => $proforma->applicant_desig_id, 'applicant_grade' => $proforma->applicant_grade, 'expire_on_duty' => $proforma->expire_on_duty,
-                    'physically_handicapped' => $proforma->physically_handicapped, 'uploaded_id' => $proforma->uploaded_id, 'uploader_role_id' => $proforma->uploader_role_id,
-                    'dept_id' => $proforma->dept_id, 'ministry_id' => $proforma->ministry_id, 'file_status' => $proforma->file_status, 'rejected_status' => $proforma->rejected_status,
-                    'upload_status' => $proforma->upload_status, 'family_details_status' => $proforma->family_details_status, 'status' => $proforma->status,
-                    'change_status' => $proforma->change_status, 'form_status' => $proforma->form_status,
-                    'second_post_id' => $proforma->second_post_id,
-                    'second_grade_id' => $proforma->second_grade_id,
-                    'dept_id_option' => $proforma->dept_id_option,
-                    'third_post_id' => $proforma->third_post_id,
-                    'third_grade_id' => $proforma->third_grade_id,
-                    'other_qualification' => $proforma->other_qualification,
-                ]);
-                ////END OF SESSION
+                // dd($educations);
+                if ($educations->edu_name == "Others") {
 
-                // Update the relationship and other columns in the ProformaModel instance
-                $proforma->update([
-                    'relationship' => $validatedData['relationship'],
-                    'expire_on_duty' => $validatedData['expire_on_duty'],
-                    'deceased_doe' => $validatedData['deceased_doe'],
-                    'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-                    'applicant_name' => $validatedData['applicant_name'],
-                    // 'appl_date' => $validatedData['appl_date'],
-                    'applicant_dob' => $validatedData['applicant_dob'],
-                    'applicant_mobile' => $validatedData['applicant_mobile'],
-                    'applicant_edu_id' => $validatedData['applicant_edu_id'],
-                    'physically_handicapped' => $validatedData['physically_handicapped'],
-                    'applicant_email_id' => $validatedData['applicant_email_id'],
-                    'caste_id' => $validatedData['caste_id'],
-                    'sex' =>  $validatedData['sex'],
-                    'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-                    'emp_addr_district' => $validatedData['emp_addr_district'],
-                    'emp_state' => $validatedData['emp_state'],
-                    'emp_pincode' => $validatedData['emp_pincode'],
-                    'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-                    'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-                    'emp_state_ret' => $validatedData['emp_state_ret'],
-                    'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-                    'applicant_desig_id' => $validatedData['applicant_desig_id'],
-                    'applicant_grade' => $validatedData['applicant_grade'],
+                    ///PUTTING ALL DATA IN SESSION////////////
+                    session()->put([
+                        'ein' => $ein,
+                        'deceased_emp_name' => $proforma->deceased_emp_name,
+                        'ministry' => $proforma->ministry,
+                        'dept_name' => $proforma->dept_name,
+                        'desig_name' => $proforma->desig_name,
+                        'grade_name' => $proforma->grade_name,
+                        'deceased_doa' => $proforma->deceased_doa,
+                        'deceased_doe' => $proforma->deceased_doe,
+                        'deceased_dob' => $proforma->deceased_dob,
+                        'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
+                        'caste_id' => $proforma->caste_id,
+                        'sex' => $proforma->sex,
+                        'appl_date' => $proforma->appl_date,
+                        'applicant_name' => $proforma->applicant_name,
+                        'relationship' => $proforma->relationship,
+                        'applicant_dob' => $proforma->applicant_dob,
+                        'applicant_edu_id' => $proforma->applicant_edu_id,
+                        'applicant_mobile' => $proforma->applicant_mobile,
+                        'applicant_email_id' => $proforma->applicant_email_id,
+                        'emp_addr_lcality' => $proforma->emp_addr_lcality,
+                        'emp_addr_subdiv' => $proforma->emp_addr_subdiv,
+                        'emp_addr_district' => $proforma->emp_addr_district,
+                        'emp_state' => $proforma->emp_state,
+                        'emp_pincode' => $proforma->emp_pincode,
+                        'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret,
+                        'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
+                        'emp_addr_district_ret' => $proforma->emp_addr_district_ret,
+                        'emp_state_ret' => $proforma->emp_state_ret,
+                        'emp_pincode_ret' => $proforma->emp_pincode_ret,
+                        'applicant_desig_id' => $proforma->applicant_desig_id,
+                        'applicant_grade' => $proforma->applicant_grade,
+                        'expire_on_duty' => $proforma->expire_on_duty,
+                        'physically_handicapped' => $proforma->physically_handicapped,
+                        'uploaded_id' => $proforma->uploaded_id,
+                        'uploader_role_id' => $proforma->uploader_role_id,
+                        'dept_id' => $proforma->dept_id,
+                        'ministry_id' => $proforma->ministry_id,
+                        'file_status' => $proforma->file_status,
+                        'rejected_status' => $proforma->rejected_status,
+                        'upload_status' => $proforma->upload_status,
+                        'family_details_status' => $proforma->family_details_status,
+                        'status' => $proforma->status,
+                        'change_status' => $proforma->change_status,
+                        'form_status' => $proforma->form_status,
+                        'second_post_id' => $proforma->second_post_id,
+                        'second_grade_id' => $proforma->second_grade_id,
+                        'dept_id_option' => $proforma->dept_id_option,
+                        'third_post_id' => $proforma->third_post_id,
+                        'third_grade_id' => $proforma->third_grade_id,
+                        'other_qualification' => $proforma->other_qualification,
+                    ]);
+                    ////END OF SESSION
 
-                    'second_post_id' => $validatedData['second_post_id'],
-                    'second_grade_id' => $validatedData['second_grade_id'],
-                    'dept_id_option' => $validatedData['dept_id_option'],
-                    'third_post_id' => $validatedData['third_post_id'],
-                    'third_grade_id' => $validatedData['third_grade_id'],
-                    'other_qualification' =>  $validatedData['other_qualification'],
-                    'rejected_status' => 0
+                    // Update the relationship and other columns in the ProformaModel instance
+                    $proforma->update([
+                        'relationship' => $validatedData['relationship'],
+                        'expire_on_duty' => $validatedData['expire_on_duty'],
+                        'deceased_doe' => $validatedData['deceased_doe'],
+                        'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                        'applicant_name' => $validatedData['applicant_name'],
+                        // 'appl_date' => $validatedData['appl_date'],
+                        'applicant_dob' => $validatedData['applicant_dob'],
+                        'applicant_mobile' => $validatedData['applicant_mobile'],
+                        'applicant_edu_id' => $validatedData['applicant_edu_id'],
+                        'physically_handicapped' => $validatedData['physically_handicapped'],
+                        'applicant_email_id' => $validatedData['applicant_email_id'],
+                        'caste_id' => $validatedData['caste_id'],
+                        'sex' =>  $validatedData['sex'],
+                        'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                        'emp_addr_district' => $validatedData['emp_addr_district'],
+                        'emp_state' => $validatedData['emp_state'],
+                        'emp_pincode' => $validatedData['emp_pincode'],
+                        'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                        'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                        'emp_state_ret' => $validatedData['emp_state_ret'],
+                        'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                        'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                        'applicant_grade' => $validatedData['applicant_grade'],
 
-                    // Add other columns as needed
-                ]);
-                //dd($request->all());
-                // Return a response, for example, a success message
-                return response()->json(['message' => 'Data updated successfully ']);
-                //return back()->with('status', "3 Data save successfully....");
-            }else {
-                session()->put([
-                    'ein' => $ein, 'deceased_emp_name' => $proforma->deceased_emp_name, 'ministry' => $proforma->ministry, 'dept_name' => $proforma->dept_name,
-                    'desig_name' => $proforma->desig_name, 'grade_name' => $proforma->grade_name, 'deceased_doa' => $proforma->deceased_doa,
-                    'deceased_doe' => $proforma->deceased_doe, 'deceased_dob' => $proforma->deceased_dob, 'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
-                    'caste_id' => $proforma->caste_id, 'sex' => $proforma->sex, 'appl_date' => $proforma->appl_date, 'applicant_name' => $proforma->applicant_name,
-                    'relationship' => $proforma->relationship, 'applicant_dob' => $proforma->applicant_dob, 'applicant_edu_id' => $proforma->applicant_edu_id,
-                    'applicant_mobile' => $proforma->applicant_mobile, 'applicant_email_id' => $proforma->applicant_email_id, 'emp_addr_lcality' => $proforma->emp_addr_lcality,
-                    'emp_addr_subdiv' => $proforma->emp_addr_subdiv, 'emp_addr_district' => $proforma->emp_addr_district, 'emp_state' => $proforma->emp_state,
-                    'emp_pincode' => $proforma->emp_pincode, 'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret, 'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
-                    'emp_addr_district_ret' => $proforma->emp_addr_district_ret, 'emp_state_ret' => $proforma->emp_state_ret, 'emp_pincode_ret' => $proforma->emp_pincode_ret,
-                    'applicant_desig_id' => $proforma->applicant_desig_id, 'applicant_grade' => $proforma->applicant_grade, 'expire_on_duty' => $proforma->expire_on_duty,
-                    'physically_handicapped' => $proforma->physically_handicapped, 'uploaded_id' => $proforma->uploaded_id, 'uploader_role_id' => $proforma->uploader_role_id,
-                    'dept_id' => $proforma->dept_id, 'ministry_id' => $proforma->ministry_id, 'file_status' => $proforma->file_status, 'rejected_status' => $proforma->rejected_status,
-                    'upload_status' => $proforma->upload_status, 'family_details_status' => $proforma->family_details_status, 'status' => $proforma->status,
-                    'change_status' => $proforma->change_status, 'form_status' => $proforma->form_status,
-                    'second_post_id' => $proforma->second_post_id,
-                    'second_grade_id' => $proforma->second_grade_id,
-                    'dept_id_option' => $proforma->dept_id_option,
-                    'third_post_id' => $proforma->third_post_id,
-                    'third_grade_id' => $proforma->third_grade_id,
-                   // 'other_qualification' => $proforma->other_qualification,
-                ]);
-                ////END OF SESSION
+                        'second_post_id' => $validatedData['second_post_id'],
+                        'second_grade_id' => $validatedData['second_grade_id'],
+                        'dept_id_option' => $validatedData['dept_id_option'],
+                        'third_post_id' => $validatedData['third_post_id'],
+                        'third_grade_id' => $validatedData['third_grade_id'],
+                        'other_qualification' =>  $validatedData['other_qualification'],
+                        'rejected_status' => 0
 
-                // Update the relationship and other columns in the ProformaModel instance
-                $proforma->update([
-                    'relationship' => $validatedData['relationship'],
-                    'expire_on_duty' => $validatedData['expire_on_duty'],
-                    'deceased_doe' => $validatedData['deceased_doe'],
-                    'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-                    'applicant_name' => $validatedData['applicant_name'],
-                    // 'appl_date' => $validatedData['appl_date'],
-                    'applicant_dob' => $validatedData['applicant_dob'],
-                    'applicant_mobile' => $validatedData['applicant_mobile'],
-                    'applicant_edu_id' => $validatedData['applicant_edu_id'],
-                    'physically_handicapped' => $validatedData['physically_handicapped'],
-                    'applicant_email_id' => $validatedData['applicant_email_id'],
-                    'caste_id' => $validatedData['caste_id'],
-                    'sex' =>  $validatedData['sex'],
-                    'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-                    'emp_addr_district' => $validatedData['emp_addr_district'],
-                    'emp_state' => $validatedData['emp_state'],
-                    'emp_pincode' => $validatedData['emp_pincode'],
-                    'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-                    'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-                    'emp_state_ret' => $validatedData['emp_state_ret'],
-                    'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-                    'applicant_desig_id' => $validatedData['applicant_desig_id'],
-                    'applicant_grade' => $validatedData['applicant_grade'],
+                        // Add other columns as needed
+                    ]);
+                    //dd($request->all());
+                    // Return a response, for example, a success message
+                    return response()->json(['message' => 'Data updated successfully ']);
+                    //return back()->with('status', "3 Data save successfully....");
+                } else {
+                    session()->put([
+                        'ein' => $ein,
+                        'deceased_emp_name' => $proforma->deceased_emp_name,
+                        'ministry' => $proforma->ministry,
+                        'dept_name' => $proforma->dept_name,
+                        'desig_name' => $proforma->desig_name,
+                        'grade_name' => $proforma->grade_name,
+                        'deceased_doa' => $proforma->deceased_doa,
+                        'deceased_doe' => $proforma->deceased_doe,
+                        'deceased_dob' => $proforma->deceased_dob,
+                        'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
+                        'caste_id' => $proforma->caste_id,
+                        'sex' => $proforma->sex,
+                        'appl_date' => $proforma->appl_date,
+                        'applicant_name' => $proforma->applicant_name,
+                        'relationship' => $proforma->relationship,
+                        'applicant_dob' => $proforma->applicant_dob,
+                        'applicant_edu_id' => $proforma->applicant_edu_id,
+                        'applicant_mobile' => $proforma->applicant_mobile,
+                        'applicant_email_id' => $proforma->applicant_email_id,
+                        'emp_addr_lcality' => $proforma->emp_addr_lcality,
+                        'emp_addr_subdiv' => $proforma->emp_addr_subdiv,
+                        'emp_addr_district' => $proforma->emp_addr_district,
+                        'emp_state' => $proforma->emp_state,
+                        'emp_pincode' => $proforma->emp_pincode,
+                        'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret,
+                        'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
+                        'emp_addr_district_ret' => $proforma->emp_addr_district_ret,
+                        'emp_state_ret' => $proforma->emp_state_ret,
+                        'emp_pincode_ret' => $proforma->emp_pincode_ret,
+                        'applicant_desig_id' => $proforma->applicant_desig_id,
+                        'applicant_grade' => $proforma->applicant_grade,
+                        'expire_on_duty' => $proforma->expire_on_duty,
+                        'physically_handicapped' => $proforma->physically_handicapped,
+                        'uploaded_id' => $proforma->uploaded_id,
+                        'uploader_role_id' => $proforma->uploader_role_id,
+                        'dept_id' => $proforma->dept_id,
+                        'ministry_id' => $proforma->ministry_id,
+                        'file_status' => $proforma->file_status,
+                        'rejected_status' => $proforma->rejected_status,
+                        'upload_status' => $proforma->upload_status,
+                        'family_details_status' => $proforma->family_details_status,
+                        'status' => $proforma->status,
+                        'change_status' => $proforma->change_status,
+                        'form_status' => $proforma->form_status,
+                        'second_post_id' => $proforma->second_post_id,
+                        'second_grade_id' => $proforma->second_grade_id,
+                        'dept_id_option' => $proforma->dept_id_option,
+                        'third_post_id' => $proforma->third_post_id,
+                        'third_grade_id' => $proforma->third_grade_id,
+                        // 'other_qualification' => $proforma->other_qualification,
+                    ]);
+                    ////END OF SESSION
 
-                    'second_post_id' => $validatedData['second_post_id'],
-                    'second_grade_id' => $validatedData['second_grade_id'],
-                    'dept_id_option' => $validatedData['dept_id_option'],
-                    'third_post_id' => $validatedData['third_post_id'],
-                    'third_grade_id' => $validatedData['third_grade_id'],
-                    'other_qualification' =>  "",
-                    'rejected_status' => 0
+                    // Update the relationship and other columns in the ProformaModel instance
+                    $proforma->update([
+                        'relationship' => $validatedData['relationship'],
+                        'expire_on_duty' => $validatedData['expire_on_duty'],
+                        'deceased_doe' => $validatedData['deceased_doe'],
+                        'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                        'applicant_name' => $validatedData['applicant_name'],
+                        // 'appl_date' => $validatedData['appl_date'],
+                        'applicant_dob' => $validatedData['applicant_dob'],
+                        'applicant_mobile' => $validatedData['applicant_mobile'],
+                        'applicant_edu_id' => $validatedData['applicant_edu_id'],
+                        'physically_handicapped' => $validatedData['physically_handicapped'],
+                        'applicant_email_id' => $validatedData['applicant_email_id'],
+                        'caste_id' => $validatedData['caste_id'],
+                        'sex' =>  $validatedData['sex'],
+                        'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                        'emp_addr_district' => $validatedData['emp_addr_district'],
+                        'emp_state' => $validatedData['emp_state'],
+                        'emp_pincode' => $validatedData['emp_pincode'],
+                        'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                        'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                        'emp_state_ret' => $validatedData['emp_state_ret'],
+                        'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                        'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                        'applicant_grade' => $validatedData['applicant_grade'],
 
-                    // Add other columns as needed
-                ]);
-                //dd($request->all());
-                // Return a response, for example, a success message
-                return response()->json(['message' => 'Data updated successfully ']);
-               // return back()->with('status', "4 Data save successfully....");
-         } 
-        }
-    }else {
+                        'second_post_id' => $validatedData['second_post_id'],
+                        'second_grade_id' => $validatedData['second_grade_id'],
+                        'dept_id_option' => $validatedData['dept_id_option'],
+                        'third_post_id' => $validatedData['third_post_id'],
+                        'third_grade_id' => $validatedData['third_grade_id'],
+                        'other_qualification' =>  "",
+                        'rejected_status' => 0
+
+                        // Add other columns as needed
+                    ]);
+                    //dd($request->all());
+                    // Return a response, for example, a success message
+                    return response()->json(['message' => 'Data updated successfully ']);
+                    // return back()->with('status', "4 Data save successfully....");
+                }
+            }
+        } else {
             //for those selected only 1 post(applicant_desig_id)
             if ($getUser->role_id == 1) {
 
@@ -9623,7 +9723,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     'emp_pincode_ret' => 'required',
                     'applicant_desig_id' => 'required',
                     'applicant_grade' => 'required',
-                    'other_qualification' =>'',
+                    'other_qualification' => '',
                     // 'second_grade_id' =>'required',
                     // 'third_post_id' =>'required',
                     // 'third_grade_id' =>'required',
@@ -9638,145 +9738,205 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 if (!$proforma) {
                     return response()->json(['error' => 'Proforma not found'], 404);
                 }
-              
+
                 //dd($educations);
-                if($educations->edu_name== "Others"){
-                ///PUTTING ALL DATA IN SESSION////////////
-                //dd($educations, "jhgjhgjh");
-                session()->put([
-                    'ein' => $ein, 'deceased_emp_name' => $proforma->deceased_emp_name, 'ministry' => $proforma->ministry, 'dept_name' => $proforma->dept_name,
-                    'desig_name' => $proforma->desig_name, 'grade_name' => $proforma->grade_name, 'deceased_doa' => $proforma->deceased_doa,
-                    'deceased_doe' => $proforma->deceased_doe, 'deceased_dob' => $proforma->deceased_dob, 'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
-                    'caste_id' => $proforma->caste_id, 'sex' => $proforma->sex, 'appl_date' => $proforma->appl_date, 'applicant_name' => $proforma->applicant_name,
-                    'relationship' => $proforma->relationship, 'applicant_dob' => $proforma->applicant_dob, 'applicant_edu_id' => $proforma->applicant_edu_id,
-                    'applicant_mobile' => $proforma->applicant_mobile, 'applicant_email_id' => $proforma->applicant_email_id, 'emp_addr_lcality' => $proforma->emp_addr_lcality,
-                    'emp_addr_subdiv' => $proforma->emp_addr_subdiv, 'emp_addr_district' => $proforma->emp_addr_district, 'emp_state' => $proforma->emp_state,
-                    'emp_pincode' => $proforma->emp_pincode, 'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret, 'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
-                    'emp_addr_district_ret' => $proforma->emp_addr_district_ret, 'emp_state_ret' => $proforma->emp_state_ret, 'emp_pincode_ret' => $proforma->emp_pincode_ret,
-                    'applicant_desig_id' => $proforma->applicant_desig_id, 'applicant_grade' => $proforma->applicant_grade, 'expire_on_duty' => $proforma->expire_on_duty,
-                    'physically_handicapped' => $proforma->physically_handicapped, 'uploaded_id' => $proforma->uploaded_id, 'uploader_role_id' => $proforma->uploader_role_id,
-                    'dept_id' => $proforma->dept_id, 'ministry_id' => $proforma->ministry_id, 'file_status' => $proforma->file_status, 'rejected_status' => $proforma->rejected_status,
-                    'upload_status' => $proforma->upload_status, 'family_details_status' => $proforma->family_details_status, 'status' => $proforma->status,
-                    'change_status' => $proforma->change_status, 'form_status' => $proforma->form_status,
-                    'second_post_id' => $proforma->second_post_id,
-                    'second_grade_id' => $proforma->second_grade_id,
-                    'dept_id_option' => $proforma->dept_id_option,
-                    'third_post_id' => $proforma->third_post_id,
-                    'third_grade_id' => $proforma->third_grade_id,
-                    'other_qualification' =>  $proforma->other_qualification,
-                ]);
-                ////END OF SESSION
-                //dd($proforma);
-                // Update the relationship and other columns in the ProformaModel instance
-                $proforma->update([
-                    'relationship' => $validatedData['relationship'],
-                    'expire_on_duty' => $validatedData['expire_on_duty'],
-                    'deceased_doe' => $validatedData['deceased_doe'],
-                    'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-                    'applicant_name' => $validatedData['applicant_name'],
-                    'appl_date' => $validatedData['appl_date'],
-                    'applicant_dob' => $validatedData['applicant_dob'],
-                    'applicant_mobile' => $validatedData['applicant_mobile'],
-                    'applicant_edu_id' => $validatedData['applicant_edu_id'],
-                    'physically_handicapped' => $validatedData['physically_handicapped'],
-                    'applicant_email_id' => $validatedData['applicant_email_id'],
-                    'caste_id' => $validatedData['caste_id'],
-                    'sex' =>  $validatedData['sex'],
-                    'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-                    'emp_addr_district' => $validatedData['emp_addr_district'],
-                    'emp_state' => $validatedData['emp_state'],
-                    'emp_pincode' => $validatedData['emp_pincode'],
-                    'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-                    'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-                    'emp_state_ret' => $validatedData['emp_state_ret'],
-                    'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-                    'applicant_desig_id' => $validatedData['applicant_desig_id'],
-                    'applicant_grade' => $validatedData['applicant_grade'],
-                    'other_qualification' =>  $validatedData['other_qualification'],
-                    'second_post_id' => 0,
-                    'second_grade_id' => "NA",
-                    'dept_id_option' => 0,
-                    'third_post_id' => 0,
-                    'third_grade_id' => "NA",
+                if ($educations->edu_name == "Others") {
+                    ///PUTTING ALL DATA IN SESSION////////////
+                    //dd($educations, "jhgjhgjh");
+                    session()->put([
+                        'ein' => $ein,
+                        'deceased_emp_name' => $proforma->deceased_emp_name,
+                        'ministry' => $proforma->ministry,
+                        'dept_name' => $proforma->dept_name,
+                        'desig_name' => $proforma->desig_name,
+                        'grade_name' => $proforma->grade_name,
+                        'deceased_doa' => $proforma->deceased_doa,
+                        'deceased_doe' => $proforma->deceased_doe,
+                        'deceased_dob' => $proforma->deceased_dob,
+                        'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
+                        'caste_id' => $proforma->caste_id,
+                        'sex' => $proforma->sex,
+                        'appl_date' => $proforma->appl_date,
+                        'applicant_name' => $proforma->applicant_name,
+                        'relationship' => $proforma->relationship,
+                        'applicant_dob' => $proforma->applicant_dob,
+                        'applicant_edu_id' => $proforma->applicant_edu_id,
+                        'applicant_mobile' => $proforma->applicant_mobile,
+                        'applicant_email_id' => $proforma->applicant_email_id,
+                        'emp_addr_lcality' => $proforma->emp_addr_lcality,
+                        'emp_addr_subdiv' => $proforma->emp_addr_subdiv,
+                        'emp_addr_district' => $proforma->emp_addr_district,
+                        'emp_state' => $proforma->emp_state,
+                        'emp_pincode' => $proforma->emp_pincode,
+                        'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret,
+                        'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
+                        'emp_addr_district_ret' => $proforma->emp_addr_district_ret,
+                        'emp_state_ret' => $proforma->emp_state_ret,
+                        'emp_pincode_ret' => $proforma->emp_pincode_ret,
+                        'applicant_desig_id' => $proforma->applicant_desig_id,
+                        'applicant_grade' => $proforma->applicant_grade,
+                        'expire_on_duty' => $proforma->expire_on_duty,
+                        'physically_handicapped' => $proforma->physically_handicapped,
+                        'uploaded_id' => $proforma->uploaded_id,
+                        'uploader_role_id' => $proforma->uploader_role_id,
+                        'dept_id' => $proforma->dept_id,
+                        'ministry_id' => $proforma->ministry_id,
+                        'file_status' => $proforma->file_status,
+                        'rejected_status' => $proforma->rejected_status,
+                        'upload_status' => $proforma->upload_status,
+                        'family_details_status' => $proforma->family_details_status,
+                        'status' => $proforma->status,
+                        'change_status' => $proforma->change_status,
+                        'form_status' => $proforma->form_status,
+                        'second_post_id' => $proforma->second_post_id,
+                        'second_grade_id' => $proforma->second_grade_id,
+                        'dept_id_option' => $proforma->dept_id_option,
+                        'third_post_id' => $proforma->third_post_id,
+                        'third_grade_id' => $proforma->third_grade_id,
+                        'other_qualification' =>  $proforma->other_qualification,
+                    ]);
+                    ////END OF SESSION
+                    //dd($proforma);
+                    // Update the relationship and other columns in the ProformaModel instance
+                    $proforma->update([
+                        'relationship' => $validatedData['relationship'],
+                        'expire_on_duty' => $validatedData['expire_on_duty'],
+                        'deceased_doe' => $validatedData['deceased_doe'],
+                        'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                        'applicant_name' => $validatedData['applicant_name'],
+                        'appl_date' => $validatedData['appl_date'],
+                        'applicant_dob' => $validatedData['applicant_dob'],
+                        'applicant_mobile' => $validatedData['applicant_mobile'],
+                        'applicant_edu_id' => $validatedData['applicant_edu_id'],
+                        'physically_handicapped' => $validatedData['physically_handicapped'],
+                        'applicant_email_id' => $validatedData['applicant_email_id'],
+                        'caste_id' => $validatedData['caste_id'],
+                        'sex' =>  $validatedData['sex'],
+                        'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                        'emp_addr_district' => $validatedData['emp_addr_district'],
+                        'emp_state' => $validatedData['emp_state'],
+                        'emp_pincode' => $validatedData['emp_pincode'],
+                        'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                        'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                        'emp_state_ret' => $validatedData['emp_state_ret'],
+                        'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                        'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                        'applicant_grade' => $validatedData['applicant_grade'],
+                        'other_qualification' =>  $validatedData['other_qualification'],
+                        'second_post_id' => 0,
+                        'second_grade_id' => "NA",
+                        'dept_id_option' => 0,
+                        'third_post_id' => 0,
+                        'third_grade_id' => "NA",
 
-                    'rejected_status' => 0
+                        'rejected_status' => 0
 
-                    // Add other columns as needed
-                ]);
-                //dd($request->all());
-                // Return a response, for example, a success message
-                return response()->json(['message' => 'Data updated successfully ']);
-               // return back()->with('status', "5 Data save successfully....");
+                        // Add other columns as needed
+                    ]);
+                    //dd($request->all());
+                    // Return a response, for example, a success message
+                    return response()->json(['message' => 'Data updated successfully ']);
+                    // return back()->with('status', "5 Data save successfully....");
 
-            }else{
+                } else {
 
-                session()->put([
-                    'ein' => $ein, 'deceased_emp_name' => $proforma->deceased_emp_name, 'ministry' => $proforma->ministry, 'dept_name' => $proforma->dept_name,
-                    'desig_name' => $proforma->desig_name, 'grade_name' => $proforma->grade_name, 'deceased_doa' => $proforma->deceased_doa,
-                    'deceased_doe' => $proforma->deceased_doe, 'deceased_dob' => $proforma->deceased_dob, 'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
-                    'caste_id' => $proforma->caste_id, 'sex' => $proforma->sex, 'appl_date' => $proforma->appl_date, 'applicant_name' => $proforma->applicant_name,
-                    'relationship' => $proforma->relationship, 'applicant_dob' => $proforma->applicant_dob, 'applicant_edu_id' => $proforma->applicant_edu_id,
-                    'applicant_mobile' => $proforma->applicant_mobile, 'applicant_email_id' => $proforma->applicant_email_id, 'emp_addr_lcality' => $proforma->emp_addr_lcality,
-                    'emp_addr_subdiv' => $proforma->emp_addr_subdiv, 'emp_addr_district' => $proforma->emp_addr_district, 'emp_state' => $proforma->emp_state,
-                    'emp_pincode' => $proforma->emp_pincode, 'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret, 'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
-                    'emp_addr_district_ret' => $proforma->emp_addr_district_ret, 'emp_state_ret' => $proforma->emp_state_ret, 'emp_pincode_ret' => $proforma->emp_pincode_ret,
-                    'applicant_desig_id' => $proforma->applicant_desig_id, 'applicant_grade' => $proforma->applicant_grade, 'expire_on_duty' => $proforma->expire_on_duty,
-                    'physically_handicapped' => $proforma->physically_handicapped, 'uploaded_id' => $proforma->uploaded_id, 'uploader_role_id' => $proforma->uploader_role_id,
-                    'dept_id' => $proforma->dept_id, 'ministry_id' => $proforma->ministry_id, 'file_status' => $proforma->file_status, 'rejected_status' => $proforma->rejected_status,
-                    'upload_status' => $proforma->upload_status, 'family_details_status' => $proforma->family_details_status, 'status' => $proforma->status,
-                    'change_status' => $proforma->change_status, 'form_status' => $proforma->form_status,
-                    'second_post_id' => $proforma->second_post_id,
-                    'second_grade_id' => $proforma->second_grade_id,
-                    'dept_id_option' => $proforma->dept_id_option,
-                    'third_post_id' => $proforma->third_post_id,
-                    'third_grade_id' => $proforma->third_grade_id,
-                   // 'other_qualification' =>  $proforma->other_qualification,
-                ]);
-                ////END OF SESSION
-                //dd($proforma);
-              //  dd($educations, $validatedData['other_qualification']);
-                // Update the relationship and other columns in the ProformaModel instance
-                $proforma->update([
-                    'relationship' => $validatedData['relationship'],
-                    'expire_on_duty' => $validatedData['expire_on_duty'],
-                    'deceased_doe' => $validatedData['deceased_doe'],
-                    'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-                    'applicant_name' => $validatedData['applicant_name'],
-                    'appl_date' => $validatedData['appl_date'],
-                    'applicant_dob' => $validatedData['applicant_dob'],
-                    'applicant_mobile' => $validatedData['applicant_mobile'],
-                    'applicant_edu_id' => $validatedData['applicant_edu_id'],
-                    'physically_handicapped' => $validatedData['physically_handicapped'],
-                    'applicant_email_id' => $validatedData['applicant_email_id'],
-                    'caste_id' => $validatedData['caste_id'],
-                    'sex' =>  $validatedData['sex'],
-                    'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-                    'emp_addr_district' => $validatedData['emp_addr_district'],
-                    'emp_state' => $validatedData['emp_state'],
-                    'emp_pincode' => $validatedData['emp_pincode'],
-                    'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-                    'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-                    'emp_state_ret' => $validatedData['emp_state_ret'],
-                    'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-                    'applicant_desig_id' => $validatedData['applicant_desig_id'],
-                    'applicant_grade' => $validatedData['applicant_grade'],
-                    'other_qualification' =>  "",
-                    'second_post_id' => 0,
-                    'second_grade_id' => "NA",
-                    'dept_id_option' => 0,
-                    'third_post_id' => 0,
-                    'third_grade_id' => "NA",
+                    session()->put([
+                        'ein' => $ein,
+                        'deceased_emp_name' => $proforma->deceased_emp_name,
+                        'ministry' => $proforma->ministry,
+                        'dept_name' => $proforma->dept_name,
+                        'desig_name' => $proforma->desig_name,
+                        'grade_name' => $proforma->grade_name,
+                        'deceased_doa' => $proforma->deceased_doa,
+                        'deceased_doe' => $proforma->deceased_doe,
+                        'deceased_dob' => $proforma->deceased_dob,
+                        'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
+                        'caste_id' => $proforma->caste_id,
+                        'sex' => $proforma->sex,
+                        'appl_date' => $proforma->appl_date,
+                        'applicant_name' => $proforma->applicant_name,
+                        'relationship' => $proforma->relationship,
+                        'applicant_dob' => $proforma->applicant_dob,
+                        'applicant_edu_id' => $proforma->applicant_edu_id,
+                        'applicant_mobile' => $proforma->applicant_mobile,
+                        'applicant_email_id' => $proforma->applicant_email_id,
+                        'emp_addr_lcality' => $proforma->emp_addr_lcality,
+                        'emp_addr_subdiv' => $proforma->emp_addr_subdiv,
+                        'emp_addr_district' => $proforma->emp_addr_district,
+                        'emp_state' => $proforma->emp_state,
+                        'emp_pincode' => $proforma->emp_pincode,
+                        'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret,
+                        'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
+                        'emp_addr_district_ret' => $proforma->emp_addr_district_ret,
+                        'emp_state_ret' => $proforma->emp_state_ret,
+                        'emp_pincode_ret' => $proforma->emp_pincode_ret,
+                        'applicant_desig_id' => $proforma->applicant_desig_id,
+                        'applicant_grade' => $proforma->applicant_grade,
+                        'expire_on_duty' => $proforma->expire_on_duty,
+                        'physically_handicapped' => $proforma->physically_handicapped,
+                        'uploaded_id' => $proforma->uploaded_id,
+                        'uploader_role_id' => $proforma->uploader_role_id,
+                        'dept_id' => $proforma->dept_id,
+                        'ministry_id' => $proforma->ministry_id,
+                        'file_status' => $proforma->file_status,
+                        'rejected_status' => $proforma->rejected_status,
+                        'upload_status' => $proforma->upload_status,
+                        'family_details_status' => $proforma->family_details_status,
+                        'status' => $proforma->status,
+                        'change_status' => $proforma->change_status,
+                        'form_status' => $proforma->form_status,
+                        'second_post_id' => $proforma->second_post_id,
+                        'second_grade_id' => $proforma->second_grade_id,
+                        'dept_id_option' => $proforma->dept_id_option,
+                        'third_post_id' => $proforma->third_post_id,
+                        'third_grade_id' => $proforma->third_grade_id,
+                        // 'other_qualification' =>  $proforma->other_qualification,
+                    ]);
+                    ////END OF SESSION
+                    //dd($proforma);
+                    //  dd($educations, $validatedData['other_qualification']);
+                    // Update the relationship and other columns in the ProformaModel instance
+                    $proforma->update([
+                        'relationship' => $validatedData['relationship'],
+                        'expire_on_duty' => $validatedData['expire_on_duty'],
+                        'deceased_doe' => $validatedData['deceased_doe'],
+                        'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                        'applicant_name' => $validatedData['applicant_name'],
+                        'appl_date' => $validatedData['appl_date'],
+                        'applicant_dob' => $validatedData['applicant_dob'],
+                        'applicant_mobile' => $validatedData['applicant_mobile'],
+                        'applicant_edu_id' => $validatedData['applicant_edu_id'],
+                        'physically_handicapped' => $validatedData['physically_handicapped'],
+                        'applicant_email_id' => $validatedData['applicant_email_id'],
+                        'caste_id' => $validatedData['caste_id'],
+                        'sex' =>  $validatedData['sex'],
+                        'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                        'emp_addr_district' => $validatedData['emp_addr_district'],
+                        'emp_state' => $validatedData['emp_state'],
+                        'emp_pincode' => $validatedData['emp_pincode'],
+                        'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                        'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                        'emp_state_ret' => $validatedData['emp_state_ret'],
+                        'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                        'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                        'applicant_grade' => $validatedData['applicant_grade'],
+                        'other_qualification' =>  "",
+                        'second_post_id' => 0,
+                        'second_grade_id' => "NA",
+                        'dept_id_option' => 0,
+                        'third_post_id' => 0,
+                        'third_grade_id' => "NA",
 
-                    'rejected_status' => 0
+                        'rejected_status' => 0
 
-                    // Add other columns as needed
-                ]);
-                //dd($request->all());
-                // Return a response, for example, a success message
-                return response()->json(['message' => 'Data updated successfully ']);
-               // return back()->with('status', "6 Data save successfully....");
-            }
-        } else {
+                        // Add other columns as needed
+                    ]);
+                    //dd($request->all());
+                    // Return a response, for example, a success message
+                    return response()->json(['message' => 'Data updated successfully ']);
+                    // return back()->with('status', "6 Data save successfully....");
+                }
+            } else {
                 $validatedData = $request->validate([
                     'expire_on_duty' => 'required',
                     'deceased_doe' => 'required|string',
@@ -9802,7 +9962,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     'emp_pincode_ret' => 'required',
                     'applicant_desig_id' => 'required',
                     'applicant_grade' => 'required',
-                    'other_qualification' =>'',
+                    'other_qualification' => '',
                     // 'second_post_id' => 'required',
                     // 'second_grade_id' => 'required',
                     // 'dept_id_option' => 'required',
@@ -9823,141 +9983,201 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 if (!$proforma) {
                     return response()->json(['error' => 'Proforma not found'], 404);
                 }
-           
-                if($educations->edu_name== "Others"){
-                ///PUTTING ALL DATA IN SESSION////////////
-                session()->put([
-                    'ein' => $ein, 'deceased_emp_name' => $proforma->deceased_emp_name, 'ministry' => $proforma->ministry, 'dept_name' => $proforma->dept_name,
-                    'desig_name' => $proforma->desig_name, 'grade_name' => $proforma->grade_name, 'deceased_doa' => $proforma->deceased_doa,
-                    'deceased_doe' => $proforma->deceased_doe, 'deceased_dob' => $proforma->deceased_dob, 'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
-                    'caste_id' => $proforma->caste_id, 'sex' => $proforma->sex, 'appl_date' => $proforma->appl_date, 'applicant_name' => $proforma->applicant_name,
-                    'relationship' => $proforma->relationship, 'applicant_dob' => $proforma->applicant_dob, 'applicant_edu_id' => $proforma->applicant_edu_id,
-                    'applicant_mobile' => $proforma->applicant_mobile, 'applicant_email_id' => $proforma->applicant_email_id, 'emp_addr_lcality' => $proforma->emp_addr_lcality,
-                    'emp_addr_subdiv' => $proforma->emp_addr_subdiv, 'emp_addr_district' => $proforma->emp_addr_district, 'emp_state' => $proforma->emp_state,
-                    'emp_pincode' => $proforma->emp_pincode, 'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret, 'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
-                    'emp_addr_district_ret' => $proforma->emp_addr_district_ret, 'emp_state_ret' => $proforma->emp_state_ret, 'emp_pincode_ret' => $proforma->emp_pincode_ret,
-                    'applicant_desig_id' => $proforma->applicant_desig_id, 'applicant_grade' => $proforma->applicant_grade, 'expire_on_duty' => $proforma->expire_on_duty,
-                    'physically_handicapped' => $proforma->physically_handicapped, 'uploaded_id' => $proforma->uploaded_id, 'uploader_role_id' => $proforma->uploader_role_id,
-                    'dept_id' => $proforma->dept_id, 'ministry_id' => $proforma->ministry_id, 'file_status' => $proforma->file_status, 'rejected_status' => $proforma->rejected_status,
-                    'upload_status' => $proforma->upload_status, 'family_details_status' => $proforma->family_details_status, 'status' => $proforma->status,
-                    'change_status' => $proforma->change_status, 'form_status' => $proforma->form_status,
-                    'second_post_id' => $proforma->second_post_id,
-                    'second_grade_id' => $proforma->second_grade_id,
-                    'dept_id_option' => $proforma->dept_id_option,
-                    'third_post_id' => $proforma->third_post_id,
-                    'third_grade_id' => $proforma->third_grade_id,
-                    'other_qualification' =>  $proforma->other_qualification,
-                ]);
-                ////END OF SESSION
 
-                // Update the relationship and other columns in the ProformaModel instance
-                $proforma->update([
-                    'relationship' => $validatedData['relationship'],
-                    'expire_on_duty' => $validatedData['expire_on_duty'],
-                    'deceased_doe' => $validatedData['deceased_doe'],
-                    'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-                    'applicant_name' => $validatedData['applicant_name'],
-                    // 'appl_date' => $validatedData['appl_date'],
-                    'applicant_dob' => $validatedData['applicant_dob'],
-                    'applicant_mobile' => $validatedData['applicant_mobile'],
-                    'applicant_edu_id' => $validatedData['applicant_edu_id'],
-                    'physically_handicapped' => $validatedData['physically_handicapped'],
-                    'applicant_email_id' => $validatedData['applicant_email_id'],
-                    'caste_id' => $validatedData['caste_id'],
-                    'sex' =>  $validatedData['sex'],
-                    'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-                    'emp_addr_district' => $validatedData['emp_addr_district'],
-                    'emp_state' => $validatedData['emp_state'],
-                    'emp_pincode' => $validatedData['emp_pincode'],
-                    'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-                    'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-                    'emp_state_ret' => $validatedData['emp_state_ret'],
-                    'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-                    'applicant_desig_id' => $validatedData['applicant_desig_id'],
-                    'applicant_grade' => $validatedData['applicant_grade'],
-                    'other_qualification' =>  $validatedData['other_qualification'],
-                    'second_post_id' => 0,
-                    'second_grade_id' => "NA",
-                    'dept_id_option' => 0,
-                    'third_post_id' => 0,
-                    'third_grade_id' => "NA",
+                if ($educations->edu_name == "Others") {
+                    ///PUTTING ALL DATA IN SESSION////////////
+                    session()->put([
+                        'ein' => $ein,
+                        'deceased_emp_name' => $proforma->deceased_emp_name,
+                        'ministry' => $proforma->ministry,
+                        'dept_name' => $proforma->dept_name,
+                        'desig_name' => $proforma->desig_name,
+                        'grade_name' => $proforma->grade_name,
+                        'deceased_doa' => $proforma->deceased_doa,
+                        'deceased_doe' => $proforma->deceased_doe,
+                        'deceased_dob' => $proforma->deceased_dob,
+                        'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
+                        'caste_id' => $proforma->caste_id,
+                        'sex' => $proforma->sex,
+                        'appl_date' => $proforma->appl_date,
+                        'applicant_name' => $proforma->applicant_name,
+                        'relationship' => $proforma->relationship,
+                        'applicant_dob' => $proforma->applicant_dob,
+                        'applicant_edu_id' => $proforma->applicant_edu_id,
+                        'applicant_mobile' => $proforma->applicant_mobile,
+                        'applicant_email_id' => $proforma->applicant_email_id,
+                        'emp_addr_lcality' => $proforma->emp_addr_lcality,
+                        'emp_addr_subdiv' => $proforma->emp_addr_subdiv,
+                        'emp_addr_district' => $proforma->emp_addr_district,
+                        'emp_state' => $proforma->emp_state,
+                        'emp_pincode' => $proforma->emp_pincode,
+                        'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret,
+                        'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
+                        'emp_addr_district_ret' => $proforma->emp_addr_district_ret,
+                        'emp_state_ret' => $proforma->emp_state_ret,
+                        'emp_pincode_ret' => $proforma->emp_pincode_ret,
+                        'applicant_desig_id' => $proforma->applicant_desig_id,
+                        'applicant_grade' => $proforma->applicant_grade,
+                        'expire_on_duty' => $proforma->expire_on_duty,
+                        'physically_handicapped' => $proforma->physically_handicapped,
+                        'uploaded_id' => $proforma->uploaded_id,
+                        'uploader_role_id' => $proforma->uploader_role_id,
+                        'dept_id' => $proforma->dept_id,
+                        'ministry_id' => $proforma->ministry_id,
+                        'file_status' => $proforma->file_status,
+                        'rejected_status' => $proforma->rejected_status,
+                        'upload_status' => $proforma->upload_status,
+                        'family_details_status' => $proforma->family_details_status,
+                        'status' => $proforma->status,
+                        'change_status' => $proforma->change_status,
+                        'form_status' => $proforma->form_status,
+                        'second_post_id' => $proforma->second_post_id,
+                        'second_grade_id' => $proforma->second_grade_id,
+                        'dept_id_option' => $proforma->dept_id_option,
+                        'third_post_id' => $proforma->third_post_id,
+                        'third_grade_id' => $proforma->third_grade_id,
+                        'other_qualification' =>  $proforma->other_qualification,
+                    ]);
+                    ////END OF SESSION
 
-                    'rejected_status' => 0
+                    // Update the relationship and other columns in the ProformaModel instance
+                    $proforma->update([
+                        'relationship' => $validatedData['relationship'],
+                        'expire_on_duty' => $validatedData['expire_on_duty'],
+                        'deceased_doe' => $validatedData['deceased_doe'],
+                        'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                        'applicant_name' => $validatedData['applicant_name'],
+                        // 'appl_date' => $validatedData['appl_date'],
+                        'applicant_dob' => $validatedData['applicant_dob'],
+                        'applicant_mobile' => $validatedData['applicant_mobile'],
+                        'applicant_edu_id' => $validatedData['applicant_edu_id'],
+                        'physically_handicapped' => $validatedData['physically_handicapped'],
+                        'applicant_email_id' => $validatedData['applicant_email_id'],
+                        'caste_id' => $validatedData['caste_id'],
+                        'sex' =>  $validatedData['sex'],
+                        'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                        'emp_addr_district' => $validatedData['emp_addr_district'],
+                        'emp_state' => $validatedData['emp_state'],
+                        'emp_pincode' => $validatedData['emp_pincode'],
+                        'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                        'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                        'emp_state_ret' => $validatedData['emp_state_ret'],
+                        'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                        'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                        'applicant_grade' => $validatedData['applicant_grade'],
+                        'other_qualification' =>  $validatedData['other_qualification'],
+                        'second_post_id' => 0,
+                        'second_grade_id' => "NA",
+                        'dept_id_option' => 0,
+                        'third_post_id' => 0,
+                        'third_grade_id' => "NA",
 
-                    // Add other columns as needed
-                ]);
-                //dd($request->all());
-                // Return a response, for example, a success message
-                return response()->json(['message' => 'Data updated successfully ']);
-                //return back()->with('status', "7 Data save successfully....");
-            }else{
-                session()->put([
-                    'ein' => $ein, 'deceased_emp_name' => $proforma->deceased_emp_name, 'ministry' => $proforma->ministry, 'dept_name' => $proforma->dept_name,
-                    'desig_name' => $proforma->desig_name, 'grade_name' => $proforma->grade_name, 'deceased_doa' => $proforma->deceased_doa,
-                    'deceased_doe' => $proforma->deceased_doe, 'deceased_dob' => $proforma->deceased_dob, 'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
-                    'caste_id' => $proforma->caste_id, 'sex' => $proforma->sex, 'appl_date' => $proforma->appl_date, 'applicant_name' => $proforma->applicant_name,
-                    'relationship' => $proforma->relationship, 'applicant_dob' => $proforma->applicant_dob, 'applicant_edu_id' => $proforma->applicant_edu_id,
-                    'applicant_mobile' => $proforma->applicant_mobile, 'applicant_email_id' => $proforma->applicant_email_id, 'emp_addr_lcality' => $proforma->emp_addr_lcality,
-                    'emp_addr_subdiv' => $proforma->emp_addr_subdiv, 'emp_addr_district' => $proforma->emp_addr_district, 'emp_state' => $proforma->emp_state,
-                    'emp_pincode' => $proforma->emp_pincode, 'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret, 'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
-                    'emp_addr_district_ret' => $proforma->emp_addr_district_ret, 'emp_state_ret' => $proforma->emp_state_ret, 'emp_pincode_ret' => $proforma->emp_pincode_ret,
-                    'applicant_desig_id' => $proforma->applicant_desig_id, 'applicant_grade' => $proforma->applicant_grade, 'expire_on_duty' => $proforma->expire_on_duty,
-                    'physically_handicapped' => $proforma->physically_handicapped, 'uploaded_id' => $proforma->uploaded_id, 'uploader_role_id' => $proforma->uploader_role_id,
-                    'dept_id' => $proforma->dept_id, 'ministry_id' => $proforma->ministry_id, 'file_status' => $proforma->file_status, 'rejected_status' => $proforma->rejected_status,
-                    'upload_status' => $proforma->upload_status, 'family_details_status' => $proforma->family_details_status, 'status' => $proforma->status,
-                    'change_status' => $proforma->change_status, 'form_status' => $proforma->form_status,
-                    'second_post_id' => $proforma->second_post_id,
-                    'second_grade_id' => $proforma->second_grade_id,
-                    'dept_id_option' => $proforma->dept_id_option,
-                    'third_post_id' => $proforma->third_post_id,
-                    'third_grade_id' => $proforma->third_grade_id,
-                  //  'other_qualification' =>  $proforma->other_qualification,
-                ]);
-                ////END OF SESSION
+                        'rejected_status' => 0
 
-                // Update the relationship and other columns in the ProformaModel instance
-                $proforma->update([
-                    'relationship' => $validatedData['relationship'],
-                    'expire_on_duty' => $validatedData['expire_on_duty'],
-                    'deceased_doe' => $validatedData['deceased_doe'],
-                    'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-                    'applicant_name' => $validatedData['applicant_name'],
-                    // 'appl_date' => $validatedData['appl_date'],
-                    'applicant_dob' => $validatedData['applicant_dob'],
-                    'applicant_mobile' => $validatedData['applicant_mobile'],
-                    'applicant_edu_id' => $validatedData['applicant_edu_id'],
-                    'physically_handicapped' => $validatedData['physically_handicapped'],
-                    'applicant_email_id' => $validatedData['applicant_email_id'],
-                    'caste_id' => $validatedData['caste_id'],
-                    'sex' =>  $validatedData['sex'],
-                    'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-                    'emp_addr_district' => $validatedData['emp_addr_district'],
-                    'emp_state' => $validatedData['emp_state'],
-                    'emp_pincode' => $validatedData['emp_pincode'],
-                    'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-                    'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-                    'emp_state_ret' => $validatedData['emp_state_ret'],
-                    'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-                    'applicant_desig_id' => $validatedData['applicant_desig_id'],
-                    'applicant_grade' => $validatedData['applicant_grade'],
-                    
-                    'other_qualification' =>  "",
-                    'second_post_id' => 0,
-                    'second_grade_id' => "NA",
-                    'dept_id_option' => 0,
-                    'third_post_id' => 0,
-                    'third_grade_id' => "NA",
+                        // Add other columns as needed
+                    ]);
+                    //dd($request->all());
+                    // Return a response, for example, a success message
+                    return response()->json(['message' => 'Data updated successfully ']);
+                    //return back()->with('status', "7 Data save successfully....");
+                } else {
+                    session()->put([
+                        'ein' => $ein,
+                        'deceased_emp_name' => $proforma->deceased_emp_name,
+                        'ministry' => $proforma->ministry,
+                        'dept_name' => $proforma->dept_name,
+                        'desig_name' => $proforma->desig_name,
+                        'grade_name' => $proforma->grade_name,
+                        'deceased_doa' => $proforma->deceased_doa,
+                        'deceased_doe' => $proforma->deceased_doe,
+                        'deceased_dob' => $proforma->deceased_dob,
+                        'deceased_causeofdeath' => $proforma->deceased_causeofdeath,
+                        'caste_id' => $proforma->caste_id,
+                        'sex' => $proforma->sex,
+                        'appl_date' => $proforma->appl_date,
+                        'applicant_name' => $proforma->applicant_name,
+                        'relationship' => $proforma->relationship,
+                        'applicant_dob' => $proforma->applicant_dob,
+                        'applicant_edu_id' => $proforma->applicant_edu_id,
+                        'applicant_mobile' => $proforma->applicant_mobile,
+                        'applicant_email_id' => $proforma->applicant_email_id,
+                        'emp_addr_lcality' => $proforma->emp_addr_lcality,
+                        'emp_addr_subdiv' => $proforma->emp_addr_subdiv,
+                        'emp_addr_district' => $proforma->emp_addr_district,
+                        'emp_state' => $proforma->emp_state,
+                        'emp_pincode' => $proforma->emp_pincode,
+                        'emp_addr_lcality_ret' => $proforma->emp_addr_lcality_ret,
+                        'emp_addr_subdiv_ret' => $proforma->emp_addr_subdiv_ret,
+                        'emp_addr_district_ret' => $proforma->emp_addr_district_ret,
+                        'emp_state_ret' => $proforma->emp_state_ret,
+                        'emp_pincode_ret' => $proforma->emp_pincode_ret,
+                        'applicant_desig_id' => $proforma->applicant_desig_id,
+                        'applicant_grade' => $proforma->applicant_grade,
+                        'expire_on_duty' => $proforma->expire_on_duty,
+                        'physically_handicapped' => $proforma->physically_handicapped,
+                        'uploaded_id' => $proforma->uploaded_id,
+                        'uploader_role_id' => $proforma->uploader_role_id,
+                        'dept_id' => $proforma->dept_id,
+                        'ministry_id' => $proforma->ministry_id,
+                        'file_status' => $proforma->file_status,
+                        'rejected_status' => $proforma->rejected_status,
+                        'upload_status' => $proforma->upload_status,
+                        'family_details_status' => $proforma->family_details_status,
+                        'status' => $proforma->status,
+                        'change_status' => $proforma->change_status,
+                        'form_status' => $proforma->form_status,
+                        'second_post_id' => $proforma->second_post_id,
+                        'second_grade_id' => $proforma->second_grade_id,
+                        'dept_id_option' => $proforma->dept_id_option,
+                        'third_post_id' => $proforma->third_post_id,
+                        'third_grade_id' => $proforma->third_grade_id,
+                        //  'other_qualification' =>  $proforma->other_qualification,
+                    ]);
+                    ////END OF SESSION
 
-                    'rejected_status' => 0
+                    // Update the relationship and other columns in the ProformaModel instance
+                    $proforma->update([
+                        'relationship' => $validatedData['relationship'],
+                        'expire_on_duty' => $validatedData['expire_on_duty'],
+                        'deceased_doe' => $validatedData['deceased_doe'],
+                        'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                        'applicant_name' => $validatedData['applicant_name'],
+                        // 'appl_date' => $validatedData['appl_date'],
+                        'applicant_dob' => $validatedData['applicant_dob'],
+                        'applicant_mobile' => $validatedData['applicant_mobile'],
+                        'applicant_edu_id' => $validatedData['applicant_edu_id'],
+                        'physically_handicapped' => $validatedData['physically_handicapped'],
+                        'applicant_email_id' => $validatedData['applicant_email_id'],
+                        'caste_id' => $validatedData['caste_id'],
+                        'sex' =>  $validatedData['sex'],
+                        'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                        'emp_addr_district' => $validatedData['emp_addr_district'],
+                        'emp_state' => $validatedData['emp_state'],
+                        'emp_pincode' => $validatedData['emp_pincode'],
+                        'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                        'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                        'emp_state_ret' => $validatedData['emp_state_ret'],
+                        'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                        'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                        'applicant_grade' => $validatedData['applicant_grade'],
 
-                    // Add other columns as needed
-                ]);
-                //dd($request->all());
-                // Return a response, for example, a success message
-                return response()->json(['message' => 'Data updated successfully ']);
-                //return back()->with('status', "8 Data save successfully....");
+                        'other_qualification' =>  "",
+                        'second_post_id' => 0,
+                        'second_grade_id' => "NA",
+                        'dept_id_option' => 0,
+                        'third_post_id' => 0,
+                        'third_grade_id' => "NA",
+
+                        'rejected_status' => 0
+
+                        // Add other columns as needed
+                    ]);
+                    //dd($request->all());
+                    // Return a response, for example, a success message
+                    return response()->json(['message' => 'Data updated successfully ']);
+                    //return back()->with('status', "8 Data save successfully....");
+                }
             }
-        }
         }
     }
 
@@ -10293,7 +10513,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             'second_grade_id' => 'required',
             'dept_id_option' => 'required',
             'third_post_id' =>  'required',
-            'third_grade_id' => 'required',            
+            'third_grade_id' => 'required',
 
         ]);
         $ein = $request->input('ein');
@@ -10309,86 +10529,85 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
         // Update the relationship and other columns in the ProformaModel instance
         if ($proforma->second_post_id != 0) {
-      
-        // Get the EIN and relationship from the request
-      
-        $proforma->update([
-            'relationship' => $validatedData['relationship'],
-            'expire_on_duty' => $validatedData['expire_on_duty'],
-            'deceased_doe' => $validatedData['deceased_doe'],
-            'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-            'applicant_name' => $validatedData['applicant_name'],
-            // 'appl_date' => $validatedData[ 'appl_date' ],
-            'applicant_dob' => $validatedData['applicant_dob'],
-            'applicant_mobile' => $validatedData['applicant_mobile'],
-            'applicant_edu_id' => $validatedData['applicant_edu_id'],
-            'physically_handicapped' => $validatedData['physically_handicapped'],
-            'applicant_email_id' => $validatedData['applicant_email_id'],
-            'caste_id' => $validatedData['caste_id'],
-            'sex' => $validatedData['sex'],
-            'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-            'emp_addr_district' => $validatedData['emp_addr_district'],
-            'emp_state' => $validatedData['emp_state'],
-            'emp_pincode' => $validatedData['emp_pincode'],
-            'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-            'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-            'emp_state_ret' => $validatedData['emp_state_ret'],
-            'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-            'applicant_desig_id' => $validatedData['applicant_desig_id'],
-            'applicant_grade' => $validatedData['applicant_grade'],
-            'rejected_status' => 0,
 
-            'second_post_id' =>  $validatedData['second_post_id'],
-            'second_grade_id' =>  $validatedData['second_grade_id'],
-            'dept_id_option' => $validatedData['dept_id_option'],
-            'third_post_id' =>  $validatedData['third_post_id'],
-            'third_grade_id' =>  $validatedData['third_grade_id'],
+            // Get the EIN and relationship from the request
 
-            // Add other columns as needed
-        ]);
-        //dd( $request->all() );
-        // Return a response, for example, a success message
-        return response()->json(['message' => 'Data updated successfully ']);
-    }else{
-        $proforma->update([
-            'relationship' => $validatedData['relationship'],
-            'expire_on_duty' => $validatedData['expire_on_duty'],
-            'deceased_doe' => $validatedData['deceased_doe'],
-            'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
-            'applicant_name' => $validatedData['applicant_name'],
-            // 'appl_date' => $validatedData[ 'appl_date' ],
-            'applicant_dob' => $validatedData['applicant_dob'],
-            'applicant_mobile' => $validatedData['applicant_mobile'],
-            'applicant_edu_id' => $validatedData['applicant_edu_id'],
-            'physically_handicapped' => $validatedData['physically_handicapped'],
-            'applicant_email_id' => $validatedData['applicant_email_id'],
-            'caste_id' => $validatedData['caste_id'],
-            'sex' => $validatedData['sex'],
-            'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
-            'emp_addr_district' => $validatedData['emp_addr_district'],
-            'emp_state' => $validatedData['emp_state'],
-            'emp_pincode' => $validatedData['emp_pincode'],
-            'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
-            'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
-            'emp_state_ret' => $validatedData['emp_state_ret'],
-            'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
-            'applicant_desig_id' => $validatedData['applicant_desig_id'],
-            'applicant_grade' => $validatedData['applicant_grade'],
-            'rejected_status' => 0,
+            $proforma->update([
+                'relationship' => $validatedData['relationship'],
+                'expire_on_duty' => $validatedData['expire_on_duty'],
+                'deceased_doe' => $validatedData['deceased_doe'],
+                'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                'applicant_name' => $validatedData['applicant_name'],
+                // 'appl_date' => $validatedData[ 'appl_date' ],
+                'applicant_dob' => $validatedData['applicant_dob'],
+                'applicant_mobile' => $validatedData['applicant_mobile'],
+                'applicant_edu_id' => $validatedData['applicant_edu_id'],
+                'physically_handicapped' => $validatedData['physically_handicapped'],
+                'applicant_email_id' => $validatedData['applicant_email_id'],
+                'caste_id' => $validatedData['caste_id'],
+                'sex' => $validatedData['sex'],
+                'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                'emp_addr_district' => $validatedData['emp_addr_district'],
+                'emp_state' => $validatedData['emp_state'],
+                'emp_pincode' => $validatedData['emp_pincode'],
+                'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                'emp_state_ret' => $validatedData['emp_state_ret'],
+                'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                'applicant_grade' => $validatedData['applicant_grade'],
+                'rejected_status' => 0,
 
-            'second_post_id' =>  0,
-            'second_grade_id' =>  "NA",
-            'dept_id_option' => 0,
-            'third_post_id' => 0,
-            'third_grade_id' =>  "NA",
+                'second_post_id' =>  $validatedData['second_post_id'],
+                'second_grade_id' =>  $validatedData['second_grade_id'],
+                'dept_id_option' => $validatedData['dept_id_option'],
+                'third_post_id' =>  $validatedData['third_post_id'],
+                'third_grade_id' =>  $validatedData['third_grade_id'],
 
-            // Add other columns as needed
-        ]);
-        //dd( $request->all() );
-        // Return a response, for example, a success message
-        return response()->json(['message' => 'Data updated successfully ']);
-    }
+                // Add other columns as needed
+            ]);
+            //dd( $request->all() );
+            // Return a response, for example, a success message
+            return response()->json(['message' => 'Data updated successfully ']);
+        } else {
+            $proforma->update([
+                'relationship' => $validatedData['relationship'],
+                'expire_on_duty' => $validatedData['expire_on_duty'],
+                'deceased_doe' => $validatedData['deceased_doe'],
+                'deceased_causeofdeath' => $validatedData['deceased_causeofdeath'],
+                'applicant_name' => $validatedData['applicant_name'],
+                // 'appl_date' => $validatedData[ 'appl_date' ],
+                'applicant_dob' => $validatedData['applicant_dob'],
+                'applicant_mobile' => $validatedData['applicant_mobile'],
+                'applicant_edu_id' => $validatedData['applicant_edu_id'],
+                'physically_handicapped' => $validatedData['physically_handicapped'],
+                'applicant_email_id' => $validatedData['applicant_email_id'],
+                'caste_id' => $validatedData['caste_id'],
+                'sex' => $validatedData['sex'],
+                'emp_addr_lcality' => $validatedData['emp_addr_lcality'],
+                'emp_addr_district' => $validatedData['emp_addr_district'],
+                'emp_state' => $validatedData['emp_state'],
+                'emp_pincode' => $validatedData['emp_pincode'],
+                'emp_addr_lcality_ret' => $validatedData['emp_addr_lcality_ret'],
+                'emp_addr_district_ret' => $validatedData['emp_addr_district_ret'],
+                'emp_state_ret' => $validatedData['emp_state_ret'],
+                'emp_pincode_ret' => $validatedData['emp_pincode_ret'],
+                'applicant_desig_id' => $validatedData['applicant_desig_id'],
+                'applicant_grade' => $validatedData['applicant_grade'],
+                'rejected_status' => 0,
 
+                'second_post_id' =>  0,
+                'second_grade_id' =>  "NA",
+                'dept_id_option' => 0,
+                'third_post_id' => 0,
+                'third_grade_id' =>  "NA",
+
+                // Add other columns as needed
+            ]);
+            //dd( $request->all() );
+            // Return a response, for example, a success message
+            return response()->json(['message' => 'Data updated successfully ']);
+        }
     }
 
 
@@ -10754,34 +10973,32 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
-        $file_status_array=[1, 2,5, 6, 7,8, 9]; 
-        $statusArray = [1,2,3,4,5,6,7,9];
+        $file_status_array = [1, 2, 5, 6, 7, 8, 9];
+        $statusArray = [1, 2, 3, 4, 5, 6, 7, 9];
 
         if ($getUser->role_id == 1 || $getUser->role_id == 2) {
-           
-            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
+
+            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
             $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
-           
+
             $Remarks = RemarksModel::get()->toArray();
 
             //Loading all the available employee records 
-            $empListAll = $empList1->map(function($empItem, $index){
+            $empListAll = $empList1->map(function ($empItem, $index) {
                 //First dynamically assigning the seniority number (Sl No)
-                $empItem->slNo = $index + 1;            
-                return $empItem;            
-                            
+                $empItem->slNo = $index + 1;
+                return $empItem;
             });
 
             //Filtering based on department ID
-            $empList = $empListAll->filter(function($empItem1) use ($getUser){
+            $empList = $empListAll->filter(function ($empItem1) use ($getUser) {
                 //Filter only the logged in (authenticated) user
-                return($empItem1->dept_id == $getUser->dept_id);
-                    
-            })->map(function($emp, $index){
+                return ($empItem1->dept_id == $getUser->dept_id);
+            })->map(function ($emp, $index) {
                 //Serializing employee list as per department
                 $emp->slNo2 = $index;
                 return $emp;
-            });   
+            });
 
             //dd( $empList);
             $stat = '';
@@ -10833,24 +11050,24 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
             return view('admin/viewSeniorityStatusBySelf', compact('empList', 'empListArray', 'Remarks', 'getUser'));
         }
-      
+
 
         if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
             $request->session()->forget(['deptId']);
-           
+
             $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
             // $Appl_List = count( $empListArray );
             //dd( $Appl_List );
             $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe, appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
             $Remarks = RemarksModel::get()->toArray();
             //expire_on_duty if yes top priority
-            
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
+
+            $empList = $empList->map(function ($empItem, $index) {
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;
+                return $empItem;
             });
-           // dd( $empList->toArray() );
+            // dd( $empList->toArray() );
             $stat = '';
 
             foreach ($empList as $data) {
@@ -10914,69 +11131,65 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
 
-        $file_status_array=[1, 2,5, 6, 7,8, 9]; 
-        $statusArray = [1,2,3,4,5,6,7,9];      
-           
-         
+        $file_status_array = [1, 2, 5, 6, 7, 8, 9];
+        $statusArray = [1, 2, 3, 4, 5, 6, 7, 9];
+
+
 
         if ($getUser->role_id == 1 || $getUser->role_id == 2) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
-         
-            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
-            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
-           
-            $Remarks = RemarksModel::get()->toArray();
 
-            //Loading all the available employee records 
-            $empListAll = $empList1->map(function($empItem, $index){
-                //First dynamically assigning the seniority number (Sl No)
-                $empItem->slNo = $index + 1;            
-                return $empItem;            
-                            
-            });
+                $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
+                $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
 
-            //Pickup as per based on department ID
+                $Remarks = RemarksModel::get()->toArray();
 
-             //Filtering based on ein
-            $empList = $empListAll->filter(function($empItem1) use ($request, $getUser){
-                //Filter only the logged in (authenticated) user
-                return($empItem1->ein == $request->searchItem && $empItem1->dept_id == $getUser->dept_id);
-                    
-            })->map(function($emp, $index){
-                //Serializing employee list as per department
-                $emp->slNo2 = $index;
-                return $emp;
-            }); 
-              //dd($empList); 
-            
-        }else{         
+                //Loading all the available employee records 
+                $empListAll = $empList1->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                });
 
-            $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();            
-            $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
-           
-            $Remarks = RemarksModel::get()->toArray();
+                //Pickup as per based on department ID
 
-            //Loading all the available employee records 
-            $empListAll = $empList1->map(function($empItem, $index){
-                //First dynamically assigning the seniority number (Sl No)
-                $empItem->slNo = $index + 1;            
-                return $empItem;            
-                            
-            });
+                //Filtering based on ein
+                $empList = $empListAll->filter(function ($empItem1) use ($request, $getUser) {
+                    //Filter only the logged in (authenticated) user
+                    return ($empItem1->ein == $request->searchItem && $empItem1->dept_id == $getUser->dept_id);
+                })->map(function ($emp, $index) {
+                    //Serializing employee list as per department
+                    $emp->slNo2 = $index;
+                    return $emp;
+                });
+                //dd($empList); 
 
-            //Filtering based on department ID
-            $empList = $empListAll->filter(function($empItem1) use ($getUser){
-                //Filter only the logged in (authenticated) user
-                return($empItem1->dept_id == $getUser->dept_id);
-                    
-            })->map(function($emp, $index){
-                //Serializing employee list as per department
-                $emp->slNo2 = $index;
-                return $emp;
-            }); 
-             // dd($empList); 
-        } 
-            
+            } else {
+
+                $empListArray = ProformaModel::get()->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->toArray();
+                $empList1 = ProformaModel::orderByRaw("(expire_on_duty = 'no'),deceased_doe,appl_date, applicant_dob")->whereIn('file_status', $file_status_array)->whereIn('status', $statusArray)->get();
+
+                $Remarks = RemarksModel::get()->toArray();
+
+                //Loading all the available employee records 
+                $empListAll = $empList1->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                });
+
+                //Filtering based on department ID
+                $empList = $empListAll->filter(function ($empItem1) use ($getUser) {
+                    //Filter only the logged in (authenticated) user
+                    return ($empItem1->dept_id == $getUser->dept_id);
+                })->map(function ($emp, $index) {
+                    //Serializing employee list as per department
+                    $emp->slNo2 = $index;
+                    return $emp;
+                });
+                // dd($empList); 
+            }
+
 
             $stat = '';
 
@@ -11028,37 +11241,37 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             return view('admin/viewSeniorityStatusBySelf', compact('empList', 'empListArray', 'Remarks', 'getUser'));
         }
 
-      
+
         if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
             if ($request->searchItem != null || trim($request->searchItem) != '') {
 
                 $request->session()->forget(['deptId']);
                 $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
                 //dd($deptId);
-                $empListArray = $qry->get()->toArray();     
-                $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();            
-                $empList = $empList->map(function($empItem, $index){
-                //First dynamically assigning the seniority number (Sl No)
-                $empItem->slNo = $index + 1;
-                return $empItem;
-       })->filter(function($empItem) use ($request){
+                $empListArray = $qry->get()->toArray();
+                $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+                $empList = $empList->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                })->filter(function ($empItem) use ($request) {
                     //Filter only the logged in (authenticated) user
-                    return($empItem->ein == $request->searchItem);
+                    return ($empItem->ein == $request->searchItem);
                     //return $empItem;
-                });  
+                });
                 $Remarks = RemarksModel::get()->toArray();
             } else {
-            
+
                 $Remarks = RemarksModel::get()->toArray();
-                 $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
-         //dd($deptId);
-                $empListArray = $qry->get()->toArray();     
-                $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();            
-                $empList = $empList->map(function($empItem, $index){
-                //First dynamically assigning the seniority number (Sl No)
-                $empItem->slNo = $index + 1;
-                return $empItem;
-       });
+                $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
+                //dd($deptId);
+                $empListArray = $qry->get()->toArray();
+                $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+                $empList = $empList->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                });
             }
             $stat = '';
 
@@ -11115,7 +11328,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         // Change for DIHAS below
         $request->session()->forget(['ein', 'ein']);
         $deptId = $request->input('dept_id');
-        session()->put('dept_id',$deptId);
+        session()->put('dept_id', $deptId);
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
         $deptListArray = DepartmentModel::orderBy('dept_name')->get()->unique('dept_name');
@@ -11125,42 +11338,37 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
         if (strlen($deptId) > 0) {
             session()->put('deptId', $deptId);
         }
-            $file_status_array = [ 1,2,5,6,7,8,9 ];
-              $statusArray = [1,2,3,4,5,6,7,9]; 
+        $file_status_array = [1, 2, 5, 6, 7, 8, 9];
+        $statusArray = [1, 2, 3, 4, 5, 6, 7, 9];
 
         if (strlen(session()->get('deptId')) > 0) {
             $deptId = session()->get('deptId');
-            
+
             $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
-         //dd($deptId);
-            $empListArray = $qry->get()->toArray();    
-           // dd($empListArray); 
-            $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();            
-            $empList = $empList1->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-        })->filter(function($empItem) use ($deptId){
-                    //Filter only the logged in (authenticated) user
-                    return($empItem->dept_id == $deptId);
-                    //return $empItem;
-                });  
-
-
-
+            //dd($deptId);
+            $empListArray = $qry->get()->toArray();
+            // dd($empListArray); 
+            $empList1 = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+            $empList = $empList1->map(function ($empItem, $index) {
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;
+                return $empItem;
+            })->filter(function ($empItem) use ($deptId) {
+                //Filter only the logged in (authenticated) user
+                return ($empItem->dept_id == $deptId);
+                //return $empItem;
+            });
         } else {
-         
-           $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);        
+
+            $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
             $empListArray = $qry->get()->toArray();
             //dd($empListArray);
-            $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();           
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-        });
-
-
+            $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+            $empList = $empList->map(function ($empItem, $index) {
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;
+                return $empItem;
+            });
         }
         $Remarks = RemarksModel::get()->toArray();
         //expire_on_duty if yes top priority
@@ -11217,24 +11425,24 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
     {
         $user_id = Auth::user()->id;
         $getUser = User::get()->where('id', $user_id)->first();
-       
-            $file_status_array = [ 1,2,5,6,7,8,9 ];
-            $statusArray = [1,2,3,4,5,6,7,9]; 
+
+        $file_status_array = [1, 2, 5, 6, 7, 8, 9];
+        $statusArray = [1, 2, 3, 4, 5, 6, 7, 9];
         if ($getUser->role_id == 1 || $getUser->role_id == 2) {
-         
-            $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);        
+
+            $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
             $empListArray = $qry->get()->toArray();
             //dd($empListArray);
-            $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();           
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-         })->filter(function($empItem) use ($getUser){
-                    //Filter only the logged in (authenticated) user
-                    return($empItem->dept_id == $getUser->dept_id);
-                    //return $empItem;
-                });  
+            $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+            $empList = $empList->map(function ($empItem, $index) {
+                //First dynamically assigning the seniority number (Sl No)
+                $empItem->slNo = $index + 1;
+                return $empItem;
+            })->filter(function ($empItem) use ($getUser) {
+                //Filter only the logged in (authenticated) user
+                return ($empItem->dept_id == $getUser->dept_id);
+                //return $empItem;
+            });
 
             $Remarks = RemarksModel::get()->toArray();
             $stat = '';
@@ -11292,51 +11500,51 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
             $dompdf->stream();
-           // $dompdf->stream('admin.seniorityPDF', ['Attachment' => false]);
+            // $dompdf->stream('admin.seniorityPDF', ['Attachment' => false]);
         }
-       
+
 
         if ($getUser->role_id == 5 || $getUser->role_id == 6 || $getUser->role_id == 8 || $getUser->role_id == 9) {
 
-            $empListArray = null;         
-    
-            $deptId = session()->get('dept_id');//$request->input('dept_id');
-           //dd($deptId);
-    
+            $empListArray = null;
+
+            $deptId = session()->get('dept_id'); //$request->input('dept_id');
+            //dd($deptId);
+
             if (session()->get('deptId') != "" && $request->input('page') == "") {
                 $request->session()->forget(['deptId']);
             }
-    
+
             if (strlen($deptId) > 0) {
                 session()->put('deptId', $deptId);
             }
             if (strlen(session()->get('deptId')) > 0) {
                 $deptId = session()->get('deptId');
-               // $empListArray = ProformaModel::where('dept_id', $deptId)->where('status', '!=', 0)->get()->toArray();
-               // $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),dept_name,deceased_doe, appl_date, applicant_dob, dept_id")->where('dept_id', $deptId)->where('status', '!=', 0)->paginate(15);
-                $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);        
+                // $empListArray = ProformaModel::where('dept_id', $deptId)->where('status', '!=', 0)->get()->toArray();
+                // $empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),dept_name,deceased_doe, appl_date, applicant_dob, dept_id")->where('dept_id', $deptId)->where('status', '!=', 0)->paginate(15);
+                $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
                 $empListArray = $qry->get()->toArray();
                 //dd($empListArray);
-                $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();           
-                $empList = $empList->map(function($empItem, $index){
-                //First dynamically assigning the seniority number (Sl No)
-                $empItem->slNo = $index + 1;
-                return $empItem;
-            })->filter(function($empItem) use ($deptId){
-                        //Filter only the logged in (authenticated) user
-                        return($empItem->dept_id == $deptId);
-                        //return $empItem;
-                    });  
+                $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+                $empList = $empList->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                })->filter(function ($empItem) use ($deptId) {
+                    //Filter only the logged in (authenticated) user
+                    return ($empItem->dept_id == $deptId);
+                    //return $empItem;
+                });
 
                 $Remarks = RemarksModel::get()->toArray();
                 $stat = '';
-                 //dd( $empList );
+                //dd( $empList );
                 foreach ($empList as $data) {
                     if ($data->status == 0 && $data->form_status == 1) {
                         $stat = 'started';
                         $data->status = 'Incomplete';
                     }
-    
+
                     if ($data->status == 1) {
                         $stat = 'submitted';
                         $data->status = 'Submitted';
@@ -11349,7 +11557,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                         $stat = 'forapproval';
                         $data->status = 'Put up for Approval';
                     }
-    
+
                     if ($data->status == 4) {
                         $stat = 'approved';
                         $data->status = 'Approved';
@@ -11370,10 +11578,10 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                         $stat = 'transfer';
                         $data->status = 'Transferred';
                     }
-    
+
                     $data->formSubStat = $stat;
                 }
-    
+
                 $html = view('admin.interseniorityPDF', ['empList' => $empList], ['empListArray' => $empListArray])->render();
                 //return $empList;
                 // dd( $html );
@@ -11382,20 +11590,20 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-               // $dompdf->stream('admin.interseniorityPDF', ['Attachment' => false]);
-            
+                // $dompdf->stream('admin.interseniorityPDF', ['Attachment' => false]);
+
             } else {
                 //$empListArray = ProformaModel::get()->where('status', '!=', 0)->toArray();
                 //$empList = ProformaModel::orderByRaw("(expire_on_duty = 'no'),dept_name,deceased_doe, appl_date, applicant_dob, dept_id")->where('status', '!=', 0)->paginate(15);
-            $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);        
-            $empListArray = $qry->get()->toArray();
-            //dd($empListArray);
-            $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();           
-            $empList = $empList->map(function($empItem, $index){
-            //First dynamically assigning the seniority number (Sl No)
-            $empItem->slNo = $index + 1;
-            return $empItem;
-        });
+                $qry = ProformaModel::whereIn('file_status', $file_status_array)->whereIn('status', $statusArray);
+                $empListArray = $qry->get()->toArray();
+                //dd($empListArray);
+                $empList = $qry->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")->get();
+                $empList = $empList->map(function ($empItem, $index) {
+                    //First dynamically assigning the seniority number (Sl No)
+                    $empItem->slNo = $index + 1;
+                    return $empItem;
+                });
                 $Remarks = RemarksModel::get()->toArray();
                 $stat = '';
                 // dd( $empList );
@@ -11404,7 +11612,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                         $stat = 'started';
                         $data->status = 'Incomplete';
                     }
-    
+
                     if ($data->status == 1) {
                         $stat = 'submitted';
                         $data->status = 'Submitted';
@@ -11417,7 +11625,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                         $stat = 'forapproval';
                         $data->status = 'Put up for Approval';
                     }
-    
+
                     if ($data->status == 4) {
                         $stat = 'approved';
                         $data->status = 'Approved';
@@ -11438,10 +11646,10 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                         $stat = 'transfer';
                         $data->status = 'Transferred';
                     }
-    
+
                     $data->formSubStat = $stat;
                 }
-    
+
                 $html = view('admin.interseniorityPDF', ['empList' => $empList], ['empListArray' => $empListArray])->render();
                 //return $empList;
                 // dd( $html );
@@ -11450,10 +11658,9 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 $dompdf->setPaper('A4', 'portrait');
                 $dompdf->render();
                 $dompdf->stream();
-               // $dompdf->stream('admin.interseniorityPDF', ['Attachment' => false]);
+                // $dompdf->stream('admin.interseniorityPDF', ['Attachment' => false]);
             }
-              
-            }           
+        }
     }
 
     public function retrieve_dept(Request $request)
@@ -11610,7 +11817,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             if ($empDetails != null) {
 
                 $empDetails->update([
-                    'file_status' => 6, 
+                    'file_status' => 6,
                     'received_by' => $receiver, //previous sender
                     'sent_by' => $getUser->name, //current sender
                     'forwarded_by' => $getUser->id,
@@ -11983,7 +12190,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     $data->transfer_status = 'Incomplete';
                 }
 
-                
+
                 if ($data->transfer_status == 2) {
                     $stat = 'transfer';
                     $data->transfer_status = 'Transferred';
@@ -11998,23 +12205,20 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     'token' => "b000e921eeb20a0d395e341dfcd6117a",
                 ]);
                 $cd_grade = json_decode($response->getBody(), true);
-                
+
                 $postnames = [];
                 foreach ($cd_grade as $cdgrade) {
                     if (isset($cdgrade['dsg_serial_no']) && $cdgrade['dsg_serial_no'] == $data->transfer_post_id) {
-                       
+
                         $postnames[] = $cdgrade['dsg_desc'];
                     }
                 }
-                
+
                 // Assign the array of matching postnames to the user data
                 $data->matching_postnames = $postnames;
-
-               
-                
             }
 
-          
+
 
             return view('admin/viewTransferListByHod', compact("RemarksApprove", "empList", "empListArray", "Remarks"));
         } catch (Exception $e) {
@@ -12301,26 +12505,26 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
     }
 
     public function transferFromDPNodal($id, Request $request)
-{
-    //dd( $request->toArray() );
-    $user_id = Auth::user()->id;
-   
-    //dd( $request->remarks );
+    {
+        //dd( $request->toArray() );
+        $user_id = Auth::user()->id;
 
-    $empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
-    if ($empDetails != null) {
-        $empDetails->update([
-            'transfer_status' => 1, //transfer to  any department department
-          
-            'transfer_remark' => $request->transfer_remark,
-            'transfer_remark_details' => $request->transfer_remark_details,
-        ]);
+        //dd( $request->remarks );
+
+        $empDetails = ProformaModel::get()->where('ein', $request->ein)->first();
+        if ($empDetails != null) {
+            $empDetails->update([
+                'transfer_status' => 1, //transfer to  any department department
+
+                'transfer_remark' => $request->transfer_remark,
+                'transfer_remark_details' => $request->transfer_remark_details,
+            ]);
+        }
+
+        return redirect()->route('selectDeptByDPNodal')->with('message', ' Transfer Successfully!!!');
     }
 
-    return redirect()->route('selectDeptByDPNodal')->with('message', ' Transfer Successfully!!!');
-}
-
-public function viewFileForwardByHODAssistant($filename)
+    public function viewFileForwardByHODAssistant($filename)
     {
         $filePath = storage_path('app/public/' . $filename);
 

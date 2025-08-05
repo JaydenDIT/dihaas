@@ -13,12 +13,12 @@
 
             <h6 class="newfontcolor verdana change_font"> DIHAS</h6>
 
-{{-- TODAY --}}
+            {{-- TODAY --}}
 
 
             <div class="newfontcolor fontsize  new_line_height verdana empowering_font"> Empowering <i
-                class="font_family_georgia">Families,</i><br>
-            Continuing <i class="font_family_georgia">Legacies.</i>
+                    class="font_family_georgia">Families,</i><br>
+                Continuing <i class="font_family_georgia">Legacies.</i>
 
             </div>
             <br>
@@ -33,7 +33,7 @@
                 <div class="row row_width mb-3">
 
                     <div class="col">
-                        <p  class="verdana about_dihas_font about_dihas_font">About DIHAS</p>
+                        <p class="verdana about_dihas_font about_dihas_font">About DIHAS</p>
                     </div>
                     <div class="col">
                         <p id="myBtn_details" class="details d-flex justify-content-end know_more_font_size change_font"
@@ -346,11 +346,11 @@
                             </div>
                         </div>
 
-                     
+
                     </div>
             </div>
             </form>
-          
+
             <div id="register-form" class="form-container_department  displaynone background">
 
                 <div class="card-body">
@@ -363,7 +363,7 @@
                         <input type="hidden" id="login_otp_Dept" name="login_otp_Dept">
 
                         <div class="mb-3 row">
-                          
+
                             <div class="col-md-12">
                                 <label for="emailDept" class=" col-form-label  text-start">
                                     <i class="fa-solid fa-envelope"></i>
@@ -574,7 +574,7 @@
 
                 </div>
                 <h5 class="card-title"> <i class="fas fa-file icon_color3"></i></h5>
-                <h6 class="card-subtitle mb-2 card3_color verdana 4_cards_heading" >Uploading of Documents</h6>
+                <h6 class="card-subtitle mb-2 card3_color verdana 4_cards_heading">Uploading of Documents</h6>
                 <h6 class="card-text verdana change_font">Required documents as per the scheme will be uploaded here....</h6>
 
             </div>
@@ -604,7 +604,7 @@
     <!-- Seema -->
 
     <div class="row row_width">
-        
+
 
         <div class=" new_background_color mb-3" style="border-radius:20px;">
             <div class="row g-0">
@@ -615,20 +615,20 @@
                     <p>
                         <?php
 
-                                            
-                            use App\Models\SuccessStoriesModel;
+
+                        use App\Models\SuccessStoriesModel;
 
 
-                                $storiesArray = SuccessStoriesModel::orderBy('status', 'asc')->get();
-                                $stories = SuccessStoriesModel::orderBy('status', 'asc')->first();
-                                $image = SuccessStoriesModel::orderBy('status', 'asc')->first();
+                        $storiesArray = SuccessStoriesModel::orderBy('status', 'asc')->get();
+                        $stories = SuccessStoriesModel::orderBy('status', 'asc')->first();
+                        $image = SuccessStoriesModel::orderBy('status', 'asc')->first();
 
-                                // if ($image) {
-                                //     // If an image with status 1 is found
-                                //     $imagePath = asset('storage/' . str_replace('\\', '/', $image->image)); // Constructing the image path
-                                // }
+                        // if ($image) {
+                        //     // If an image with status 1 is found
+                        //     $imagePath = asset('storage/' . str_replace('\\', '/', $image->image)); // Constructing the image path
+                        // }
 
-                            ?>
+                        ?>
                         @if(count($storiesArray)>0)
                     <p class="bold textcolor apply_font_size empowering_font">Meet <i>{{$stories->name}}</i> </p>
 
@@ -656,12 +656,12 @@
 
                     @if($image)
                     <img src="{{ route('image.show', ['filename' => $image->image]) }}" alt="Your Image"
-                    class="photo" height="300px" width="200px;">
+                        class="photo" height="300px" width="200px;">
 
 
                     @else
                     <span class="bold textcolor apply_font_size empowering_font">Coming Soon.......</span>
-                    @endif 
+                    @endif
 
                 </div>
             </div>
@@ -684,23 +684,25 @@
         <div class="row">
             <div class="col-sm-6">
                 <?php
-                    use App\Models\UploadImageModel;
-                    $images = UploadImageModel::orderBy('status', 'asc')->take(6)->get(); 
+
+                use App\Models\UploadImageModel;
+
+                $images = UploadImageModel::orderBy('status', 'asc')->take(6)->get();
                 ?>
                 <h4>&nbsp; &nbsp; &nbsp; <i class="fas fa-images"></i> Photo Gallery</h4>
                 @if($images->count() > 0)
                 <div class="flex">
                     @foreach($images->take(3) as $image)
-                  <a href="{{ route('image.show', ['filename' => $image->image]) }}">  <img class="d-block p-2" src="{{ route('image.show', ['filename' => $image->image]) }}"
-                        alt="Your Image" height="100px" width="200px;" data-bs-toggle="modal"
-                        data-bs-target="#carouselModal"></a>
+                    <a href="{{ route('image.show', ['filename' => $image->image]) }}"> <img class="d-block p-2" src="{{ route('image.show', ['filename' => $image->image]) }}"
+                            alt="Your Image" height="100px" width="200px;" data-bs-toggle="modal"
+                            data-bs-target="#carouselModal"></a>
                     @endforeach
                 </div>
                 <div class="flex">
                     @foreach($images->slice(3) as $image)
-                    <a href="{{ route('image.show', ['filename' => $image->image]) }}">   <img class="d-block p-2" src="{{ route('image.show', ['filename' => $image->image]) }}"
-                        alt="Your Image" height="100px" width="200px;" data-bs-toggle="modal"
-                        data-bs-target="#carouselModal"></a>
+                    <a href="{{ route('image.show', ['filename' => $image->image]) }}"> <img class="d-block p-2" src="{{ route('image.show', ['filename' => $image->image]) }}"
+                            alt="Your Image" height="100px" width="200px;" data-bs-toggle="modal"
+                            data-bs-target="#carouselModal"></a>
                     @endforeach
                 </div>
                 @else
@@ -726,9 +728,9 @@
                                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
                                         <?php
-                           
-                             $images = UploadImageModel::orderBy('id', 'desc')->get();
-                            ?>
+
+                                        $images = UploadImageModel::orderBy('id', 'desc')->get();
+                                        ?>
                                         @foreach($images as $index => $image)
                                         <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                                             <!-- <img src="{{ asset('storage/' . $image->image) }}" alt="Image {{ $index + 1 }}" class="d-block"
@@ -809,135 +811,135 @@
             <div class="row g-0">
                 <div class="col-md-2">
                     <img src="{{asset('assets/images/faq_Section.svg')}}" class="img-fluid rounded-start imagesizeFAQ"
-                        alt="FAQ">
-                </div>
-                <div class="col-md-10">
-                    <div class="card-header verdana  new_background_color">
-                        <h4 class="verdana dihasTitle white_font_color apply_font_size_faq ">Any Question?</h4>
-                    </div>
-                    <div class="card-body verdana ">
+    alt="FAQ">
+</div>
+<div class="col-md-10">
+    <div class="card-header verdana  new_background_color">
+        <h4 class="verdana dihasTitle white_font_color apply_font_size_faq ">Any Question?</h4>
+    </div>
+    <div class="card-body verdana ">
 
 
 
 
-                        <p>
+        <p>
 
 
-                        <p class="verdana change_font">
-                            <b>
-                                What is Die-in-Harness scheme?
-                            </b>
-                        </p>
-                        <br>
-                        <p>
-                        <h6 class="verdana line_height change_font">Die-in-Harness scheme is to grant
-                            appointment on
-                            compassionate
-                            grounds to the next of kin
-                            (a dependent family member) of a Government servant who dies in harness leaving his
-                            family in penury and without any means of livelihood. The Scheme is not extendable to
-                            generations and should not be considered as hereditary right. In other words, the scheme
-                            shall not be admissible/extendable to dependent family member of a Government servant if
-                            the Government Servant was appointed under Die-in -harness Scheme (DIH).
-                            <span id="dotsfaq">......</span>
-                        </h6>
-                        </p>
-                        <span id="morefaq">
-                            <p>
-                                <b class="verdana">To whom the scheme is applicable?</b>
-                            </p>
-                            <p>
-                            <h6 class="verdana line_height">(a) The Scheme shall be applicable to unemployed
-                                dependent
-                                family
-                                member of the
-                                deceased Government servant in the following order of entitlement:</h6>
+        <p class="verdana change_font">
+            <b>
+                What is Die-in-Harness scheme?
+            </b>
+        </p>
+        <br>
+        <p>
+        <h6 class="verdana line_height change_font">Die-in-Harness scheme is to grant
+            appointment on
+            compassionate
+            grounds to the next of kin
+            (a dependent family member) of a Government servant who dies in harness leaving his
+            family in penury and without any means of livelihood. The Scheme is not extendable to
+            generations and should not be considered as hereditary right. In other words, the scheme
+            shall not be admissible/extendable to dependent family member of a Government servant if
+            the Government Servant was appointed under Die-in -harness Scheme (DIH).
+            <span id="dotsfaq">......</span>
+        </h6>
+        </p>
+        <span id="morefaq">
+            <p>
+                <b class="verdana">To whom the scheme is applicable?</b>
+            </p>
+            <p>
+            <h6 class="verdana line_height">(a) The Scheme shall be applicable to unemployed
+                dependent
+                family
+                member of the
+                deceased Government servant in the following order of entitlement:</h6>
 
-                            <ul class="verdana line_height">
-                                <li>legal spouse</li>
-                                <li>elder child (unmarried son/daughter or married son of the deceased Government
-                                    Servant if living in the
-                                    same household) </li>
-                                <li>brother/ sister in case of unmarried Government servant</li>
-                            </ul>
-                            <h6 class="verdana line_height">(b) No Objection Certificate i.e., NOC
-                                (in the form of Affidavit) from other eligible dependents to be submitted if the
-                                claimant is other than legal spouse.</h6>
-                            <h6 class="verdana line_height">(c) Undertaking (in the form of Affidavit) to be
-                                submitted to
-                                look after the other dependent family members if appointed
-                                and liable to be terminated from the post failing to comply the Scheme.</h6>
-                            <h6 class="verdana line_height">
-                                (d) The scheme shall be applicable only to the dependent of such deceased Government
-                                servant who was appointed on regular basis/post and not under DIH Scheme.
-                            </h6>
-                            <h6 class="verdana line_height">
-                                (e) The scheme shall not cover those who work on daily wages, casual, apprentice,
-                                adhoc, contract, work-charged, muster roll, extension, re-employed basis and
-                                employees who retire on medical ground.
-                            </h6>
-                            <h6 class="verdana line_height">
-                                (f) The Scheme shall not cover missing/absconding Government servants and death
-                                caused by suicide or by excessive drinking or on account of natural death.
-                            </h6>
-                            <h6 class="verdana line_height">
-                                (g) The Scheme shall not be applicable to adopted son/ adopted daughter.
-                            </h6>
-                            <h6 class="verdana line_height">
-                                (h) The Government Servant should have put in at least 5 years regular service in
-                                the Government.
-                            </h6>
+            <ul class="verdana line_height">
+                <li>legal spouse</li>
+                <li>elder child (unmarried son/daughter or married son of the deceased Government
+                    Servant if living in the
+                    same household) </li>
+                <li>brother/ sister in case of unmarried Government servant</li>
+            </ul>
+            <h6 class="verdana line_height">(b) No Objection Certificate i.e., NOC
+                (in the form of Affidavit) from other eligible dependents to be submitted if the
+                claimant is other than legal spouse.</h6>
+            <h6 class="verdana line_height">(c) Undertaking (in the form of Affidavit) to be
+                submitted to
+                look after the other dependent family members if appointed
+                and liable to be terminated from the post failing to comply the Scheme.</h6>
+            <h6 class="verdana line_height">
+                (d) The scheme shall be applicable only to the dependent of such deceased Government
+                servant who was appointed on regular basis/post and not under DIH Scheme.
+            </h6>
+            <h6 class="verdana line_height">
+                (e) The scheme shall not cover those who work on daily wages, casual, apprentice,
+                adhoc, contract, work-charged, muster roll, extension, re-employed basis and
+                employees who retire on medical ground.
+            </h6>
+            <h6 class="verdana line_height">
+                (f) The Scheme shall not cover missing/absconding Government servants and death
+                caused by suicide or by excessive drinking or on account of natural death.
+            </h6>
+            <h6 class="verdana line_height">
+                (g) The Scheme shall not be applicable to adopted son/ adopted daughter.
+            </h6>
+            <h6 class="verdana line_height">
+                (h) The Government Servant should have put in at least 5 years regular service in
+                the Government.
+            </h6>
 
-                            </p>
+            </p>
 
-                        </span>
-                        </p>
+        </span>
+        </p>
 
-                        <!-- Seema -->
-                        <p id="myBtnfaq" style="color:blue" class="change_font">Know more </p>
-                        <br><br>
-
-
-
+        <!-- Seema -->
+        <p id="myBtnfaq" style="color:blue" class="change_font">Know more </p>
+        <br><br>
 
 
 
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
-    </div> --}}
 
-    <div class="row mb-3 justify-content-center " style="gap:0.1%">
+    </div>
+</div>
+</div>
+</div>
 
-        <div class="icon_width">
+
+</div> --}}
+
+<div class="row mb-3 justify-content-center " style="gap:0.1%">
+
+    <div class="icon_width">
         <a href="https://manipur.gov.in/" target="blank">
-                <img src="{{asset('assets/images/manipur.jpeg')}}" alt="emblem" height="90" width="200"
-                    style="padding-top:10px;">
-            </a>
-        </div>
-        <div class="icon_width">
+            <img src="{{asset('assets/images/manipur.jpeg')}}" alt="emblem" height="90" width="200"
+                style="padding-top:10px;">
+        </a>
+    </div>
+    <div class="icon_width">
         <a href="https://treasurymanipur.nic.in/" target="blank">
-                <img src="{{asset('assets/images/treasury.jpeg')}}" alt="emblem" height="90" width="200"
-                    style="padding-top:10px;">
-            </a>
-        </div>
-        <div class=" icon_width">
+            <img src="{{asset('assets/images/treasury.jpeg')}}" alt="emblem" height="90" width="200"
+                style="padding-top:10px;">
+        </a>
+    </div>
+    <div class=" icon_width">
         <a href="https://cmis.man.nic.in/" target="blank">
-                <img src="{{asset('assets/images/cmis.jpeg')}}" alt="emblem" height="100" width="200">
-            </a>
-        </div>
-        <div class=" icon_width">
+            <img src="{{asset('assets/images/cmis.jpeg')}}" alt="emblem" height="100" width="200">
+        </a>
+    </div>
+    <div class=" icon_width">
         <a href="https://www.india.gov.in/" target="blank">
-                <img src="{{asset('assets/images/india.jpeg')}}" alt="emblem" height="100" width="200">
-            </a>
-        </div>
-        <div class=" icon_width">
+            <img src="{{asset('assets/images/india.jpeg')}}" alt="emblem" height="100" width="200">
+        </a>
+    </div>
+    <div class=" icon_width">
         <a href="https://egrasmanipur.nic.in/" target="blank">
-                <img src="{{asset('assets/images/egras.jpeg')}}" alt="emblem" height="100" width="200">
-            </a>
+            <img src="{{asset('assets/images/egras.jpeg')}}" alt="emblem" height="100" width="200">
+        </a>
 
     </div>
 
@@ -955,44 +957,44 @@
 
 
 <script>
-$(function() {
-    $('#homeli').addClass('active');
-});
+    $(function() {
+        $('#homeli').addClass('active');
+    });
 </script>
 
 <script>
-document.getElementById('login-btn').addEventListener('click', function() {
-    document.getElementById('login-form').style.display = 'block';
-    document.getElementById('register-form').style.display = 'none';
-    document.getElementById('login-btn').classList.add('active');
-    document.getElementById('register-btn').classList.remove('active');
-});
+    document.getElementById('login-btn').addEventListener('click', function() {
+        document.getElementById('login-form').style.display = 'block';
+        document.getElementById('register-form').style.display = 'none';
+        document.getElementById('login-btn').classList.add('active');
+        document.getElementById('register-btn').classList.remove('active');
+    });
 
-document.getElementById('register-btn').addEventListener('click', function() {
-    document.getElementById('login-form').style.display = 'none';
-    document.getElementById('register-form').style.display = 'block';
-    document.getElementById('login-btn').classList.remove('active');
-    document.getElementById('register-btn').classList.add('active');
-});
+    document.getElementById('register-btn').addEventListener('click', function() {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'block';
+        document.getElementById('login-btn').classList.remove('active');
+        document.getElementById('register-btn').classList.add('active');
+    });
 </script>
 
 
 
 
 <script nonce="{{ csp_nonce() }}">
-var _token = "{{ csrf_token() }}";
-//citizen
-var login_otp = "{{ route('smsLoginCitizenOTP') }}";
-var login_otp_resend = "{{ route('smsLoginCitizenOTPResend') }}";
-var authenticate_url = "{{ route('authenticate') }}";
-var login = "{{ route('authenticate.citizen') }}";
-// Dept
-var login_otp_Dept = "{{ route('smsLoginOTP') }}";
-var login_otp_resend_Dept = "{{ route('smsLoginOTPResend') }}";
-var login_Dept = "{{ route('authenticate') }}";
-//common
-// var captchaUrl = "{{ route('reloadCaptcha') }}";
-var welcome = "{{route('welcome')}}";
+    var _token = "{{ csrf_token() }}";
+    //citizen
+    var login_otp = "{{ route('smsLoginCitizenOTP') }}";
+    var login_otp_resend = "{{ route('smsLoginCitizenOTPResend') }}";
+    var authenticate_url = "{{ route('authenticate') }}";
+    var login = "{{ route('authenticate.citizen') }}";
+    // Dept
+    var login_otp_Dept = "{{ route('smsLoginOTP') }}";
+    var login_otp_resend_Dept = "{{ route('smsLoginOTPResend') }}";
+    var login_Dept = "{{ route('authenticate') }}";
+    //common
+    // var captchaUrl = "{{ route('reloadCaptcha') }}";
+    var welcome = "{{route('welcome')}}";
 </script>
 
 <script type="text/javascript" src="{{ asset('assets/js/auth/forge-sha256.js') }}"></script>
@@ -1001,82 +1003,90 @@ var welcome = "{{route('welcome')}}";
 <script type="text/javascript" src="{{ asset('assets/js/auth/loginDept.js') }}"></script>
 <!-- Seema -->
 <script nonce="{{ csp_nonce() }}">
-document.addEventListener("DOMContentLoaded", function() {
-    var btn = document.getElementById("myBtn");
-    var dots = document.getElementById("dots");
-    var moreText = document.getElementById("more");
+    document.addEventListener("DOMContentLoaded", function() {
+        var btn = document.getElementById("myBtn");
+        var dots = document.getElementById("dots");
+        var moreText = document.getElementById("more");
 
-    btn.addEventListener("click", function() {
-        if (dots.style.display === "none") {
-            dots.style.display = "inline";
-            btn.innerHTML = "Know more";
-            moreText.style.display = "none";
-        } else {
-            dots.style.display = "none";
-            btn.innerHTML = "Know less";
-            moreText.style.display = "inline";
+        if (btn) {
+            btn.addEventListener("click", function() {
+                if (dots.style.display === "none") {
+                    dots.style.display = "inline";
+                    btn.innerHTML = "Know more";
+                    moreText.style.display = "none";
+                } else {
+                    dots.style.display = "none";
+                    btn.innerHTML = "Know less";
+                    moreText.style.display = "inline";
+                }
+            });
         }
     });
-});
 </script>
 <script nonce="{{ csp_nonce() }}">
-document.addEventListener("DOMContentLoaded", function() {
-    var btn = document.getElementById("myBtn_details");
+    document.addEventListener("DOMContentLoaded", function() {
+        var btn = document.getElementById("myBtn_details");
 
-    var moreText = document.getElementById("more_details");
+        var moreText = document.getElementById("more_details");
 
-    btn.addEventListener("click", function() {
-        if (dots.style.display === "none") {
-            dots.style.display = "inline";
-            btn.innerHTML = "Know more";
-            moreText.style.display = "none";
-        } else {
-            dots.style.display = "none";
-            btn.innerHTML = "Know less";
-            moreText.style.display = "inline";
+        if (btn) {
+            btn.addEventListener("click", function() {
+                if (dots.style.display === "none") {
+                    dots.style.display = "inline";
+                    btn.innerHTML = "Know more";
+                    moreText.style.display = "none";
+                } else {
+                    dots.style.display = "none";
+                    btn.innerHTML = "Know less";
+                    moreText.style.display = "inline";
+                }
+            });
         }
     });
-});
-</script>
-
-<script nonce="{{ csp_nonce() }}">
-document.addEventListener("DOMContentLoaded", function() {
-    var btn = document.getElementById("myBtnfaq");
-    var dots = document.getElementById("dotsfaq");
-    var moreText = document.getElementById("morefaq");
-
-    btn.addEventListener("click", function() {
-        if (dots.style.display === "none") {
-            dots.style.display = "inline";
-            btn.innerHTML = "Know more";
-            moreText.style.display = "none";
-        } else {
-            dots.style.display = "none";
-            btn.innerHTML = "Know less";
-            moreText.style.display = "inline";
-        }
-    });
-});
 </script>
 
 <script nonce="{{ csp_nonce() }}">
-document.addEventListener("DOMContentLoaded", function() {
-    var btn = document.getElementById("myBtnbenefits");
-    var dots = document.getElementById("dotsbenefits");
-    var moreText = document.getElementById("morebenefits");
+    document.addEventListener("DOMContentLoaded", function() {
+        var btn = document.getElementById("myBtnfaq");
+        var dots = document.getElementById("dotsfaq");
+        var moreText = document.getElementById("morefaq");
 
-    btn.addEventListener("click", function() {
-        if (dots.style.display === "none") {
-            dots.style.display = "inline";
-            btn.innerHTML = "Know more";
-            moreText.style.display = "none";
-        } else {
-            dots.style.display = "none";
-            btn.innerHTML = "Know less";
-            moreText.style.display = "inline";
+        if (btn) {
+            btn.addEventListener("click", function() {
+                if (dots.style.display === "none") {
+                    dots.style.display = "inline";
+                    btn.innerHTML = "Know more";
+                    moreText.style.display = "none";
+                } else {
+                    dots.style.display = "none";
+                    btn.innerHTML = "Know less";
+                    moreText.style.display = "inline";
+                }
+            });
         }
     });
-});
+</script>
+
+<script nonce="{{ csp_nonce() }}">
+    document.addEventListener("DOMContentLoaded", function() {
+        var btn = document.getElementById("myBtnbenefits");
+        var dots = document.getElementById("dotsbenefits");
+        var moreText = document.getElementById("morebenefits");
+
+        if (btn) {
+            btn.addEventListener("click", function() {
+                if (dots.style.display === "none") {
+                    dots.style.display = "inline";
+                    btn.innerHTML = "Know more";
+                    moreText.style.display = "none";
+                } else {
+                    dots.style.display = "none";
+                    btn.innerHTML = "Know less";
+                    moreText.style.display = "inline";
+                }
+            });
+        }
+    });
 </script>
 
 <script nonce="{{ csp_nonce() }}">
@@ -1084,20 +1094,20 @@ document.addEventListener("DOMContentLoaded", function() {
         var btn = document.getElementById("myBtnsuccessStory");
         var dots = document.getElementById("dotssuccessStory");
         var moreText = document.getElementById("moresuccessStory");
-    
-        btn.addEventListener("click", function() {
-            if (dots.style.display === "none") {
-                dots.style.display = "inline";
-                btn.innerHTML = "Know more";
-                moreText.style.display = "none";
-            } else {
-                dots.style.display = "none";
-                btn.innerHTML = "Know less";
-                moreText.style.display = "inline";
-            }
-        });
+        if (btn) {
+            btn.addEventListener("click", function() {
+                if (dots.style.display === "none") {
+                    dots.style.display = "inline";
+                    btn.innerHTML = "Know more";
+                    moreText.style.display = "none";
+                } else {
+                    dots.style.display = "none";
+                    btn.innerHTML = "Know less";
+                    moreText.style.display = "inline";
+                }
+            });
+        }
     });
-        
-    </script>
+</script>
 <!-- Seema -->
 @endsection

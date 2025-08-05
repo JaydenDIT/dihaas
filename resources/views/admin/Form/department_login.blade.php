@@ -13,14 +13,14 @@
         <div class="col-sm-8  ">
 
             <h6 class="newfontcolor verdana change_font"> DIHAS</h6>
-         
+
             <div class="newfontcolor fontsize  new_line_height verdana empowering_font"> Empowering <i
                     class="font_family_georgia">Families,</i><br>
                 Continuing <i class="font_family_georgia">Legacies.</i>
 
             </div>
 
-                    <br>
+            <br>
 
             <div class="newfontcolor new_line_height_2 verdana change_font">
                 The DIHAS scheme provides compassionate appointments to dependents of deceased government servants under
@@ -32,7 +32,7 @@
                 <div class="row row_width mb-3">
 
                     <div class="col">
-                      
+
                         <p class="verdana about_dihas_font about_dihas_font">About DIHAS</p>
                     </div>
                     <div class="col">
@@ -118,7 +118,7 @@
                                         Government servant if the Government Servant was appointed under Die-in -harness
                                         Scheme (DIH).
                                     </span>
-                                  
+
                                 <p id="myBtn" class="two_card_font change_font">Know more </p>
                                 </p>
 
@@ -158,7 +158,7 @@
                                         (iii) brother/ sister in case of unmaarried Government servant.
 
                                     </span>
-                                   
+
                                 <p id="myBtnbenefits" class="two_card_font change_font" style="color:blue;">
                                     Know more
                                 </p>
@@ -182,7 +182,7 @@
 
         <div class="col-sm-4 ">
 
-           
+
             <div class="form-container">
                 <div class="container">
 
@@ -195,7 +195,7 @@
                         </div>
                         <div class="col displayflex">
                             <div>
-                                <input type="radio" name="login" id="login-btn" >
+                                <input type="radio" name="login" id="login-btn">
                             </div>
                             <div>
                                 <label for="citizen">Citizen</label>
@@ -229,7 +229,7 @@
                             <input type="hidden" id="login_otp" name="login_otp">
 
                             <div class="mb-3 row">
-                              
+
                                 <div class="col-md-12">
                                     <label for="email" class=" col-form-label text-start">
                                         <i class="fa-solid fa-envelope"></i>
@@ -242,7 +242,7 @@
                                 </div>
                             </div>
 
-                         
+
                             <div class="mb-3 row">
 
 
@@ -259,12 +259,12 @@
                                     </div>
                                 </div>
                             </div>
-                          
+
                         </form>
 
 
                         <div class="row mb-1 mt-3">
-                          
+
                             <div class="col-md-12">
                                 <button type="button" class="btn btn-primary w-100 new_background_color"
                                     id="getOTPBtn">Get OTP</button>
@@ -322,11 +322,11 @@
 
                             </div>
                         </div>
-                      
+
                     </div>
             </div>
             </form>
-           
+
             <div id="register-form" class="form-container_department   background">
 
                 <div class="card-body">
@@ -351,7 +351,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p>                           
+                        <p>
 
                         <div>
                             <div class="col-md-12">
@@ -430,11 +430,11 @@
                             @endif
                         </div>
                     </div>
-                   
+
                 </div>
 
             </div>
-                </div>
+        </div>
 
 
 
@@ -445,7 +445,7 @@
     <div class=" row row_width">
 
         <hr>
-      
+
         <div class="newfontcolor fontsize text-center empowering_font">
             <i class="font_family_georgia">How to Apply</i><br>
         </div>
@@ -531,20 +531,21 @@
                     <p class="success_story fontsize empowering_font">Real People <span class="stories">Real
                             Stories</span></p>
                     <p>
-                        <?php                                           
-                            use App\Models\SuccessStoriesModel;
+                        <?php
 
-                                $storiesArray = SuccessStoriesModel::orderBy('status', 'asc')->get();
-                                $stories = SuccessStoriesModel::orderBy('status', 'asc')->first();
-                                $image = SuccessStoriesModel::orderBy('status', 'asc')->first();                       
-                             
+                        use App\Models\SuccessStoriesModel;
 
-                                if ($image) {
-                                    // If an image with status 1 is found
-                                    $imagePath = asset('storage/' . str_replace('\\', '/', $image->image)); // Constructing the image path
-                                }
+                        $storiesArray = SuccessStoriesModel::orderBy('status', 'asc')->get();
+                        $stories = SuccessStoriesModel::orderBy('status', 'asc')->first();
+                        $image = SuccessStoriesModel::orderBy('status', 'asc')->first();
 
-                            ?>
+
+                        if ($image) {
+                            // If an image with status 1 is found
+                            $imagePath = asset('storage/' . str_replace('\\', '/', $image->image)); // Constructing the image path
+                        }
+
+                        ?>
 
                         @if(count($storiesArray)>0)
                     <p class="bold textcolor apply_font_size empowering_font">Meet <i>{{$stories->name}}</i> </p>
@@ -575,7 +576,7 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 
 
     <br>
@@ -753,41 +754,41 @@
     </div>
 
     <script>
-    $(function() {
-        $('#homeli').addClass('active');
-    });
+        $(function() {
+            $('#homeli').addClass('active');
+        });
     </script>
 
     <script>
-    document.getElementById('login-btn').addEventListener('click', function() {
-        document.getElementById('login-form').style.display = 'block';
-        document.getElementById('register-form').style.display = 'none';
-        document.getElementById('login-btn').classList.add('active');
-        document.getElementById('register-btn').classList.remove('active');
-    });
+        document.getElementById('login-btn').addEventListener('click', function() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-btn').classList.add('active');
+            document.getElementById('register-btn').classList.remove('active');
+        });
 
-    document.getElementById('register-btn').addEventListener('click', function() {
-        document.getElementById('login-form').style.display = 'none';
-        document.getElementById('register-form').style.display = 'block';
-        document.getElementById('login-btn').classList.remove('active');
-        document.getElementById('register-btn').classList.add('active');
-    });
+        document.getElementById('register-btn').addEventListener('click', function() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+            document.getElementById('login-btn').classList.remove('active');
+            document.getElementById('register-btn').classList.add('active');
+        });
     </script>
 
     <script nonce="{{ csp_nonce() }}">
-    var _token = "{{ csrf_token() }}";
-    //citizen
-    var login_otp = "{{ route('smsLoginCitizenOTP') }}";
-    var login_otp_resend = "{{ route('smsLoginCitizenOTPResend') }}";
-    var authenticate_url = "{{ route('authenticate') }}";
-    var login = "{{ route('authenticate.citizen') }}";
-    // Dept
-    var login_otp_Dept = "{{ route('smsLoginOTP') }}";
-    var login_otp_resend_Dept = "{{ route('smsLoginOTPResend') }}";
-    var login_Dept = "{{ route('authenticate') }}";
-    //common
-    // var captchaUrl = "{{ route('reloadCaptcha') }}";
-    var welcome = "{{route('welcome')}}";
+        var _token = "{{ csrf_token() }}";
+        //citizen
+        var login_otp = "{{ route('smsLoginCitizenOTP') }}";
+        var login_otp_resend = "{{ route('smsLoginCitizenOTPResend') }}";
+        var authenticate_url = "{{ route('authenticate') }}";
+        var login = "{{ route('authenticate.citizen') }}";
+        // Dept
+        var login_otp_Dept = "{{ route('smsLoginOTP') }}";
+        var login_otp_resend_Dept = "{{ route('smsLoginOTPResend') }}";
+        var login_Dept = "{{ route('authenticate') }}";
+        //common
+        // var captchaUrl = "{{ route('reloadCaptcha') }}";
+        var welcome = "{{route('welcome')}}";
     </script>
 
     <script type="text/javascript" src="{{ asset('assets/js/auth/forge-sha256.js') }}"></script>
@@ -796,102 +797,111 @@
     <script type="text/javascript" src="{{ asset('assets/js/auth/loginDept.js') }}"></script>
     <!-- Seema -->
     <script nonce="{{ csp_nonce() }}">
-    document.addEventListener("DOMContentLoaded", function() {
-        var btn = document.getElementById("myBtn");
-        var dots = document.getElementById("dots");
-        var moreText = document.getElementById("more");
+        document.addEventListener("DOMContentLoaded", function() {
+            var btn = document.getElementById("myBtn");
+            var dots = document.getElementById("dots");
+            var moreText = document.getElementById("more");
 
-        btn.addEventListener("click", function() {
-            if (dots.style.display === "none") {
-                dots.style.display = "inline";
-                btn.innerHTML = "Know more";
-                moreText.style.display = "none";
-            } else {
-                dots.style.display = "none";
-                btn.innerHTML = "Know less";
-                moreText.style.display = "inline";
+            if (btn) {
+                btn.addEventListener("click", function() {
+                    if (dots.style.display === "none") {
+                        dots.style.display = "inline";
+                        btn.innerHTML = "Know more";
+                        moreText.style.display = "none";
+                    } else {
+                        dots.style.display = "none";
+                        btn.innerHTML = "Know less";
+                        moreText.style.display = "inline";
+                    }
+                });
             }
         });
-    });
     </script>
     <script nonce="{{ csp_nonce() }}">
-    document.addEventListener("DOMContentLoaded", function() {
-        var btn = document.getElementById("myBtn_details");
+        document.addEventListener("DOMContentLoaded", function() {
+            var btn = document.getElementById("myBtn_details");
 
-        var moreText = document.getElementById("more_details");
+            var moreText = document.getElementById("more_details");
 
-        btn.addEventListener("click", function() {
-            if (dots.style.display === "none") {
-                dots.style.display = "inline";
-                btn.innerHTML = "Know more";
-                moreText.style.display = "none";
-            } else {
-                dots.style.display = "none";
-                btn.innerHTML = "Know less";
-                moreText.style.display = "inline";
+            if (btn) {
+                btn.addEventListener("click", function() {
+                    if (dots.style.display === "none") {
+                        dots.style.display = "inline";
+                        btn.innerHTML = "Know more";
+                        moreText.style.display = "none";
+                    } else {
+                        dots.style.display = "none";
+                        btn.innerHTML = "Know less";
+                        moreText.style.display = "inline";
+                    }
+                });
             }
         });
-    });
-    </script>
-
-    <script nonce="{{ csp_nonce() }}">
-    document.addEventListener("DOMContentLoaded", function() {
-        var btn = document.getElementById("myBtnfaq");
-        var dots = document.getElementById("dotsfaq");
-        var moreText = document.getElementById("morefaq");
-
-        btn.addEventListener("click", function() {
-            if (dots.style.display === "none") {
-                dots.style.display = "inline";
-                btn.innerHTML = "Know more";
-                moreText.style.display = "none";
-            } else {
-                dots.style.display = "none";
-                btn.innerHTML = "Know less";
-                moreText.style.display = "inline";
-            }
-        });
-    });
     </script>
 
     <script nonce="{{ csp_nonce() }}">
-    document.addEventListener("DOMContentLoaded", function() {
-        var btn = document.getElementById("myBtnbenefits");
-        var dots = document.getElementById("dotsbenefits");
-        var moreText = document.getElementById("morebenefits");
+        document.addEventListener("DOMContentLoaded", function() {
+            var btn = document.getElementById("myBtnfaq");
+            var dots = document.getElementById("dotsfaq");
+            var moreText = document.getElementById("morefaq");
 
-        btn.addEventListener("click", function() {
-            if (dots.style.display === "none") {
-                dots.style.display = "inline";
-                btn.innerHTML = "Know more";
-                moreText.style.display = "none";
-            } else {
-                dots.style.display = "none";
-                btn.innerHTML = "Know less";
-                moreText.style.display = "inline";
+            if (btn) {
+                btn.addEventListener("click", function() {
+                    if (dots.style.display === "none") {
+                        dots.style.display = "inline";
+                        btn.innerHTML = "Know more";
+                        moreText.style.display = "none";
+                    } else {
+                        dots.style.display = "none";
+                        btn.innerHTML = "Know less";
+                        moreText.style.display = "inline";
+                    }
+                });
             }
         });
-    });
     </script>
 
     <script nonce="{{ csp_nonce() }}">
-    document.addEventListener("DOMContentLoaded", function() {
-        var btn = document.getElementById("myBtnsuccessStory");
-        var dots = document.getElementById("dotssuccessStory");
-        var moreText = document.getElementById("moresuccessStory");
-
-        btn.addEventListener("click", function() {
-            if (dots.style.display === "none") {
-                dots.style.display = "inline";
-                btn.innerHTML = "Know more";
-                moreText.style.display = "none";
-            } else {
-                dots.style.display = "none";
-                btn.innerHTML = "Know less";
-                moreText.style.display = "inline";
+        document.addEventListener("DOMContentLoaded", function() {
+            var btn = document.getElementById("myBtnbenefits");
+            var dots = document.getElementById("dotsbenefits");
+            var moreText = document.getElementById("morebenefits");
+            if (btn) {
+                btn.addEventListener("click", function() {
+                    if (dots.style.display === "none") {
+                        dots.style.display = "inline";
+                        btn.innerHTML = "Know more";
+                        moreText.style.display = "none";
+                    } else {
+                        dots.style.display = "none";
+                        btn.innerHTML = "Know less";
+                        moreText.style.display = "inline";
+                    }
+                });
             }
         });
-    });
     </script>
-   
+
+    <script nonce="{{ csp_nonce() }}">
+        document.addEventListener("DOMContentLoaded", function() {
+            var btn = document.getElementById("myBtnsuccessStory");
+            var dots = document.getElementById("dotssuccessStory");
+            var moreText = document.getElementById("moresuccessStory");
+
+            if (btn) {
+                btn.addEventListener("click", function() {
+                    if (dots.style.display === "none") {
+                        dots.style.display = "inline";
+                        btn.innerHTML = "Know more";
+                        moreText.style.display = "none";
+                    } else {
+                        dots.style.display = "none";
+                        btn.innerHTML = "Know less";
+                        moreText.style.display = "inline";
+                    }
+                });
+            }
+        });
+    </script>
+
     @endsection

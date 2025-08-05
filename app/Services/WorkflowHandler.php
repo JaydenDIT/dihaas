@@ -59,7 +59,7 @@ class WorkflowHandler
     }
 
 
-    public static function proformaTaskData($task)
+    public static function proformaTaskCurrentData($task)
     {
         $user = Auth::user();
 
@@ -74,7 +74,55 @@ class WorkflowHandler
 
         foreach ($mappings as $mapping) {
             $apps = ProformaModel::where('process_id', $mapping->process_id)
-                ->where('process_sequence', '>=', $mapping->sequence)
+                ->where('process_sequence', '=', $mapping->sequence)
+                ->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")
+                ->get();
+
+            $allApplications = $allApplications->merge($apps);
+        }
+
+        return $allApplications;
+    }
+    public static function proformaTaskCompletedData($task)
+    {
+        $user = Auth::user();
+
+        // Check permission
+        if (!$user->role->duties->contains('tasks_id', $task->tasks_id)) {
+            abort(403, 'Unauthorized');
+        }
+
+        $mappings = ProcessTasksMapping::where('tasks_id', $task->tasks_id)->get();
+
+        $allApplications = collect();
+
+        foreach ($mappings as $mapping) {
+            $apps = ProformaModel::where('process_id', $mapping->process_id)
+                ->where('process_sequence', '>', $mapping->sequence)
+                ->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")
+                ->get();
+
+            $allApplications = $allApplications->merge($apps);
+        }
+
+        return $allApplications;
+    }
+    public static function proformaTaskNotReachData($task)
+    {
+        $user = Auth::user();
+
+        // Check permission
+        if (!$user->role->duties->contains('tasks_id', $task->tasks_id)) {
+            abort(403, 'Unauthorized');
+        }
+
+        $mappings = ProcessTasksMapping::where('tasks_id', $task->tasks_id)->get();
+
+        $allApplications = collect();
+
+        foreach ($mappings as $mapping) {
+            $apps = ProformaModel::where('process_id', $mapping->process_id)
+                ->where('process_sequence', '<', $mapping->sequence)
                 ->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")
                 ->get();
 

@@ -501,7 +501,8 @@
         </div>
     </div>
 </div>
-@endsection
+
+
 
 <script nonce="{{ csp_nonce() }}">
     function setForwardData(temp_array) {
@@ -516,16 +517,37 @@
         console.log(temp_array['ein'])
 
     }
-</script>
-<script nonce="{{ csp_nonce() }}">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     document.addEventListener("DOMContentLoaded", function() {
         var discardLink = document.getElementById("submit_form9");
 
-        discardLink.addEventListener("click", function(event) {
-            var confirmed = confirm("Are You Sure?");
-            if (!confirmed) {
-                event.preventDefault();
-            }
-        });
+        if (discardLink) {
+            discardLink.addEventListener("click", function(event) {
+                var confirmed = confirm("Are You Sure?");
+                if (!confirmed) {
+                    event.preventDefault();
+                }
+            });
+        }
     });
 </script>
+
+
+
+
+
+
+@endsection

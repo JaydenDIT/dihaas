@@ -70,7 +70,22 @@ class TaskApplicationController extends Controller
     public function ajaxlist(Request $request, $task_id)
     {
         $task = Task::findOrFail($task_id);
-        $data = WorkflowHandler::proformaTaskData($task);
+
+        $application_status = $request->input('application_status');
+
+
+        switch ($application_status) {
+            case 'completed':
+                $data = WorkflowHandler::proformaTaskCompletedData($task);
+                break;
+            case 'notreach':
+                $data = WorkflowHandler::proformaTaskNotReachData($task);
+                break;
+            default:
+                $data = WorkflowHandler::proformaTaskCurrentData($task);
+                break;
+        }
+
 
         switch ($task->tasks_duty) {
 
@@ -79,6 +94,13 @@ class TaskApplicationController extends Controller
                 if (!empty($dept_id)) {
                     $data = $data->filter(function ($item) use ($dept_id) {
                         return $item->dept_id == $dept_id;
+                    })->values(); // reset keys after filtering
+                }
+                break;
+            case  'client_form_submission':
+                if (strtolower(Auth::user()->role->role_name) != 'superadmin') {
+                    $data = $data->filter(function ($item) {
+                        return Auth::user()->id == $item->uploaded_id;
                     })->values(); // reset keys after filtering
                 }
                 break;
@@ -105,21 +127,5 @@ class TaskApplicationController extends Controller
             })
             ->rawColumns(['status', 'action'])
             ->make(true);
-    }
-
-
-
-    public function dataList(Request $request, $task)
-    {
-        $data = WorkflowHandler::proformaTaskData($task);
-        $dept_id = $request->input('dept_id');
-
-
-
-        if (!empty($dept_id)) {
-            $data = $data->filter(function ($item) use ($dept_id) {
-                return $item->dept_id == $dept_id;
-            })->values(); // reset keys after filtering
-        }
     }
 }
