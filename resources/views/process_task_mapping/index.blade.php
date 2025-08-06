@@ -1,4 +1,4 @@
-@extends('layouts.app_process')
+@extends('layouts.app')
 
 @push('css')
 <link href="{{ asset('assets/jquery-ui/jquery-ui.css') }}" rel="stylesheet">

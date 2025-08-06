@@ -31,6 +31,8 @@ class TaskApplicationController extends Controller
     {
         $user = Auth::user();
 
+        dd($user);
+
         // Eager load role's duties (tasks) and their related processes
         $tasks = $user->role->duties()->with('processes')->get();
 

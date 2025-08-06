@@ -1,4 +1,4 @@
-@extends('layouts.app_process')
+@extends('layouts.app')
 
 @push('js')
 <script type="text/javascript">
