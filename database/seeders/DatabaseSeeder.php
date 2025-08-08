@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             SubdivisionSeeder::class,
             RelationshipsSeeder::class,
             QualificationSeeder::class,
+            CasteSeeder::class,
             UsersSeeder::class,
         ]);
     }

@@ -127,3 +127,19 @@ body {
     color: white;
     font-weight: 600;
 }
+
+.bg-pink {
+    background-color: #f2a29070;
+}
+
+.required_label:after {
+    color: #e32;
+    content: " *";
+    display: inline;
+}
+
+.required_labelplus:after {
+    color: #e32;
+    content: " ***";
+    display: inline;
+}

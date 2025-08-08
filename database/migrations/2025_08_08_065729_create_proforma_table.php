@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('proforma', function (Blueprint $table) {
             $table->id('proforma_id');
 
-            // from CMIS -data of the decease employee
+            // from CMIS-api by sending on the ein  -data of the decease employee
             $table->string('deceased_ein', 10);
             $table->string('deceased_emp_name', 255);
             $table->string('deceased_field_dept_cd', 20);
@@ -24,9 +24,9 @@ return new class extends Migration {
 
 
             // from user -data of the decease employee
-            $table->date('deceased_doe')->comment("Date of expiry");
             $table->boolean('expire_on_duty');
-            $table->string('deceased_causeofdeath', 255)->nullable()->comment("if expire on duty give reason");
+            $table->date('deceased_doe')->comment("Date of expiry");
+            $table->string('deceased_causeofdeath', 300)->nullable()->comment("if expire on duty give reason");
 
 
             //applicant request post
@@ -43,13 +43,19 @@ return new class extends Migration {
 
 
             //applicant details 
-            $table->unsignedBigInteger('relationship_id');
-            $table->string('relationship', 100)->comment('applicant relationship with the decease emp');
             $table->string('applicant_name', 255);
+            $table->unsignedBigInteger('relationship_id');
+            $table->string('relationship_name', 255)->comment('applicant relationship with the decease emp');
             $table->date('applicant_dob');
             $table->string('applicant_mobile', 10);
-            $table->string('applicant_email_id', 255);
+            $table->string('applicant_email', 255);
             $table->string('applicant_sex', 20)->enum('male', 'female', 'transgender');
+
+            // applicant other details
+            $table->unsignedBigInteger('caste_id');
+            $table->boolean('physically_handicapped');
+            $table->unsignedBigInteger('applicant_qualification_id');
+            $table->string('applicant_qualification_name', 255)->nullable();
 
             //applicant address
             $table->string('applicant_current_locality', 255);
@@ -66,11 +72,6 @@ return new class extends Migration {
 
 
 
-            // applicant other details
-            $table->unsignedBigInteger('caste_id');
-            $table->boolean('physically_handicapped');
-            $table->unsignedBigInteger('applicant_qualification_id');
-            $table->string('applicant_other_qualification', 255)->nullable();
 
 
 
