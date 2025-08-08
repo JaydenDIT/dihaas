@@ -9,24 +9,33 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id'); // bigserial primary key
-            $table->string('name', 255);
+
+            //user detail 
+            $table->string('fullname', 255);
+            $table->string('mobile', 10);
             $table->string('email', 255)->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 255);
+            $table->unsignedBigInteger('role_id'); //from role table 
+
+            //cmis api 
+            $table->string('dsg_serial_no', 20)->nullable();  //cmis api
+            $table->string('field_dept_cd', 20)->nullable(); //cmis api
+
+
+
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('remember_token', 100)->nullable();
 
-            $table->unsignedInteger('role_id')->nullable(); //from role table 
-            $table->string('username', 30)->nullable();
-            $table->string('mobile', 10)->nullable();
-            $table->unsignedInteger('department_id')->nullable(); //departments table 
+
+
+            //other
             $table->integer('attempts')->nullable();
             $table->date('last_attempt_date')->nullable();
             $table->boolean('active_status')->default(true)->nullable();
-            $table->unsignedInteger('post_id')->nullable();  //cmis api
+
 
             // Foreign key constraints
             $table->foreign('role_id')->references('role_id')->on('roles');
-            $table->foreign('department_id')->references('department_id')->on('departments');
             // Indexes can be added if needed
             $table->timestamps(); // adds created_at and updated_at
             $table->softDeletes(); // adds deleted_at for soft deletes

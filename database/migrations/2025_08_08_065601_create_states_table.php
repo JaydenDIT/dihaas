@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ministry', function (Blueprint $table) {
-            $table->id('ministry_id');
-            $table->char('adm_bdgt_cd', 2);
-            $table->string('ministry_name', 70);
-            $table->char('adm_dept_cd_char', 2)->nullable();
+        Schema::create('states', function (Blueprint $table) {
+            $table->id('state_id');
+            $table->string('state_name', 255);
+            $table->timestamps();   // created_at and updated_at
+            $table->softDeletes();  // deleted_at for soft deletion
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ministry');
+        Schema::dropIfExists('states');
     }
 };

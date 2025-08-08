@@ -9,6 +9,10 @@ use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
 {
+
+    private $nonmutable = ['superadmin', 'citizen'];
+    private $hidden_role = ['superadmin'];
+
     public function index()
     {
         return view('role.index');

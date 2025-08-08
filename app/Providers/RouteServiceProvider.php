@@ -19,6 +19,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
 
+
+
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      *
@@ -38,8 +40,13 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/admin.php'));
+
+            Route::middleware('web')
+                ->group(base_path('routes/duties.php'));
         });
     }
+
+
 
     /**
      * Configure the rate limiters for the application.

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('tasks_duty', 255)->comment('Identifies the associated file/functionality name');
             $table->softDeletes(); // adds deleted_at column
             $table->timestamps(); // created_at and updated_at
-            $table->foreign("create_by")->references("id")->on("users")->onDelete("set null");
+            $table->foreign("create_by")->references("user_id")->on("users")->onDelete("set null");
         });
     }
 

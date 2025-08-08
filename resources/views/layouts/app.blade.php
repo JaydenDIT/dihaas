@@ -33,7 +33,7 @@
     </script>
 
     <div>
-        @include('layouts.header')
+        @include('layouts.header.authHeader')
         @include('layouts.error')
         @guest
         <div class="guest-div">

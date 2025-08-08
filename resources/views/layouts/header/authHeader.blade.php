@@ -29,6 +29,9 @@
             <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="{{route('tasks.performa.all')}}">All My Process</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{{route('duties.proforma.create')}}">Create Performa</a>
+            </li>
 
         </ul>
 
