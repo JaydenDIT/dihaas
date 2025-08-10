@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             QualificationSeeder::class,
             CasteSeeder::class,
             UsersSeeder::class,
+            DocumentListSeeder::class,
         ]);
     }
 }
