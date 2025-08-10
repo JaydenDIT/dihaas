@@ -143,3 +143,8 @@ body {
     content: " ***";
     display: inline;
 }
+
+.hr-brown {
+    height: 5px;
+    background: #c5b8b8 !important;
+}
