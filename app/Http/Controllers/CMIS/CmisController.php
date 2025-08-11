@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CMIS;
 
 use App\Http\Controllers\Controller;
+use App\Services\CmisApiService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -26,10 +27,7 @@ class CmisController extends Controller
     public function getEmployeeDetailByEIN(String $id)
     {
         try {
-            $response = Http::post($this->cmis_api . '/get-employee-profile', [
-                'ein'   => $id,
-                'token' => $this->cmis_token,
-            ]);
+            $response = CmisApiService::apiEmployeeDetailByEIN($id);
 
             return response()->json(
                 $response->json(),
@@ -45,10 +43,23 @@ class CmisController extends Controller
     public function getPostByDeptCd(String $id)
     {
         try {
-            $response = Http::post($this->cmis_api . '/get-all-dept-details-by-dept-cd', [
-                'dept_code'   => $id,
-                'token' => $this->cmis_token,
-            ]);
+            $response = CmisApiService::apiAllPostUnderDepartment($id);
+
+            return response()->json(
+                $response->json(),
+                $response->status()
+            );
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Internal Server Error',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function getDepartmentByAdmCd(int $id)
+    {
+        try {
+            $response = CmisApiService::apiAdminDepartments($id);
 
             return response()->json(
                 $response->json(),

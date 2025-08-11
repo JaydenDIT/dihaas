@@ -61,30 +61,6 @@ $(document).on("click", ".ein-search-btn", async function (e) {
     }
 });
 
-async function loadPost(dept_code) {
-    let targetSelect = $(".request_post");
-    targetSelect.html('<option value="" disabled selected>Loading...</option>');
-    try {
-        const res = await ajax_send_multipart({
-            url: loadpost.replace("__ID__", dept_code), // <-- route with .replace
-            method: "GET",
-        });
-        targetSelect
-            .empty()
-            .append('<option value="" disabled selected>Choose...</option>');
-        res.forEach(function (item) {
-            targetSelect.append(
-                `<option value="${item.dsg_serial_no}" data-group="${item.group_code}" >${item.dsg_desc}</option>`
-            );
-        });
-    } catch (error) {
-        console.error("Error loading sub-entities:", error);
-        targetSelect.html(
-            '<option value="" disabled selected>Error loading</option>'
-        );
-    }
-}
-
 $(document.body).on("change", ".request_post", function () {
     if ($(this).val() == "") {
         return;
@@ -173,7 +149,7 @@ $(document.body).on("change", ".address", async function (e) {
     syncAddress();
 });
 
-$("#same_as_current").on("click", function () {
+$(document.body).on("click", "#same_as_current", function (e) {
     if ($(this).is(":checked")) {
         syncAddress();
         setPermanentReadonly(true);
@@ -239,3 +215,63 @@ function syncAddress() {
         );
     }
 }
+
+$(document.body).on("change", "#request_adm_dept_cd", async function (e) {
+    let targetSelect = $("#request_field_dept_cd");
+    targetSelect.html('<option value="" disabled selected>Loading...</option>');
+    try {
+        const res = await ajax_send_multipart({
+            url: loadDepartment.replace("__ID__", $(this).val()), // <-- route with .replace
+            method: "GET",
+        });
+        targetSelect
+            .empty()
+            .append('<option value="" disabled selected>Choose...</option>');
+        res.field_dept.forEach(function (item) {
+            targetSelect.append(
+                `<option value="${item.field_dept_cd}" >${item.field_dept_desc}</option>`
+            );
+        });
+    } catch (error) {
+        console.error("Error loading sub-entities:", error);
+        targetSelect.html(
+            '<option value="" disabled selected>Error loading</option>'
+        );
+    }
+});
+
+async function loadPost(dept_code, targetSelect = $(".request_post")) {
+    targetSelect.html('<option value="" disabled selected>Loading...</option>');
+    try {
+        const res = await ajax_send_multipart({
+            url: loadpost.replace("__ID__", dept_code), // <-- route with .replace
+            method: "GET",
+        });
+        targetSelect
+            .empty()
+            .append('<option value="" disabled selected>Choose...</option>');
+        res.forEach(function (item) {
+            targetSelect.append(
+                `<option value="${item.dsg_serial_no}" data-group="${item.group_code}" >${item.dsg_desc}</option>`
+            );
+        });
+    } catch (error) {
+        console.error("Error loading sub-entities:", error);
+        targetSelect.html(
+            '<option value="" disabled selected>Error loading</option>'
+        );
+    }
+}
+
+$(document.body).on("change", "#request_field_dept_cd", async function (e) {
+    loadPost($(this).val(), $("#request_dsg_srno_3"));
+});
+
+$(document.body).on("change", "#request_dsg_srno_3", function () {
+    if ($(this).val() == "") {
+        return;
+    }
+    // Get the selected option and its data attribute
+    let groupCode = $(this).find(":selected").data("group");
+    $("#request_group_code_3").val(groupCode);
+});

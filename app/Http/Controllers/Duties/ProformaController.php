@@ -9,6 +9,7 @@ use App\Models\Proforma;
 use App\Models\Qualification;
 use App\Models\Relationship;
 use App\Models\State;
+use App\Services\CmisApiService;
 use Illuminate\Http\Request;
 
 class ProformaController extends Controller
@@ -21,7 +22,15 @@ class ProformaController extends Controller
         $qualifications = Qualification::all();
         $castes = Caste::all();
         $states = State::all();
-        return view('proforma.createProforma', compact('action', 'relationships', 'qualifications', 'castes', 'states'));
+
+        $response = CmisApiService::apiAdminDepartments();
+
+        if ($response->failed()) {
+            return response()->json(['message' => 'Failed to fetch departments'], $response->status());
+        }
+        $adminDepartments = $response->json();
+
+        return view('proforma.createProforma', compact('action', 'relationships', 'qualifications', 'castes', 'states', 'adminDepartments'));
     }
 
 

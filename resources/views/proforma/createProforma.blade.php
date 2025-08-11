@@ -153,6 +153,7 @@
     const loadpost = "{{ route('cmis.api.post.dept_code', ['id'=>'__ID__'])}}";
     const loadDistrict = "{{ route('misc.option.district', ['id'=>'__ID__'])}}";
     const loadSubDivision = "{{ route('misc.option.subdivision', ['id'=>'__ID__'])}}";
+    const loadDepartment = "{{ route('cmis.api.department.adm_cd', ['id'=>'__ID__'])}}";
 
     $(document).ready(function() {
         showStep(1);

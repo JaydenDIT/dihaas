@@ -12,6 +12,7 @@ Route::group(['prefix' => 'cmis', 'as' => 'cmis.'], function () {
         Route::controller(CmisController::class)->group(function () {
             Route::get('employee/detail/{id}/ein', 'getEmployeeDetailByEIN')->name('employee.detail.ein');
             Route::get('post/all/{id}/dept_code', 'getPostByDeptCd')->name('post.dept_code');
+            Route::get('department/all/{id}/adm_cd', 'getDepartmentByAdmCd')->name('department.adm_cd');
         });
     });
 });

@@ -8,6 +8,9 @@
     <div>
         <select name="request_adm_dept_cd" id="request_adm_dept_cd" class="form-select" required>
             <option value="" selected disabled>Choose...</option>
+            @foreach($adminDepartments as $department)
+            <option value="{{ $department['adm_dept_cd'] }}">{{ $department['adm_dept_desc'] }}</option>
+            @endforeach
         </select>
         <div class="invalid-feedback" role="alert">
             This field is required.
