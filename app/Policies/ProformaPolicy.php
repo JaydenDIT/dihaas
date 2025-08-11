@@ -4,12 +4,12 @@ namespace App\Policies;
 
 
 use App\Models\ProcessTasksMapping;
-use App\Models\ProformaModel;
+use App\Models\Proforma;
 use App\Models\User;
 
 class ProformaPolicy
 {
-    public function canPerform(User $user, ProformaModel $app, $task_id)
+    public function canPerform(User $user, Proforma $app, $task_id)
     {
         $mapping = ProcessTasksMapping::where('process_id', $app->process_id)
             ->where('sequence', $app->process_sequence)
@@ -19,7 +19,7 @@ class ProformaPolicy
         return $mapping && $user->role->duties->contains('tasks_id', $task_id);
     }
 
-    public function canReject(User $user, ProformaModel $app)
+    public function canReject(User $user, Proforma $app)
     {
         return ProcessTasksMapping::where('process_id', $app->process_id)
             ->where('sequence', $app->process_sequence)
@@ -27,7 +27,7 @@ class ProformaPolicy
             ->exists();
     }
 
-    public function canDrop(User $user, ProformaModel $app)
+    public function canDrop(User $user, Proforma $app)
     {
         return ProcessTasksMapping::where('process_id', $app->process_id)
             ->where('sequence', $app->process_sequence)

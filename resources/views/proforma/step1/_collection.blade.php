@@ -1,4 +1,4 @@
- <form action="#" name="upload_form" id="upload_form">
+ <form action="#" name="proforma-step1" id="proforma-step1">
      @csrf
      @if($action == 'create')
      <input type="hidden" name="action" id="action" value="create">
@@ -35,7 +35,8 @@
 
 
              <div class="ms-auto">
-                 <button class="btn btn-md btn-success submitBtn" type="button" data-status="20">SUBMIT</button>
+                 <button class="btn btn-md btn-success saveBtnStep1" type="button">Save</button>
+                 <button class="btn btn-md btn-success nextBtn" type="button" data-step="1">Next</button>
              </div>
          </div>
      </div>

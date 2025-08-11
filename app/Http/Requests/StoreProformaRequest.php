@@ -11,6 +11,22 @@ class StoreProformaRequest extends FormRequest
         return true; // Add permission checks if needed
     }
 
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation()
+    {
+        if ($this->input('same_as_current')) {
+            $this->merge([
+                'applicant_permanent_locality' => $this->input('applicant_current_locality'),
+                'applicant_permanent_state_id' => $this->input('applicant_current_state_id'),
+                'applicant_permanent_district_id' => $this->input('applicant_current_district_id'),
+                'applicant_permanent_subdivision_id' => $this->input('applicant_current_subdivision_id'),
+                'applicant_permanent_pincode' => $this->input('applicant_current_pincode'),
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -34,15 +50,14 @@ class StoreProformaRequest extends FormRequest
             'request_group_code_1' => 'required|string|max:20',
             'request_dsg_srno_2' => 'required|string|max:20',
             'request_group_code_2' => 'required|string|max:20',
-            'request_field_dept_cd' => 'required|string|max:20',
-            'request_field_dept_desc' => 'required|string|max:255',
+            'request_adm_dept_cd_3' => 'required|string|max:20',
+            'request_field_dept_cd_3' => 'required|string|max:20',
             'request_dsg_srno_3' => 'required|string|max:20',
             'request_group_code_3' => 'required|string|max:20',
 
             // Applicant details
             'applicant_name' => 'required|string|max:255',
             'relationship_id' => 'required|integer|exists:relationships,relationship_id',
-            'relationship_name' => 'required|string|max:255',
             'applicant_dob' => 'required|date',
             'applicant_mobile' => 'required|string|size:10',
             'applicant_email' => 'required|email|max:255',
@@ -67,8 +82,6 @@ class StoreProformaRequest extends FormRequest
             'applicant_permanent_district_id' => 'required|integer|exists:districts,district_id',
             'applicant_permanent_subdivision_id' => 'required|integer|exists:subdivisions,subdivision_id',
             'applicant_permanent_pincode' => 'required|digits:6',
-
-
         ];
     }
 }

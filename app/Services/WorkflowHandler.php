@@ -5,13 +5,13 @@ namespace App\Services;
 
 
 use App\Models\ProcessTasksMapping;
-use App\Models\ProformaModel;
+use App\Models\Proforma;
 use Illuminate\Support\Facades\Auth;
 
 class WorkflowHandler
 {
 
-    public static function forwardApplication(ProformaModel $app)
+    public static function forwardApplication(Proforma $app)
     {
         $current = ProcessTasksMapping::where('process_id', $app->process_id)
             ->where('sequence', $app->process_sequence)
@@ -34,7 +34,7 @@ class WorkflowHandler
         return $app;
     }
 
-    public static function dropApplication(ProformaModel $app)
+    public static function dropApplication(Proforma $app)
     {
         $prev = ProcessTasksMapping::where('process_id', $app->process_id)
             ->where('sequence', '<', $app->process_sequence)
@@ -50,7 +50,7 @@ class WorkflowHandler
         return $app;
     }
 
-    public static function rejectApplication(ProformaModel $app)
+    public static function rejectApplication(Proforma $app)
     {
         $app->proforma_status = 'rejected';
         $app->process_sequence = -99;
@@ -73,7 +73,7 @@ class WorkflowHandler
         $allApplications = collect();
 
         foreach ($mappings as $mapping) {
-            $apps = ProformaModel::where('process_id', $mapping->process_id)
+            $apps = Proforma::where('process_id', $mapping->process_id)
                 ->where('process_sequence', '=', $mapping->sequence)
                 ->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")
                 ->get();
@@ -97,7 +97,7 @@ class WorkflowHandler
         $allApplications = collect();
 
         foreach ($mappings as $mapping) {
-            $apps = ProformaModel::where('process_id', $mapping->process_id)
+            $apps = Proforma::where('process_id', $mapping->process_id)
                 ->where('process_sequence', '>', $mapping->sequence)
                 ->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")
                 ->get();
@@ -121,7 +121,7 @@ class WorkflowHandler
         $allApplications = collect();
 
         foreach ($mappings as $mapping) {
-            $apps = ProformaModel::where('process_id', $mapping->process_id)
+            $apps = Proforma::where('process_id', $mapping->process_id)
                 ->where('process_sequence', '<', $mapping->sequence)
                 ->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")
                 ->get();

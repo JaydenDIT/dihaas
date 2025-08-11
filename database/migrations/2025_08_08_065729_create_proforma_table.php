@@ -36,8 +36,8 @@ return new class extends Migration {
             $table->string('request_group_code_2', 20);
 
             //request for 3 other departments
-            $table->string('request_field_dept_cd', 20);
-            $table->string('request_field_dept_desc', 255);
+            $table->string('request_adm_dept_cd_3', 20);
+            $table->string('request_field_dept_cd_3', 20);
             $table->string('request_dsg_srno_3', 20);
             $table->string('request_group_code_3', 20);
 
@@ -45,7 +45,6 @@ return new class extends Migration {
             //applicant details 
             $table->string('applicant_name', 255);
             $table->unsignedBigInteger('relationship_id');
-            $table->string('relationship_name', 255)->comment('applicant relationship with the decease emp');
             $table->date('applicant_dob');
             $table->string('applicant_mobile', 10);
             $table->string('applicant_email', 255);
@@ -71,15 +70,9 @@ return new class extends Migration {
             $table->integer('applicant_permanent_pincode');
 
 
-
-
-
-
-
-
             // required for dynamic process
             $table->integer('process_id')->nullable();
-            $table->string('proforma_status', 30)->enum('new', 'pending', 'rejected', 'reverted', 'completed')->nullable();
+            $table->string('proforma_status', 30)->enum('draft-step1', 'draft-step2', 'draft-step3', 'submitted', 'pending', 'rejected', 'reverted', 'completed')->nullable();
             $table->integer('process_sequence')->nullable();
 
             // others

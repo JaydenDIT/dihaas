@@ -10,7 +10,8 @@
 <div class="row col-sm-6 mb-2 ps-5">
     <label class="col-form-label required_label"><b>Date of Expiry: </b></label>
     <div>
-        <input type="date" name="deceased_doe" id="deceased_doe" placeholder="date of expiry" class="form-control" required>
+        <input type="date" name="deceased_doe" id="deceased_doe" placeholder="date of expiry"
+            value="{{ $proforma->deceased_doe ?? '' }}" class="form-control" required>
         <div class="invalid-feedback" role="alert">
             This field is required.
         </div>
@@ -24,12 +25,12 @@
     <div class="hstack gap-3">
         <div class="form-check">
             <input type="radio" name="expire_on_duty" value="1" class="form-check-input expire_on_duty_flag"
-                required>
+                {{ $proforma->expire_on_duty ? 'checked' : '' }} required>
             Yes
         </div>
         <div class="form-check">
-            <input type="radio" name="expire_on_duty" value="0" class="form-check-input expire_on_duty_flag" checked
-                required>
+            <input type="radio" name="expire_on_duty" value="0" class="form-check-input expire_on_duty_flag"
+                {{ !$proforma->expire_on_duty ? 'checked' : '' }} {{ $action == 'create' ? 'checked' : '' }} required>
             No
         </div>
         <div class="invalid-feedback" role="alert">
@@ -45,7 +46,7 @@
     <div>
         <textarea name="deceased_causeofdeath" id="deceased_causeofdeath" placeholder="Cause of Death"
             class="form-control under_expire_on_duty_flag"
-            maxlength="300" required></textarea>
+            maxlength="300" required>{{ $proforma->deceased_causeofdeath ?? '' }}</textarea>
         <div class="invalid-feedback" role="alert">
             This field is required.
         </div>

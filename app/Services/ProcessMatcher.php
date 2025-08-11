@@ -3,14 +3,14 @@
 namespace App\Services;
 
 use App\Models\Process;
-use App\Models\ProformaModel;
+use App\Models\Proforma;
 
 class ProcessMatcher
 {
     /**
      * Match process based on application data and assign process_id.
      */
-    public static function matchAndAssignProcess(ProformaModel $application): ?int
+    public static function matchAndAssignProcess(Proforma $application): ?int
     {
         $allProcesses = Process::all();
 
@@ -34,7 +34,7 @@ class ProcessMatcher
     /**
      * Checks if the application matches all criteria.
      */
-    protected static function matchesCriteria(ProformaModel $application, array $criteriaList): bool
+    protected static function matchesCriteria(Proforma $application, array $criteriaList): bool
     {
         foreach ($criteriaList as $criterion) {
             $field = $criterion['field'] ?? null;

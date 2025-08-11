@@ -74,11 +74,7 @@
     /* Next Button */
     .nextBtn {
         background: linear-gradient(45deg, #007bff, #0056b3);
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 30px;
+
         transition: background 0.3s ease;
     }
 
@@ -95,15 +91,15 @@
     <div class="stepwizard">
         <div class="stepwizard-row setup-panel">
             <div class="stepwizard-step">
-                <a href="#step-1" class="btn btn-circle btn-step active" data-step="1">1</a>
+                <a href="#" class="btn btn-circle btn-step active" data-step="1">1</a>
                 <p><small>Details</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#step-2" class="btn btn-circle btn-step" disabled="disabled" data-step="2">2</a>
+                <a href="#" class="btn btn-circle btn-step" disabled="disabled" data-step="2">2</a>
                 <p><small>Documents Upload</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#step-3" class="btn btn-circle" disabled="disabled" data-step="3">3</a>
+                <a href="#" class="btn btn-circle" disabled="disabled" data-step="3">3</a>
                 <p><small>Schedule</small></p>
             </div>
         </div>
@@ -127,7 +123,6 @@
     <!-- STEP 1 -->
     <div class="setup-content" id="step-1">
         @include('proforma.step1._collection')
-        <button class="btn nextBtn float-end" type="button" data-step="1">Next</button>
     </div>
 
     <!-- STEP 2 -->
@@ -154,38 +149,7 @@
     const loadDistrict = "{{ route('misc.option.district', ['id'=>'__ID__'])}}";
     const loadSubDivision = "{{ route('misc.option.subdivision', ['id'=>'__ID__'])}}";
     const loadDepartment = "{{ route('cmis.api.department.adm_cd', ['id'=>'__ID__'])}}";
-
-    $(document).ready(function() {
-        showStep(1);
-
-        // Handle Next Button Click
-        $('.btn-step').click(function() {
-            let step = $(this).data('step');
-            showStep(step);
-        });
-        $('.nextBtn').click(function() {
-            let step = $(this).data('step');
-            showStep(step + 1);
-        });
-        $('.prevBtn').click(function() {
-            let step = $(this).data('step');
-            showStep(step - 1);
-        });
-
-        function showStep(step) {
-            let currentPanel = $('#step-' + step);
-            $('.setup-content').hide();
-            currentPanel.show();
-            $('.stepwizard-step a').eq(step - 1).addClass('active').removeAttr('disabled');
-        }
-
-        // Handle Finish Button
-        $('#finishBtn').click(function() {
-            alert('Form completed!');
-            // Optional: send final form data via AJAX here
-        });
-
-    });
+    const saveStep1 = "{{ route('duties.proforma.store1') }}";
 </script>
 <script src="{{ asset('js/proforma-create.js') }}"></script>
 

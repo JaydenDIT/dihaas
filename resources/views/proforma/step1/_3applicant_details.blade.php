@@ -5,6 +5,7 @@
     <label class="col-form-label  required_label"><b>Applicant Name: </b></label>
     <div>
         <input type="text" name="applicant_name" id="applicant_name" placeholder="Name of Applicant"
+            value="{{ $proforma->applicant_name ?? '' }}"
             class="form-control is_name" maxlength="75" required>
         <div class="invalid-feedback" role="alert">
             This field is required.
@@ -19,17 +20,17 @@
     <div class="hstack gap-3">
         <div class="form-check">
             <input type="radio" name="applicant_sex" value="male" class="form-check-input"
-                required>
+                {{ $proforma->applicant_sex == 'male' ? 'checked' : '' }} required>
             Male
         </div>
         <div class="form-check">
             <input type="radio" name="applicant_sex" value="female" class="form-check-input"
-                required>
+                {{ $proforma->applicant_sex == 'female' ? 'checked' : '' }} required>
             Female
         </div>
         <div class="form-check">
             <input type="radio" name="applicant_sex" value="transgender" class="form-check-input"
-                required>
+                {{ $proforma->applicant_sex == 'transgender' ? 'checked' : '' }} required>
             Transgender
         </div>
         <div class="invalid-feedback" role="alert">
@@ -43,6 +44,7 @@
     <label class="col-form-label  required_label"><b>Date of Birth: </b></label>
     <div>
         <input type="date" name="applicant_dob" id="applicant_dob" placeholder="Date of birth"
+            value="{{ $proforma->applicant_dob ?? '' }}"
             class="form-control" required>
         <div class="invalid-feedback" role="alert">
             This field is required.
@@ -55,12 +57,13 @@
     <label class="col-form-label  required_label"><b>Handicapped: </b></label>
     <div class="hstack gap-3">
         <div class="form-check">
-            <input type="radio" name="physically_handicapped" value="1" class="form-check-input"
+            <input type="radio" name="physically_handicapped" value="1" class="form-check-input" {{ $proforma->physically_handicapped ? 'checked' : '' }}
                 required>
             Yes
         </div>
         <div class="form-check">
-            <input type="radio" name="physically_handicapped" value="0" class="form-check-input" checked
+            <input type="radio" name="physically_handicapped" value="0" class="form-check-input"
+                {{ !$proforma->physically_handicapped ? 'checked' : '' }} {{ $action == 'create' ? 'checked' : '' }}
                 required>
             No
         </div>
@@ -75,6 +78,7 @@
     <label class="col-form-label  required_label"><b>Mobile Number: </b></label>
     <div>
         <input type="text" name="applicant_mobile" id="applicant_mobile" placeholder="Mobile"
+            value="{{ $proforma->applicant_mobile ?? '' }}"
             class="form-control is_number" minlength="10" maxlength="10" required>
         <div class="invalid-feedback" role="alert">
             This field is required.
@@ -87,6 +91,7 @@
     <label class="col-form-label  required_label"><b>Email: </b></label>
     <div>
         <input type="email" name="applicant_email" id="applicant_email" placeholder="Email ID"
+            value="{{ $proforma->applicant_email ?? '' }}"
             class="form-control" maxlength="75" required>
         <div class="invalid-feedback" role="alert">
             This field is required.
@@ -101,7 +106,7 @@
         <select name="relationship_id" id="relationship_id" class="form-select" required>
             <option value="" selected disabled>Choose...</option>
             @foreach($relationships as $row)
-            <option value="{{$row->relationship_id}}">{{$row->relationship_name}}</option>
+            <option value="{{$row->relationship_id}}" {{ $proforma->relationship_id == $row->relationship_id ? 'selected' : '' }}>{{$row->relationship_name}}</option>
             @endforeach
         </select>
         <div class="invalid-feedback" role="alert">
@@ -119,7 +124,7 @@
         <select name="caste_id" id="caste_id" class="form-select" required>
             <option value="" selected disabled>Choose...</option>
             @foreach($castes as $row)
-            <option value="{{$row->caste_id}}">{{$row->caste_name}}</option>
+            <option value="{{$row->caste_id}}" {{ $proforma->caste_id == $row->caste_id ? 'selected' : '' }}>{{$row->caste_name}}</option>
             @endforeach
         </select>
         <div class="invalid-feedback" role="alert">
@@ -139,7 +144,7 @@
         <select name="applicant_qualification_id" id="applicant_qualification_id" class="form-select" required>
             <option value="" selected disabled>Choose...</option>
             @foreach($qualifications as $row)
-            <option value="{{$row->qualification_id}}">{{$row->qualification_name}}</option>
+            <option value="{{$row->qualification_id}}" {{ $proforma->applicant_qualification_id == $row->qualification_id ? 'selected' : '' }}>{{$row->qualification_name}}</option>
             @endforeach
         </select>
         <div class="invalid-feedback" role="alert">
@@ -152,7 +157,7 @@
 <div class="row col-sm-6 mb-2 ps-5 under_applicant_qualification_id">
     <label class="col-form-label  required_label"><b>Specify Educational Qualification: </b></label>
     <div class="">
-        <input type="text" name="applicant_qualification_other" id="applicant_qualification_other"
+        <input type="text" name="applicant_qualification_other" id="applicant_qualification_other" value="{{ $proforma->applicant_qualification_other ?? '' }}"
             placeholder="Specify Qualification" class="form-control is_name under_applicant_qualification_id" maxlength="75">
         <div class="invalid-feedback" role="alert">
             This field is required.

@@ -53,4 +53,8 @@ class Proforma extends Model
     {
         return $this->belongsTo(Subdivision::class, 'applicant_current_subdivision_id', 'subdivision_id');
     }
+    public function permanentSubdivision()
+    {
+        return $this->belongsTo(Subdivision::class, 'applicant_permanent_subdivision_id', 'subdivision_id');
+    }
 }

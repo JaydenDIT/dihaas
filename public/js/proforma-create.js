@@ -9,32 +9,33 @@ $(document).ready(function () {
     } else {
         $("#menu-submit").addClass("active");
     }
-});
 
-function fieldHide(arr) {
-    arr.forEach(function (value) {
-        hideElement("." + value);
+    showStep(1);
+
+    // Handle Next Button Click
+    $(".btn-step").click(function () {
+        let step = $(this).data("step");
+        showStep(step);
     });
-}
+    $(".nextBtn").click(function () {
+        let step = $(this).data("step");
+        showStep(step + 1);
+    });
+    $(".prevBtn").click(function () {
+        let step = $(this).data("step");
+        showStep(step - 1);
+    });
 
-function hideElement(ele) {
-    $(ele).hide();
-    $(ele).prop("disabled", true);
-}
-
-function showElement(ele) {
-    $(ele).show();
-    $(ele).prop("disabled", false);
-}
-
-function changeFormField(classname, that, flag = "1") {
-    classname = "." + classname;
-    hideElement(classname);
-
-    if ($(that).val() == flag) {
-        showElement(classname);
+    function showStep(step) {
+        let currentPanel = $("#step-" + step);
+        $(".setup-content").hide();
+        currentPanel.show();
+        $(".stepwizard-step a")
+            .eq(step - 1)
+            .addClass("active")
+            .removeAttr("disabled");
     }
-}
+});
 
 $(document).on("click", ".ein-search-btn", async function (e) {
     e.preventDefault();
@@ -51,7 +52,7 @@ $(document).on("click", ".ein-search-btn", async function (e) {
         $("#deceased_emp_desig").val(res[0]["emp_desig"]);
         $("#deceased_adm_dept_cd").val(res[0]["adm_dept_cd"]);
         $("#deceased_adm_dept_desc").val(res[0]["adm_dept_desc"]);
-        $("#deceased_field_dept_cd").val(res[0]["field_dept_cd"]);
+        $("#deceased_field_dept_cd").val(res[0]["dept_cd"]);
         $("#deceased_field_dept_desc").val(res[0]["field_dept_desc"]);
         $("#deceased_doa").val(res[0]["emp_entry_dt"]);
         $("#deceased_dob").val(res[0]["emp_birth_dt"]);
@@ -274,4 +275,25 @@ $(document.body).on("change", "#request_dsg_srno_3", function () {
     // Get the selected option and its data attribute
     let groupCode = $(this).find(":selected").data("group");
     $("#request_group_code_3").val(groupCode);
+});
+
+$(document).on("click", ".saveBtnStep1", async function (e) {
+    e.preventDefault();
+    const form = document.getElementById("proforma-step1");
+    const param = new FormData(form);
+
+    try {
+        await validateForm(form);
+        await ajax_send_multipart({
+            url: saveStep1,
+            param: param,
+        });
+        if (action === "create") {
+            success_message("Saved successfully");
+        } else {
+            success_message("Updated successfully");
+        }
+    } catch (err) {
+        console.error(err);
+    }
 });

@@ -4,18 +4,17 @@ namespace App\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Storage;
 
 class CmisApiService
 {
-    private static string $cmis_token;
-    private static string $cmis_api;
+    private static string $cmis_token = '';
+    private static string $cmis_api = '';
 
-    /**
-     * Initialize static config from env
-     */
     private static function init(): void
     {
-        if (!isset(self::$cmis_token) || !isset(self::$cmis_api)) {
+        if (self::$cmis_token === '' || self::$cmis_api === '') {
             self::$cmis_token = env('CMIS_TOKEN', '');
             self::$cmis_api   = env('CMIS_API', '');
 
@@ -25,56 +24,85 @@ class CmisApiService
         }
     }
 
+    private static function safePost(string $endpoint, array $payload = [])
+    {
+        self::init();
+
+        // Always add token
+        $payload['token'] = self::$cmis_token;
+
+        try {
+            return Http::timeout(30)
+                ->post(self::$cmis_api . $endpoint, $payload);
+        } catch (ConnectionException $e) {
+            throw new Exception("CMIS API connection failed: " . $e->getMessage(), 0, $e);
+        } catch (Exception $e) {
+            throw new Exception("CMIS API request error: " . $e->getMessage(), 0, $e);
+        }
+    }
+
     public static function apiEmployeeDetailByEIN(string $ein)
     {
-        self::init();
 
-        return Http::post(self::$cmis_api . '/get-employee-profile', [
-            'ein'   => $ein,
-            'token' => self::$cmis_token,
+        return Storage::disk('private')->exists('empDetail.json')
+            ? json_decode(Storage::disk('private')->get('empDetail.json'), true)
+            : [];
+
+
+        return self::safePost('/get-employee-profile', [
+            'ein' => $ein,
         ]);
     }
 
-    public static function apiPostByDeptCd(string $dept_cd)
-    {
-        self::init();
-
-        return Http::post(self::$cmis_api . '/get-all-dept-details-by-dept-cd', [
-            'dept_code' => $dept_cd,
-            'token'     => self::$cmis_token,
-        ]);
-    }
 
     public static function apiAdminDepartments(int $adm_dept_cd = 0)
     {
-        self::init();
 
-        $payload = ['token' => self::$cmis_token];
+        //test
+        if ($adm_dept_cd !== 0) {
+            return Storage::disk('private')->exists('departMentList.json')
+                ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
+                : [];
+        }
+        return Storage::disk('private')->exists('allAdmList.json')
+            ? json_decode(Storage::disk('private')->get('allAdmList.json'), true)
+            : [];
+
+
+
+
+        $payload = [];
         if ($adm_dept_cd !== 0) {
             $payload['adm_dept_cd'] = $adm_dept_cd;
         }
 
-        return Http::post(self::$cmis_api . '/get-adm-department-list', $payload);
+        return self::safePost('/get-adm-department-list', $payload);
     }
 
     public static function apiFieldDepartments(int $field_dept_cd = 0)
     {
-        self::init();
+        //test
+        return Storage::disk('private')->exists('departMentList.json')
+            ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
+            : [];
 
-        $payload = ['token' => self::$cmis_token];
+        $payload = [];
         if ($field_dept_cd !== 0) {
             $payload['field_dept_cd'] = $field_dept_cd;
         }
 
-        return Http::post(self::$cmis_api . '/get-department-list', $payload);
+        return self::safePost('/get-department-list', $payload);
     }
+
     public static function apiAllPostUnderDepartment($dept_code)
     {
-        self::init();
+        //test
+        return Storage::disk('private')->exists('allPost.json')
+            ? json_decode(Storage::disk('private')->get('allPost.json'), true)
+            : [];
 
-        $payload = ['token' => self::$cmis_token];
-        $payload['dept_code'] = $dept_code;
-
-        return Http::post(self::$cmis_api . '/get-all-dept-details-by-dept-cd', $payload);
+        return self::safePost('/get-all-dept-details-by-dept-cd', [
+            'dept_code' => $dept_code,
+        ]);
     }
 }

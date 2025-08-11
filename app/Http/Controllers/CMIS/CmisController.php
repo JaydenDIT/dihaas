@@ -19,7 +19,7 @@ class CmisController extends Controller
         $this->cmis_api = env('CMIS_API', '');
 
         if ($this->cmis_token == '' || $this->cmis_api  == '') {
-            response()->json(['message' => 'API cannot be fetch'], 503);
+            throw new Exception("API cannot be fetched — missing CMIS_TOKEN or CMIS_API");
         }
     }
 
@@ -27,11 +27,15 @@ class CmisController extends Controller
     public function getEmployeeDetailByEIN(String $id)
     {
         try {
-            $response = CmisApiService::apiEmployeeDetailByEIN($id);
+            $result = CmisApiService::apiEmployeeDetailByEIN($id);
+            return response()->json( //test
+                $result,
+                200
+            );
 
             return response()->json(
-                $response->json(),
-                $response->status()
+                $result->json(),
+                $result->status()
             );
         } catch (Exception $e) {
             return response()->json([
@@ -43,11 +47,14 @@ class CmisController extends Controller
     public function getPostByDeptCd(String $id)
     {
         try {
-            $response = CmisApiService::apiAllPostUnderDepartment($id);
-
+            $result = CmisApiService::apiAllPostUnderDepartment($id);
+            return response()->json( //test
+                $result,
+                200
+            );
             return response()->json(
-                $response->json(),
-                $response->status()
+                $result->json(),
+                $result->status()
             );
         } catch (Exception $e) {
             return response()->json([
@@ -59,11 +66,14 @@ class CmisController extends Controller
     public function getDepartmentByAdmCd(int $id)
     {
         try {
-            $response = CmisApiService::apiAdminDepartments($id);
-
+            $result = CmisApiService::apiAdminDepartments($id);
+            return response()->json( //test
+                $result,
+                200
+            );
             return response()->json(
-                $response->json(),
-                $response->status()
+                $result->json(),
+                $result->status()
             );
         } catch (Exception $e) {
             return response()->json([

@@ -629,3 +629,28 @@ function showConfirmation({
         });
     });
 }
+
+function fieldHide(arr) {
+    arr.forEach(function (value) {
+        hideElement("." + value);
+    });
+}
+
+function hideElement(ele) {
+    $(ele).hide();
+    $(ele).prop("disabled", true);
+}
+
+function showElement(ele) {
+    $(ele).show();
+    $(ele).prop("disabled", false);
+}
+
+function changeFormField(classname, that, flag = "1") {
+    classname = "." + classname;
+    hideElement(classname);
+
+    if ($(that).val() == flag) {
+        showElement(classname);
+    }
+}
