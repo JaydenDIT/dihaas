@@ -26,6 +26,7 @@ class ProformaController extends Controller
         $qualifications = Qualification::all();
         $castes = Caste::all();
         $states = State::all();
+        $proforma = new Proforma();
 
         $result = CmisApiService::apiAdminDepartments();
         $adminDepartments = $result; //test for real data uncomment below and comment this line
@@ -34,7 +35,7 @@ class ProformaController extends Controller
         // }
         // $adminDepartments = $result->json();
 
-        return view('proforma.createProforma', compact('action', 'relationships', 'qualifications', 'castes', 'states', 'adminDepartments'));
+        return view('proforma.createProforma', compact('action', 'relationships', 'qualifications', 'castes', 'states', 'adminDepartments', 'proforma'));
     }
 
 

@@ -41,6 +41,12 @@ class CmisApiService
         }
     }
 
+    /**
+     * Fetch employee details by EIN.
+     *
+     * @param string $ein
+     * @return array
+     */
     public static function apiEmployeeDetailByEIN(string $ein)
     {
 
@@ -55,6 +61,12 @@ class CmisApiService
     }
 
 
+    /**
+     * Fetch admin or ministry list.
+     * If $adm_dept_cd is provided, fetch the detail of the ministry as well as the departments under it.
+     * @param int $adm_dept_cd
+     * @return array
+     */
     public static function apiAdminDepartments(int $adm_dept_cd = 0)
     {
 
@@ -79,6 +91,12 @@ class CmisApiService
         return self::safePost('/get-adm-department-list', $payload);
     }
 
+    /**
+     * Fetch field departments.
+     * If $field_dept_cd is provided, fetch the detail of the field department.
+     * @param int $field_dept_cd
+     * @return array
+     */
     public static function apiFieldDepartments(int $field_dept_cd = 0)
     {
         //test
@@ -94,6 +112,11 @@ class CmisApiService
         return self::safePost('/get-department-list', $payload);
     }
 
+    /**
+     * Fetch all posts under a specific department.
+     * @param string $dept_code
+     * @return array
+     */
     public static function apiAllPostUnderDepartment($dept_code)
     {
         //test
