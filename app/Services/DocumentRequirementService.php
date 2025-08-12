@@ -2,46 +2,47 @@
 
 namespace App\Services;
 
-/**
- * 
- *  Uses the document criteria configuration to determine which documents are required for a given application.
- *  $missingDocs = DocumentRequirementService::check($apps);
- *  dd($missingDocs);
- */
-
-
+use App\Models\Proforma;
+use App\Models\DocumentList;
 
 class DocumentRequirementService
 {
     /**
-     * Check which documents are required for the given application.
+     * Get all active documents and mark which ones are required.
      *
-     * @param object|array $apps  The application data (can be Eloquent model or array)
-     * @return array
+     * @param Proforma $application
+     * @return \Illuminate\Support\Collection  Each row will have ->required = true/false
      */
-    public static function check($apps)
+    public static function getDocumentsWithRequirement(Proforma $application)
     {
-        $criteria = config('document_criteria');
-        $missingDocs = [];
+        $criteriaConfig = config('documentCriteria');
 
-        foreach ($criteria as $docKey => $rules) {
+        // Step 1: Determine required criteria keys
+        $requiredKeys = [];
+
+        foreach ($criteriaConfig as $docKey => $rules) {
             $isRequired = false;
 
-            // 1. If always required
+            // Always required
             if (!empty($rules['required']) && $rules['required'] === true) {
                 $isRequired = true;
             }
 
-            // 2. If required based on conditions
-            if (!empty($rules['required_if']) && is_array($rules['required_if'])) {
+            // Required based on conditions
+            if (!$isRequired && !empty($rules['required_if']) && is_array($rules['required_if'])) {
                 foreach ($rules['required_if'] as $condition) {
-                    // $condition = ['table', 'field', 'operator', 'value']
                     [$table, $field, $operator, $value] = $condition;
 
-                    $sourceData = isset($apps->$table) ? $apps->$table : (is_array($apps) && isset($apps[$table]) ? $apps[$table] : null);
+                    $sourceData = isset($application->$table)
+                        ? $application->$table
+                        : (is_array($application) && isset($application[$table])
+                            ? $application[$table]
+                            : null);
 
                     if (is_array($sourceData) || is_object($sourceData)) {
-                        $fieldValue = is_object($sourceData) ? ($sourceData->$field ?? null) : ($sourceData[$field] ?? null);
+                        $fieldValue = is_object($sourceData)
+                            ? ($sourceData->$field ?? null)
+                            : ($sourceData[$field] ?? null);
 
                         if (self::matchesCondition($fieldValue, $operator, $value)) {
                             $isRequired = true;
@@ -52,17 +53,25 @@ class DocumentRequirementService
             }
 
             if ($isRequired) {
-                $missingDocs[] = $docKey;
+                $requiredKeys[] = $docKey;
             }
         }
 
-        return $missingDocs;
+        // Step 2: Load all active documents (exclude soft-deleted) and tag required flag
+        $documents = DocumentList::whereNull('deleted_at')
+            ->get()
+            ->map(function ($doc) use ($requiredKeys) {
+                $doc->required = in_array($doc->document_criteria, $requiredKeys);
+                return $doc;
+            });
+
+        return $documents;
     }
 
     /**
-     * Compare field value with condition
+     * Compare value with condition
      */
-    private static function matchesCondition($fieldValue, $operator, $value)
+    private static function matchesCondition($fieldValue, $operator, $value): bool
     {
         switch (strtolower($operator)) {
             case '=':

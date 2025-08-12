@@ -11,7 +11,9 @@ use App\Models\Qualification;
 use App\Models\Relationship;
 use App\Models\State;
 use App\Models\SubDivision;
+use App\Models\UploadedDocument;
 use App\Services\CmisApiService;
+use App\Services\DocumentRequirementService;
 use App\Services\ProformaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +42,7 @@ class ProformaController extends Controller
 
 
 
-    public function storeStep1(StoreProformaRequest $request)
+    public function store(StoreProformaRequest $request)
     {
         try {
             $data = $request->validated();
@@ -54,7 +56,7 @@ class ProformaController extends Controller
                 'action_name' => 'Proforma created save draft-step1',
                 'action_remark' => 'Step 1 completed',
             ]);
-            return response()->json(['message' => 'Proforma created successfully'], 201);
+            return response()->json(['message' => 'Proforma created successfully', 'proforma_id' => $proforma->proforma_id], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Proforma creation failed', 'error' => $e->getMessage()], 422);
         }
@@ -82,7 +84,6 @@ class ProformaController extends Controller
         $qualifications = Qualification::all();
         $castes = Caste::all();
         $states = State::all();
-        $result = CmisApiService::apiAdminDepartments();
         $current_districts = District::where('state_id', $proforma->applicant_current_state_id)->get();
         $current_subdivisions = SubDivision::where('district_id', $proforma->applicant_current_district_id)->get();
         $permanent_districts = District::where('state_id', $proforma->applicant_permanent_state_id)->get();
@@ -91,9 +92,19 @@ class ProformaController extends Controller
         $parentPostList = CmisApiService::apiAllPostUnderDepartment($proforma->deceased_field_dept_cd);
         $otherDepartList = CmisApiService::apiAdminDepartments($proforma->request_adm_dept_cd_3);
         $otherPostList = CmisApiService::apiAllPostUnderDepartment($proforma->request_field_dept_cd_3);
+        $adminDepartments = CmisApiService::apiAdminDepartments();
 
 
-        $adminDepartments = $result; //test for real data uncomment below and comment this line
+
+        //for the document upload
+        $documents = DocumentRequirementService::getDocumentsWithRequirement($proforma);
+        $uploaded = UploadedDocument::where('proforma_id', $proforma->proforma_id)->get();
+        $documents->map(function ($doc) use ($uploaded) {
+            $doc->uploaded_file = $uploaded->firstWhere('document_list_id', $doc->id);
+            return $doc;
+        });
+
+        //test for real data uncomment below and comment this line
         /*
         if ($result->failed()) {
             return response()->json(['message' => 'Failed to fetch departments'], $result->status());
@@ -116,6 +127,7 @@ class ProformaController extends Controller
             'parentPostList',
             'otherDepartList',
             'otherPostList',
+            'documents'
         ));
     }
 

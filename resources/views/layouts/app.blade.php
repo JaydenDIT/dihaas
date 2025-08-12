@@ -33,6 +33,9 @@
     </script>
 
     <div>
+        <div id="loading-div">
+            <img id="loading-image" src="{{ asset('assets/img/loader.gif')}}" alt="Loading...">
+        </div>
         @include('layouts.header.authHeader')
         @include('layouts.error')
         @guest

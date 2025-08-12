@@ -17,10 +17,15 @@ return [
             ['proforma', 'physically_handicapped', '=', true],
         ],
     ],
-    'class_x' => [
+    'optional' => [
+        'required' => false, // not required by default
+        'required_if' => [], // no condition
+    ],
+    'dead_on_duty' => [
         'required' => false,
         'required_if' => [
-            ['applicant_qualifications', 'class_x', '=', true],
+            ['proforma', 'expire_on_duty', '=', true],
         ],
     ],
+
 ];

@@ -11,7 +11,10 @@ return new class extends Migration {
             $table->id('document_list_id');
             $table->string('document_name');
             $table->string('document_criteria'); // key from config/documentCriteria.php
+            $table->integer('max_size_kb')->default(2048);
+            $table->string('document_type'); // or json if multi-type support needed
             $table->timestamps();
+            $table->softDeletes();  // deleted_at for soft deletion
         });
     }
 

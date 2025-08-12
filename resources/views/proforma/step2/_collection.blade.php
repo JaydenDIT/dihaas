@@ -26,11 +26,51 @@
          </div>
 
          <div class="hstack gap-3 my-3 p-3">
-
-
              <div class="ms-auto">
-                 <button class="btn btn-md btn-success submitBtn" type="button" data-status="20">SUBMIT</button>
+                 <button class="btn btn-md btn-success" id="saveDocument" type="button">Save</button>
+                 <button class="btn btn-md btn-success nextBtn" type="button" data-step="2">Next</button>
              </div>
          </div>
      </div>
  </form>
+
+
+
+ <div class="modal fade" id="docUploadModal" tabindex="-1" aria-labelledby="docUploadModalLevel" data-bs-backdrop="static"
+     data-bs-keyboard="false" aria-hidden="true">
+     <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="docUploadModalLevel"></h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+
+             <!-- Form should wrap all content that's part of it -->
+             <form class="needs-validation" id="docUploadForm" name="docUploadForm" method="POST" enctype="multipart/form-data">
+                 @csrf
+                 <input type="hidden" name="proforma_id" value="{{ $proforma->proforma_id }}">
+                 <input type="hidden" id="upload_document_list_id" name="document_list_id">
+
+                 <div class="modal-body">
+                     <div class="row">
+                         <div class="mb-3">
+                             <label class="form-label">Document</label>
+                             <input type="text" class="form-control" id="upload_document_name" name="document_name" readonly>
+                         </div>
+
+                         <div class="mb-3">
+                             <label class="form-label" id="fileLabel">Choose File</label>
+                             <input type="file" class="form-control" name="document_file" id="upload_document_file" required>
+                             <small id="sizeHelp" class="text-muted"></small>
+                         </div>
+                     </div>
+                 </div>
+
+                 <div class="modal-footer">
+                     <button type="submit" id="uploadBtn" class="btn btn-success">Upload</button>
+                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                 </div>
+             </form>
+         </div>
+     </div>
+ </div>

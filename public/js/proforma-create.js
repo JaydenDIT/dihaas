@@ -3,12 +3,6 @@ $(document).ready(function () {
         "under_expire_on_duty_flag",
         "under_applicant_qualification_id",
     ]);
-    if (action == "edit") {
-        $("#menu-draft").addClass("active");
-        setEditData(application_data);
-    } else {
-        $("#menu-submit").addClass("active");
-    }
 
     showStep(1);
 
@@ -42,7 +36,7 @@ $(document).on("click", ".ein-search-btn", async function (e) {
 
     try {
         const res = await ajax_send_multipart({
-            url: empDetailUrl.replace("__ID__", $("#deceased_ein").val()),
+            url: searchEmpByEIN.replace("__ID__", $("#deceased_ein").val()),
             method: "GET",
         });
 
@@ -94,12 +88,22 @@ $(document.body).on("keyup", "#applicant_qualification_other", function () {
 $(document.body).on("change", ".state_id_flag", async function (e) {
     let stateId = $(this).val();
     let districtSelect = $("#" + $(this).data("change-id"));
+    //clear both district and subdivision
+    districtSelect.html(
+        '<option value="" disabled selected>Choose...</option>'
+    );
+    $("#" + districtSelect.data("change-id")).html(
+        '<option value="" disabled selected>Choose...</option>'
+    );
+    if (!stateId) {
+        return;
+    }
     districtSelect.html(
         '<option value="" disabled selected>Loading...</option>'
     );
     try {
         const res = await ajax_send_multipart({
-            url: loadDistrict.replace("__ID__", stateId),
+            url: getDistrictByStateId.replace("__ID__", stateId),
             method: "GET",
         });
 
@@ -122,12 +126,18 @@ $(document.body).on("change", ".state_id_flag", async function (e) {
 $(document.body).on("change", ".district_id_flag", async function () {
     let districtId = $(this).val();
     let targetSelect = $("#" + $(this).data("change-id"));
+    if (!districtId) {
+        targetSelect.html(
+            '<option value="" disabled selected>Choose...</option>'
+        );
+        return;
+    }
 
     targetSelect.html('<option value="" disabled selected>Loading...</option>');
 
     try {
         const res = await ajax_send_multipart({
-            url: loadSubDivision.replace("__ID__", districtId), // <-- route with .replace
+            url: getSubDivisionByDistrictId.replace("__ID__", districtId), // <-- route with .replace
             method: "GET",
         });
         targetSelect
@@ -222,7 +232,7 @@ $(document.body).on("change", "#request_adm_dept_cd", async function (e) {
     targetSelect.html('<option value="" disabled selected>Loading...</option>');
     try {
         const res = await ajax_send_multipart({
-            url: loadDepartment.replace("__ID__", $(this).val()), // <-- route with .replace
+            url: getDepartmentByAdmCd.replace("__ID__", $(this).val()), // <-- route with .replace
             method: "GET",
         });
         targetSelect
@@ -245,7 +255,7 @@ async function loadPost(dept_code, targetSelect = $(".request_post")) {
     targetSelect.html('<option value="" disabled selected>Loading...</option>');
     try {
         const res = await ajax_send_multipart({
-            url: loadpost.replace("__ID__", dept_code), // <-- route with .replace
+            url: getPostByDeptCode.replace("__ID__", dept_code), // <-- route with .replace
             method: "GET",
         });
         targetSelect
@@ -277,22 +287,74 @@ $(document.body).on("change", "#request_dsg_srno_3", function () {
     $("#request_group_code_3").val(groupCode);
 });
 
-$(document).on("click", ".saveBtnStep1", async function (e) {
+$(document).on("click", "#saveProforma", async function (e) {
     e.preventDefault();
     const form = document.getElementById("proforma-step1");
     const param = new FormData(form);
 
     try {
         await validateForm(form);
-        await ajax_send_multipart({
-            url: saveStep1,
-            param: param,
-        });
-        if (action === "create") {
+        if (action == "create") {
+            const res = await ajax_send_multipart({
+                url: saveProforma,
+                param: param,
+            });
             success_message("Saved successfully");
+            window.location.href = editProforma.replace(
+                "__ID__",
+                res.proforma_id
+            );
         } else {
-            success_message("Updated successfully");
+            const res = await ajax_send_multipart({
+                url: updateProforma.replace("__ID__", proforma_id),
+                param: param,
+            });
+            success_message("Update successfully");
         }
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+// Upload of the documents
+
+// Open modal when upload button clicked
+$(document).on("click", ".upload-doc-btn", function () {
+    const docData = decodeURI($(this).data("upload"));
+    $("#upload_document_name").val(docData.document_name);
+    $("#upload_document_list_id").val(docData.document_list_id);
+    $("#upload_document_file").attr(
+        "accept",
+        docData.document_type === "pdf" ? "application/pdf" : "*/*"
+    );
+    $("#sizeHelp").text(`Max file size: ${docData.max_size_kb} kB`);
+    $("#docUploadModal").modal("show");
+});
+
+// Handle form submission properly
+$(document).on("submit", "#docUploadForm", async function (e) {
+    e.preventDefault();
+    const form = this;
+
+    try {
+        await validateForm(form);
+        const formData = new FormData(form);
+        const res = await ajax_send_multipart({
+            url: uploadDocumentSave,
+            param: formData,
+        });
+
+        const fileName = res.data.file_name; // match PHP response key
+        const fileUrl = res.data.url;
+
+        const preview = document.getElementById(
+            `document-preview-${$("#upload_document_list_id").val()}`
+        );
+
+        // Always show as a link that opens in a new tab
+        preview.innerHTML = `<a href="${fileUrl}" target="_blank">${fileName}</a>`;
+        success_message("Uploaded successfully");
+        $("#docUploadModal").modal("hide");
     } catch (err) {
         console.error(err);
     }

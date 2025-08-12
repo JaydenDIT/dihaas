@@ -125,10 +125,10 @@
         @include('proforma.step1._collection')
     </div>
 
+    @if($action == 'edit')
     <!-- STEP 2 -->
     <div class="setup-content" id="step-2">
         @include('proforma.step2._collection')
-        <button class="btn nextBtn float-end" type="button" data-step="2">Next</button>
     </div>
 
     <!-- STEP 3 -->
@@ -136,20 +136,29 @@
         <div class="form-group">
             Testing Schedule Step
         </div>
-        <button class="btn btn-success float-end" type="button" id="finishBtn">Finish</button>
     </div>
+    @endif
 
 </div>
 @endsection
 
 @push('js')
 <script>
-    const empDetailUrl = "{{ route('cmis.api.employee.detail.ein', ['id'=>'__ID__'])}}";
-    const loadpost = "{{ route('cmis.api.post.dept_code', ['id'=>'__ID__'])}}";
-    const loadDistrict = "{{ route('misc.option.district', ['id'=>'__ID__'])}}";
-    const loadSubDivision = "{{ route('misc.option.subdivision', ['id'=>'__ID__'])}}";
-    const loadDepartment = "{{ route('cmis.api.department.adm_cd', ['id'=>'__ID__'])}}";
-    const saveStep1 = "{{ route('duties.proforma.store1') }}";
+    const action = "{{ $action }}";
+    const proforma_id = "{{ $proforma->proforma_id ?? '' }}";
+    //misc
+    const getDistrictByStateId = "{{ route('misc.option.district', ['id'=>'__ID__'])}}";
+    const getSubDivisionByDistrictId = "{{ route('misc.option.subdivision', ['id'=>'__ID__'])}}";
+    //cmis api
+    const getDepartmentByAdmCd = "{{ route('cmis.api.department.adm_cd', ['id'=>'__ID__'])}}";
+    const searchEmpByEIN = "{{ route('cmis.api.employee.detail.ein', ['id'=>'__ID__'])}}";
+    const getPostByDeptCode = "{{ route('cmis.api.post.dept_code', ['id'=>'__ID__'])}}";
+    //proforma
+    const saveProforma = "{{ route('duties.proforma.store') }}";
+    const editProforma = "{{ route('duties.proforma.edit', ['id'=>'__ID__']) }}";
+    const updateProforma = "{{ route('duties.proforma.update', ['id'=>'__ID__']) }}";
+    //documents
+    const uploadDocumentSave = "{{ route('duties.upload.document.store') }}";
 </script>
 <script src="{{ asset('js/proforma-create.js') }}"></script>
 
