@@ -6310,7 +6310,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
         if ($empDetails != null) {
             $empDetails->update([
-                'file_status' => 2, //move to HOD Assistant
+                'file_status' => 1, //move to HOD Assistant
                 'received_by' => $receiver, //previous sender
                 'sent_by' => $getUser->name, //current sender
                 'forwarded_by' => $getUser->id,
