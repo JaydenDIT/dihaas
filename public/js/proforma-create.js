@@ -1,10 +1,9 @@
 $(document).ready(function () {
-    fieldHide([
-        "under_expire_on_duty_flag",
-        "under_applicant_qualification_id",
-    ]);
+    fieldHide(hiddenClass);
 
-    showStep(1);
+    showStep(
+        proforma_status == "" ? 1 : proforma_status == "draft-step1" ? 2 : 3
+    );
 
     // Handle Next Button Click
     $(".btn-step").click(function () {
@@ -344,17 +343,33 @@ $(document).on("submit", "#docUploadForm", async function (e) {
             param: formData,
         });
 
-        const fileName = res.data.file_name; // match PHP response key
+        requiredDocumentsLeft = res.data.requiredDocumentsLeft;
         const fileUrl = res.data.url;
-
         const preview = document.getElementById(
             `document-preview-${$("#upload_document_list_id").val()}`
         );
-
-        // Always show as a link that opens in a new tab
-        preview.innerHTML = `<a href="${fileUrl}" target="_blank">${fileName}</a>`;
+        preview.innerHTML = `<a href="${fileUrl}" target="_blank">View</a>`;
         success_message("Uploaded successfully");
+        resetForm(form);
         $("#docUploadModal").modal("hide");
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+$(document).on("click", "#saveDocumentBtn", async function (e) {
+    e.preventDefault();
+    try {
+        if (requiredDocumentsLeft > 0) {
+            error_message(
+                `Please upload all required documents. Left ${requiredDocumentsLeft}`
+            );
+            return;
+        }
+        await ajax_send_multipart({
+            url: completeUploadDocument.replace("__ID__", proforma_id),
+        });
+        success_message("Documents uploaded successfully");
     } catch (err) {
         console.error(err);
     }

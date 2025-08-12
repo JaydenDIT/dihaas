@@ -134,7 +134,7 @@
     <!-- STEP 3 -->
     <div class="setup-content" id="step-3">
         <div class="form-group">
-            Testing Schedule Step
+            @include('proforma.step3._uploadDocument')
         </div>
     </div>
     @endif
@@ -142,10 +142,48 @@
 </div>
 @endsection
 
+<?php
+
+if ($action == 'create') {
+    $hiddenClass = [
+        "under_expire_on_duty_flag",
+        "under_applicant_qualification_id",
+    ];
+} else {
+
+    if ($proforma->expire_on_duty == 0) {
+        $hiddenClass[] = "under_expire_on_duty_flag";
+    }
+
+
+    $othersId = null;
+    foreach ($qualifications as $q) {
+        if (isset($q['qualification_name']) && strtolower($q['qualification_name']) === 'others') {
+            $othersId = $q['qualification_id'];
+            break;
+        }
+    }
+
+    if ($othersId !== null && $proforma->applicant_qualification_id != $othersId) {
+        $hiddenClass[] = "under_applicant_qualification_id";
+    }
+}
+
+?>
+
+
+
 @push('js')
 <script>
     const action = "{{ $action }}";
     const proforma_id = "{{ $proforma->proforma_id ?? '' }}";
+    const proforma_status = "{{ $proforma->proforma_status ?? '' }}";
+    //checking data or form fill to hide
+    const hiddenClass = <?= json_encode($hiddenClass ?? []) ?>;
+
+
+
+
     //misc
     const getDistrictByStateId = "{{ route('misc.option.district', ['id'=>'__ID__'])}}";
     const getSubDivisionByDistrictId = "{{ route('misc.option.subdivision', ['id'=>'__ID__'])}}";
@@ -157,8 +195,10 @@
     const saveProforma = "{{ route('duties.proforma.store') }}";
     const editProforma = "{{ route('duties.proforma.edit', ['id'=>'__ID__']) }}";
     const updateProforma = "{{ route('duties.proforma.update', ['id'=>'__ID__']) }}";
+    const completeUploadDocument = "{{ route('duties.proforma.completeUploadDocument', ['id'=>'__ID__']) }}";
     //documents
     const uploadDocumentSave = "{{ route('duties.upload.document.store') }}";
+    let requiredDocumentsLeft = <?= $requiredDocumentsLeft ?>;
 </script>
 <script src="{{ asset('js/proforma-create.js') }}"></script>
 

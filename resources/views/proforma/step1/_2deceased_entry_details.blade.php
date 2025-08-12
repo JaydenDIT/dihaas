@@ -25,12 +25,12 @@
     <div class="hstack gap-3">
         <div class="form-check">
             <input type="radio" name="expire_on_duty" value="1" class="form-check-input expire_on_duty_flag"
-                {{ $proforma->expire_on_duty ? 'checked' : '' }} required>
+                {{ $proforma->expire_on_duty == 1 ? 'checked' : '' }} required>
             Yes
         </div>
         <div class="form-check">
             <input type="radio" name="expire_on_duty" value="0" class="form-check-input expire_on_duty_flag"
-                {{ !$proforma->expire_on_duty ? 'checked' : '' }} {{ $action == 'create' ? 'checked' : '' }} required>
+                {{ $proforma->expire_on_duty == 0 ? 'checked' : '' }} {{ $action != 'edit' ? 'checked' : '' }} required>
             No
         </div>
         <div class="invalid-feedback" role="alert">

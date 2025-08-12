@@ -17,6 +17,7 @@ use App\Services\DocumentRequirementService;
 use App\Services\ProformaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProformaController extends Controller
 {
@@ -45,6 +46,7 @@ class ProformaController extends Controller
     public function store(StoreProformaRequest $request)
     {
         try {
+            DB::beginTransaction();
             $data = $request->validated();
 
             $data['create_by'] = 1; //for test
@@ -56,26 +58,72 @@ class ProformaController extends Controller
                 'action_name' => 'Proforma created save draft-step1',
                 'action_remark' => 'Step 1 completed',
             ]);
+            DB::commit();
             return response()->json(['message' => 'Proforma created successfully', 'proforma_id' => $proforma->proforma_id], 201);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['message' => 'Proforma creation failed', 'error' => $e->getMessage()], 422);
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(StoreProformaRequest $request, $id)
     {
-
-
         try {
+            DB::beginTransaction();
             $data = $request->validated();
-            $proforma = Proforma::findOrFail($id);
+
             $data['create_by'] = 1; //for test
+            $proforma = Proforma::findOrFail($id);
             $proforma->update($data);
-            return response()->json(['message' => 'Proforma updated successfully'], 200);
+            ProformaService::addLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => $data['create_by'],
+                'action_name' => 'Proforma update save draft-step1',
+                'action_remark' => 'Step 1 updated',
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Proforma updated successfully', 'proforma_id' => $proforma->proforma_id], 200);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['message' => 'Proforma update failed', 'error' => $e->getMessage()], 422);
         }
     }
+
+    public function completeUploadDocument($id)
+    {
+        try {
+            DB::beginTransaction();
+            $proforma = Proforma::findOrFail($id);
+
+            $documents = DocumentRequirementService::getDocumentsWithRequirement($proforma);
+            $requiredDocumentsLeft = $documents
+                ->where('required', true)
+                ->filter(function ($doc) {
+                    return empty($doc->uploaded_file);
+                })
+                ->count();
+
+            if ($requiredDocumentsLeft > 0) {
+                return response()->json(['message' => 'Upload all required documents'], 422);
+            }
+            $data['create_by'] = 1; //for test
+            $data['proforma_status'] = 'draft-step3'; //default status
+            $proforma->update($data);
+
+            ProformaService::addLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => 1, //test
+                'action_name' => 'Proforma document save draft-step3',
+                'action_remark' => 'Step 3 completed',
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Successfully save', 'proforma_id' => $proforma->proforma_id], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Saving failed', 'error' => $e->getMessage()], 422);
+        }
+    }
+
     public function edit(Request $request, $id)
     {
         $action = "edit";
@@ -94,15 +142,14 @@ class ProformaController extends Controller
         $otherPostList = CmisApiService::apiAllPostUnderDepartment($proforma->request_field_dept_cd_3);
         $adminDepartments = CmisApiService::apiAdminDepartments();
 
-
-
         //for the document upload
         $documents = DocumentRequirementService::getDocumentsWithRequirement($proforma);
-        $uploaded = UploadedDocument::where('proforma_id', $proforma->proforma_id)->get();
-        $documents->map(function ($doc) use ($uploaded) {
-            $doc->uploaded_file = $uploaded->firstWhere('document_list_id', $doc->id);
-            return $doc;
-        });
+        $requiredDocumentsLeft = $documents
+            ->where('required', true)
+            ->filter(function ($doc) {
+                return empty($doc->uploaded_file);
+            })
+            ->count();
 
         //test for real data uncomment below and comment this line
         /*
@@ -127,7 +174,8 @@ class ProformaController extends Controller
             'parentPostList',
             'otherDepartList',
             'otherPostList',
-            'documents'
+            'documents',
+            'requiredDocumentsLeft'
         ));
     }
 

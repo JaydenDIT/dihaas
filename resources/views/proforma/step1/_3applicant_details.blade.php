@@ -157,7 +157,7 @@
 <div class="row col-sm-6 mb-2 ps-5 under_applicant_qualification_id">
     <label class="col-form-label  required_label"><b>Specify Educational Qualification: </b></label>
     <div class="">
-        <input type="text" name="applicant_qualification_other" id="applicant_qualification_other" value="{{ $proforma->applicant_qualification_other ?? '' }}"
+        <input type="text" name="applicant_qualification_other" id="applicant_qualification_other" value="{{ $proforma->applicant_qualification_name ?? '' }}"
             placeholder="Specify Qualification" class="form-control is_name under_applicant_qualification_id" maxlength="75">
         <div class="invalid-feedback" role="alert">
             This field is required.

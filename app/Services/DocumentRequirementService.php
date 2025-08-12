@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Proforma;
 use App\Models\DocumentList;
+use App\Models\UploadedDocument;
 
 class DocumentRequirementService
 {
@@ -57,11 +58,17 @@ class DocumentRequirementService
             }
         }
 
-        // Step 2: Load all active documents (exclude soft-deleted) and tag required flag
+        // Step 2: Load uploaded documents for this Proforma
+        $uploaded = UploadedDocument::where('proforma_id', $application->proforma_id)
+            ->get()
+            ->keyBy('document_list_id'); // <-- Faster lookup
+
+        // Step 3: Load all active documents, tag required flag, and attach uploaded file if exists
         $documents = DocumentList::whereNull('deleted_at')
             ->get()
-            ->map(function ($doc) use ($requiredKeys) {
+            ->map(function ($doc) use ($requiredKeys, $uploaded) {
                 $doc->required = in_array($doc->document_criteria, $requiredKeys);
+                $doc->uploaded_file = $uploaded->get($doc->document_list_id); // null if not uploaded
                 return $doc;
             });
 
