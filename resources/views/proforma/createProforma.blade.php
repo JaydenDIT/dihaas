@@ -196,8 +196,8 @@ if ($action == 'create') {
     const saveProforma = "{{ route('duties.proforma.store') }}";
     const editProforma = "{{ route('duties.proforma.edit', ['id'=>'__ID__']) }}";
     const updateProforma = "{{ route('duties.proforma.update', ['id'=>'__ID__']) }}";
-    const completeUploadDocument = "{{ route('duties.proforma.completeUploadDocument', ['id'=>'__ID__']) }}";
-    const completeFamilyDetail = "{{ route('duties.proforma.completeFamilyDetail', ['id'=>'__ID__']) }}";
+    const completeUploadDocument = "{{ route('duties.upload.document.completeUploadDocument', ['id'=>'__ID__']) }}";
+    const completeFamilyDetail = "{{ route('duties.family.completeFamilyDetail', ['id'=>'__ID__']) }}";
     //documents
     const uploadDocumentSave = "{{ route('duties.upload.document.store') }}";
     let requiredDocumentsLeft = <?= json_encode($requiredDocumentsLeft ?? []) ?>;

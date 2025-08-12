@@ -7,6 +7,7 @@ use App\Models\UploadedDocument;
 use App\Models\DocumentList;
 use App\Models\Proforma;
 use App\Services\DocumentRequirementService;
+use App\Services\LogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -113,6 +114,41 @@ class UploadedDocumentController extends Controller
         ]);
     }
 
+
+    public function completeUploadDocument($id)
+    {
+        try {
+            DB::beginTransaction();
+            $proforma = Proforma::findOrFail($id);
+
+            $documents = DocumentRequirementService::getDocumentsWithRequirement($proforma);
+            $requiredDocumentsLeft = $documents
+                ->where('required', true)
+                ->filter(function ($doc) {
+                    return empty($doc->uploaded_file);
+                })
+                ->count();
+
+            if ($requiredDocumentsLeft > 0) {
+                return response()->json(['message' => 'Upload all required documents'], 422);
+            }
+            $data['create_by'] = 1; //for test
+            $data['proforma_status'] = 'draft-step3'; //default status
+            $proforma->update($data);
+
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => 1, //test
+                'action_name' => 'Proforma document save draft-step3',
+                'action_remark' => 'Step 3 completed',
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Successfully save', 'proforma_id' => $proforma->proforma_id], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Saving failed', 'error' => $e->getMessage()], 422);
+        }
+    }
 
 
 

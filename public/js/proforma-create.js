@@ -4,7 +4,6 @@ $(document).ready(function () {
     showStep(
         proforma_status == "" ? 1 : proforma_status == "draft-step1" ? 2 : 3
     );
-
     // Handle Next Button Click
     $(".btn-step").click(function () {
         let step = $(this).data("step");
@@ -18,17 +17,17 @@ $(document).ready(function () {
         let step = $(this).data("step");
         showStep(step - 1);
     });
-
-    function showStep(step) {
-        let currentPanel = $("#step-" + step);
-        $(".setup-content").hide();
-        currentPanel.show();
-        $(".stepwizard-step a")
-            .eq(step - 1)
-            .addClass("active")
-            .removeAttr("disabled");
-    }
 });
+
+function showStep(step) {
+    let currentPanel = $("#step-" + step);
+    $(".setup-content").hide();
+    currentPanel.show();
+    $(".stepwizard-step a")
+        .eq(step - 1)
+        .addClass("active")
+        .removeAttr("disabled");
+}
 
 $(document).on("click", ".ein-search-btn", async function (e) {
     e.preventDefault();
@@ -315,66 +314,6 @@ $(document).on("click", "#saveProforma", async function (e) {
     }
 });
 
-// Upload of the documents
-
-// Open modal when upload button clicked
-$(document).on("click", ".upload-doc-btn", function () {
-    const docData = decodeURI($(this).data("upload"));
-    $("#upload_document_name").val(docData.document_name);
-    $("#upload_document_list_id").val(docData.document_list_id);
-    $("#upload_document_file").attr(
-        "accept",
-        docData.document_type === "pdf" ? "application/pdf" : "*/*"
-    );
-    $("#sizeHelp").text(`Max file size: ${docData.max_size_kb} kB`);
-    $("#docUploadModal").modal("show");
-});
-
-// Handle form submission properly
-$(document).on("submit", "#docUploadForm", async function (e) {
-    e.preventDefault();
-    const form = this;
-
-    try {
-        await validateForm(form);
-        const formData = new FormData(form);
-        const res = await ajax_send_multipart({
-            url: uploadDocumentSave,
-            param: formData,
-        });
-
-        requiredDocumentsLeft = res.data.requiredDocumentsLeft;
-        const fileUrl = res.data.url;
-        const preview = document.getElementById(
-            `document-preview-${$("#upload_document_list_id").val()}`
-        );
-        preview.innerHTML = `<a href="${fileUrl}" target="_blank">View</a>`;
-        success_message("Uploaded successfully");
-        resetForm(form);
-        $("#docUploadModal").modal("hide");
-    } catch (err) {
-        console.error(err);
-    }
-});
-
-$(document).on("click", "#saveDocumentBtn", async function (e) {
-    e.preventDefault();
-    try {
-        if (requiredDocumentsLeft > 0) {
-            error_message(
-                `Please upload all required documents. Left ${requiredDocumentsLeft}`
-            );
-            return;
-        }
-        await ajax_send_multipart({
-            url: completeUploadDocument.replace("__ID__", proforma_id),
-        });
-        success_message("Documents uploaded successfully");
-    } catch (err) {
-        console.error(err);
-    }
-});
-
 //family details
 // Add or update member
 $(document).on("click", "#addFamilyMemberBtn", async function () {
@@ -489,6 +428,66 @@ $(document).on("click", "#saveFamilyDetail", async function (e) {
         });
         success_message("Family Detail Saved");
         showStep(3);
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+// Upload of the documents
+
+// Open modal when upload button clicked
+$(document).on("click", ".upload-doc-btn", function () {
+    const docData = decodeURI($(this).data("upload"));
+    $("#upload_document_name").val(docData.document_name);
+    $("#upload_document_list_id").val(docData.document_list_id);
+    $("#upload_document_file").attr(
+        "accept",
+        docData.document_type === "pdf" ? "application/pdf" : "*/*"
+    );
+    $("#sizeHelp").text(`Max file size: ${docData.max_size_kb} kB`);
+    $("#docUploadModal").modal("show");
+});
+
+// Handle form submission properly
+$(document).on("submit", "#docUploadForm", async function (e) {
+    e.preventDefault();
+    const form = this;
+
+    try {
+        await validateForm(form);
+        const formData = new FormData(form);
+        const res = await ajax_send_multipart({
+            url: uploadDocumentSave,
+            param: formData,
+        });
+
+        requiredDocumentsLeft = res.data.requiredDocumentsLeft;
+        const fileUrl = res.data.url;
+        const preview = document.getElementById(
+            `document-preview-${$("#upload_document_list_id").val()}`
+        );
+        preview.innerHTML = `<a href="${fileUrl}" target="_blank">View</a>`;
+        success_message("Uploaded successfully");
+        resetForm(form);
+        $("#docUploadModal").modal("hide");
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+$(document).on("click", "#saveDocumentBtn", async function (e) {
+    e.preventDefault();
+    try {
+        if (requiredDocumentsLeft > 0) {
+            error_message(
+                `Please upload all required documents. Left ${requiredDocumentsLeft}`
+            );
+            return;
+        }
+        await ajax_send_multipart({
+            url: completeUploadDocument.replace("__ID__", proforma_id),
+        });
+        success_message("Documents uploaded successfully");
     } catch (err) {
         console.error(err);
     }

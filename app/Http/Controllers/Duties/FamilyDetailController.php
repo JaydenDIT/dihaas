@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Duties;
 use App\Http\Controllers\Controller;
 
 use App\Models\FamilyDetail;
+use App\Models\Proforma;
+use App\Services\LogService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FamilyDetailController extends Controller
 {
@@ -53,6 +56,34 @@ class FamilyDetailController extends Controller
 
         return response()->json(['data' => urlencode(json_encode($member))], 200);
     }
+
+    public function completeFamilyDetail($id)
+    {
+        try {
+            DB::beginTransaction();
+            $proforma = Proforma::findOrFail($id);
+            $familyMembers = FamilyDetail::where('proforma_id', $proforma->proforma_id)->count();
+            if ($familyMembers == 0) {
+                return response()->json(['message' => 'Add at least one family member'], 422);
+            }
+            $data['create_by'] = 1; //for test
+            $data['proforma_status'] = 'draft-step2'; //default status
+            $proforma->update($data);
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => 1, //test
+                'action_name' => 'Family Detail save draft-step2',
+                'action_remark' => 'Step 2 completed',
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Successfully save', 'proforma_id' => $proforma->proforma_id], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Saving failed', 'error' => $e->getMessage()], 422);
+        }
+    }
+
+
 
     public function destroy($id)
     {
