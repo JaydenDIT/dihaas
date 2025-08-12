@@ -985,7 +985,7 @@
                                                 name="applicant_desig_id">
                                                 <option value="" selected disabled>Select</option>
                                                 @foreach($post as $option)
-                                                <option value="{{$option['dsg_serial_no']}}" required>
+                                                <option value="{{$option['dsg_srno']}}" required>
                                                     {{$option['dsg_desc']}}
                                                 </option>
                                                 @endforeach
@@ -1024,7 +1024,7 @@
                                                 name="second_post_id">
                                                 <option value="" selected disabled>Select</option>
                                                 @foreach($post as $option)
-                                                <option value="{{$option['dsg_serial_no']}}" required>
+                                                <option value="{{$option['dsg_srno']}}" required>
                                                     {{$option['dsg_desc']}}
                                                 </option>
                                                 @endforeach
@@ -1109,8 +1109,8 @@
                                                 <option value="" selected disabled>Select Designation</option>
 
                                                 <option
-                                                    value="{{ $option['dsg_serial_no'] == null ? null : $option['dsg_serial_no'] }}"
-                                                    required {{($selected == $option['dsg_serial_no'])?'selected':''}}>
+                                                    value="{{ $option['dsg_srno'] == null ? null : $option['dsg_srno'] }}"
+                                                    required {{($selected == $option['dsg_srno'])?'selected':''}}>
                                                     {{$option['dsg_desc']}}
                                                 </option>
 
@@ -1228,23 +1228,23 @@
     $('#applicant_desig_id').change(function() {
         var id = $(this).find('option:selected').val();
         var array = <?php echo json_encode($post); ?>;
-        var item = array.find(item => item.dsg_serial_no === id);
-        $('#applicant_grade').val(item.group_code);
+        var item = array.find(item => item.dsg_srno === id);
+        $('#applicant_grade').val(item.group_cd);
 
     })
 
     $('#second_post_id').change(function() {
         var id = $(this).find('option:selected').val();
         var array = <?php echo json_encode($post); ?>;
-        var item = array.find(item => item.dsg_serial_no === id);
-        $('#second_grade_id').val(item.group_code);
+        var item = array.find(item => item.dsg_srno === id);
+        $('#second_grade_id').val(item.group_cd);
 
     })
 
 
     $('#third_post_id').change(function() {
         var id = $(this).find('option:selected').val();
-        var item = $(this).find(item => item.dsg_serial_no === id);
+        var item = $(this).find(item => item.dsg_srno === id);
         //alert($('#third_post_id option[value="'+this.value+'"]').data('grade'));
         $('#third_grade_id').val($('#third_post_id option[value="' + this.value + '"]').data('grade'));
 
@@ -1273,10 +1273,10 @@
 
             $.each(id, function(index, element) {
 
-                //$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_serial_no)); //only value and text
+                //$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_srno)); //only value and text
                 //Below is for adding extra attribute
-                $('<option>').val(element.dsg_serial_no).text(element.dsg_desc).attr(
-                    'data-grade', element.group_code).appendTo('#third_post_id');
+                $('<option>').val(element.dsg_srno).text(element.dsg_desc).attr(
+                    'data-grade', element.group_cd).appendTo('#third_post_id');
 
             });
 

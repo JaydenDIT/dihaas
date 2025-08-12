@@ -1103,7 +1103,7 @@ if($getUser->role_id==1){
                 $post = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $empDetails['applicant_desig_id']) {
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $empDetails['applicant_desig_id']) {
                         $post = $item['dsg_desc'];
     
                     
@@ -1127,7 +1127,7 @@ if($getUser->role_id==1){
                 $secondpost = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $empDetails['second_post_id']) {
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $empDetails['second_post_id']) {
                         $secondpost = $item['dsg_desc'];
     
                     
@@ -1147,7 +1147,7 @@ if($getUser->role_id==1){
                 $diff_dept = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference_dept_id_option as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $empDetails['third_post_id']) {
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $empDetails['third_post_id']) {
                         $diff_dept = $item['field_dept_desc'];
 
                         //   dd( $diff_dept);
@@ -1163,7 +1163,7 @@ if($getUser->role_id==1){
                 $thirdpost = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference_dept_id_option as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $empDetails['third_post_id']) {
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $empDetails['third_post_id']) {
                         $thirdpost = $item['dsg_desc'];
     
                     

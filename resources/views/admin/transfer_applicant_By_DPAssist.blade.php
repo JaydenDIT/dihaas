@@ -216,9 +216,9 @@
                                                     </option>
 
                                                     <option
-                                                        value="{{ $option['dsg_serial_no'] == null ? null : $option['dsg_serial_no'] }}"
+                                                        value="{{ $option['dsg_srno'] == null ? null : $option['dsg_srno'] }}"
                                                         required
-                                                        {{($selected == $option['dsg_serial_no'])?'selected':''}}>
+                                                        {{($selected == $option['dsg_srno'])?'selected':''}}>
                                                         {{$option['dsg_desc']}}
                                                     </option>
                                                 </select>
@@ -307,9 +307,9 @@ $('#dept_id').change(function() {
         $.each(id, function(index, element) {
 
             $('#post').append(new Option(element.dsg_desc, element
-                .dsg_serial_no)); //only value and text
+                .dsg_srno)); //only value and text
             //Below is for adding extra attribute
-            // $('<option>').val(element.dsg_serial_no).text(element.dsg_desc).attr('data-grade', element.group_code).appendTo('#post');
+            // $('<option>').val(element.dsg_srno).text(element.dsg_desc).attr('data-grade', element.group_cd).appendTo('#post');
 
         });
 

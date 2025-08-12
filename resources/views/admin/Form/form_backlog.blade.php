@@ -975,7 +975,7 @@
                                                 name="applicant_desig_id">
                                                 <option value="" selected disabled>Select</option>
                                                 @foreach($post as $option)
-                                                <option value="{{$option['dsg_serial_no']}}" required>
+                                                <option value="{{$option['dsg_srno']}}" required>
                                                     {{$option['dsg_desc']}}
                                                 </option>
                                                 @endforeach
@@ -1091,8 +1091,8 @@
     $('#applicant_desig_id').change(function() {
         var id = $(this).find('option:selected').val();
         var array = <?php echo json_encode($post); ?>;
-        var item = array.find(item => item.dsg_serial_no === id);
-        $('#applicant_grade').val(item.group_code);
+        var item = array.find(item => item.dsg_srno === id);
+        $('#applicant_grade').val(item.group_cd);
 
     })
 

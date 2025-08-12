@@ -117,7 +117,7 @@
                             {{-- Displaying fourth preference post --}}
                             @php $fourth_preference = null; @endphp
                             @foreach ($api_preference_for_transfer_dept_id as $item)
-                            @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['transfer_post_id'])
+                            @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['transfer_post_id'])
                             @php $fourth_preference = $item['dsg_desc']; @endphp
 
                             @break
@@ -127,7 +127,7 @@
                             {{-- Displaying fourth preference dept --}}
                             @php $fourth_preference_dept = null; @endphp
                             @foreach ($api_preference_for_transfer_dept_id as $item)
-                            @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['transfer_post_id'])
+                            @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['transfer_post_id'])
                             @php $fourth_preference_dept = $item['field_dept_desc']; @endphp
 
                             @break
@@ -137,8 +137,8 @@
                             {{-- Displaying fourth preference grade --}}
                             @php $fourth_preference_grade = null; @endphp
                             @foreach ($api_preference_for_transfer_dept_id as $item)
-                            @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['transfer_post_id'])
-                            @php $fourth_preference_grade = $item['group_code']; @endphp
+                            @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['transfer_post_id'])
+                            @php $fourth_preference_grade = $item['group_cd']; @endphp
 
                             @break
                             @endif
@@ -694,11 +694,11 @@ $(document).ready(function() {
 
         $.each(id, function(index, element) {
 
-            //$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_serial_no)); //only value and text
+            //$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_srno)); //only value and text
             //Below is for adding extra attribute
-            // $('<option>').val(element.dsg_serial_no).text(element.dsg_desc).attr( for taking value as id
+            // $('<option>').val(element.dsg_srno).text(element.dsg_desc).attr( for taking value as id
             $('<option>').val(element.dsg_desc).text(element.dsg_desc)
-                .attr('data-grade', element.group_code).appendTo('#third_post_id');
+                .attr('data-grade', element.group_cd).appendTo('#third_post_id');
 
         });
 
@@ -719,23 +719,23 @@ $(document).ready(function() {
 $('#applicant_desig_id').change(function() {
     var id = $(this).find('option:selected').val();
     var array = <?php echo json_encode($api_preference); ?>;
-    var item = array.find(item => item.dsg_serial_no === id);
-    $('#applicant_grade').val(item.group_code);
+    var item = array.find(item => item.dsg_srno === id);
+    $('#applicant_grade').val(item.group_cd);
 
 })
 
 $('#second_post_id').change(function() {
     var id = $(this).find('option:selected').val();
     var array = <?php echo json_encode($api_preference); ?>;
-    var item = array.find(item => item.dsg_serial_no === id);
-    $('#second_grade_id').val(item.group_code);
+    var item = array.find(item => item.dsg_srno === id);
+    $('#second_grade_id').val(item.group_cd);
 
 })
 
 
 $('#third_post_id').change(function() {
     var id = $(this).find('option:selected').val();
-    var item = $(this).find(item => item.dsg_serial_no === id);
+    var item = $(this).find(item => item.dsg_srno === id);
     // console.log(third_post_id)   ;
     // alert($('#third_post_id option[value="'+this.value+'"]').data('grade'));
     $('#third_grade_id').val($('#third_post_id option[value="' + this.value + '"]').data('grade'));
@@ -768,11 +768,11 @@ $('#dept_id_option').change(function() {
 
         $.each(id, function(index, element) {
 
-            //$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_serial_no)); //only value and text
+            //$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_srno)); //only value and text
             //Below is for adding extra attribute
             $('<option>').val(element.dsg_desc).text(element.dsg_desc)
-                // $('<option>').val(element.dsg_serial_no).text(element.dsg_desc).attr(
-                .attr('data-grade', element.group_code).appendTo('#third_post_id');
+                // $('<option>').val(element.dsg_srno).text(element.dsg_desc).attr(
+                .attr('data-grade', element.group_cd).appendTo('#third_post_id');
 
         });
 

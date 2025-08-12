@@ -214,8 +214,8 @@
                                             aria-label="Default select example" id="post" name="post">
                                             <option value="" selected disabled>Select</option>
 
-                                            <option value="{{$option['dsg_serial_no']}}"
-                                                {{$option['dsg_serial_no'] == $data['post_id'] ? 'selected' : ''}}
+                                            <option value="{{$option['dsg_srno']}}"
+                                                {{$option['dsg_srno'] == $data['post_id'] ? 'selected' : ''}}
                                                 required>
                                                 {{$option['dsg_desc']}}</option>
 
@@ -357,10 +357,10 @@ $(document).ready(function() {
         $.each(id, function(index, element) {
 
             $('#post').append(new Option(element.dsg_desc, element
-                .dsg_serial_no)); //only value and text
+                .dsg_srno)); //only value and text
             //Below is for adding extra attribute
-            // $('<option>').val(element.dsg_serial_no).text(element.dsg_desc).attr(
-            // 'data-grade', element.group_code).appendTo('#post');
+            // $('<option>').val(element.dsg_srno).text(element.dsg_desc).attr(
+            // 'data-grade', element.group_cd).appendTo('#post');
 
         });
         // below 2 lines is for third designation 
@@ -375,7 +375,7 @@ $(document).ready(function() {
 
 $('#post').change(function() {
     var id = $(this).find('option:selected').val();
-    var item = $(this).find(item => item.dsg_serial_no === id);
+    var item = $(this).find(item => item.dsg_srno === id);
     // console.log(post)   ;
     // alert($('#post option[value="'+this.value+'"]').data('grade'));
 
@@ -406,10 +406,10 @@ $('#dept_id').change(function() {
         $.each(id, function(index, element) {
 
             $('#post').append(new Option(element.dsg_desc, element
-                .dsg_serial_no)); //only value and text
+                .dsg_srno)); //only value and text
             //Below is for adding extra attribute
-            // $('<option>').val(element.dsg_serial_no).text(element.dsg_desc).attr(
-            // 'data-grade', element.group_code).appendTo('#post');
+            // $('<option>').val(element.dsg_srno).text(element.dsg_desc).attr(
+            // 'data-grade', element.group_cd).appendTo('#post');
 
         });
 

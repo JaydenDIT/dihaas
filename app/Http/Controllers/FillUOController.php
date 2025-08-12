@@ -100,9 +100,9 @@ class FillUOController extends Controller
             
             foreach ($api_preference as $item) {
             
-                if (isset($item['dsg_serial_no'])) {
+                if (isset($item['dsg_srno'])) {
                     
-                    $dsgSerialNumbers[] = $item['dsg_serial_no'];
+                    $dsgSerialNumbers[] = $item['dsg_srno'];
                 }
             }
 
@@ -111,7 +111,7 @@ class FillUOController extends Controller
             $first_preference = null; // Initialize the variable to store deg_desc
 
             foreach ($api_preference as $item) {
-                if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['applicant_desig_id']) {
+                if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['applicant_desig_id']) {
                     $first_preference = $item['dsg_desc'];
 
                 
@@ -135,11 +135,11 @@ class FillUOController extends Controller
                         
             
 
-            //for second preference dsg_serial_no
+            //for second preference dsg_srno
             $second_preference = null; // Initialize the variable to store deg_desc
 
             foreach ($api_preference as $item) {
-                if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['second_post_id']) {
+                if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['second_post_id']) {
                     $second_preference = $item['dsg_desc'];
 
                         // dd( $second_preference);
@@ -152,7 +152,7 @@ class FillUOController extends Controller
                 $third_preference = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['third_post_id']) {
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['third_post_id']) {
                         $third_preference = $item['dsg_desc'];
 
                         //  dd( $third_preference);
@@ -165,7 +165,7 @@ class FillUOController extends Controller
                 $first_preference_dept = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['applicant_desig_id']) {
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['applicant_desig_id']) {
                         $first_preference_dept = $item['field_dept_desc'];
 
                     
@@ -177,7 +177,7 @@ class FillUOController extends Controller
                 $second_preference_dept = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['second_post_id']) {
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['second_post_id']) {
                         $second_preference_dept = $item['field_dept_desc'];
 
                         // dd( $second_preference_dept);here we get the department of second preference
@@ -190,7 +190,7 @@ class FillUOController extends Controller
                 $third_preference_dept = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['third_post_id']) {
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['third_post_id']) {
                         $third_preference_dept = $item['field_dept_desc'];
 
                         //    dd( $third_preference_dept);
@@ -203,8 +203,8 @@ class FillUOController extends Controller
                 $first_preference_grade = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['applicant_desig_id']) {
-                        $first_preference_grade = $item['group_code'];
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['applicant_desig_id']) {
+                        $first_preference_grade = $item['group_cd'];
             
                 
                         break;
@@ -215,8 +215,8 @@ class FillUOController extends Controller
                 $second_preference_grade = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['second_post_id']) {
-                        $second_preference_grade = $item['group_code'];
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['second_post_id']) {
+                        $second_preference_grade = $item['group_cd'];
 
 
                 
@@ -226,8 +226,8 @@ class FillUOController extends Controller
                 $third_preference_grade = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data['third_post_id']) {
-                        $third_preference_grade = $item['group_code'];
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data['third_post_id']) {
+                        $third_preference_grade = $item['group_cd'];
 
                         //    dd( $third_preference_grade);
                         break; 
@@ -244,7 +244,7 @@ class FillUOController extends Controller
                 $third_post = null; // Initialize the variable to store deg_desc
 
                 foreach ($api_preference as $item) {
-                    if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $uo_data['third_post_id']) {
+                    if (isset($item['dsg_srno']) && $item['dsg_srno'] == $uo_data['third_post_id']) {
                         $third_post = $item['dsg_desc'];
 
                             //   dd( $third_post);

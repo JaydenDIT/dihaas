@@ -582,7 +582,7 @@
     <script>
         $('#third_post_id').change(function() {
             var id = $(this).find('option:selected').val();
-            var item = $(this).find(item => item.dsg_serial_no === id);
+            var item = $(this).find(item => item.dsg_srno === id);
             //alert($('#third_post_id option[value="'+this.value+'"]').data('grade'));
             $('#third_grade_id').val($('#third_post_id option[value="' + this.value + '"]').data(
                 'grade'));
@@ -613,11 +613,11 @@
 
                 $.each(id, function(index, element) {
 
-                    //$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_serial_no)); //only value and text
+                    //$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_srno)); //only value and text
                     //Below is for adding extra attribute
                     $('<option>').val(element.dsg_desc).text(element.dsg_desc)
-                        // .attr('data-postid',element.dsg_serial_no)
-                        .attr('data-grade', element.group_code).appendTo('#third_post_id');
+                        // .attr('data-postid',element.dsg_srno)
+                        .attr('data-grade', element.group_cd).appendTo('#third_post_id');
 
                 });
 
@@ -664,7 +664,7 @@
                 @endphp
 
                 @foreach ($api_preference as $item)
-                    @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data->applicant_desig_id)
+                    @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->applicant_desig_id)
                         @php
                             $first_preference = $item['dsg_desc'];
                         @endphp
@@ -673,7 +673,7 @@
                 @endforeach
 
                 @foreach ($api_preference as $item)
-                    @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data->second_post_id)
+                    @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->second_post_id)
                         @php $second_preference = $item['dsg_desc'];@endphp
                         @break
                     @endif
@@ -681,7 +681,7 @@
 
 
                 @foreach ($api_preference as $item)
-                    @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data->third_post_id)
+                    @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->third_post_id)
                         @php $third_preference = $item['dsg_desc'];@endphp
                         @break
                     @endif
@@ -689,23 +689,23 @@
 
 
                 @foreach ($api_preference as $item)
-                    @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data->applicant_desig_id)
-                        @php $first_preference_grade = $item['group_code'];@endphp
+                    @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->applicant_desig_id)
+                        @php $first_preference_grade = $item['group_cd'];@endphp
                         @break
                     @endif
                 @endforeach
 
 
                 @foreach ($api_preference as $item)
-                    @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data->second_post_id)
-                        @php $second_preference_grade = $item['group_code'];@endphp
+                    @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->second_post_id)
+                        @php $second_preference_grade = $item['group_cd'];@endphp
                         @break
                         @endif
                         @endforeach
 
 
                 @foreach ($api_preference as $item)
-                @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data->applicant_desig_id)
+                @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->applicant_desig_id)
                         @php $first_preference_dept = $item['field_dept_desc'];@endphp
                         @break
                          @endif
@@ -713,7 +713,7 @@
 
 
                 @foreach ($api_preference as $item)
-                    @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data->second_post_id)
+                    @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->second_post_id)
                         @php $second_preference_dept = $item['field_dept_desc'];@endphp
                         @break
                     @endif
@@ -722,7 +722,7 @@
                 @if ($data->transfer_dept_id != null || $data->transfer_dept_id != 0)
 
                     @foreach ($api_preference_for_transfer_dept_id as $item)
-                        @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data->transfer_post_id)
+                        @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->transfer_post_id)
                             @php $fourth_preference = $item['dsg_desc'];@endphp
                             @break
                         @endif
@@ -730,15 +730,15 @@
 
 
                     @foreach ($api_preference_for_transfer_dept_id as $item)
-                        @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data->transfer_post_id)
-                            @php $fourth_preference_grade = $item['group_code'];@endphp
+                        @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->transfer_post_id)
+                            @php $fourth_preference_grade = $item['group_cd'];@endphp
                             @break
                         @endif
                     @endforeach
 
 
                     @foreach ($api_preference_for_transfer_dept_id as $item)
-                        @if (isset($item['dsg_serial_no']) && $item['dsg_serial_no'] == $data->transfer_post_id)
+                        @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->transfer_post_id)
                             @php $fourth_preference_dept = $item['field_dept_desc'];@endphp
                             @break
                         @endif
@@ -772,8 +772,8 @@
         var designationData = [
             @foreach ($api_preference as $designation)
                 {
-                    "dsg_serial": " {{ $designation['dsg_serial_no'] }}",
-                    "grade": " {{ $designation['group_code'] }}",
+                    "dsg_serial": " {{ $designation['dsg_srno'] }}",
+                    "grade": " {{ $designation['group_cd'] }}",
                     "department": "{{ $designation['field_dept_desc'] }}"
                 },
             @endforeach
@@ -839,7 +839,7 @@ if (selectedApplicantData.third_post_id) {
 
             // Find the selected post's data
             var selectedPostData = designationData.find(function(designation) {
-                return designation.dsg_serial_no === selectedPost;
+                return designation.dsg_srno === selectedPost;
             });
             // Update grade and department based on the selected post
 

@@ -845,8 +845,8 @@
                                                 name="applicant_desig_id">
                                                 <option value="" selected disabled>Select</option>
                                                 @foreach($post as $option)
-                                                <option value="{{$option['dsg_serial_no']}}"
-                                                    {{$option['dsg_serial_no'] == $data['applicant_desig_id'] ? 'selected' : ''}}
+                                                <option value="{{$option['dsg_srno']}}"
+                                                    {{$option['dsg_srno'] == $data['applicant_desig_id'] ? 'selected' : ''}}
                                                     required> {{$option['dsg_desc']}}</option>
                                                 @endforeach
                                             </select>
@@ -891,8 +891,8 @@
                                                 @foreach($post as $option)
 
                                                 
-                                                <option value="{{$option['dsg_serial_no']}}"
-                                                    {{$option['dsg_serial_no'] == $data['second_post_id'] ? 'selected' : ''}}
+                                                <option value="{{$option['dsg_srno']}}"
+                                                    {{$option['dsg_srno'] == $data['second_post_id'] ? 'selected' : ''}}
                                                     required> {{$option['dsg_desc']}}</option>
                                                 @endforeach
                                             </select>
@@ -985,8 +985,8 @@
 
                                                  <!-- <option value="0" selected >No Selection</option>  -->
 
-                                                <option value="{{$option['dsg_serial_no']}}"
-                                                    {{$option['dsg_serial_no'] == $data['third_post_id'] ? 'selected' : ''}}
+                                                <option value="{{$option['dsg_srno']}}"
+                                                    {{$option['dsg_srno'] == $data['third_post_id'] ? 'selected' : ''}}
                                                     required> {{$option['dsg_desc']}}</option>
 
                                             </select>
@@ -1193,10 +1193,10 @@
             console.log(JSON.stringify(id));
             $.each(id, function(index, element) {
 
-//$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_serial_no)); //only value and text
+//$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_srno)); //only value and text
 //Below is for adding extra attribute
-$('<option>').val(element.dsg_serial_no).text(element.dsg_desc).attr(
-    'data-grade', element.group_code).appendTo('#third_post_id');
+$('<option>').val(element.dsg_srno).text(element.dsg_desc).attr(
+    'data-grade', element.group_cd).appendTo('#third_post_id');
 
 });
 // below 2 lines is for third designation 
@@ -1210,23 +1210,23 @@ $('#third_post_id option[value="' + hiddenThirdPostId + '"]').attr('selected', t
 $('#applicant_desig_id').change(function() {
 var id = $(this).find('option:selected').val();
 var array = <?php echo json_encode($post); ?>;
-var item = array.find(item => item.dsg_serial_no === id);
-$('#applicant_grade').val(item.group_code);
+var item = array.find(item => item.dsg_srno === id);
+$('#applicant_grade').val(item.group_cd);
 
 })
 
 $('#second_post_id').change(function() {
 var id = $(this).find('option:selected').val();
 var array = <?php echo json_encode($post); ?>;
-var item = array.find(item => item.dsg_serial_no === id);
-$('#second_grade_id').val(item.group_code);
+var item = array.find(item => item.dsg_srno === id);
+$('#second_grade_id').val(item.group_cd);
 
 })
 
 
 $('#third_post_id').change(function() {
 var id = $(this).find('option:selected').val();
-var item = $(this).find(item => item.dsg_serial_no === id);
+var item = $(this).find(item => item.dsg_srno === id);
 // console.log(third_post_id)   ;
 // alert($('#third_post_id option[value="'+this.value+'"]').data('grade'));
 $('#third_grade_id').val($('#third_post_id option[value="' + this.value + '"]').data('grade'));
@@ -1256,10 +1256,10 @@ $.get('{{ route("retrieve_dept") }}', data_dept_id, function(id, textStatus, xhr
 
 $.each(id, function(index, element) {
 
-//$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_serial_no)); //only value and text
+//$('#third_post_id').append(new Option(element.dsg_desc, element.dsg_srno)); //only value and text
 //Below is for adding extra attribute
-$('<option>').val(element.dsg_serial_no).text(element.dsg_desc).attr(
-    'data-grade', element.group_code).appendTo('#third_post_id');
+$('<option>').val(element.dsg_srno).text(element.dsg_desc).attr(
+    'data-grade', element.group_cd).appendTo('#third_post_id');
 
 });
 

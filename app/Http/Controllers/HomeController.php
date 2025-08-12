@@ -5334,16 +5334,22 @@ class HomeController extends Controller
 
         $cd_grade = array();
         // $notfound = '';
-
-        $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd', [
+/* 
+        $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd?dept_code=119&token=b000e921eeb20a0d395e341dfcd6117a', [
             'dept_code' => $proformas->dept_id,
             'token' => 'b000e921eeb20a0d395e341dfcd6117a',
-        ]);
+        ]); */
+
+        $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd?dept_code='.$proformas->dept_id.'&token=b000e921eeb20a0d395e341dfcd6117a');
+
+        
+
+
         $cd_grade = json_decode($response->getBody(), true);
         $post = [];
         // dd( $cd_grade );
         foreach ($cd_grade as $cdgrade) {
-            if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+            if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                 $post[] = $cdgrade;
             }
             // else {
@@ -6709,7 +6715,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             $cd_grade = json_decode($response->getBody(), true);
             $post = [];
             foreach ($cd_grade as $cdgrade) {
-                if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                     $post[] = $cdgrade;
                 }
             }
@@ -6818,7 +6824,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
             $cd_grade = json_decode($response->getBody(), true);
             $post = [];
             foreach ($cd_grade as $cdgrade) {
-                if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                     $post[] = $cdgrade;
                 }
                 // else {
@@ -6939,7 +6945,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 $cd_grade = json_decode($response->getBody(), true);
                 $post = [];
                 foreach ($cd_grade as $cdgrade) {
-                    if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                    if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                         $post[] = $cdgrade;
                     }
                     // else {
@@ -7124,7 +7130,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
                 $post = [];
                 foreach ($cd_grade as $cdgrade) {
-                    if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                    if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                         $post[] = $cdgrade;
                     }
                     // else {
@@ -7165,7 +7171,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
                 //     $postdept = [];
                 //     foreach ( $cd_grade1 as $cdgrade ) {
-                //         if ( $cdgrade[ 'group_code' ] == 'C' || $cdgrade[ 'group_code' ] == 'D' ) {
+                //         if ( $cdgrade[ 'group_cd' ] == 'C' || $cdgrade[ 'group_cd' ] == 'D' ) {
                 //             $postdept[] = $cdgrade;
                 //         }
                 //     }
@@ -7209,7 +7215,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
                 $post = [];
                 foreach ($cd_grade as $cdgrade) {
-                    if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                    if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                         $post[] = $cdgrade;
                     }
                     // else {
@@ -7275,7 +7281,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
                 $post = [];
                 foreach ($cd_grade as $cdgrade) {
-                    if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                    if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                         $post[] = $cdgrade;
                     }
                     // else {
@@ -7422,7 +7428,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
                     $post = [];
                     foreach ($cd_grade as $cdgrade) {
-                        if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                        if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                             $post[] = $cdgrade;
                         }
                         // else {
@@ -7474,7 +7480,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                     }
                     $post = [];
                     foreach ($cd_grade as $cdgrade) {
-                        if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                        if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                             $post[] = $cdgrade;
                         }
                         // else {
@@ -7599,7 +7605,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
     //             $cd_grade = json_decode( $response->getBody(), true );
     //             $post = [];
     //             foreach ( $cd_grade as $cdgrade ) {
-    //                 if ( $cdgrade[ 'group_code' ] == 'C' || $cdgrade[ 'group_code' ] == 'D' ) {
+    //                 if ( $cdgrade[ 'group_cd' ] == 'C' || $cdgrade[ 'group_cd' ] == 'D' ) {
     //                     $post[] = $cdgrade;
     //                 }
     //                 // else {
@@ -7647,7 +7653,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
     //             }
     //             $post = [];
     //             foreach ( $cd_grade as $cdgrade ) {
-    //                 if ( $cdgrade[ 'group_code' ] == 'C' || $cdgrade[ 'group_code' ] == 'D' ) {
+    //                 if ( $cdgrade[ 'group_cd' ] == 'C' || $cdgrade[ 'group_cd' ] == 'D' ) {
     //                     $post[] = $cdgrade;
     //                 }
     //                 // else {
@@ -9146,7 +9152,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 $cd_grade = json_decode($response->getBody(), true);
                 $post = [];
                 foreach ($cd_grade as $cdgrade) {
-                    if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                    if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                         $post[] = $cdgrade;
                     }
                     // else{
@@ -9180,7 +9186,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 $cd_grade = json_decode($response->getBody(), true);
                 $post = [];
                 foreach ($cd_grade as $cdgrade) {
-                    if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+                    if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                         $post[] = $cdgrade;
                     }
                     // else{
@@ -11469,7 +11475,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
         $postdept = [];
         foreach ($cd_grade as $cdgrade) {
-            if ($cdgrade['group_code'] == 'C' || $cdgrade['group_code'] == 'D') {
+            if ($cdgrade['group_cd'] == 'C' || $cdgrade['group_cd'] == 'D') {
                 $postdept[] = $cdgrade;
             }
         }
@@ -12001,7 +12007,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
                 
                 $postnames = [];
                 foreach ($cd_grade as $cdgrade) {
-                    if (isset($cdgrade['dsg_serial_no']) && $cdgrade['dsg_serial_no'] == $data->transfer_post_id) {
+                    if (isset($cdgrade['dsg_srno']) && $cdgrade['dsg_srno'] == $data->transfer_post_id) {
                        
                         $postnames[] = $cdgrade['dsg_desc'];
                     }
@@ -12069,7 +12075,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
                 $postnames = [];
                 foreach ($cd_grade as $cdgrade) {
-                    if (isset($cdgrade['dsg_serial_no']) && $cdgrade['dsg_serial_no'] == $data->transfer_post_id) {
+                    if (isset($cdgrade['dsg_srno']) && $cdgrade['dsg_srno'] == $data->transfer_post_id) {
 
                         $postnames[] = $cdgrade['dsg_desc'];
                     }
@@ -12149,7 +12155,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
                     $postnames = [];
                     foreach ($cd_grade as $cdgrade) {
-                        if (isset($cdgrade['dsg_serial_no']) && $cdgrade['dsg_serial_no'] == $data->transfer_post_id) {
+                        if (isset($cdgrade['dsg_srno']) && $cdgrade['dsg_srno'] == $data->transfer_post_id) {
 
                             $postnames[] = $cdgrade['dsg_desc'];
                         }

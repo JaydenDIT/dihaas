@@ -1078,7 +1078,7 @@ if($request->name!=null && $request->email!=null && $request->mobile!=null && $r
 
             $postnames = [];
             foreach ( $cd_grade as $cdgrade ) {
-                if ( isset( $cdgrade[ 'dsg_serial_no' ] ) && $cdgrade[ 'dsg_serial_no' ] == $data->post_id ) {
+                if ( isset( $cdgrade[ 'dsg_srno' ] ) && $cdgrade[ 'dsg_srno' ] == $data->post_id ) {
 
                     $postnames[] = $cdgrade[ 'dsg_desc' ];
                 }
@@ -1244,7 +1244,7 @@ if($request->name!=null && $request->email!=null && $request->mobile!=null && $r
 
         $postdept = [];
         foreach ( $cd_grade as $cdgrade ) {
-            if ( $cdgrade[ 'group_code' ] == 'A' || $cdgrade[ 'group_code' ] == 'B' || $cdgrade[ 'group_code' ] == 'C' || $cdgrade[ 'group_code' ] == 'D' ) {
+            if ( $cdgrade[ 'group_cd' ] == 'A' || $cdgrade[ 'group_cd' ] == 'B' || $cdgrade[ 'group_cd' ] == 'C' || $cdgrade[ 'group_cd' ] == 'D' ) {
                 $postdept[] = $cdgrade;
             }
         }
