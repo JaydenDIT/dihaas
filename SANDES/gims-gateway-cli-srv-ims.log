@@ -5247,3 +5247,8 @@ time="2025-07-31T13:52:57+05:30" level=debug msg="Receieved Request" method=Send
 time="2025-07-31T13:52:57+05:30" level=warning msg="Sandes Account of [7577885463] does not support encrypted messaging. Auto fallback to plain message"
 time="2025-07-31T13:53:14+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
 time="2025-07-31T13:53:14+05:30" level=warning msg="Sandes Account of [7577885463] does not support encrypted messaging. Auto fallback to plain message"
+time="2025-08-12T08:50:14+05:30" level=debug msg="Receieved Request" method=SendPersonalMessageHandler
+time="2025-08-12T08:50:14+05:30" level=debug msg="HMAC:KFO0RsNjWeaOxeCDstAghWayyMCbFO5XSVuXOPFuHt4="
+time="2025-08-12T08:50:14+05:30" level=debug msg="Request:{\"message\":{\"message\":\"T1wHf/H3YzRGbEj2zLWR5u4ev/RICfRTNGWKn8w3kIjybdveXvoaGBpU96tjOwhAMaZOcMUPwRzgdU58uT6w57Uz206GoNrqQLB04+8TJLZzst/jNGfGl47oHPWIIcAjjl0QAlgFFnvy4fNrCXB6nQ==\",\"type\":\"chat\",\"priority\":\"high-volatile\",\"title\":\"\",\"file_url\":\"\",\"file_content_type\":\"\",\"category\":\"info\",\"event_start\":0,\"event_end\":0,\"created_on\":0,\"expire_on\":0,\"email\":\"\",\"receiver_id\":\"9402992803\"},\"encryption_scheme\":\"E1\",\"app_pub_key\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEuuuZ8z0B3zKDFvVNuF0bAa58vmTcb2lXzBuJv3b1QPA9S6gjB8I5TOZ+0nRCNIN37NYVrvUClCC64vDR5Aes+A==\",\"encrypted_secret\":\"\"}"
+time="2025-08-12T08:50:14+05:30" level=debug msg="Request Processed" method=SendPersonalMessageHandler resp_code=202
+time="2025-08-12T08:50:14+05:30" level=debug msg="Response: [{\"status\":\"success\",\"data\":{\"reqid\":\"8f61bd05-615a-48f4-b325-2f4c66eb33f9\"}}\n]"

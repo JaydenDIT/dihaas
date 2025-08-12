@@ -105,18 +105,29 @@
                                 </tr>
                                 @else
 
+<<<<<<< HEAD
                                 @php
                                 $cnt = 1;
                                 @endphp
 
                                 @foreach($empList as $key => $data)
+=======
+                              
+
+                                @foreach($empList as $data)
+>>>>>>> a0d0931c7a4b23eaa609301de20edc75dc4c3d5a
 
 
 
 
                                 <tr>
+<<<<<<< HEAD
                                       <th>{{ $cnt }}</th>
                                 <th scope="row">{{$data->slNo}}</th>
+=======
+                                    <th scope="row">{{$data->slNo2}}</th>
+                                    <th scope="row">{{$data->slNo}}</th>
+>>>>>>> a0d0931c7a4b23eaa609301de20edc75dc4c3d5a
                                     <td>{{$data->ein}}</td>
                                     <td>{{$data->deceased_emp_name}}</td>
                                     <td>{{$data->deceased_doe ? \Carbon\Carbon::parse($data->deceased_doe)->format('d/m/Y') : 'NA'}}
@@ -131,9 +142,13 @@
                                     
                                    
                                 </tr>
+<<<<<<< HEAD
                                  @php
                                 $cnt++;
                                 @endphp
+=======
+                               
+>>>>>>> a0d0931c7a4b23eaa609301de20edc75dc4c3d5a
                               
                                 @endforeach
 

@@ -71,7 +71,11 @@
                 {{-- <button id="myButton" name="myButton" type="button" class="btn btn-success">Print</button> --}}
                  @endif
 
+<<<<<<< HEAD
                    {{-- <p>{{ json_encode($filteredArray) }}</p> --}}
+=======
+                   {{-- <p>{{ json_encode($empList) }}</p> --}}
+>>>>>>> a0d0931c7a4b23eaa609301de20edc75dc4c3d5a
 
                     <p>
                     <div class="table-responsive">
