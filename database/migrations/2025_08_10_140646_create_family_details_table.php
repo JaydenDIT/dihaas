@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('families', function (Blueprint $table) {
-            $table->id('family_id');
+        Schema::create('family_details', function (Blueprint $table) {
+            $table->id('family_detail_id');
             $table->unsignedBigInteger('proforma_id');
             $table->unsignedBigInteger('relationship_id');
             $table->string('fullname', 255);
             $table->enum('gender', ['male', 'female', 'transgender']);
+            $table->date('dob');
             $table->timestamps();
 
             // Foreign Keys

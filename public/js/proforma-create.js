@@ -374,3 +374,122 @@ $(document).on("click", "#saveDocumentBtn", async function (e) {
         console.error(err);
     }
 });
+
+//family details
+// Add or update member
+$(document).on("click", "#addFamilyMemberBtn", async function () {
+    try {
+        const form = document.getElementById("familyDetailForm");
+        const param = new FormData(form);
+        let res;
+
+        if ($("#family_detail_action").val() == "edit") {
+            res = await ajax_send_multipart({
+                url: familyDetailUpdate.replace(
+                    "__ID__",
+                    $("#family_detail_id").val()
+                ),
+                param: param,
+            });
+
+            renderFamilyTableRow(res.data, false); // update existing
+            success_message("Family Member Updated");
+        } else {
+            res = await ajax_send_multipart({
+                url: familyDetailAdd.replace("__ID__", proforma_id),
+                param: param,
+            });
+            renderFamilyTableRow(res.data, true); // add new
+            success_message("Family Member Added");
+        }
+
+        resetFamilyForm();
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+// Render single row
+function renderFamilyTableRow(encodeData, isNew = true) {
+    member = decodeURI(encodeData);
+    const rowHtml = `
+        <tr data-id="${member.family_detail_id}">
+            <td>${member.fullname}</td>
+            <td>${member.relationshipText}</td>
+            <td>${member.gender}</td>
+            <td>${member.dob}</td>
+            <td>
+                <button class="btn btn-sm btn-primary editMember" data-row='${encodeData}'>Edit</button>
+                <button class="btn btn-sm btn-danger deleteMember" data-row='${encodeData}'>Delete</button>
+            </td>
+        </tr>
+    `;
+
+    if (isNew) {
+        $("#familyDetailsTable tbody").append(rowHtml);
+    } else {
+        $(
+            `#familyDetailsTable tbody tr[data-id="${member.family_detail_id}"]`
+        ).replaceWith(rowHtml);
+    }
+}
+
+// Reset form
+function resetFamilyForm() {
+    $("#family_detail_fullname").val("");
+    $("#family_detail_relationship_id").val("");
+    $("input[name='family_detail_gender']").prop("checked", false);
+    $("#family_detail_dob").val("");
+    $("#family_detail_action").val("create");
+    $("#family_detail_id").val("");
+    $("#addFamilyMemberBtn").text("Add");
+}
+
+// Edit member
+$(document).on("click", ".editMember", function () {
+    const member = decodeURI($(this).data("row"));
+    $("#family_detail_action").val("edit");
+    $("#family_detail_id").val(member.family_detail_id);
+    $("#family_detail_fullname").val(member.fullname);
+    $("#family_detail_relationship_id").val(member.relationship_id);
+    $(`input[name='family_detail_gender'][value='${member.gender}']`).prop(
+        "checked",
+        true
+    );
+    $("#family_detail_dob").val(member.dob);
+    $("#addFamilyMemberBtn").text("Update");
+});
+
+// Delete member
+$(document).on("click", ".deleteMember", async function () {
+    const member = decodeURI($(this).data("row"));
+    try {
+        await ajax_send_multipart({
+            url: familyDetailDelete.replace("__ID__", member.family_detail_id),
+            method: "DELETE",
+        });
+        $(
+            `#familyDetailsTable tbody tr[data-id="${member.family_detail_id}"]`
+        ).remove();
+        success_message("Family Member Deleted");
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+$(document).on("click", "#saveFamilyDetail", async function (e) {
+    e.preventDefault();
+    try {
+        if ($("#familyDetailsTable tbody tr").length === 0) {
+            error_message(`Add at least one family member`);
+            return;
+        }
+        await ajax_send_multipart({
+            url: completeFamilyDetail.replace("__ID__", proforma_id),
+        });
+        success_message("Family Detail Saved");
+        showStep(3);
+    } catch (err) {
+        console.error(err);
+    }
+});

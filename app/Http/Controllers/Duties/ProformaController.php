@@ -6,15 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProformaRequest;
 use App\Models\Caste;
 use App\Models\District;
+use App\Models\FamilyDetail;
 use App\Models\Proforma;
 use App\Models\Qualification;
 use App\Models\Relationship;
 use App\Models\State;
 use App\Models\SubDivision;
-use App\Models\UploadedDocument;
 use App\Services\CmisApiService;
 use App\Services\DocumentRequirementService;
-use App\Services\ProformaService;
+use App\Services\LogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -52,7 +52,7 @@ class ProformaController extends Controller
             $data['create_by'] = 1; //for test
             $data['proforma_status'] = 'draft-step1'; //default status
             $proforma = Proforma::create($data);
-            ProformaService::addLog([
+            LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => $data['create_by'],
                 'action_name' => 'Proforma created save draft-step1',
@@ -75,7 +75,7 @@ class ProformaController extends Controller
             $data['create_by'] = 1; //for test
             $proforma = Proforma::findOrFail($id);
             $proforma->update($data);
-            ProformaService::addLog([
+            LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => $data['create_by'],
                 'action_name' => 'Proforma update save draft-step1',
@@ -86,6 +86,33 @@ class ProformaController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Proforma update failed', 'error' => $e->getMessage()], 422);
+        }
+    }
+
+
+    public function completeFamilyDetail($id)
+    {
+        try {
+            DB::beginTransaction();
+            $proforma = Proforma::findOrFail($id);
+            $familyMembers = FamilyDetail::where('proforma_id', $proforma->proforma_id)->count();
+            if ($familyMembers == 0) {
+                return response()->json(['message' => 'Add at least one family member'], 422);
+            }
+            $data['create_by'] = 1; //for test
+            $data['proforma_status'] = 'draft-step2'; //default status
+            $proforma->update($data);
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => 1, //test
+                'action_name' => 'Family Detail save draft-step2',
+                'action_remark' => 'Step 2 completed',
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Successfully save', 'proforma_id' => $proforma->proforma_id], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Saving failed', 'error' => $e->getMessage()], 422);
         }
     }
 
@@ -110,7 +137,7 @@ class ProformaController extends Controller
             $data['proforma_status'] = 'draft-step3'; //default status
             $proforma->update($data);
 
-            ProformaService::addLog([
+            LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => 1, //test
                 'action_name' => 'Proforma document save draft-step3',
@@ -123,6 +150,8 @@ class ProformaController extends Controller
             return response()->json(['message' => 'Saving failed', 'error' => $e->getMessage()], 422);
         }
     }
+
+
 
     public function edit(Request $request, $id)
     {
@@ -150,6 +179,8 @@ class ProformaController extends Controller
                 return empty($doc->uploaded_file);
             })
             ->count();
+        //for family members
+        $familyMembers = FamilyDetail::where('proforma_id', $proforma->proforma_id)->get();
 
         //test for real data uncomment below and comment this line
         /*
@@ -175,7 +206,8 @@ class ProformaController extends Controller
             'otherDepartList',
             'otherPostList',
             'documents',
-            'requiredDocumentsLeft'
+            'requiredDocumentsLeft',
+            'familyMembers'
         ));
     }
 

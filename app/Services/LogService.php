@@ -7,9 +7,9 @@ use App\Models\ProformaLog;
 use Exception;
 use Illuminate\Support\Facades\Http;
 
-class ProformaService
+class LogService
 {
-    public static function addLog($param)
+    public static function addProformaLog($param)
     {
         try {
             // Validate the parameters
@@ -26,21 +26,6 @@ class ProformaService
         } catch (Exception $e) {
             // Handle exceptions, possibly log them or rethrow
             throw new Exception("Error adding log: " . $e->getMessage(), 0, $e);
-        }
-    }
-
-    /**
-     * Change the status of a Proforma.
-     * This might not be used in the current context, but it's a common operation.
-     */
-    public static function changeStatus(Proforma $proforma, string $status): void
-    {
-        try {
-            // Update the proforma status
-            $proforma->update(['status' => $status]);
-        } catch (Exception $e) {
-            // Handle exceptions, possibly log them or rethrow
-            throw new Exception("Error changing status: " . $e->getMessage(), 0, $e);
         }
     }
 }

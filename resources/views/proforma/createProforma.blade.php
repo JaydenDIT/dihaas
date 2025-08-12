@@ -96,14 +96,15 @@
             </div>
             <div class="stepwizard-step">
                 <a href="#" class="btn btn-circle btn-step" disabled="disabled" data-step="2">2</a>
-                <p><small>Documents Upload</small></p>
+                <p><small>Family Members</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#" class="btn btn-circle" disabled="disabled" data-step="3">3</a>
-                <p><small>Schedule</small></p>
+                <a href="#" class="btn btn-circle btn-step" disabled="disabled" data-step="3">3</a>
+                <p><small>Documents Upload</small></p>
             </div>
         </div>
     </div>
+
 
     <div class="row">
         <div class="col-sm-4">
@@ -128,7 +129,7 @@
     @if($action == 'edit')
     <!-- STEP 2 -->
     <div class="setup-content" id="step-2">
-        @include('proforma.step2._collection')
+        @include('proforma.step2._familyDetail')
     </div>
 
     <!-- STEP 3 -->
@@ -196,9 +197,14 @@ if ($action == 'create') {
     const editProforma = "{{ route('duties.proforma.edit', ['id'=>'__ID__']) }}";
     const updateProforma = "{{ route('duties.proforma.update', ['id'=>'__ID__']) }}";
     const completeUploadDocument = "{{ route('duties.proforma.completeUploadDocument', ['id'=>'__ID__']) }}";
+    const completeFamilyDetail = "{{ route('duties.proforma.completeFamilyDetail', ['id'=>'__ID__']) }}";
     //documents
     const uploadDocumentSave = "{{ route('duties.upload.document.store') }}";
-    let requiredDocumentsLeft = <?= $requiredDocumentsLeft ?>;
+    let requiredDocumentsLeft = <?= json_encode($requiredDocumentsLeft ?? []) ?>;
+    //family
+    const familyDetailAdd = "{{ route('duties.family.store', ['id'=>'__ID__']) }}";
+    const familyDetailUpdate = "{{ route('duties.family.update', ['id'=>'__ID__']) }}";
+    const familyDetailDelete = "{{ route('duties.family.destroy', ['id'=>'__ID__']) }}";
 </script>
 <script src="{{ asset('js/proforma-create.js') }}"></script>
 

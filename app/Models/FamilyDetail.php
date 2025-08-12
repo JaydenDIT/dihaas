@@ -6,18 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Family extends Model
+class FamilyDetail extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'family_id';
-
-    protected $fillable = [
-        'proforma_id',
-        'relationship_id',
-        'fullname',
-        'gender',
-    ];
+    protected $primaryKey = 'family_detail_id';
+    protected $guarded = ['family_detail_id'];
 
     public function proforma()
     {
