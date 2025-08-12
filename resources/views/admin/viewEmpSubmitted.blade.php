@@ -219,11 +219,11 @@
                         </tbody>
                     </table>
                     </div>
-                    @if($empList != null)
+                    {{-- @if($empList != null)
                     <div class="row">
                         {!! $empList->links() !!}
                     </div>
-                    @endif
+                    @endif --}}
                     </p>
                 </div>
 

@@ -163,13 +163,13 @@
 
 
                                 <tr>
-                                @if($data->formSubStat == "submitted" || $data->formSubStat == "transfer" || $data->formSubStat == "order" || $data->formSubStat == "appointed" || $data->formSubStat == "approved" || $data->formSubStat == "forapproval" || $data->formSubStat == "verified")
+                                {{-- @if($data->formSubStat == "submitted" || $data->formSubStat == "transfer" || $data->formSubStat == "order" || $data->formSubStat == "appointed" || $data->formSubStat == "approved" || $data->formSubStat == "forapproval" || $data->formSubStat == "verified")
                                         <td>
                                             <input type="checkbox" id="{{$data->efile_dp.'|'.$data->dept_id.'|'.$data->ein}}"
                                                 class="ein-checkbox" name="selected_ein[]"
                                                 value="{{$data->ein}}" onchange="onChangeCheckBoxForward(this)">
                                         </td>
-                                        @endif
+                                        @endif --}}
                                 {{-- <td>{{ $empList->firstItem() + $key }}</td> --}}
                                  <th scope="row">{{$data->slNo}}</th>
                                     <td>{{$data->ein}}</td>

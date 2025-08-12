@@ -55,7 +55,8 @@
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Seniority List Order</th>
+                                <th scope="col">Department Seniority List</th>
+                                <th scope="col">Inter-Dept Seniority List</th>
                                 <th scope="col">EIN</th>
                                 <th scope="col">Deceased Name</th>
                                 <th scope="col">DOE</th>
@@ -66,7 +67,7 @@
                                 <th>Currently With</td>
                                 <th>Remarks</td>                              
                                
-                                <th>status</td>
+                                <th style="color:red;">Status</td>
                                 <th scope="col" colspan="4" class="textcenter">Action</th>
                             </tr>
                         </thead>
@@ -78,10 +79,20 @@
                                 </td>
                             </tr>
                             @else
+                            @php
+                            foreach ($filteredArray as $serial)
+                            {
+                                //   dd($serial['slNo2']);
+                                $deptDerial=$serial['slNo2'];                              
+                                                       
+                            }
+                            @endphp
 
                             @foreach($empList as $data)
            
                             <tr>
+                                 <th scope="row">{{$deptDerial}}</th>
+
                                 <th scope="row">{{$data->slNo}}</th>
                                 <td>{{$data->ein}}</td>
                                 <td>{{$data->deceased_emp_name}}</td>
@@ -93,7 +104,7 @@
                                 <td>{{$data->received_by}}</td>
                                 <td>{{$data->remark}}</td>
                                
-                                <td>{{$data->status}}</td>
+                                <td style="color:red;">{{$data->status}}</td>
 
                                 @if($data->formSubStat == "submitted")
                                 <td class="rightstyle">
@@ -111,7 +122,15 @@
                                     <a href="{{ route('discard-applicant', Crypt::encryptString($data->ein)) }}" class="btn btn-danger btn-sm borderradius" role="button" aria-disabled="true" onclick="return confirm('Are You Sure to Discard this Applicant?')">Delete</a>
                                 </td>
                                 @endif
-                                @if($data->formSubStat == "verified")
+                                @if($data->formSubStat == "verifieddp")
+                                <td class="rightstyle">
+                                    <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
+                                    <!-- capturing the ein at click instant -->
+
+
+                                </td>
+                                @endif
+                                  @if($data->formSubStat == "verifieddept")
                                 <td class="rightstyle">
                                     <a href="{{ route('viewPersonalDetailsFrom', Crypt::encryptString($data->ein)) }}" class="btn btn-success btn-sm borderradius" role="button" aria-disabled="true">View</a>
                                     <!-- capturing the ein at click instant -->

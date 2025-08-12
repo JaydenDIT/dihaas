@@ -67,7 +67,7 @@
 
                     <div class="col-6">
                         <!-- the below route to new one and controller idea copy from viewempstartsearch function -->
-                            <form class="form-inline" id="ddoAststartEmpSearchBox" method="POST" action="{{ url('ddo-assist/viewFileStatusSearch') }}" enctype="multipart/form-data" class="was-validated">
+                            <form class="form-inline" id="ddoAststartEmpSearchBox" method="POST" action="{{ url('ddo-assist/viewFileStatusByDPDeptSearch') }}" enctype="multipart/form-data" class="was-validated">
                             <div class="row container mt-3 textright" >
                                     @csrf
 
@@ -104,7 +104,7 @@
 
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col">Seniority List Order</th>
+                                    <th scope="col">Inter-Dept Seniority List</th>
                                     <th scope="col">EIN</th>
                                     <th scope="col">Deceased Name</th>
                                     <th scope="col">Department Name</th>
@@ -136,7 +136,8 @@
 
 
                                 <tr>
-                                <td>{{ $empList->firstItem() + $key }}</td>
+                                {{-- <td>{{ $empList->firstItem() + $key }}</td> --}}
+                                 <th scope="row">{{$data->slNo}}</th>
                                     <td>{{$data->ein}}</td>
                                     <td>{{$data->deceased_emp_name}}</td>
                                     <td>{{$data->dept_name}}</td>
@@ -293,11 +294,11 @@
                             </tbody>
                         </table>
                     </div>
-                    @if($empList != null)
+                    {{-- @if($empList != null)
                     <div class="row">
                         {!! $empList->links() !!}
                     </div>
-                    @endif
+                    @endif --}}
                     </p>
                 </div>
 
