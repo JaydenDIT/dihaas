@@ -1,9 +1,9 @@
 $(document).ready(function () {
     fieldHide(hiddenClass);
 
-    showStep(
-        proforma_status == "" ? 1 : proforma_status == "draft-step1" ? 2 : 3
-    );
+    const stepToShow = Number(current_step) + 1;
+
+    showStep(stepToShow > 3 ? 3 : stepToShow);
     // Handle Next Button Click
     $(".btn-step").click(function () {
         let step = $(this).data("step");
@@ -292,23 +292,25 @@ $(document).on("click", "#saveProforma", async function (e) {
 
     try {
         await validateForm(form);
+        let res;
         if (action == "create") {
-            const res = await ajax_send_multipart({
+            res = await ajax_send_multipart({
                 url: saveProforma,
                 param: param,
             });
-            success_message("Saved successfully");
-            window.location.href = editProforma.replace(
-                "__ID__",
-                res.proforma_id
-            );
         } else {
-            const res = await ajax_send_multipart({
+            res = await ajax_send_multipart({
                 url: updateProforma.replace("__ID__", proforma_id),
                 param: param,
             });
-            success_message("Update successfully");
         }
+        await showConfirmation({
+            title: "Successfully Save",
+            text: "Redirecting to Next Step...",
+            type: "success",
+            showCancelButton: false,
+        });
+        window.location.href = editProforma.replace("__ID__", res.proforma_id);
     } catch (err) {
         console.error(err);
     }
@@ -426,8 +428,13 @@ $(document).on("click", "#saveFamilyDetail", async function (e) {
         await ajax_send_multipart({
             url: completeFamilyDetail.replace("__ID__", proforma_id),
         });
-        success_message("Family Detail Saved");
-        showStep(3);
+        await showConfirmation({
+            title: "Successfully Save",
+            text: "Redirecting to Next Step...",
+            type: "success",
+            showCancelButton: false,
+        });
+        window.location.href = editProforma.replace("__ID__", proforma_id);
     } catch (err) {
         console.error(err);
     }
@@ -487,7 +494,34 @@ $(document).on("click", "#saveDocumentBtn", async function (e) {
         await ajax_send_multipart({
             url: completeUploadDocument.replace("__ID__", proforma_id),
         });
-        success_message("Documents uploaded successfully");
+        await showConfirmation({
+            title: "Successfully Save",
+            text: "You can now Submit the Form",
+            type: "success",
+            showCancelButton: false,
+        });
+        window.location.href = editProforma.replace("__ID__", proforma_id);
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+$(document).on("click", "#finalFormSubmitBtn", async function (e) {
+    e.preventDefault();
+    try {
+        await showConfirmation({
+            title: "Confirm Submission",
+            text: "Are you sure you want to submit the form? Any further changes will not be allowed.",
+        });
+        await ajax_send_multipart({
+            url: formSubmitUrl.replace("__ID__", proforma_id),
+        });
+        await showConfirmation({
+            title: "Successfully Submitted",
+            text: "Redirecting to list....",
+            type: "success",
+            showCancelButton: false,
+        });
     } catch (err) {
         console.error(err);
     }

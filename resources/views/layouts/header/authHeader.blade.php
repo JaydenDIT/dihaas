@@ -34,6 +34,12 @@
             </li>
 
         </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                Log in as: {{ Auth::user()->fullname }}
+            </li>
+
+        </ul>
 
     </div>
 </nav>

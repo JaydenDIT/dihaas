@@ -23,14 +23,14 @@
 
     <!-- Custom CSS -->
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
-
+    <script>
+        const _token = "{{ csrf_token() }}";
+    </script>
     @stack('css')
 </head>
 
 <body>
-    <script>
-        const _token = "{{ csrf_token() }}";
-    </script>
+
 
     <div>
         <div id="loading-div">

@@ -1,5 +1,5 @@
 <!--  Address -->
-<h5 class="py-1 mt-4 bg-success bg-gradient text-white fw-bold">
+<h5 class="py-2 bg-success bg-gradient text-white fw-bold rounded mt-3">
     Applicant Current Address
 </h5>
 

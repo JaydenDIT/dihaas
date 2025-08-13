@@ -97,7 +97,9 @@
     <div class="hstack gap-3 my-3 p-3">
         <div class="ms-auto">
             <button class="btn btn-md btn-success" id="saveFamilyDetail" type="button">Save</button>
-            <button class="btn btn-md btn-primary nextBtn" type="button" data-step="2">Next</button>
+            @if($current_step > 2)
+            <button class="btn btn-md btn-success nextBtn" type="button" data-step="2">Next</button>
+            @endif
         </div>
     </div>
 </div>

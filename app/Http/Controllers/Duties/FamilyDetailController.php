@@ -8,6 +8,7 @@ use App\Models\FamilyDetail;
 use App\Models\Proforma;
 use App\Services\LogService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FamilyDetailController extends Controller
@@ -66,12 +67,11 @@ class FamilyDetailController extends Controller
             if ($familyMembers == 0) {
                 return response()->json(['message' => 'Add at least one family member'], 422);
             }
-            $data['create_by'] = 1; //for test
-            $data['proforma_status'] = 'draft-step2'; //default status
+            $data['form_fillup_step'] = 'step2-completed'; //default status
             $proforma->update($data);
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
-                'action_by' => 1, //test
+                'action_by' => Auth::user()->user_id,
                 'action_name' => 'Family Detail save draft-step2',
                 'action_remark' => 'Step 2 completed',
             ]);
@@ -87,7 +87,26 @@ class FamilyDetailController extends Controller
 
     public function destroy($id)
     {
-        FamilyDetail::findOrFail($id)->delete();
-        return response()->json(['message' => 'Deleted successfully']);
+
+
+        try {
+            DB::beginTransaction();
+            $member = FamilyDetail::findOrFail($id);
+            $proforma = Proforma::findOrFail($member->proforma_id);
+            $data['form_fillup_step'] = 'step1-completed';
+            $proforma->update($data);
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => Auth::user()->user_id,
+                'action_name' => 'Family member deleted draft-step1',
+                'action_remark' => 'Step 1 completed',
+            ]);
+            $member->delete();
+            DB::commit();
+            return response()->json(['message' => 'Deleted successfully', 'proforma_id' => $proforma->proforma_id], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Saving failed', 'error' => $e->getMessage()], 422);
+        }
     }
 }

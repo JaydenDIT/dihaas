@@ -2,22 +2,24 @@
 
 @push('js')
 <script type="text/javascript">
-    $(function() {
-        applicationTable();
+    $(document).ready(function() {
+        setTimeout(function() {
+            applicationTable();
+        }, 300); // short delay ensures cookies/session are ready
         reinitSelect2();
     });
 
     function applicationTable(dept_id = '') {
         let columns = [
             "DT_RowIndex|nonorderable|nonsearchable",
-            "ein",
+            "deceased_ein",
             "deceased_emp_name",
             "deceased_doe",
-            "appl_date",
+            "created_at",
             "applicant_name",
             "applicant_dob",
-            "tasks_status",
-            "dept_name"
+            "proforma_status",
+            "deceased_field_dept_desc"
         ];
         loadAjaxTable({
             id: "#application-table",
@@ -67,7 +69,7 @@
 
     </div>
 
-    <table class="report-table" id="application-table">
+    <table class="report-table table" id="application-table">
         <thead>
             <tr>
                 <th>Seniority<br />List<br />Order</th>

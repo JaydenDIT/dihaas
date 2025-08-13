@@ -1,4 +1,4 @@
-<h5 class="py-1 mt-4 bg-success bg-gradient text-white fw-bold mt-4">Post Proposed for Appointment in Parent Department</h5>
+<h5 class="py-2 bg-success bg-gradient text-white fw-bold rounded mt-3">Post Proposed for Appointment in Parent Department</h5>
 
 <div class="row col-sm-6 mb-2 ps-5">
     <label class="col-form-label  required_label"><b>First Preference: </b></label>

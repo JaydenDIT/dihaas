@@ -13,10 +13,6 @@ class WorkflowHandler
 
     public static function forwardApplication(Proforma $app)
     {
-        $current = ProcessTasksMapping::where('process_id', $app->process_id)
-            ->where('sequence', $app->process_sequence)
-            ->first();
-
         $next = ProcessTasksMapping::where('process_id', $app->process_id)
             ->where('sequence', '>', $app->process_sequence)
             ->orderBy('sequence')
@@ -75,7 +71,7 @@ class WorkflowHandler
         foreach ($mappings as $mapping) {
             $apps = Proforma::where('process_id', $mapping->process_id)
                 ->where('process_sequence', '=', $mapping->sequence)
-                ->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")
+                ->orderByRaw("expire_on_duty = 'no', deceased_doe,created_at, applicant_dob")
                 ->get();
 
             $allApplications = $allApplications->merge($apps);
@@ -83,6 +79,7 @@ class WorkflowHandler
 
         return $allApplications;
     }
+
     public static function proformaTaskCompletedData($task)
     {
         $user = Auth::user();
@@ -99,7 +96,7 @@ class WorkflowHandler
         foreach ($mappings as $mapping) {
             $apps = Proforma::where('process_id', $mapping->process_id)
                 ->where('process_sequence', '>', $mapping->sequence)
-                ->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")
+                ->orderByRaw("expire_on_duty = 'no', deceased_doe,created_at, applicant_dob")
                 ->get();
 
             $allApplications = $allApplications->merge($apps);
@@ -107,6 +104,7 @@ class WorkflowHandler
 
         return $allApplications;
     }
+
     public static function proformaTaskNotReachData($task)
     {
         $user = Auth::user();
@@ -123,7 +121,7 @@ class WorkflowHandler
         foreach ($mappings as $mapping) {
             $apps = Proforma::where('process_id', $mapping->process_id)
                 ->where('process_sequence', '<', $mapping->sequence)
-                ->orderByRaw("expire_on_duty = 'no', deceased_doe,appl_date, applicant_dob")
+                ->orderByRaw("expire_on_duty = 'no', deceased_doe,created_at, applicant_dob")
                 ->get();
 
             $allApplications = $allApplications->merge($apps);

@@ -7,7 +7,7 @@
      <input type="hidden" name="proforma_id" id="proforma_id" value="{{ $proforma?->proforma_id }}">
      @endif
 
-     <div class="row bg-pink">
+     <div class="row bg-light border rounded p-3 mt-3">
          @include('proforma.step1._1deceased_cmis_details');
          @include('proforma.step1._2deceased_entry_details');
          @include('proforma.step1._3applicant_details');
@@ -34,7 +34,9 @@
          <div class="hstack gap-3 my-3 p-3">
              <div class="ms-auto">
                  <button class="btn btn-md btn-success" id="saveProforma" type="button">Save</button>
+                 @if($current_step > 1)
                  <button class="btn btn-md btn-success nextBtn" type="button" data-step="1">Next</button>
+                 @endif
              </div>
          </div>
      </div>

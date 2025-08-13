@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
@@ -72,12 +73,13 @@ return new class extends Migration {
 
             // required for dynamic process
             $table->integer('process_id')->nullable();
-            $table->string('proforma_status', 30)->enum('draft-step1', 'draft-step2', 'draft-step3', 'submitted', 'pending', 'rejected', 'reverted', 'completed')->nullable();
+            $table->string('proforma_status', 30)->enum('new', 'pending', 'rejected', 'reverted', 'completed')->nullable();
             $table->integer('process_sequence')->nullable();
 
             // others
             $table->timestamps();
             $table->unsignedBigInteger('create_by');
+            $table->string('form_fillup_step', 30)->enum('step1-completed', 'step2-completed', 'step3-completed', 'submitted');
 
             // Optional: If you want to support soft deletes
             // $table->softDeletes();
@@ -98,6 +100,8 @@ return new class extends Migration {
 
     public function down(): void
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('proforma');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 };

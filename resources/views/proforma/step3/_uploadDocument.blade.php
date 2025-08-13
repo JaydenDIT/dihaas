@@ -1,5 +1,5 @@
 <div class="row bg-pink">
-    <h5 class="py-1 bg-success bg-gradient text-white fw-bold">Upload Documents</h5>
+    <h5 class="py-2 bg-success bg-gradient text-white fw-bold rounded mt-3">Upload Documents</h5>
     @foreach($documents as $doc)
     <div class="row mb-3">
         <label class="col-form-label">
@@ -46,7 +46,9 @@
     <div class="hstack gap-3 my-3 p-3">
         <div class="ms-auto">
             <button class="btn btn-md btn-success" id="saveDocumentBtn" type="button">Save</button>
-            <button class="btn btn-md btn-success" id="submitFormBtn" type="button">Submit Form</button>
+            @if($current_step == 3)
+            <button class="btn btn-md btn-success" id="finalFormSubmitBtn" type="button">Submit Form</button>
+            @endif
         </div>
     </div>
 </div>

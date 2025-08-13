@@ -16,6 +16,7 @@ use App\Services\CmisApiService;
 use App\Services\DocumentRequirementService;
 use App\Services\LogService;
 use App\Services\ProcessMatcher;
+use App\Services\WorkflowHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +32,7 @@ class ProformaController extends Controller
         $castes = Caste::all();
         $states = State::all();
         $proforma = new Proforma();
+        $current_step = 0;
 
         $result = CmisApiService::apiAdminDepartments();
         $adminDepartments = $result; //test for real data uncomment below and comment this line
@@ -39,7 +41,16 @@ class ProformaController extends Controller
         // }
         // $adminDepartments = $result->json();
 
-        return view('proforma.createProforma', compact('action', 'relationships', 'qualifications', 'castes', 'states', 'adminDepartments', 'proforma'));
+        return view('proforma.createProforma', compact(
+            'action',
+            'relationships',
+            'qualifications',
+            'castes',
+            'states',
+            'adminDepartments',
+            'proforma',
+            'current_step'
+        ));
     }
 
 
@@ -50,11 +61,9 @@ class ProformaController extends Controller
             DB::beginTransaction();
             $data = $request->validated();
 
-            $data['create_by'] = 1; //for test
-            $data['proforma_status'] = 'draft-step1'; //default status
+            $data['create_by'] = Auth::user()->user_id;
+            $data['form_fillup_step'] = 'step1-completed'; //next step
             $proforma = Proforma::create($data);
-
-
             //This define which process the proforma will follow
             ProcessMatcher::matchAndAssignProcess($proforma);
             $proforma->save();
@@ -86,7 +95,7 @@ class ProformaController extends Controller
 
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
-                'action_by' => 1,
+                'action_by' => Auth::user()->user_id,
                 'action_name' => 'Update Proforma on Draft',
                 'action_remark' => 'Step 1 updated',
             ]);
@@ -105,13 +114,15 @@ class ProformaController extends Controller
         try {
             DB::beginTransaction();
             $proforma = Proforma::findOrFail($id);
-
+            $proforma->form_fillup_step = 'submitted';
+            $proforma->save();
+            WorkflowHandler::forwardApplication($proforma); //set the sequence to next 
 
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => 1,
-                'action_name' => 'form-submit',
-                'action_remark' => 'Proforma Form Submit',
+                'action_name' => 'forward',
+                'action_remark' => 'Form Submit by Applicant ' . $proforma->applicant_name,
             ]);
             DB::commit();
             return response()->json(['message' => 'Proforma updated successfully', 'proforma_id' => $proforma->proforma_id], 200);
@@ -163,6 +174,8 @@ class ProformaController extends Controller
         $adminDepartments = $result->json();
         */
 
+        $current_step = $proforma->form_fillup_step == "step1-completed" ? 1 : ($proforma->form_fillup_step == "step2-completed" ? 2 : 3);
+
         return view('proforma.createProforma', compact(
             'action',
             'relationships',
@@ -180,7 +193,8 @@ class ProformaController extends Controller
             'otherPostList',
             'documents',
             'requiredDocumentsLeft',
-            'familyMembers'
+            'familyMembers',
+            'current_step'
         ));
     }
 

@@ -1,4 +1,4 @@
-<h5 class="mt-4 py-1 bg-success bg-gradient text-white fw-bold">Applicant/Claimaint Details</h5>
+<h5 class="py-2 bg-success bg-gradient text-white fw-bold rounded mt-3">Applicant/Claimaint Details</h5>
 
 <!-- Applicant details  -->
 <div class="row col-sm-6 mb-2 ps-5">

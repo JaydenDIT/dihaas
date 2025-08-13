@@ -1,4 +1,4 @@
-<h5 class="py-1 bg-success bg-gradient text-white fw-bold">Deceased Details</h5>
+<h5 class="py-2 bg-success bg-gradient text-white fw-bold rounded">Deceased Details</h5>
 <!-- EIN -->
 <div class="row col-sm-6 mb-2 ps-5">
     <label class="col-form-label "><b class="required_label">EIN of the Deceased Employee (Govt. of Manipur) : </b></label>

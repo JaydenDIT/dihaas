@@ -1,5 +1,5 @@
 <!--  Address -->
-<h5 class="py-1 mt-4 bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
+<h5 class="py-1 mt-4 bg-success bg-gradient text-white fw-bold rounded d-flex justify-content-between align-items-center">
     <span class="fw-bold">Applicant Permanent Address</span>
     <span class="small">
         <input type="checkbox" name="same_as_current" id="same_as_current"> Same as Current Address

@@ -95,11 +95,11 @@
                 <p><small>Details</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#" class="btn btn-circle btn-step" disabled="disabled" data-step="2">2</a>
+                <a href="#" class="btn btn-circle  {{ $current_step>1?'btn-step active':'' }}" data-step="2">2</a>
                 <p><small>Family Members</small></p>
             </div>
             <div class="stepwizard-step">
-                <a href="#" class="btn btn-circle btn-step" disabled="disabled" data-step="3">3</a>
+                <a href="#" class="btn btn-circle  {{ $current_step>2?'btn-step active':'' }}" data-step="3">3</a>
                 <p><small>Documents Upload</small></p>
             </div>
         </div>
@@ -178,7 +178,7 @@ if ($action == 'create') {
 <script>
     const action = "{{ $action }}";
     const proforma_id = "{{ $proforma->proforma_id ?? '' }}";
-    const proforma_status = "{{ $proforma->proforma_status ?? '' }}";
+    const current_step = "{{ $current_step ?? '1' }}";
     //checking data or form fill to hide
     const hiddenClass = <?= json_encode($hiddenClass ?? []) ?>;
 
@@ -205,6 +205,8 @@ if ($action == 'create') {
     const familyDetailAdd = "{{ route('duties.family.store', ['id'=>'__ID__']) }}";
     const familyDetailUpdate = "{{ route('duties.family.update', ['id'=>'__ID__']) }}";
     const familyDetailDelete = "{{ route('duties.family.destroy', ['id'=>'__ID__']) }}";
+    //form submit
+    const formSubmitUrl = "{{ route('duties.proforma.form.submit', ['id'=>'__ID__']) }}";
 </script>
 <script src="{{ asset('js/proforma-create.js') }}"></script>
 

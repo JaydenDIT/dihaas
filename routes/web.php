@@ -19,7 +19,9 @@ Route::get('/clear-cache', function () {
 });
 
 
-Route::get('/', [LoginController::class, 'login'])->name('home');
+Route::get('/clear-cache', function () {
+    return view('dashboard');
+})->name('home');
 
 Route::group(['prefix' => 'duty', 'as' => 'duty.personal.'], function () {
     Route::get('/viewPersonalDetailsFrom/{id}', [VerificationController::class, 'viewDetail'])->name('detail');
@@ -39,3 +41,5 @@ Route::group(['prefix' => 'misc', 'as' => 'misc.option.'], function () {
     Route::get('/{id}/district', [DistrictController::class, 'loadByState'])->name('district');
     Route::get('/{id}/subdivision', [SubDivisionController::class, 'loadByDistrict'])->name('subdivision');
 });
+
+require __DIR__ . '/auth.php';

@@ -9,6 +9,7 @@ use App\Models\Proforma;
 use App\Services\DocumentRequirementService;
 use App\Services\LogService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -132,13 +133,12 @@ class UploadedDocumentController extends Controller
             if ($requiredDocumentsLeft > 0) {
                 return response()->json(['message' => 'Upload all required documents'], 422);
             }
-            $data['create_by'] = 1; //for test
-            $data['proforma_status'] = 'draft-step3'; //default status
+            $data['form_fillup_step'] = 'step3-completed'; //default status
             $proforma->update($data);
 
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
-                'action_by' => 1, //test
+                'action_by' => Auth::user()->user_id,
                 'action_name' => 'Proforma document save draft-step3',
                 'action_remark' => 'Step 3 completed',
             ]);

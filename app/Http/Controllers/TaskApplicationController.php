@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Proforma;
 use App\Models\Task;
-use App\Models\User;
 use App\Services\CmisApiService;
 use App\Services\WorkflowHandler;
 use Illuminate\Http\Request;
@@ -32,8 +31,7 @@ class TaskApplicationController extends Controller
 
     public function allProcess()
     {
-        $user = User::find(1); //test
-
+        $user = Auth::user();
         // Eager load role's duties (tasks) and their related processes
         $tasks = $user->role->duties()->with('processes')->get();
 
@@ -65,7 +63,7 @@ class TaskApplicationController extends Controller
         }
 
         $cards = array_values($taskSummaries); // Reset keys for blade loop
-        return view('malem.allprocess', compact('cards'));
+        return view('duties.allprocess', compact('cards'));
     }
 
 
@@ -97,26 +95,31 @@ class TaskApplicationController extends Controller
                 if (!empty($dept_id)) {
                     $data = $data->filter(function ($item) use ($dept_id) {
                         return $item->dept_id == $dept_id;
-                    })->values(); // reset keys after filtering
+                    })->values();
                 }
                 break;
+
             case  'client_form_submission':
                 if (strtolower(Auth::user()->role->role_name) != 'superadmin') {
                     $data = $data->filter(function ($item) {
-                        return Auth::user()->id == $item->uploaded_id;
-                    })->values(); // reset keys after filtering
+                        return Auth::user()->id == $item->created_by;
+                    })->values();
                 }
+                return $this->ajaxTableForClientFormSubmission($data);
                 break;
         }
+    }
 
 
+    public function ajaxTableForClientFormSubmission($data)
+    {
         return DataTables::of($data)
             ->addIndexColumn()
             ->editColumn('deceased_doe', function ($row) {
                 return date('d M, Y', strtotime($row->deceased_doe));
             })
-            ->editColumn('appl_date', function ($row) {
-                return date('d M, Y', strtotime($row->appl_date));
+            ->editColumn('created_at', function ($row) {
+                return date('d M, Y', strtotime($row->created_at));
             })
             ->editColumn('applicant_dob', function ($row) {
                 return date('d M, Y', strtotime($row->applicant_dob));
@@ -124,8 +127,7 @@ class TaskApplicationController extends Controller
             ->addColumn('action', function ($row) {
                 $data = urlencode(json_encode($row));
                 return "<div class='d-flex gap-2'>
-                            <a href='" . route('viewPersonalDetailsFrom', Crypt::encryptString($row->ein)) . "' class='btn btn-sm btn-primary view-btn' data-row='{$data}'>View</a>
-                        
+                            <a href='" . route('duties.proforma.edit', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>Edit</a>
                         </div>";
             })
             ->rawColumns(['status', 'action'])
