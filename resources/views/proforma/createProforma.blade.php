@@ -2,57 +2,41 @@
 
 @push('css')
 <style>
-    /* Step Wizard Container */
-    .stepwizard {
-        display: table;
-        width: 100%;
-        position: relative;
+    /* Step Progress Tracker (New Button Style) */
+    .step-tracker {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
         margin-bottom: 30px;
-    }
-
-    .stepwizard-row {
-        display: table-row;
         position: relative;
     }
 
-    .stepwizard-row:before {
-        top: 15px;
-        bottom: 0;
-        position: absolute;
+    .step-tracker::before {
         content: "";
+        position: absolute;
+        top: 20px;
+        left: 0;
         width: 100%;
         height: 3px;
         background-color: #e0e0e0;
         z-index: 0;
     }
 
-    .stepwizard-step {
-        display: table-cell;
-        text-align: center;
-        position: relative;
+    .btn-go-through {
         z-index: 1;
+        text-align: center;
     }
 
-    /* Step Circles */
     .btn-circle {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        text-align: center;
-        padding: 8px 0;
-        font-size: 16px;
         border: 2px solid #ccc;
         background-color: #fff;
         color: #666;
-        transition: all 0.3s ease;
-    }
-
-    .btn-circle.active {
-        border-color: #007bff;
-        background-color: #007bff;
-        color: white;
+        font-size: 16px;
         font-weight: bold;
-        box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+        transition: all 0.3s ease;
     }
 
     .btn-circle.completed {
@@ -61,25 +45,17 @@
         color: white;
     }
 
+    /* active should be bellow completed */
+    .btn-circle.active {
+        border-color: #007bff;
+        background-color: #007bff;
+        color: white;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    }
+
     .btn-circle:hover {
         background-color: #f0f0f0;
         cursor: pointer;
-    }
-
-    /* Step Content */
-    .setup-content {
-        display: none;
-    }
-
-    /* Next Button */
-    .nextBtn {
-        background: linear-gradient(45deg, #007bff, #0056b3);
-
-        transition: background 0.3s ease;
-    }
-
-    .nextBtn:hover {
-        background: linear-gradient(45deg, #0056b3, #003d80);
     }
 </style>
 @endpush
@@ -87,24 +63,21 @@
 @section('content')
 <div class="container">
 
-    <!-- STEP WIZARD -->
-    <div class="stepwizard">
-        <div class="stepwizard-row setup-panel">
-            <div class="stepwizard-step">
-                <a href="#" class="btn btn-circle btn-step active" data-step="1">1</a>
-                <p><small>Details</small></p>
-            </div>
-            <div class="stepwizard-step">
-                <a href="#" class="btn btn-circle  {{ $current_step>1?'btn-step active':'' }}" data-step="2">2</a>
-                <p><small>Family Members</small></p>
-            </div>
-            <div class="stepwizard-step">
-                <a href="#" class="btn btn-circle  {{ $current_step>2?'btn-step active':'' }}" data-step="3">3</a>
-                <p><small>Documents Upload</small></p>
-            </div>
+    <!-- NEW STEP TRACKER -->
+    <div class="step-tracker">
+        <div class="btn-go-through btn-step" data-step="1">
+            <button class="btn btn-sm btn-circle statusBtn   {{ $current_step > 0 ? 'completed' : '' }}" type="button">1</button>
+            <div>Details</div>
+        </div>
+        <div class="btn-go-through {{$current_step >= 1 ? 'btn-step' : ''}}" data-step="2">
+            <button class="btn btn-sm btn-circle statusBtn {{ $current_step > 1 ? 'completed' : '' }}" type="button">2</button>
+            <div>Family Members</div>
+        </div>
+        <div class="btn-go-through {{$current_step >= 2 ? 'btn-step' : ''}}" data-step="3">
+            <button class="btn btn-sm btn-circle statusBtn {{ $current_step > 2 ? 'completed' : '' }}" type="button">3</button>
+            <div>Documents Upload</div>
         </div>
     </div>
-
 
     <div class="row">
         <div class="col-sm-4">
@@ -118,8 +91,6 @@
             at the moment.
         </div>
     </div>
-
-
 
     <!-- STEP 1 -->
     <div class="setup-content" id="step-1">
@@ -142,6 +113,7 @@
 
 </div>
 @endsection
+
 
 <?php
 

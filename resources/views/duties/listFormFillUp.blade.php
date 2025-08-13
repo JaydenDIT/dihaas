@@ -46,11 +46,13 @@
 @section('content')
 <div class="container-fluid pt-3 px-5">
     <h3><b>Applications for Task: {{ $task->tasks_name }}</b></h3> <!-- Add this -->
+    <div class="my-4">
+        <button class="btn btn-sm btn-success statusBtn" data-application_status="pending" type="button">Current</button> |
+        <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In Progress</button> |
+        <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed" type="button">Completed</button> |
+        <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected" type="button">Rejected</button>
 
-    <button class="btn btn-sm btn-success statusBtn" data-application_status="pending" type="button">Current</button> |
-    <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In Progress</button> |
-    <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed" type="button">Completed</button> |
-    <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected" type="button">Rejected</button>
+    </div>
 
     <table class="report-table table" id="application-table">
         <thead>

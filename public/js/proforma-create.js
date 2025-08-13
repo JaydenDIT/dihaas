@@ -1,18 +1,23 @@
 $(document).ready(function () {
     fieldHide(hiddenClass);
 
-    const stepToShow = Number(current_step) + 1;
+    // Show current step without +1 confusion
+    showStep(Number(current_step));
 
-    showStep(stepToShow > 3 ? 3 : stepToShow);
-    // Handle Next Button Click
+    // Click to navigate to step
     $(".btn-step").click(function () {
         let step = $(this).data("step");
-        showStep(step);
+        // Allow clicking only if step is unlocked
+        if (!$(this).hasClass("disabled")) {
+            showStep(step);
+        }
     });
+
     $(".nextBtn").click(function () {
         let step = $(this).data("step");
         showStep(step + 1);
     });
+
     $(".prevBtn").click(function () {
         let step = $(this).data("step");
         showStep(step - 1);
@@ -20,13 +25,14 @@ $(document).ready(function () {
 });
 
 function showStep(step) {
-    let currentPanel = $("#step-" + step);
+    step = step < 1 ? 1 : step > 3 ? 3 : step;
     $(".setup-content").hide();
-    currentPanel.show();
-    $(".stepwizard-step a")
+    $("#step-" + step).show();
+
+    $(".btn-circle").removeClass("active");
+    $(".btn-circle")
         .eq(step - 1)
-        .addClass("active")
-        .removeAttr("disabled");
+        .addClass("active");
 }
 
 $(document).on("click", ".ein-search-btn", async function (e) {
