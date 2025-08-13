@@ -26,6 +26,7 @@ class ProformaController extends Controller
     //
     public function create()
     {
+        $this->authorize('canPerform', [Proforma::class, 'client_form_submission']);
         $action = "create";
         $relationships = Relationship::all();
         $qualifications = Qualification::all();
@@ -58,9 +59,9 @@ class ProformaController extends Controller
     public function store(StoreProformaRequest $request)
     {
         try {
+            $this->authorize('canPerform', [Proforma::class, 'client_form_submission']);
             DB::beginTransaction();
             $data = $request->validated();
-
             $data['create_by'] = Auth::user()->user_id;
             $data['form_fillup_step'] = 'step1-completed'; //next step
             $proforma = Proforma::create($data);
@@ -88,6 +89,7 @@ class ProformaController extends Controller
             DB::beginTransaction();
             $data = $request->validated();
             $proforma = Proforma::findOrFail($id);
+            $this->authorize('canPerform',  [$proforma, 'client_form_submission']);
             $proforma->update($data);
             //This define which process the proforma will follow
             ProcessMatcher::matchAndAssignProcess($proforma);
@@ -114,6 +116,7 @@ class ProformaController extends Controller
         try {
             DB::beginTransaction();
             $proforma = Proforma::findOrFail($id);
+            $this->authorize('canPerform',  [$proforma, 'client_form_submission']);
             $proforma->form_fillup_step = 'submitted';
             $proforma->save();
             WorkflowHandler::forwardApplication($proforma); //set the sequence to next 
@@ -141,6 +144,7 @@ class ProformaController extends Controller
     {
         $action = "edit";
         $proforma = Proforma::findOrFail($id);
+        $this->authorize('canPerform',  [$proforma, 'client_form_submission']);
         $relationships = Relationship::all();
         $qualifications = Qualification::all();
         $castes = Caste::all();
@@ -200,7 +204,16 @@ class ProformaController extends Controller
 
     public function destroy($id)
     {
-        Proforma::destroy($id);
-        return response()->json(['message' => 'Proforma deleted successfully'], 200);
+        try {
+            DB::beginTransaction();
+            $proforma = Proforma::findOrFail($id);
+            $this->authorize('canPerform',  [$proforma, 'client_form_submission']);
+            $proforma->delete();
+            DB::commit();
+            return response()->json(['message' => 'Proforma deleted successfully'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Transaction failed', 'error' => $e->getMessage()], 422);
+        }
     }
 }
