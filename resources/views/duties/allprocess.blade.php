@@ -15,7 +15,7 @@
                         <strong>Completed:</strong> {{ $card['completed'] }}<br>
                         <strong>Total:</strong> {{ $card['total'] }}
                     </p>
-                    <a href="{{ route('tasks.performa.index', ['task_id' => $card['task_id']
+                    <a href="{{ route('tasks.performa.index', ['tasks_id' => $card['tasks_id']
                     ]) }}" class="btn btn-primary btn-sm">View Performa</a>
                 </div>
             </div>

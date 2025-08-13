@@ -29,8 +29,8 @@ Route::group(['prefix' => 'duty', 'as' => 'duty.personal.'], function () {
 Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.'], function () {
     // Optional route to view applications for a specific task
     Route::get('/all/performa', [TaskApplicationController::class, 'allProcess'])->name('all');
-    Route::get('/{task_id}/performa', [TaskApplicationController::class, 'index'])->name('index');
-    Route::post('/{task_id}/performa/ajaxlist', [TaskApplicationController::class, 'ajaxlist'])->name('ajaxlist');
+    Route::get('/{tasks_id}/performa', [TaskApplicationController::class, 'index'])->name('index');
+    Route::post('/{tasks_id}/performa/ajaxlist', [TaskApplicationController::class, 'ajaxlist'])->name('ajaxlist');
 });
 
 

@@ -1,5 +1,5 @@
-<div class="row bg-pink">
-    <h5 class="py-2 bg-success bg-gradient text-white fw-bold rounded mt-3">Upload Documents</h5>
+<div class="row bg-light border rounded p-3 mt-3">
+    <h5 class="py-2 bg-success bg-gradient text-white fw-bold rounded">Documents Upload</h5>
     @foreach($documents as $doc)
     <div class="row mb-3">
         <label class="col-form-label">

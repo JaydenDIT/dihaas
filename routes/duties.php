@@ -40,6 +40,8 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::post('/{id}/step2', 'completeFamilyDetail')->name('form.completeFamilyDetail');
             Route::post('/{id}/step3', 'completeUploadDocument')->name('form.completeUploadDocument');
             Route::post('form/{id}/submit', 'proformaFormSubmit')->name('form.final.submit');
+            Route::get('/{tasks_id}/performa', 'index')->name('form.index');
+            Route::post('/{tasks_id}/performa/ajaxlist', 'ajaxlist')->name('form.ajaxlist');
         });
     });
 });

@@ -16,16 +16,16 @@ class TaskApplicationController extends Controller
 {
 
 
-    public function index($task_id)
+    public function index($tasks_id)
     {
-        $departments = CmisApiService::apiFieldDepartments();
-        $task = Task::findOrFail($task_id);
 
-        // dd($departments);
-        /*switch ($task->tasks_duty) {
-            case  'verify_and_forward':
+        $task = Task::findOrFail($tasks_id);
+        switch ($task->tasks_duty) {
+            case  'client_form_submission':
+                return redirect()->route('duties.form.index', [$tasks_id]);
                 break;
-        }*/
+        }
+        $departments = CmisApiService::apiFieldDepartments();
         return view('duties.list_of_applications', compact('departments', 'task'));
     }
 
@@ -50,10 +50,10 @@ class TaskApplicationController extends Controller
                 $total += $pending + $completed;
             }
 
-            // Use task_id as key to avoid duplicates
+            // Use tasks_id as key to avoid duplicates
             $taskSummaries[$task->tasks_id] = [
                 'task' => $task->tasks_name,
-                'task_id' => $task->tasks_id,
+                'tasks_id' => $task->tasks_id,
                 'pending' => $pending,
                 'completed' => $completed,
                 'total' => $pending + $completed,
@@ -66,9 +66,9 @@ class TaskApplicationController extends Controller
 
 
 
-    public function ajaxlist(Request $request, $task_id)
+    public function ajaxlist(Request $request, $tasks_id)
     {
-        $task = Task::findOrFail($task_id);
+        $task = Task::findOrFail($tasks_id);
 
         $application_status = $request->input('application_status');
 

@@ -5,15 +5,75 @@ namespace App\Http\Controllers\Duties;
 use App\Http\Controllers\Controller;
 use App\Models\FamilyDetail;
 use App\Models\Proforma;
+use App\Models\Task;
+use App\Services\CmisApiService;
 use App\Services\DocumentRequirementService;
 use App\Services\LogService;
 use App\Services\WorkflowHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class CitizenFormFillUpController extends Controller
 {
+
+    public function index($tasks_id)
+    {
+
+        $task = Task::findOrFail($tasks_id);
+        $departments = CmisApiService::apiFieldDepartments();
+        return view('duties.listFormFillUp', compact('departments', 'task'));
+    }
+
+
+
+
+
+
+
+
+    public function ajaxlist(Request $request, $tasks_id)
+    {
+        $task = Task::findOrFail($tasks_id);
+
+        $application_status = $request->input('application_status');
+
+        switch ($application_status) {
+            case 'completed':
+                $data = WorkflowHandler::proformaTaskCompletedData($task);
+                break;
+            case 'notreach':
+                $data = WorkflowHandler::proformaTaskNotReachData($task);
+                break;
+            default:
+                $data = WorkflowHandler::proformaTaskCurrentData($task);
+                break;
+        }
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->editColumn('deceased_doe', function ($row) {
+                return date('d M, Y', strtotime($row->deceased_doe));
+            })
+            ->editColumn('created_at', function ($row) {
+                return date('d M, Y', strtotime($row->created_at));
+            })
+            ->editColumn('applicant_dob', function ($row) {
+                return date('d M, Y', strtotime($row->applicant_dob));
+            })
+            ->addColumn('action', function ($row) {
+                $data = urlencode(json_encode($row));
+                return "<div class='d-flex gap-2'>
+                            <a href='" . route('duties.proforma.edit', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>edit</a>
+                        </div>";
+            })
+            ->rawColumns(['status', 'action'])
+            ->make(true);
+    }
+
+
+
     //Step 2 - Complete Family Detail
     public function completeFamilyDetail($id)
     {
