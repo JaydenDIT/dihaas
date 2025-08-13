@@ -1,0 +1,14 @@
+{
+    "adm_dept_cd": "12",
+    "field_dept_cd": 104,
+    "field_dept_desc": "GAD, Secretariat",
+    "field_secrt": "F",
+    "dept_scope": "Own Dept",
+    "dept_short": "GAD",
+    "adm_dept": {
+        "adm_dept_cd": 12,
+        "adm_bdgt_cd": "12",
+        "adm_dept_desc": "Manipur Secretariat",
+        "adm_dept_cd_char": "12"
+    }
+}

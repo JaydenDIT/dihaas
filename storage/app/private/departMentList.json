@@ -1,0 +1,120 @@
+{
+    "adm_dept_cd": 13,
+    "adm_bdgt_cd": "13",
+    "adm_dept_desc": "Home",
+    "adm_dept_cd_char": "13",
+    "field_dept": [
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 524,
+            "field_dept_desc": "CMTW ",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "CMTW "
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 528,
+            "field_dept_desc": "Home Guards",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "Home Guards"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 156,
+            "field_dept_desc": "Rehabilitation",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "Rehabilitation"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 558,
+            "field_dept_desc": "Directorate of Prison",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "Prison"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 511,
+            "field_dept_desc": "Manipur Rifles",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "MR"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 523,
+            "field_dept_desc": "CID (Crime Branch)",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "CID CB"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 559,
+            "field_dept_desc": "C.I.D. Special Branch",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "CID SB"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 543,
+            "field_dept_desc": "Civil Defence",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "Civil Def"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 529,
+            "field_dept_desc": "Rajya Sainik Board",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "Rajya Sainik"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 531,
+            "field_dept_desc": "Manipur Police wireless",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "Wireless"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 532,
+            "field_dept_desc": "Manipur Police Training School",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "MPTS"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 539,
+            "field_dept_desc": "Manipur Police",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "MP"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 153,
+            "field_dept_desc": "Manipur Fire Service, Manipur",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "Fire Service"
+        },
+        {
+            "adm_dept_cd": "13",
+            "field_dept_cd": 527,
+            "field_dept_desc": "Directorate Of Forensic Sciences, Manipur ",
+            "field_secrt": "F",
+            "dept_scope": "Own Dept",
+            "dept_short": "Forensic Sc"
+        }
+    ]
+}

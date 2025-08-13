@@ -1,0 +1,709 @@
+[
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "8",
+        "dsg_desc": "Caretaker                                                                                                                                                                                               ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "13",
+        "dsg_desc": "Driver                                                                                                                                                                                                  ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "12",
+        "dsg_desc": "Daftry                                                                                                                                                                                                  ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "9",
+        "dsg_desc": "Chowkidar                                                                                                                                                                                               ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "11",
+        "dsg_desc": "Cook                                                                                                                                                                                                    ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "7",
+        "dsg_desc": "Bearer/Room Bearer/Room Attendent                                                                                                                                                                       ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "10",
+        "dsg_desc": "Cleaner(Vehicle)                                                                                                                                                                                        ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "24",
+        "dsg_desc": "Peon                                                                                                                                                                                                    ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "51",
+        "dsg_desc": "Chief Secretary                                                                                                                                                                                         ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "27",
+        "dsg_desc": "PRESIDING  OFFICER                                                                                                                                                                                      ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "38",
+        "dsg_desc": "Principal Resident Commissioner                                                                                                                                                                         ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "54",
+        "dsg_desc": "Principal Secretary                                                                                                                                                                                     ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "70",
+        "dsg_desc": "Deputy Secretary                                                                                                                                                                                        ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "69",
+        "dsg_desc": "Under/Deputy/Joint Secretary                                                                                                                                                                            ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "59",
+        "dsg_desc": "O.S.D (Home)                                                                                                                                                                                            ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "66",
+        "dsg_desc": "Deputy Commissioner(D.E)                                                                                                                                                                                ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "42",
+        "dsg_desc": "Assistant Resident Commissioner                                                                                                                                                                         ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "26",
+        "dsg_desc": "PR. PVT. SECY.                                                                                                                                                                                          ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "65",
+        "dsg_desc": "Protocol Officer                                                                                                                                                                                        ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "60",
+        "dsg_desc": "Commissioner/Secretary                                                                                                                                                                                  ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "52",
+        "dsg_desc": "Commissioner                                                                                                                                                                                            ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "55",
+        "dsg_desc": "SECRETARY                                                                                                                                                                                               ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "64",
+        "dsg_desc": "Under Secretary                                                                                                                                                                                         ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "61",
+        "dsg_desc": "Spl/Addl/Joint/Deputy Secretary                                                                                                                                                                         ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "63",
+        "dsg_desc": "Asst. Revenue Commissioner                                                                                                                                                                              ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "43",
+        "dsg_desc": "MCS Prob.                                                                                                                                                                                               ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "58",
+        "dsg_desc": "Additional Secretary                                                                                                                                                                                    ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "68",
+        "dsg_desc": "Deputy Protocol Officer                                                                                                                                                                                 ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "28",
+        "dsg_desc": "Private Secretary                                                                                                                                                                                       ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "56",
+        "dsg_desc": "SPL. SECRETARY                                                                                                                                                                                          ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "45",
+        "dsg_desc": "SDC Prob.                                                                                                                                                                                               ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "44",
+        "dsg_desc": "MFS Prob.                                                                                                                                                                                               ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "40",
+        "dsg_desc": "Assistant Protocol Officer                                                                                                                                                                              ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "21",
+        "dsg_desc": "Librarian                                                                                                                                                                                               ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "23",
+        "dsg_desc": "Mechanical Supervisor                                                                                                                                                                                   ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "31",
+        "dsg_desc": "Steno Grade-I                                                                                                                                                                                           ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "20",
+        "dsg_desc": "LEGAL  Assistant                                                                                                                                                                                        ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "39",
+        "dsg_desc": "Sr. Receptionist                                                                                                                                                                                        ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "34",
+        "dsg_desc": "Store Keeper                                                                                                                                                                                            ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "32",
+        "dsg_desc": "Steno Grade-II                                                                                                                                                                                          ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "30",
+        "dsg_desc": "Steno                                                                                                                                                                                                   ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "37",
+        "dsg_desc": "U.D.C.                                                                                                                                                                                                  ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "18",
+        "dsg_desc": "L.D.C.                                                                                                                                                                                                  ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "29",
+        "dsg_desc": "Receptionist                                                                                                                                                                                            ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "17",
+        "dsg_desc": "Jr. Machineman                                                                                                                                                                                          ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "14",
+        "dsg_desc": "Electrician                                                                                                                                                                                             ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "25",
+        "dsg_desc": "Plumber                                                                                                                                                                                                 ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "16",
+        "dsg_desc": "Jemadar                                                                                                                                                                                                 ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "22",
+        "dsg_desc": "Mali                                                                                                                                                                                                    ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "35",
+        "dsg_desc": "Sweeper                                                                                                                                                                                                 ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "15",
+        "dsg_desc": "Grade IV                                                                                                                                                                                                ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "57",
+        "dsg_desc": "IAS, Leave Res/Jr. Posts Res                                                                                                                                                                            ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "41",
+        "dsg_desc": "Telephone Mechanical Supervisor                                                                                                                                                                         ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "62",
+        "dsg_desc": "O.S.D.                                                                                                                                                                                                  ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "71",
+        "dsg_desc": "O.S.D (Forest & Envt.)                                                                                                                                                                                  ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "74",
+        "dsg_desc": "Addl/Joint/Deputy/Under Secretary                                                                                                                                                                       ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "72",
+        "dsg_desc": "Assistant Draftsman (Law)                                                                                                                                                                               ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "33",
+        "dsg_desc": "Steno Grade-III                                                                                                                                                                                         ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "75",
+        "dsg_desc": "Chief Minister                                                                                                                                                                                          ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "76",
+        "dsg_desc": "Deputy Chief Minister                                                                                                                                                                                   ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "77",
+        "dsg_desc": "Cabinet Minister                                                                                                                                                                                        ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "78",
+        "dsg_desc": "Parliamentary Secretary                                                                                                                                                                                 ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "79",
+        "dsg_desc": "ASO MACPS                                                                                                                                                                                               ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "19",
+        "dsg_desc": "Secretariat Assistant                                                                                                                                                                                   ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "81",
+        "dsg_desc": "Legislative Drafting Asst IC                                                                                                                                                                            ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1518",
+        "dsg_desc": "Secretary (Judicial)                                                                                                                                                                                    ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1470",
+        "dsg_desc": "Personal Secretary                                                                                                                                                                                      ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1477",
+        "dsg_desc": "DG                                                                                                                                                                                                      ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1471",
+        "dsg_desc": "Minister AG Driver                                                                                                                                                                                      ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1472",
+        "dsg_desc": "Minister AG Peon                                                                                                                                                                                        ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1483",
+        "dsg_desc": "Legal Officer                                                                                                                                                                                           ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1473",
+        "dsg_desc": "Social Media Executive                                                                                                                                                                                  ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1474",
+        "dsg_desc": "Advocate General Manipur (AG)                                                                                                                                                                           ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "3",
+        "dsg_desc": "Additional Chief Secretary                                                                                                                                                                              ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "4",
+        "dsg_desc": "Administrative Officer                                                                                                                                                                                  ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "2",
+        "dsg_desc": "Accounts Officer                                                                                                                                                                                        ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "5",
+        "dsg_desc": "Assistant Private Secretary                                                                                                                                                                             ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "6",
+        "dsg_desc": "Assistant S.O.                                                                                                                                                                                          ",
+        "group_code": "B"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "80",
+        "dsg_desc": "UDA MACPS                                                                                                                                                                                               ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1475",
+        "dsg_desc": "Additional AG                                                                                                                                                                                           ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1476",
+        "dsg_desc": "Deputy AG                                                                                                                                                                                               ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "82",
+        "dsg_desc": "Advocate General Manipur                                                                                                                                                                                ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "83",
+        "dsg_desc": "Addl Advocate General Manipur                                                                                                                                                                           ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "84",
+        "dsg_desc": "Secretariat Security Officer(MPS Grade-I)                                                                                                                                                               ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "826",
+        "dsg_desc": "Senior Finance Officer                                                                                                                                                                                  ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "833",
+        "dsg_desc": "Bearer                                                                                                                                                                                                  ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "834",
+        "dsg_desc": "Chowkidar-cum-mali                                                                                                                                                                                      ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "835",
+        "dsg_desc": "Cook Cum bearer                                                                                                                                                                                         ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "836",
+        "dsg_desc": "Durwan                                                                                                                                                                                                  ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "837",
+        "dsg_desc": "Liftman                                                                                                                                                                                                 ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "838",
+        "dsg_desc": "Room Bearer                                                                                                                                                                                             ",
+        "group_code": "D"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "839",
+        "dsg_desc": "Security Guard                                                                                                                                                                                          ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "36",
+        "dsg_desc": "Senior Secretariat Assistant                                                                                                                                                                            ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "903",
+        "dsg_desc": "Deputy Secretary (Law)                                                                                                                                                                                  ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "904",
+        "dsg_desc": "Deputy Legal Remembrancer                                                                                                                                                                               ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "942",
+        "dsg_desc": "Deputy Chairman State Planning Board                                                                                                                                                                    ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "53",
+        "dsg_desc": "Joint/ Deputy Secretary                                                                                                                                                                                 ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1120",
+        "dsg_desc": "Deputy Resident Commissioner (Non-Cadre post)                                                                                                                                                           ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1311",
+        "dsg_desc": "LDC/ Receptionist                                                                                                                                                                                       ",
+        "group_code": "C"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "73",
+        "dsg_desc": "Section Officer                                                                                                                                                                                         ",
+        "group_code": "A"
+    },
+    {
+        "field_code": "104",
+        "field_dept_desc": "GAD, Secretariat",
+        "dsg_serial_no": "1352",
+        "dsg_desc": "Joint Secretary (Finance)                                                                                                                                                                               ",
+        "group_code": "A"
+    }
+]

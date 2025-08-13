@@ -1,0 +1,9 @@
+{
+    "dept_id": {
+        "name": "Department ID",
+        "description": "Type of the case check the id given in the case_type table",
+        "type": "number",
+        "default": null,
+        "operations": [">"]
+    }
+}
