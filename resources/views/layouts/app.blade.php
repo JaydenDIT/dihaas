@@ -36,13 +36,14 @@
         <div id="loading-div">
             <img id="loading-image" src="{{ asset('assets/img/loader.gif')}}" alt="Loading...">
         </div>
-        @include('layouts.header.authHeader')
+
         @include('layouts.error')
         @guest
         <div class="guest-div">
             @yield('content')
         </div>
         @else
+        @include('layouts.header.authHeader')
 
         <main>
             <div class="p-1 mb-5">
