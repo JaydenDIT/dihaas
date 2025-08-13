@@ -40,14 +40,24 @@ class CitizenFormFillUpController extends Controller
         $application_status = $request->input('application_status');
 
         switch ($application_status) {
-            case 'completed':
+            //proforma_status tells the current state of the application
+            case 'pending': //currently pending on me
+                $data = WorkflowHandler::proformaTaskCurrentData($task);
+                break;
+            case 'forwarded': //forwarded from me but entire process not completed
+                $data = WorkflowHandler::proformaTaskForwardedData($task);
+                break;
+            case 'completed': //forwarded from me but entire process not completed
                 $data = WorkflowHandler::proformaTaskCompletedData($task);
                 break;
-            case 'notreach':
+            case 'rejected': //forwarded from me or rejected during me but entire process is rejected later
+                $data = WorkflowHandler::proformaTaskRejectedData($task);
+                break;
+            case 'notreach': //which will be reaching me
                 $data = WorkflowHandler::proformaTaskNotReachData($task);
                 break;
             default:
-                $data = WorkflowHandler::proformaTaskCurrentData($task);
+                return DataTables::of([])->make(true); // No data for other statuses
                 break;
         }
 

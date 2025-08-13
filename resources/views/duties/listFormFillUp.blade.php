@@ -9,7 +9,7 @@
         reinitSelect2();
     });
 
-    function applicationTable() {
+    function applicationTable(application_status = 'pending') {
         let columns = [
             "DT_RowIndex|nonorderable|nonsearchable",
             "deceased_ein",
@@ -26,9 +26,20 @@
             url: "{{ route('duties.form.ajaxlist', $task->tasks_id) }}",
             message: "No Performa Found",
             columns: columns,
+            param: {
+                application_status: application_status
+            },
             action: true,
         });
     }
+
+    $(document).on('click', '.statusBtn', function(e) {
+        e.preventDefault();
+        let application_status = $(this).data('application_status');
+        applicationTable(application_status); // Reload with selected status
+        $(".statusBtn").removeClass('btn-success').addClass('btn-primary');
+        $(this).addClass('btn-success');
+    });
 </script>
 @endpush
 
@@ -36,7 +47,10 @@
 <div class="container-fluid pt-3 px-5">
     <h3><b>Applications for Task: {{ $task->tasks_name }}</b></h3> <!-- Add this -->
 
-
+    <button class="btn btn-sm btn-success statusBtn" data-application_status="pending" type="button">Current</button> |
+    <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In Progress</button> |
+    <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed" type="button">Completed</button> |
+    <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected" type="button">Rejected</button>
 
     <table class="report-table table" id="application-table">
         <thead>
