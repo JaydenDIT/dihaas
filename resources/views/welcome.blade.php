@@ -188,7 +188,7 @@
             <div class="form-container">
                 <div class="container">
 
-                    <div class="row background">
+                    <div class="row background p-2">
 
                         <div class="col">
                             <h6><b>Login as</b></h6>
@@ -198,7 +198,7 @@
                                 <input type="radio" name="login" id="login-btn" checked>
                             </div>
                             <div>
-                                <label for="citizen">Citizen</label>
+                                <label for="login-btn">Citizen</label>
                             </div>
 
                         </div>
@@ -208,7 +208,7 @@
                                 <input type="radio" name="login" id="register-btn">
                             </div>
                             <div>
-                                <label for="department">Department</label>
+                                <label for="register-btn">Department</label>
                             </div>
 
                         </div>
