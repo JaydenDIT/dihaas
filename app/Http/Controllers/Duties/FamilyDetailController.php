@@ -58,32 +58,6 @@ class FamilyDetailController extends Controller
         return response()->json(['data' => urlencode(json_encode($member))], 200);
     }
 
-    public function completeFamilyDetail($id)
-    {
-        try {
-            DB::beginTransaction();
-            $proforma = Proforma::findOrFail($id);
-            $familyMembers = FamilyDetail::where('proforma_id', $proforma->proforma_id)->count();
-            if ($familyMembers == 0) {
-                return response()->json(['message' => 'Add at least one family member'], 422);
-            }
-            $data['form_fillup_step'] = 'step2-completed'; //default status
-            $proforma->update($data);
-            LogService::addProformaLog([
-                'proforma_id' => $proforma->proforma_id,
-                'action_by' => Auth::user()->user_id,
-                'action_name' => 'Family Detail save draft-step2',
-                'action_remark' => 'Step 2 completed',
-            ]);
-            DB::commit();
-            return response()->json(['message' => 'Successfully save', 'proforma_id' => $proforma->proforma_id], 201);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['message' => 'Saving failed', 'error' => $e->getMessage()], 422);
-        }
-    }
-
-
 
     public function destroy($id)
     {

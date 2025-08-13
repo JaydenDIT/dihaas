@@ -46,7 +46,7 @@
     <div class="hstack gap-3 my-3 p-3">
         <div class="ms-auto">
             <button class="btn btn-md btn-success" id="saveDocumentBtn" type="button">Save</button>
-            @if($current_step == 3)
+            @if($current_step >= 3)
             <button class="btn btn-md btn-success" id="finalFormSubmitBtn" type="button">Submit Form</button>
             @endif
         </div>

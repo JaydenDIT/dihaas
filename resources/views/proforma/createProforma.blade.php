@@ -196,8 +196,6 @@ if ($action == 'create') {
     const saveProforma = "{{ route('duties.proforma.store') }}";
     const editProforma = "{{ route('duties.proforma.edit', ['id'=>'__ID__']) }}";
     const updateProforma = "{{ route('duties.proforma.update', ['id'=>'__ID__']) }}";
-    const completeUploadDocument = "{{ route('duties.upload.document.completeUploadDocument', ['id'=>'__ID__']) }}";
-    const completeFamilyDetail = "{{ route('duties.family.completeFamilyDetail', ['id'=>'__ID__']) }}";
     //documents
     const uploadDocumentSave = "{{ route('duties.upload.document.store') }}";
     let requiredDocumentsLeft = <?= json_encode($requiredDocumentsLeft ?? []) ?>;
@@ -206,7 +204,9 @@ if ($action == 'create') {
     const familyDetailUpdate = "{{ route('duties.family.update', ['id'=>'__ID__']) }}";
     const familyDetailDelete = "{{ route('duties.family.destroy', ['id'=>'__ID__']) }}";
     //form submit
-    const formSubmitUrl = "{{ route('duties.proforma.form.submit', ['id'=>'__ID__']) }}";
+    const completeUploadDocument = "{{ route('duties.form.completeUploadDocument', ['id'=>'__ID__']) }}";
+    const completeFamilyDetail = "{{ route('duties.form.completeFamilyDetail', ['id'=>'__ID__']) }}";
+    const formSubmitUrl = "{{ route('duties.form.final.submit', ['id'=>'__ID__']) }}";
 </script>
 <script src="{{ asset('js/proforma-create.js') }}"></script>
 

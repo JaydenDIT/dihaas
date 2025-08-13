@@ -89,7 +89,7 @@ class ProformaController extends Controller
             DB::beginTransaction();
             $data = $request->validated();
             $proforma = Proforma::findOrFail($id);
-            $this->authorize('canPerform',  [$proforma, 'client_form_submission']);
+            $this->authorize('canPerformOnProforma',  [$proforma, 'client_form_submission']);
             $proforma->update($data);
             //This define which process the proforma will follow
             ProcessMatcher::matchAndAssignProcess($proforma);
@@ -111,31 +111,6 @@ class ProformaController extends Controller
 
 
 
-    public function proformaFormSubmit($id)
-    {
-        try {
-            DB::beginTransaction();
-            $proforma = Proforma::findOrFail($id);
-            $this->authorize('canPerform',  [$proforma, 'client_form_submission']);
-            $proforma->form_fillup_step = 'submitted';
-            $proforma->save();
-            WorkflowHandler::forwardApplication($proforma); //set the sequence to next 
-
-            LogService::addProformaLog([
-                'proforma_id' => $proforma->proforma_id,
-                'action_by' => 1,
-                'action_name' => 'forward',
-                'action_remark' => 'Form Submit by Applicant ' . $proforma->applicant_name,
-            ]);
-            DB::commit();
-            return response()->json(['message' => 'Proforma updated successfully', 'proforma_id' => $proforma->proforma_id], 200);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['message' => 'Proforma update failed', 'error' => $e->getMessage()], 422);
-        }
-    }
-
-
 
 
 
@@ -144,7 +119,7 @@ class ProformaController extends Controller
     {
         $action = "edit";
         $proforma = Proforma::findOrFail($id);
-        $this->authorize('canPerform',  [$proforma, 'client_form_submission']);
+        $this->authorize('canPerformOnProforma',  [$proforma, 'client_form_submission']);
         $relationships = Relationship::all();
         $qualifications = Qualification::all();
         $castes = Caste::all();
@@ -207,7 +182,7 @@ class ProformaController extends Controller
         try {
             DB::beginTransaction();
             $proforma = Proforma::findOrFail($id);
-            $this->authorize('canPerform',  [$proforma, 'client_form_submission']);
+            $this->authorize('canPerformOnProforma',  [$proforma, 'client_form_submission']);
             $proforma->delete();
             DB::commit();
             return response()->json(['message' => 'Proforma deleted successfully'], 200);

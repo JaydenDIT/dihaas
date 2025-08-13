@@ -116,41 +116,6 @@ class UploadedDocumentController extends Controller
     }
 
 
-    public function completeUploadDocument($id)
-    {
-        try {
-            DB::beginTransaction();
-            $proforma = Proforma::findOrFail($id);
-
-            $documents = DocumentRequirementService::getDocumentsWithRequirement($proforma);
-            $requiredDocumentsLeft = $documents
-                ->where('required', true)
-                ->filter(function ($doc) {
-                    return empty($doc->uploaded_file);
-                })
-                ->count();
-
-            if ($requiredDocumentsLeft > 0) {
-                return response()->json(['message' => 'Upload all required documents'], 422);
-            }
-            $data['form_fillup_step'] = 'step3-completed'; //default status
-            $proforma->update($data);
-
-            LogService::addProformaLog([
-                'proforma_id' => $proforma->proforma_id,
-                'action_by' => Auth::user()->user_id,
-                'action_name' => 'Proforma document save draft-step3',
-                'action_remark' => 'Step 3 completed',
-            ]);
-            DB::commit();
-            return response()->json(['message' => 'Successfully save', 'proforma_id' => $proforma->proforma_id], 201);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['message' => 'Saving failed', 'error' => $e->getMessage()], 422);
-        }
-    }
-
-
 
 
     public function destroy($id)

@@ -44,9 +44,7 @@ class TaskApplicationController extends Controller
 
             foreach ($task->processes as $process) {
                 $sequence = $process->pivot->sequence;
-
                 $apps = Proforma::where('process_id', $process->process_id)->get();
-
                 $pending += $apps->where('process_sequence', $sequence)->count();
                 $completed += $apps->where('process_sequence', '>', $sequence)->count();
                 $total += $pending + $completed;
@@ -87,32 +85,6 @@ class TaskApplicationController extends Controller
                 break;
         }
 
-
-        switch ($task->tasks_duty) {
-
-            case  'verify_and_forward':
-                $dept_id = $request->input('dept_id');
-                if (!empty($dept_id)) {
-                    $data = $data->filter(function ($item) use ($dept_id) {
-                        return $item->dept_id == $dept_id;
-                    })->values();
-                }
-                break;
-
-            case  'client_form_submission':
-                if (strtolower(Auth::user()->role->role_name) != 'superadmin') {
-                    $data = $data->filter(function ($item) {
-                        return Auth::user()->id == $item->created_by;
-                    })->values();
-                }
-                return $this->ajaxTableForClientFormSubmission($data);
-                break;
-        }
-    }
-
-
-    public function ajaxTableForClientFormSubmission($data)
-    {
         return DataTables::of($data)
             ->addIndexColumn()
             ->editColumn('deceased_doe', function ($row) {
@@ -127,7 +99,7 @@ class TaskApplicationController extends Controller
             ->addColumn('action', function ($row) {
                 $data = urlencode(json_encode($row));
                 return "<div class='d-flex gap-2'>
-                            <a href='" . route('duties.proforma.edit', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>Edit</a>
+                            <a href='" . route('duties.proforma.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>view</a>
                         </div>";
             })
             ->rawColumns(['status', 'action'])
