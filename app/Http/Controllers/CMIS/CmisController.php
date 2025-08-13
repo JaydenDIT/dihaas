@@ -5,8 +5,6 @@ namespace App\Http\Controllers\CMIS;
 use App\Http\Controllers\Controller;
 use App\Services\CmisApiService;
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class CmisController extends Controller
 {

@@ -34,11 +34,16 @@ class DocumentRequirementService
                 foreach ($rules['required_if'] as $condition) {
                     [$table, $field, $operator, $value] = $condition;
 
-                    $sourceData = isset($application->$table)
-                        ? $application->$table
-                        : (is_array($application) && isset($application[$table])
-                            ? $application[$table]
-                            : null);
+                    if ($table === 'proforma') {
+                        $sourceData = $application;
+                    } elseif (isset($application->$table)) {
+                        $sourceData = $application->$table;
+                    } elseif (is_array($application) && isset($application[$table])) {
+                        $sourceData = $application[$table];
+                    } else {
+                        $sourceData = null;
+                    }
+
 
                     if (is_array($sourceData) || is_object($sourceData)) {
                         $fieldValue = is_object($sourceData)

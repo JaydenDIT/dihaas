@@ -57,8 +57,8 @@
                 <select class="form-select" aria-label="Default select example" id="dept_id"
                     name="dept_id">
                     <option value="" selected>All Department</option>
-                    @foreach($departments as $dept)
-                    <option value="{{ $dept->dept_id }}">{{ $dept->dept_name }}</option>
+                    @foreach($departments['field_dept'] as $dept)
+                    <option value="{{ $dept['field_dept_cd'] }}">{{ $dept['field_dept_desc'] }}</option>
                     @endforeach
                 </select>
             </div>

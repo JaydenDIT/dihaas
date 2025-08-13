@@ -93,13 +93,18 @@ class CmisApiService
 
     /**
      * Fetch field departments.
-     * If $field_dept_cd is provided, fetch the detail of the field department.
+     * If $field_dept_cd is provided, fetch the detail of the field department. if not then fetch all department list
      * @param int $field_dept_cd
      * @return array
      */
     public static function apiFieldDepartments(int $field_dept_cd = 0)
     {
         //test
+        if ($field_dept_cd !== 0) {
+            return Storage::disk('private')->exists('departmentDetail.json')
+                ? json_decode(Storage::disk('private')->get('departmentDetail.json'), true)
+                : [];
+        }
         return Storage::disk('private')->exists('departMentList.json')
             ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
             : [];

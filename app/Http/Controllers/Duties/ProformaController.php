@@ -15,6 +15,7 @@ use App\Models\SubDivision;
 use App\Services\CmisApiService;
 use App\Services\DocumentRequirementService;
 use App\Services\LogService;
+use App\Services\ProcessMatcher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -52,10 +53,16 @@ class ProformaController extends Controller
             $data['create_by'] = 1; //for test
             $data['proforma_status'] = 'draft-step1'; //default status
             $proforma = Proforma::create($data);
+
+
+            //This define which process the proforma will follow
+            ProcessMatcher::matchAndAssignProcess($proforma);
+            $proforma->save();
+
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => $data['create_by'],
-                'action_name' => 'Proforma created save draft-step1',
+                'action_name' => 'Save Proforma on Draft',
                 'action_remark' => 'Step 1 completed',
             ]);
             DB::commit();
@@ -71,14 +78,16 @@ class ProformaController extends Controller
         try {
             DB::beginTransaction();
             $data = $request->validated();
-
-            $data['create_by'] = 1; //for test
             $proforma = Proforma::findOrFail($id);
             $proforma->update($data);
+            //This define which process the proforma will follow
+            ProcessMatcher::matchAndAssignProcess($proforma);
+            $proforma->save();
+
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
-                'action_by' => $data['create_by'],
-                'action_name' => 'Proforma update save draft-step1',
+                'action_by' => 1,
+                'action_name' => 'Update Proforma on Draft',
                 'action_remark' => 'Step 1 updated',
             ]);
             DB::commit();
@@ -89,6 +98,28 @@ class ProformaController extends Controller
         }
     }
 
+
+
+    public function proformaFormSubmit($id)
+    {
+        try {
+            DB::beginTransaction();
+            $proforma = Proforma::findOrFail($id);
+
+
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => 1,
+                'action_name' => 'form-submit',
+                'action_remark' => 'Proforma Form Submit',
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Proforma updated successfully', 'proforma_id' => $proforma->proforma_id], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Proforma update failed', 'error' => $e->getMessage()], 422);
+        }
+    }
 
 
 

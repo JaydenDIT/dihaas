@@ -38,7 +38,7 @@ class ProcessMatcher
     {
         foreach ($criteriaList as $criterion) {
             $field = $criterion['field'] ?? null;
-            $operator = $criterion['operator'] ?? '==';
+            $operator = $criterion['operation'] ?? '==';
             $value = $criterion['value'] ?? null;
 
             if (!isset($application->$field)) {

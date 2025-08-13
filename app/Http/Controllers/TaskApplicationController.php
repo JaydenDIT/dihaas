@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\DepartmentModel;
-use App\Models\ProformaModel;
+use App\Models\Proforma;
 use App\Models\Task;
+use App\Models\User;
+use App\Services\CmisApiService;
 use App\Services\WorkflowHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,8 +19,10 @@ class TaskApplicationController extends Controller
 
     public function index($task_id)
     {
-        $departments = DepartmentModel::orderBy('dept_id')->get()->unique('dept_id');
+        $departments = CmisApiService::apiFieldDepartments();
         $task = Task::findOrFail($task_id);
+
+        // dd($departments);
         /*switch ($task->tasks_duty) {
             case  'verify_and_forward':
                 break;
@@ -29,9 +32,7 @@ class TaskApplicationController extends Controller
 
     public function allProcess()
     {
-        $user = Auth::user();
-
-        dd($user);
+        $user = User::find(1); //test
 
         // Eager load role's duties (tasks) and their related processes
         $tasks = $user->role->duties()->with('processes')->get();
@@ -46,7 +47,7 @@ class TaskApplicationController extends Controller
             foreach ($task->processes as $process) {
                 $sequence = $process->pivot->sequence;
 
-                $apps = ProformaModel::where('process_id', $process->process_id)->get();
+                $apps = Proforma::where('process_id', $process->process_id)->get();
 
                 $pending += $apps->where('process_sequence', $sequence)->count();
                 $completed += $apps->where('process_sequence', '>', $sequence)->count();
