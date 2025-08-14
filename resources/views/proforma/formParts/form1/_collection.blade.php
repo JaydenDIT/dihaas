@@ -8,13 +8,13 @@
      @endif
 
      <div class="row bg-light border rounded p-3 mt-3">
-         @include('proforma.form1._1deceased_cmis_details');
-         @include('proforma.form1._2deceased_entry_details');
-         @include('proforma.form1._3applicant_details');
-         @include('proforma.form1._4applicant_address_current');
-         @include('proforma.form1._5applicant_address_permanent');
-         @include('proforma.form1._6prefer_post_parent_department');
-         @include('proforma.form1._7prefer_post_other_department');
+         @include('proforma.formParts.form1._1deceased_cmis_details');
+         @include('proforma.formParts.form1._2deceased_entry_details');
+         @include('proforma.formParts.form1._3applicant_details');
+         @include('proforma.formParts.form1._4applicant_address_current');
+         @include('proforma.formParts.form1._5applicant_address_permanent');
+         @include('proforma.formParts.form1._6prefer_post_parent_department');
+         @include('proforma.formParts.form1._7prefer_post_other_department');
 
 
 

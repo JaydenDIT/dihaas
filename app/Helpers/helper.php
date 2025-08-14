@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\ProcessTasksMapping;
-use App\Models\ProformaModel;
+use App\Models\Proforma;
 use App\Models\Task;
 use App\Models\TaskRoleMapping;
 use App\Models\WebSettingModel;
@@ -195,9 +195,9 @@ function sixDigitsEin($value)
     return str_pad($value, 6, '0', STR_PAD_LEFT);
 }
 
-function getPrevNextTasks($ein)
+function getPrevNextTasks($proforma_id)
 {
-    $application = ProformaModel::findOrFail(sixDigitsEin($ein));
+    $application = Proforma::findOrFail($proforma_id);
 
     $current_sequence = $application->process_sequence;
     $process_id = $application->process_id;
@@ -231,7 +231,6 @@ function getPrevNextTasks($ein)
             $tasks['previous'] = $task_data;
         } elseif ($map->sequence == $current_sequence) {
             $tasks['current'] = $task_data;
-
             // Check if current user role is allowed to perform this task
             $is_allowed = TaskRoleMapping::where('tasks_id', $map->tasks_id)
                 ->where('role_id', $user_role_id)

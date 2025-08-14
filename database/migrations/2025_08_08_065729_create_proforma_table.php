@@ -78,7 +78,8 @@ return new class extends Migration {
 
             // required for dynamic process
             $table->integer('process_id')->nullable();
-            $table->string('proforma_status', 30)->enum('new', 'pending', 'rejected', 'reverted', 'completed')->nullable();
+            $table->string('proforma_status', 30)->enum('forwarded', 'rejected', 'reverted', 'completed')
+                ->nullable()->comment("This status is to know the current state of the application");
             $table->integer('process_sequence')->nullable();
 
             // others

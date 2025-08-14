@@ -7,7 +7,6 @@ use App\Models\UploadedDocument;
 use App\Models\DocumentList;
 use App\Models\Proforma;
 use App\Services\DocumentRequirementService;
-use App\Services\LogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

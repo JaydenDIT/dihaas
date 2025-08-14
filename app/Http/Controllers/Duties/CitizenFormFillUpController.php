@@ -163,7 +163,7 @@ class CitizenFormFillUpController extends Controller
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => 1,
-                'action_name' => 'forward',
+                'action_name' => 'forwarded',
                 'action_remark' => 'Form Submit by Applicant ' . $proforma->applicant_name,
             ]);
             DB::commit();

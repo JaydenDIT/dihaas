@@ -94,19 +94,19 @@
 
     <!-- STEP 1 -->
     <div class="setup-content" id="step-1">
-        @include('proforma.form1._collection')
+        @include('proforma.formParts.form1._collection')
     </div>
 
     @if($action == 'edit')
     <!-- STEP 2 -->
     <div class="setup-content" id="step-2">
-        @include('proforma.form2._familyDetail')
+        @include('proforma.formParts.form2._familyDetail')
     </div>
 
     <!-- STEP 3 -->
     <div class="setup-content" id="step-3">
         <div class="form-group">
-            @include('proforma.form3._uploadDocument')
+            @include('proforma.formParts.form3._uploadDocument')
         </div>
     </div>
     @endif
@@ -179,6 +179,8 @@ if ($action == 'create') {
     const completeUploadDocument = "{{ route('duties.form.completeUploadDocument', ['id'=>'__ID__']) }}";
     const completeFamilyDetail = "{{ route('duties.form.completeFamilyDetail', ['id'=>'__ID__']) }}";
     const formSubmitUrl = "{{ route('duties.form.final.submit', ['id'=>'__ID__']) }}";
+    //tasks
+    const redirectUrl = "{{ route('tasks.performa.index', [$tasks['current']['tasks_id'] ]) }}";
 </script>
 <script src="{{ asset('js/proforma-create.js') }}"></script>
 

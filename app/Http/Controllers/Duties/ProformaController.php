@@ -16,7 +16,6 @@ use App\Services\CmisApiService;
 use App\Services\DocumentRequirementService;
 use App\Services\LogService;
 use App\Services\ProcessMatcher;
-use App\Services\WorkflowHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -151,6 +150,7 @@ class ProformaController extends Controller
 
         $current_step = $proforma->form_fillup_step == "step1-completed" ? 1 : ($proforma->form_fillup_step == "step2-completed" ? 2 : 3);
 
+        $tasks = getPrevNextTasks($proforma->proforma_id); //from helper.php
         return view('proforma.createProforma', compact(
             'action',
             'relationships',
@@ -169,7 +169,8 @@ class ProformaController extends Controller
             'documents',
             'requiredDocumentsLeft',
             'familyMembers',
-            'current_step'
+            'current_step',
+            'tasks'
         ));
     }
 

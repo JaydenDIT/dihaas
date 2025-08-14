@@ -291,7 +291,7 @@ $(document.body).on("change", "#request_dsg_srno_3", function () {
     $("#request_group_code_3").val(groupCode);
 });
 
-// Saving part 1 form
+// Step 1 submit
 $(document).on("click", "#saveProforma", async function (e) {
     e.preventDefault();
     const form = document.getElementById("proforma-step1");
@@ -444,7 +444,7 @@ $(document).on("click", ".deleteMember", async function () {
         console.error(err);
     }
 });
-
+// Step 2 submit
 $(document).on("click", "#saveFamilyDetail", async function (e) {
     e.preventDefault();
     try {
@@ -508,7 +508,7 @@ $(document).on("submit", "#docUploadForm", async function (e) {
         console.error(err);
     }
 });
-
+// Step 3 submit
 $(document).on("click", "#saveDocumentBtn", async function (e) {
     e.preventDefault();
     try {
@@ -532,7 +532,7 @@ $(document).on("click", "#saveDocumentBtn", async function (e) {
         console.error(err);
     }
 });
-
+// Final Submit
 $(document).on("click", "#finalFormSubmitBtn", async function (e) {
     e.preventDefault();
     try {
@@ -549,6 +549,7 @@ $(document).on("click", "#finalFormSubmitBtn", async function (e) {
             type: "success",
             showCancelButton: false,
         });
+        window.location.href = redirectUrl;
     } catch (err) {
         console.error(err);
     }

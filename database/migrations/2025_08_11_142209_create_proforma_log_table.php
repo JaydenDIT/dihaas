@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id('proforma_log_id');
             $table->unsignedBigInteger('proforma_id');
             $table->unsignedBigInteger('action_by');
-            $table->string('action_name', 75);
+            $table->string('action_name', 75)
+                ->comment("The name of the action performed on the proforma. 
+                    But action_name forwarded, rejected, reverted, completed
+                    must be use carefully these are use for displaying histories or status of the proforma");
             $table->text('action_remark')->nullable();
             $table->timestamps();
             $table->foreign('proforma_id')->references('proforma_id')->on('proforma');

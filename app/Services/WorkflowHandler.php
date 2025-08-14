@@ -20,7 +20,7 @@ class WorkflowHandler
 
         if ($next) {
             $app->process_sequence = $next->sequence;
-            $app->proforma_status = 'pending';
+            $app->proforma_status = 'forwarded';
         } else {
             $app->process_sequence = 9999;
             $app->proforma_status = 'completed';
@@ -39,7 +39,7 @@ class WorkflowHandler
 
         if ($prev) {
             $app->process_sequence = $prev->sequence;
-            $app->proforma_status = 'pending';
+            $app->proforma_status = 'reverted';
             $app->save();
         }
 
@@ -96,7 +96,7 @@ class WorkflowHandler
         return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) {
             return $query
                 ->where('process_sequence', '=', $mapping->sequence)
-                ->whereIn('proforma_status', ['pending', 'new']);
+                ->whereIn('proforma_status', ['forwarded', 'reverted']);
         });
     }
 
@@ -105,7 +105,7 @@ class WorkflowHandler
         return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) {
             return $query
                 ->where('process_sequence', '>', $mapping->sequence)
-                ->where('proforma_status', 'pending');
+                ->whereIn('proforma_status', ['forwarded', 'reverted']);
         });
     }
 

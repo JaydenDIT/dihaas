@@ -21,7 +21,7 @@ class ProcessMatcher
                 // Assign and save
                 $application->process_id = $process->process_id;
                 $application->process_sequence = 1;
-                $application->proforma_status = 'new';
+                $application->proforma_status = 'forwarded';
                 // $application->save();
 
                 return $process->process_id;
