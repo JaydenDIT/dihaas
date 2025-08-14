@@ -10,8 +10,6 @@ use Yajra\DataTables\DataTables;
 class RoleController extends Controller
 {
 
-    private $nonmutable = ['superadmin', 'citizen'];
-    private $hidden_role = ['superadmin'];
 
     public function index()
     {
@@ -27,14 +25,17 @@ class RoleController extends Controller
             ->addColumn('duties', function ($row) {
                 return $row->duties->pluck('tasks_name')->implode(', ');
             })
+            ->editColumn('role_group', function ($row) {
+                return ucfirst(str_replace('_', ' ', $row->role_group));
+            })
             ->addColumn('action', function ($row) {
                 $data = urlencode(json_encode([
-                    "edit_data" =>  ["role_id" => $row->role_id, "role_name" => $row->role_name],
+                    "edit_data" =>  $row,
                     "delete_url" =>  route('admin.role.destroy', $row->role_id),
                 ]));
                 return "<div class='d-flex gap-2'>
-                            <button class='btn btn-sm btn-primary edit-btn' data-row='{$data}'><i class='fa fa-edit'></i></button>
-                            <button class='btn btn-sm btn-danger delete-btn' data-row='{$data}'><i class='fa fa-trash'></i></button>
+                            <button type='button' class='btn btn-sm btn-primary edit-btn' data-row='{$data}'><i class='fa fa-edit'></i></button>
+                            <button type='button' class='btn btn-sm btn-danger delete-btn' data-row='{$data}'><i class='fa fa-trash'></i></button>
                         </div>";
             })
             ->rawColumns(['action'])
@@ -44,8 +45,11 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['role_name' => 'required|string|max:255']);
-        $role = Role::create($request->only('role_name'));
+        $request->validate([
+            'role_name' => 'required|string|max:255',
+            'role_group' => 'required|in:superadmin,single_department,all_department,citizen'
+        ]);
+        $role = Role::create($request->only('role_name', 'role_group'));
         return response()->json(['message' => 'Role created', 'data' => $role]);
     }
 
@@ -56,9 +60,12 @@ class RoleController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate(['role_name' => 'required|string|max:255']);
+        $request->validate([
+            'role_name' => 'required|string|max:255',
+            'role_group' => 'required|in:superadmin,single_department,all_department,citizen'
+        ]);
         $role = Role::findOrFail($id);
-        $role->update($request->only('role_name'));
+        $role->update($request->only('role_name', 'role_group'));
         return response()->json(['message' => 'Role updated']);
     }
 

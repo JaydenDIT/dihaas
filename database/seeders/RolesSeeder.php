@@ -14,17 +14,17 @@ class RolesSeeder extends Seeder
     public function run(): void
     {
         //
-        DB::insert("insert into roles (role_id, role_name) values  
-                    (1, 'HOD Assistant'),       
-                    (2, 'HOD'),
-                    (3, 'AD Assistant'),
-                    (4, 'AD Nodal'),
-                    (5, 'DP Assistant'),
-                    (6, 'DP Nodal'),
-                    (77, 'Citizen'),
-                    (999, 'Superadmin'),
-                    (8, 'DP Signing Authority'),
-                    (9, 'Department Signing Authority')
+        DB::insert("insert into roles (role_id, role_name, role_group) values  
+                    (1, 'HOD Assistant', 'single_department'),       
+                    (2, 'HOD', 'single_department'),
+                    (3, 'AD Assistant', 'all_department'),
+                    (4, 'AD Nodal', 'all_department'),
+                    (5, 'DP Assistant', 'all_department'),
+                    (6, 'DP Nodal', 'all_department'),
+                    (8, 'DP Signing Authority', 'all_department'),
+                    (9, 'Department Signing Authority', 'single_department'),
+                    (77, 'Citizen', 'citizen'),
+                    (999, 'Superadmin', 'superadmin')
         ");
     }
 }
