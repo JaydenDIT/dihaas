@@ -7,7 +7,7 @@
      <input type="hidden" name="proforma_id" id="proforma_id" value="{{ $proforma?->proforma_id }}">
      @endif
 
-     <div class="row bg-light border rounded p-3 mt-3">
+     <div class="row bg-pink mt-3">
          @include('proforma.formParts.form1._1deceased_cmis_details');
          @include('proforma.formParts.form1._2deceased_entry_details');
          @include('proforma.formParts.form1._3applicant_details');

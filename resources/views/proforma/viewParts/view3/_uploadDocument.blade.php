@@ -1,5 +1,5 @@
-<div class="row  border bg-pink   rounded mt-3">
-    <h5 class="bg-success bg-gradient text-white fw-bold  p-2 ps-3">Uploaded Documents</h5>
+<div class="row  bg-pink rounded">
+    <h5 class="bg-success bg-gradient text-white fw-bold  p-2 ps-3 rounded-top">Uploaded Documents</h5>
     @foreach($proforma->uploadedDocuments as $doc)
 
     <div class="row mb-2">

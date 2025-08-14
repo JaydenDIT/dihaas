@@ -1,4 +1,4 @@
-<div class="row  border bg-pink   rounded mt-3">
+<div class="row  bg-pink  rounded">
     @include('proforma.viewParts.view1._1deceased_cmis_details')
     @include('proforma.viewParts.view1._2deceased_entry_details')
     @include('proforma.viewParts.view1._3applicant_details')

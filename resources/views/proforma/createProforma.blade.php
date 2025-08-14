@@ -62,7 +62,18 @@
 
 @section('content')
 <div class="container">
-
+    <div class="row">
+        <div class="col-sm-4">
+            <h3 class="row py-1 mb-3 text-center fw-bold">
+                Proforma Form
+            </h3>
+        </div>
+        <div class="col-sm-8 small">
+            <i class="required_label"></i> : Mandatory Field. <br>
+            <i class="required_labelplus"></i> : Mandatory Files but can be uploaded later if document not available
+            at the moment.
+        </div>
+    </div>
     <!-- NEW STEP TRACKER -->
     <div class="step-tracker">
         <div class="btn-go-through btn-step" data-step="1">
@@ -79,18 +90,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-4">
-            <h3 class="row py-1 mb-3 text-center fw-bold">
-                Proforma Form
-            </h3>
-        </div>
-        <div class="col-sm-8 small">
-            <i class="required_label"></i> : Mandatory Field. <br>
-            <i class="required_labelplus"></i> : Mandatory Files but can be uploaded later if document not available
-            at the moment.
-        </div>
-    </div>
+
 
     <!-- STEP 1 -->
     <div class="setup-content" id="step-1">
@@ -180,7 +180,7 @@ if ($action == 'create') {
     const completeFamilyDetail = "{{ route('duties.form.completeFamilyDetail', ['id'=>'__ID__']) }}";
     const formSubmitUrl = "{{ route('duties.form.final.submit', ['id'=>'__ID__']) }}";
     //tasks
-    const redirectUrl = "{{ route('tasks.performa.index', [$tasks['current']['tasks_id'] ]) }}";
+    const redirectUrl = "{{ route('tasks.performa.index', [$tasks['current']['tasks_id'] ?? '__ID__' ]) }}";
 </script>
 <script src="{{ asset('js/proforma-create.js') }}"></script>
 

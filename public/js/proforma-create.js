@@ -1,8 +1,7 @@
 $(document).ready(function () {
     fieldHide(hiddenClass);
 
-    // Show current step without +1 confusion
-    showStep(Number(current_step));
+    showStep(Number(current_step) + 1);
 
     // Click to navigate to step
     $(".btn-step").click(function () {

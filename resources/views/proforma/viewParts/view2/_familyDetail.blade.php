@@ -1,5 +1,5 @@
-<div class="row  border bg-pink   rounded mt-3">
-    <h5 class="bg-success bg-gradient text-white fw-bold  p-2 ps-3">Family Details</h5>
+<div class="row  bg-pink rounded">
+    <h5 class="bg-success bg-gradient text-white fw-bold  p-2 ps-3 rounded-top">Family Details</h5>
 
     <div class="table-responsive">
         <table class="table table-bordered table-striped bg-light" id="familyDetailsTable">

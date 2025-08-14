@@ -1,5 +1,5 @@
 <div class="accordion-item p-0">
-    <h2 class="accordion-header d-flex justify-content-between align-items-center bg-success bg-gradient text-white fw-bold p-2 ps-3">
+    <h2 class="accordion-header d-flex justify-content-between align-items-center bg-success bg-gradient text-white fw-bold p-2 ps-3 rounded-top">
         <button class="accordion-button" type="button"
             data-bs-toggle="collapse"
             data-bs-target="#viewCollapse-deceasedDetail"
