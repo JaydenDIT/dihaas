@@ -1,82 +1,43 @@
-<!--  Address -->
-<h5 class="py-2 bg-success bg-gradient text-white fw-bold rounded mt-3">
-    Applicant Current Address
-</h5>
+<!-- Applicant Current Address -->
+<div class="accordion-item p-0">
+    <h2 class="accordion-header">
+        <button class="accordion-button bg-success bg-gradient text-white fw-bold p-2 ps-3"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#viewCollapse-ApplicantAddress"
+            aria-expanded="true"
+            aria-controls="viewCollapse-ApplicantAddress">
+            Applicant Current Address
+        </button>
+    </h2>
+    <div id="viewCollapse-ApplicantAddress" class="accordion-collapse collapse show p-2 ps-3">
+        <div class="accordion-body">
 
-<!--  Address1 -->
-<div class="row col-sm-6 mb-2 ps-5">
-    <label class="col-form-label  required_label"><b>Address: </b></label>
-    <div>
-        <input type="text" name="applicant_current_locality" id="applicant_current_locality" placeholder="Locality"
-            value="{{ $proforma->applicant_current_locality ?? '' }}"
-            class="form-control  is_address address" maxlength="75" required>
-        <div class="invalid-feedback" role="alert">
-            This field is required.
-        </div>
-    </div>
-</div>
-<!--  state -->
-<div class="row col-sm-6 mb-2 ps-5">
-    <label class="col-form-label  required_label"><b>State: </b></label>
-    <div>
-        <select name="applicant_current_state_id" id="applicant_current_state_id" class="form-select state_id_flag address"
-            data-change-id="applicant_current_district_id" required>
-            <option value="" selected disabled>Choose...</option>
-            @foreach($states as $row)
-            <option value="{{$row->state_id}}" {{ $proforma->applicant_current_state_id == $row->state_id ? 'selected' : '' }}>{{$row->state_name}}</option>
-            @endforeach
-        </select>
-        <div class="invalid-feedback" role="alert">
-            This field is required.
-        </div>
-    </div>
-</div>
-<!--  district -->
-<div class="row col-sm-6 mb-2 ps-5">
-    <label class="col-form-label  required_label"><b>District: </b></label>
-    <div>
-        <select name="applicant_current_district_id" id="applicant_current_district_id"
-            class="form-select district_id_flag address"
-            data-change-id="applicant_current_subdivision_id" required>
-            <option value="" selected disabled>Choose...</option>
-            @if($action == 'edit')
-            @foreach($current_districts as $row)
-            <option value="{{$row->district_id}}" {{ $proforma->applicant_current_district_id == $row->district_id ? 'selected' : '' }}>{{$row->district_name}}</option>
-            @endforeach
-            @endif
-        </select>
-        <div class="invalid-feedback" role="alert">
-            This field is required.
-        </div>
-    </div>
-</div>
-<!--  subdivision -->
-<div class="row col-sm-6 mb-2 ps-5">
-    <label class="col-form-label  required_label"><b>Sub-Division: </b></label>
-    <div>
-        <select name="applicant_current_subdivision_id" id="applicant_current_subdivision_id"
-            class="form-select address" required>
-            <option value="" selected disabled>Choose...</option>
-            @if($action == 'edit')
-            @foreach($current_subdivisions as $row)
-            <option value="{{$row->subdivision_id}}" {{ $proforma->applicant_current_subdivision_id == $row->subdivision_id ? 'selected' : '' }}>{{$row->subdivision_name}}</option>
-            @endforeach
-            @endif
-        </select>
-        <div class="invalid-feedback" role="alert">
-            This field is required.
-        </div>
-    </div>
-</div>
-<!--  Pin -->
-<div class="row col-sm-6 mb-2 ps-5">
-    <label class="col-form-label  required_label"><b>Pin Code: </b></label>
-    <div>
-        <input type="text" name="applicant_current_pincode" id="applicant_current_pincode" placeholder="Pin Code"
-            class="form-control address  is_number" value="{{ $proforma->applicant_current_pincode ?? '' }}"
-            pattern="[0-9]+" title="please enter number only" minlength="6" maxlength="6" required>
-        <div class="invalid-feedback" role="alert">
-            This field is required.
+            <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">Address:</div>
+                <div class="col-sm-8">{{ $proforma->applicant_current_locality ?? '-' }}</div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">State:</div>
+                <div class="col-sm-8">{{ $proforma->currentState->state_name ?? '-' }}</div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">District:</div>
+                <div class="col-sm-8">{{ $proforma->currentDistrict->district_name ?? '-' }}</div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">Sub-Division:</div>
+                <div class="col-sm-8">{{ $proforma->currentSubdivision->subdivision_name ?? '-' }}</div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">Pin Code:</div>
+                <div class="col-sm-8">{{ $proforma->applicant_current_pincode ?? '-' }}</div>
+            </div>
+
         </div>
     </div>
 </div>

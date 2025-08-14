@@ -46,30 +46,30 @@
             <div class="row mb-2">
                 <div class="col-sm-4 fw-bold">Relationship with the Deceased/Retired:</div>
                 <div class="col-sm-8">
-                    {{ $relationships->firstWhere('relationship_id', $proforma->relationship_id)->relationship_name ?? '-' }}
+                    {{ $proforma->relationship->relationship_name ?? '-' }}
                 </div>
             </div>
 
             <div class="row mb-2">
                 <div class="col-sm-4 fw-bold">Caste:</div>
                 <div class="col-sm-8">
-                    {{ $castes->firstWhere('caste_id', $proforma->caste_id)->caste_name ?? '-' }}
+                    {{ $proforma->caste->caste_name ?? '-' }}
                 </div>
             </div>
 
             <div class="row mb-2">
                 <div class="col-sm-4 fw-bold">Educational Qualification:</div>
                 <div class="col-sm-8">
-                    {{ $qualifications->firstWhere('qualification_id', $proforma->applicant_qualification_id)->qualification_name ?? '-' }}
+                    @if( strtolower($proforma->qualification->qualification_name ?? '') === 'others' )
+                    {{ $proforma->applicant_qualification_name ?? '-' }}
+                    @else
+                    {{ $proforma->qualification->qualification_name ?? '-' }}
+                    @endif
+
                 </div>
             </div>
 
-            @if($proforma->applicant_qualification_other)
-            <div class="row mb-2">
-                <div class="col-sm-4 fw-bold">Specify Educational Qualification:</div>
-                <div class="col-sm-8">{{ $proforma->applicant_qualification_other ?? '-' }}</div>
-            </div>
-            @endif
+
 
         </div>
     </div>

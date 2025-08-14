@@ -4,13 +4,13 @@
         <button class="accordion-button bg-success bg-gradient text-white fw-bold  p-2 ps-3"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#viewCollapse-2"
+            data-bs-target="#viewCollapse-deceasedEntry"
             aria-expanded="true"
-            aria-controls="viewCollapse-2">
+            aria-controls="viewCollapse-deceasedEntry">
             Deceased Details
         </button>
     </h2>
-    <div id="viewCollapse-2" class="accordion-collapse collapse show  p-2  ps-3">
+    <div id="viewCollapse-deceasedEntry" class="accordion-collapse collapse show  p-2  ps-3">
         <div class="accordion-body">
             <p class="text-danger">Expired on Duty: Government servants who died while performing official
                 duties viz. election/census /survey /research / official tour/ field

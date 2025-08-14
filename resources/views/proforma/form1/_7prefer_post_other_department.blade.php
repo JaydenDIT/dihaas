@@ -6,7 +6,7 @@
 <div class="row col-sm-6 mb-2 ps-5">
     <label class="col-form-label  required_label"><b>Administrative Department: </b></label>
     <div>
-        <select name="request_adm_dept_cd_3" id="request_adm_dept_cd" class="form-select" required>
+        <select name="request_adm_dept_cd_3" id="request_adm_dept_cd_3" class="form-select" required>
             <option value="" selected disabled>Choose...</option>
             @foreach($adminDepartments as $department)
             <option value="{{ $department['adm_dept_cd'] }}" {{ $department['adm_dept_cd'] == $proforma->request_adm_dept_cd_3 ? 'selected' : '' }}>{{ $department['adm_dept_desc'] }}</option>
@@ -23,7 +23,7 @@
 <div class="row col-sm-6 mb-2 ps-5">
     <label class="col-form-label required_label"><b>Department: </b></label>
     <div>
-        <select name="request_field_dept_cd_3" id="request_field_dept_cd" class="form-select" required>
+        <select name="request_field_dept_cd_3" id="request_field_dept_cd_3" class="form-select" required>
             <option value="" selected disabled>Choose...</option>
             @if($action == 'edit' )
             @foreach($otherDepartList['field_dept'] as $row)

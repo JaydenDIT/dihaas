@@ -4,13 +4,13 @@
         <button class="accordion-button bg-success bg-gradient text-white fw-bold  p-2 ps-3"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#viewCollapse-1"
+            data-bs-target="#viewCollapse-deceasedDetail"
             aria-expanded="true"
-            aria-controls="viewCollapse-1">
+            aria-controls="viewCollapse-deceasedDetail">
             Deceased Details
         </button>
     </h2>
-    <div id="viewCollapse-1" class="accordion-collapse collapse show  p-2  ps-3">
+    <div id="viewCollapse-deceasedDetail" class="accordion-collapse collapse show  p-2  ps-3">
         <div class="accordion-body">
             <div class="row mb-2">
                 <div class="col-sm-4 fw-bold">EIN of the Deceased Employee:</div>
