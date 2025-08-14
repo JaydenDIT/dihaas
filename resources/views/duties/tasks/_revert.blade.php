@@ -1,6 +1,6 @@
 <div class="modal fade" id="remarkModal" tabindex="-1" aria-labelledby="remarkModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form name="revertForm" action="{{ route('revertPersonalDetailsFrom', Crypt::encryptString($empDetails->ein)) }}" method="Post">
+        <form name="revertForm" action="{{ route('') }}" method="Post">
             @csrf
             <!-- @method('GET') -->
 
