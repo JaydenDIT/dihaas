@@ -1,19 +1,16 @@
 <?php
-
 namespace App\Library;
 
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\NotifyMail;
 use Exception;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class SmsSender
 {
     //public static $otp_text = " is one time password for Issuing Product, High Court Inventory. -HCLSC";
     public static $otp_text = " is the OTP for registration on ";
     //public static $otp_text = " is one time password for phone verification to register at High Court Legal Services Committee, Manipur. -HCLSC";
-
-
 
     public static function sendsmsNormalSMS($mobileno, $OTP)
     {
@@ -25,15 +22,15 @@ class SmsSender
 
             $mobileno = '91' . $mobileno;
 
-            $username = 'rlfmnpr.otp';
-            $pin = '295b3QsD';
-            $sender = 'NICSMS';
-            $entityId = '110100001364';
+            $username   = 'rlfmnpr.otp';
+            $pin        = '295b3QsD';
+            $sender     = 'NICSMS';
+            $entityId   = '110100001364';
             $templateId = '1107169875332640178';
 
             $baseurl = 'https://hydgw.sms.gov.in/failsafe/MLink';
 
-            $url = $baseurl;
+            $url        = $baseurl;
             $postfields = 'username=' . $username . '&pin=' . $pin . '&mnumber=' . $mobileno . '&message=' . $message . '&signature=' . $sender . '&dlt_entity_id=' . $entityId . '&dlt_template_id=' . $templateId;
 
             $ch = curl_init();
@@ -59,7 +56,6 @@ class SmsSender
         return true;
     }
 
-
     public static function sendsms($mobileno, $OTP)
     {
         return true; //check
@@ -68,12 +64,11 @@ class SmsSender
             //    $message = urlencode($OTP.self::$otp_text);
 
             //    //$message = urlencode($message);
-            //    $sender = 'DIHAS'; 
+            //    $sender = 'DIHAS';
             //    $apikey = '1274429253g162qmr86l39u2668ipr9vp8g2';
             //    $baseurl = 'https://instantalerts.co/api/web/send?apikey='.$apikey;
 
-            //    $url = $baseurl.'&sender='.$sender.'&to='.$mobileno.'&message='.$message;    
-
+            //    $url = $baseurl.'&sender='.$sender.'&to='.$mobileno.'&message='.$message;
 
             // sandes
             $msg = urlencode('Your OTP to Register/login to DIHAS is ' . $OTP . '. Validity of this OTP is 5 minutes. Do not share with anyone.');
@@ -81,10 +76,7 @@ class SmsSender
             //--- curl stated ---
             $url = 'http://localhost:8021/send?receiverid=' . $mobileno . '&msg=' . $msg . '&priority=high-volatile';
 
-
-            //SERVER URL NEED TO CHANGE WHEN UPLOAD   
-
-
+            //SERVER URL NEED TO CHANGE WHEN UPLOAD
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_POST, false);
@@ -105,9 +97,6 @@ class SmsSender
         return true;
     }
 
-
-
-
     public static function sendCurl($url, $params)
     {
         // return true;
@@ -127,23 +116,20 @@ class SmsSender
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
             //execute post
-            $response = curl_exec($ch);
+            $response    = curl_exec($ch);
             $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
             //close connection
             curl_close($ch);
 
-            if (!$response) {
+            if (! $response) {
                 throw new Exception("Cannot Connect.");
             }
         } catch (Exception $e) {
             return $e->getMessage();
         }
 
-        return  $response;
+        return $response;
     }
-
-
-
 
     public static function sendEmail($email, array $mailData)
     {
@@ -156,25 +142,23 @@ class SmsSender
         return true;
     }
 
-
     public static function sendEmailOtp($email, $key)
     {
         $otp = rand(1111, 9999);
         Session::put([
-            $key => $otp,
-            'expiry_time' => 60 * 10
+            $key          => $otp,
+            'expiry_time' => 60 * 10,
         ]);
 
         $mailData = [
-            "view" => "email.otpMail",
+            "view"    => "email.otpMail",
             "subject" => "OTP verification",
-            "title" => "Justice Gita Mittal Commission",
-            "body" => $otp
+            "title"   => "Justice Gita Mittal Commission",
+            "body"    => $otp,
         ];
 
         return self::sendEmail($email, $mailData);
     }
-
 
     public static function resend_EmailOtp($email, $key)
     {
@@ -185,48 +169,42 @@ class SmsSender
             Session::put($key, $otp);
         }
         $mailData = [
-            "view" => "email.otpMail",
+            "view"    => "email.otpMail",
             "subject" => "OTP verification",
-            "title" => "Justice Gita Mittal Commission",
-            "body" => $otp
+            "title"   => "Justice Gita Mittal Commission",
+            "body"    => $otp,
         ];
-
 
         return self::sendEmail($email, $mailData);
     }
 
-
-
-
     public static function check_mobile(int $mobile)
     {
         $mobileregex = "/^[6-9][0-9]{9}$/";
-        if (!preg_match($mobileregex, $mobile)) {
+        if (! preg_match($mobileregex, $mobile)) {
             return false;
         }
         return true;
     }
 
-
     public static function send_otp($mobile, $key)
     {
-        if (!self::check_mobile($mobile)) {
+        if (! self::check_mobile($mobile)) {
             return false;
         }
         $otp = rand(111111, 999999);
         $otp = 123456;
         Session::put([
-            $key => $otp,
-            'expiry_time' => 60 * 10
+            $key          => $otp,
+            'expiry_time' => 60 * 10,
         ]);
 
-        return  self::sendsms($mobile, $otp);
+        return self::sendsms($mobile, $otp);
     }
-
 
     public static function resend_otp($mobile, $key)
     {
-        if (!self::check_mobile($mobile)) {
+        if (! self::check_mobile($mobile)) {
             return false;
         }
         if (Session::has($key)) {
@@ -236,17 +214,17 @@ class SmsSender
             $otp = 123456;
             Session::put($key, $otp);
         }
-        return   self::sendsms($mobile, $otp);
+        return self::sendsms($mobile, $otp);
     }
 
     public static function check_otp($otp, $key)
     {
 
-        if (!Session::has($key)) {
+        if (! Session::has($key)) {
             return false;
         }
 
-        if (Session::get($key) !=  $otp) {
+        if (Session::get($key) != $otp) {
             return false;
         }
 

@@ -45,7 +45,7 @@ body {
 }
 
 .guest-div {
-    padding: 5rem 0rem;
+    padding: 1.2rem;
 }
 
 /* Sidebar */
@@ -60,7 +60,8 @@ body {
     background-color: var(--light-bg);
     box-shadow: 5px 0 5px -3px rgba(0, 0, 0, 0.1);
     z-index: 1030;
-    overflow: hidden; /* prevents body scroll bleed */
+    overflow: hidden;
+    /* prevents body scroll bleed */
 }
 
 .sidenav-menu {

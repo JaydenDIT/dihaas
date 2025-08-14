@@ -23,6 +23,9 @@
 
     <!-- Custom CSS -->
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
+
+    <script src="{{ asset('assets/js/jquery-3.7.0.js') }}"></script>
     <script>
         const _token = "{{ csrf_token() }}";
     </script>
@@ -31,31 +34,28 @@
 
 <body>
 
-
     <div>
         <div id="loading-div">
-            <img id="loading-image" src="{{ asset('assets/img/loader.gif')}}" alt="Loading...">
-
+            <img id="loading-image" src="{{ asset('assets/img/loader.gif') }}" alt="Loading...">
         </div>
-
         @include('layouts.error')
         @guest
-        <div class="guest-div">
-            @yield('content')
-        </div>
-        @else
-        @include('layouts.header.authHeader')
-
-        <main>
-            <div class="p-1 mb-5">
+            <div class="guest-div">
                 @yield('content')
             </div>
-        </main>
+        @else
+            <div class="d-flex">
+                @include('layouts._side_menus')
+                {{-- @include('layouts.header.authHeader') --}}
+                <div class="content">
+                    @yield('content')
+                </div>
+            </div>
         @endguest
     </div>
 
     <!-- JS Libraries -->
-    <script src="{{ asset('assets/js/jquery-3.7.0.js') }}"></script>
+
     <script src="{{ asset('assets/popper/popper.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap-5.2.3/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/fontawesome-free-6.6.0-web/js/all.min.js') }}"></script>
@@ -64,9 +64,7 @@
     <script src="{{ asset('assets/sweetalert2/sweetalert3.js') }}"></script>
     <script src="{{ asset('js/layout.js') }}"></script>
 
-
     @stack('js')
-
 
 </body>
 

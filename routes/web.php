@@ -1,26 +1,28 @@
 <?php
 
-
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Duties\VerificationController;
 use App\Http\Controllers\Misc\DistrictController;
 use App\Http\Controllers\Misc\SubDivisionController;
 use App\Http\Controllers\TaskApplicationController;
+use App\Http\Controllers\WelcomeController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 // Route::get('/phpinfo', function () {
 //     phpinfo();
 // });
+
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('home')->middleware('auth');
+
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
     echo 'Application cache has been cleared';
 });
-
-
-Route::get('/clear-cache', function () {
-    return view('dashboard');
-})->name('home');
 
 Route::group(['prefix' => 'duty', 'as' => 'duty.personal.'], function () {
     Route::get('/viewPersonalDetailsFrom/{id}', [VerificationController::class, 'viewDetail'])->name('detail');
@@ -33,12 +35,30 @@ Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.'], function () {
     Route::post('/{tasks_id}/performa/ajaxlist', [TaskApplicationController::class, 'ajaxlist'])->name('ajaxlist');
 });
 
-
-
 //misc routes
 Route::group(['prefix' => 'misc', 'as' => 'misc.option.'], function () {
     Route::get('/{id}/district', [DistrictController::class, 'loadByState'])->name('district');
     Route::get('/{id}/subdivision', [SubDivisionController::class, 'loadByDistrict'])->name('subdivision');
 });
+
+Route::group(['prefix' => 'password', 'as' => 'password.'], function () {
+    Route::get('/forgot', function () {
+        return "Under Development";
+    })->name('forgot');
+});
+Route::group(['prefix' => 'citizen', 'as' => 'citizen.'], function () {
+    Route::get('/register', function () {
+        return "Under development";
+    })->name('register');
+});
+
+/*** Route for sms ****/
+Route::post('smsLoginCitizenOTP', [SmsController::class, 'smsLoginCitizenOTP'])->name('smsLoginCitizenOTP');
+Route::get('smsLoginCitizenOTP', [SmsController::class, 'smsLoginCitizenOTP'])->name('smsLoginCitizenOTP');
+Route::post('smsLoginCitizenOTPResend', [SmsController::class, 'smsLoginCitizenOTPResend'])->name('smsLoginCitizenOTPResend');
+
+//verify otp
+Route::post('smsLoginOTP', [SmsController::class, 'smsLoginOTP'])->name('smsLoginOTP');                    //To verify username and mobile//verify resend otp
+Route::post('/smsLoginOTPResend', [SmsController::class, 'smsLoginOTPResend'])->name('smsLoginOTPResend'); //To verify username and mobile
 
 require __DIR__ . '/auth.php';
