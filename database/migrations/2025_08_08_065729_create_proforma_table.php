@@ -5,7 +5,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('proforma', function (Blueprint $table) {
@@ -23,12 +24,10 @@ return new class extends Migration {
             $table->date('deceased_doa');
             $table->date('deceased_dob');
 
-
             // from user -data of the decease employee
             $table->boolean('expire_on_duty');
             $table->date('deceased_doe')->comment("Date of expiry");
             $table->string('deceased_causeofdeath', 300)->nullable()->comment("if expire on duty give reason");
-
 
             //applicant request post
             $table->string('request_dsg_srno_1', 20);
@@ -42,8 +41,7 @@ return new class extends Migration {
             $table->string('request_dsg_srno_3', 20);
             $table->string('request_group_code_3', 20);
 
-
-            //applicant details 
+            //applicant details
             $table->string('applicant_name', 255);
             $table->unsignedBigInteger('relationship_id');
             $table->date('applicant_dob');
@@ -69,7 +67,6 @@ return new class extends Migration {
             $table->unsignedBigInteger('applicant_permanent_district_id');
             $table->unsignedBigInteger('applicant_permanent_subdivision_id');
             $table->integer('applicant_permanent_pincode');
-
 
             // required for dynamic process
             $table->integer('process_id')->nullable();
@@ -100,8 +97,14 @@ return new class extends Migration {
 
     public function down(): void
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('proforma');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        // Only disable foreign key checks if DB is MySQL
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+            Schema::dropIfExists('proforma');
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        } else {
+            Schema::dropIfExists('proforma');
+        }
+
     }
 };
