@@ -154,10 +154,12 @@ class CitizenFormFillUpController extends Controller
     {
         try {
             DB::beginTransaction();
-            $proforma = Proforma::findOrFail($id);
+            // Find the proforma
+            $proforma = Proforma::where('proforma_status', 'step3-completed')->where('proforma_id', $id)->first();
             $this->authorize('canPerformOnProforma',  [$proforma, 'client_form_submission']);
             $proforma->form_fillup_step = 'submitted';
             $proforma->save();
+
             WorkflowHandler::forwardApplication($proforma); //set the sequence to next 
 
             LogService::addProformaLog([
