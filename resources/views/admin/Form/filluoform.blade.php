@@ -52,14 +52,14 @@
                             <div class="col-sm-2">
 
                             </div>
-                            <div class="col-sm-4 " style="text-align: left;">
+                            {{-- <div class="col-sm-4 " style="text-align: left;">
 
                                 <label for="ad_file_number" class="form-label">AD File No.</label>
                             </div>
                             <div class="col-sm-4 ">
 
                                 <h5>{{$data->efile_ad}}</h5>
-                            </div>
+                            </div> --}}
                             <div class="col-sm-2">
 
                             </div>
