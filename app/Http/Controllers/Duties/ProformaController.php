@@ -111,10 +111,6 @@ class ProformaController extends Controller
 
 
 
-
-
-
-
     public function edit(Request $request, $id)
     {
         $action = "edit";
@@ -178,6 +174,17 @@ class ProformaController extends Controller
     }
 
 
+
+    public function view(Request $request, $id)
+    {
+        $action = "view";
+        $proforma = Proforma::findOrFail($id);
+        $this->authorize('canView',  [$proforma, 'client_form_submission']);
+        return view('proforma.viewProforma', compact(
+            'action',
+            'proforma',
+        ));
+    }
 
 
 

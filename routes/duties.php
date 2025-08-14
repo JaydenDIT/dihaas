@@ -19,6 +19,7 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::get('{id}/view', 'view')->name('proforma.view');
             Route::post('{id}/update', 'update')->name('proforma.update');
             Route::delete('{id}', 'destroy')->name('proforma.destroy');
+            Route::get('/performa/{id}/view', 'view')->name('proforma.view');
         });
     });
     Route::group(['prefix' => 'upload/document'], function () {
@@ -42,7 +43,6 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::post('form/{id}/submit', 'proformaFormSubmit')->name('form.final.submit');
             Route::get('/{tasks_id}/performa', 'index')->name('form.index');
             Route::post('/{tasks_id}/performa/ajaxlist', 'ajaxlist')->name('form.ajaxlist');
-            Route::get('/performa/{id}/view', 'view')->name('citizen.form.view');
         });
     });
 });

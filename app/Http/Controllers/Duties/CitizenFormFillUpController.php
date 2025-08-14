@@ -28,11 +28,6 @@ class CitizenFormFillUpController extends Controller
 
 
 
-
-
-
-
-
     public function ajaxlist(Request $request, $tasks_id)
     {
         $task = Task::findOrFail($tasks_id);
@@ -76,7 +71,7 @@ class CitizenFormFillUpController extends Controller
                 if ($application_status === 'pending') {
                     $resp .= "<a href='" . route('duties.proforma.edit', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>edit</a>";
                 } else {
-                    $resp .= "<a href='" . route('duties.citizen.form.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>View</a>";
+                    $resp .= "<a href='" . route('duties.proforma.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>View</a>";
                 }
 
                 $resp .= "</div>";
@@ -87,17 +82,6 @@ class CitizenFormFillUpController extends Controller
     }
 
 
-
-    public function view(Request $request, $id)
-    {
-        $action = "view";
-        $proforma = Proforma::findOrFail($id);
-        $this->authorize('canView',  [$proforma, 'client_form_submission']);
-        return view('proforma.viewProforma', compact(
-            'action',
-            'proforma',
-        ));
-    }
 
 
 

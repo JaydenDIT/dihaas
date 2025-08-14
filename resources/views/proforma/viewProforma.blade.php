@@ -94,15 +94,54 @@
 
     <!-- STEP 2 -->
     <div class="setup-content" id="step-2">
-
+        @include('proforma.view2._familyDetail')
     </div>
 
     <!-- STEP 3 -->
     <div class="setup-content" id="step-3">
         <div class="form-group">
+            @include('proforma.view3._uploadDocument')
 
         </div>
     </div>
 
 </div>
 @endsection
+
+@push('js')
+<script>
+    $(document).ready(function() {
+        showStep(1);
+
+        // Click to navigate to step
+        $(".btn-step").click(function() {
+            let step = $(this).data("step");
+            // Allow clicking only if step is unlocked
+            if (!$(this).hasClass("disabled")) {
+                showStep(step);
+            }
+        });
+
+        $(".nextBtn").click(function() {
+            let step = $(this).data("step");
+            showStep(step + 1);
+        });
+
+        $(".prevBtn").click(function() {
+            let step = $(this).data("step");
+            showStep(step - 1);
+        });
+    });
+
+    function showStep(step) {
+        step = step < 1 ? 1 : step > 3 ? 3 : step;
+        $(".setup-content").hide();
+        $("#step-" + step).show();
+
+        $(".btn-circle").removeClass("active");
+        $(".btn-circle")
+            .eq(step - 1)
+            .addClass("active");
+    }
+</script>
+@endpush
