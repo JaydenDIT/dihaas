@@ -1,65 +1,6 @@
 @extends('layouts.app')
 
 
-@push('css')
-<style>
-    /* Step Progress Tracker (New Button Style) */
-    .step-tracker {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        margin-bottom: 30px;
-        position: relative;
-    }
-
-    .step-tracker::before {
-        content: "";
-        position: absolute;
-        top: 20px;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: #e0e0e0;
-        z-index: 0;
-    }
-
-    .btn-go-through {
-        z-index: 1;
-        text-align: center;
-    }
-
-    .btn-circle {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 2px solid #ccc;
-        background-color: #fff;
-        color: #666;
-        font-size: 16px;
-        font-weight: bold;
-        transition: all 0.3s ease;
-    }
-
-    .btn-circle.completed {
-        border-color: #28a745;
-        background-color: #28a745;
-        color: white;
-    }
-
-    /* active should be bellow completed */
-    .btn-circle.active {
-        border-color: #007bff;
-        background-color: #007bff;
-        color: white;
-        box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
-    }
-
-    .btn-circle:hover {
-        background-color: #f0f0f0;
-        cursor: pointer;
-    }
-</style>
-@endpush
 
 @section('content')
 <div class="container-fluid">

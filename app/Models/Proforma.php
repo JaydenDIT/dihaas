@@ -67,4 +67,8 @@ class Proforma extends Model
     {
         return $this->hasMany(FamilyDetail::class, 'proforma_id', 'proforma_id');
     }
+    public function proformaLogs()
+    {
+        return $this->hasMany(ProformaLog::class, 'proforma_id', 'proforma_id');
+    }
 }
