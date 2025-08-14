@@ -28,7 +28,15 @@ class ProformaPolicy
 
     public function canView(User $user, Proforma $app, string $tasks_duty = "")
     {
-        return $this->checkTaskAccess($user, $app, [], $tasks_duty);
+        $taskIds = $user->role->duties->pluck('tasks_id')->toArray();
+        $query = ProcessTasksMapping::where('process_id', $app->process_id)
+            ->whereIn('tasks_id', $taskIds);
+        if ($tasks_duty !== '') {
+            $query->whereHas('task', function ($q) use ($tasks_duty) {
+                $q->where('tasks_duty', $tasks_duty);
+            });
+        }
+        return $query->exists();
     }
 
     public function canForward(User $user, Proforma $app, string $tasks_duty = "")

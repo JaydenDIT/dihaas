@@ -94,19 +94,19 @@
 
     <!-- STEP 1 -->
     <div class="setup-content" id="step-1">
-        @include('proforma.step1._collection')
+        @include('proforma.form1._collection')
     </div>
 
     @if($action == 'edit')
     <!-- STEP 2 -->
     <div class="setup-content" id="step-2">
-        @include('proforma.step2._familyDetail')
+        @include('proforma.form2._familyDetail')
     </div>
 
     <!-- STEP 3 -->
     <div class="setup-content" id="step-3">
         <div class="form-group">
-            @include('proforma.step3._uploadDocument')
+            @include('proforma.form3._uploadDocument')
         </div>
     </div>
     @endif

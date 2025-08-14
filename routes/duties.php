@@ -19,6 +19,7 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::get('{id}/view', 'view')->name('proforma.view');
             Route::post('{id}/update', 'update')->name('proforma.update');
             Route::delete('{id}', 'destroy')->name('proforma.destroy');
+            Route::get('/performa/{id}/view', 'view')->name('proforma.view');
         });
     });
     Route::group(['prefix' => 'upload/document'], function () {

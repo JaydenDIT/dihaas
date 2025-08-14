@@ -231,8 +231,8 @@ function syncAddress() {
     }
 }
 
-$(document.body).on("change", "#request_adm_dept_cd", async function (e) {
-    let targetSelect = $("#request_field_dept_cd");
+$(document.body).on("change", "#request_adm_dept_cd_3", async function (e) {
+    let targetSelect = $("#request_field_dept_cd_3");
     targetSelect.html('<option value="" disabled selected>Loading...</option>');
     try {
         const res = await ajax_send_multipart({
@@ -278,7 +278,7 @@ async function loadPost(dept_code, targetSelect = $(".request_post")) {
     }
 }
 
-$(document.body).on("change", "#request_field_dept_cd", async function (e) {
+$(document.body).on("change", "#request_field_dept_cd_3", async function (e) {
     loadPost($(this).val(), $("#request_dsg_srno_3"));
 });
 
@@ -291,10 +291,31 @@ $(document.body).on("change", "#request_dsg_srno_3", function () {
     $("#request_group_code_3").val(groupCode);
 });
 
+// Saving part 1 form
 $(document).on("click", "#saveProforma", async function (e) {
     e.preventDefault();
     const form = document.getElementById("proforma-step1");
     const param = new FormData(form);
+    param.append(
+        "request_dsg_desc_1",
+        $("#request_dsg_srno_1").find(":selected").text()
+    );
+    param.append(
+        "request_dsg_desc_2",
+        $("#request_dsg_srno_2").find(":selected").text()
+    );
+    param.append(
+        "request_adm_dept_desc_3",
+        $("#request_adm_dept_cd_3").find(":selected").text()
+    );
+    param.append(
+        "request_field_dept_desc_3",
+        $("#request_field_dept_cd_3").find(":selected").text()
+    );
+    param.append(
+        "request_dsg_desc_3",
+        $("#request_dsg_srno_3").find(":selected").text()
+    );
 
     try {
         await validateForm(form);

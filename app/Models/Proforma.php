@@ -57,4 +57,14 @@ class Proforma extends Model
     {
         return $this->belongsTo(Subdivision::class, 'applicant_permanent_subdivision_id', 'subdivision_id');
     }
+
+    public function uploadedDocuments()
+    {
+        return $this->hasMany(UploadedDocument::class, 'proforma_id', 'proforma_id');
+    }
+
+    public function familyDetails()
+    {
+        return $this->hasMany(FamilyDetail::class, 'proforma_id', 'proforma_id');
+    }
 }

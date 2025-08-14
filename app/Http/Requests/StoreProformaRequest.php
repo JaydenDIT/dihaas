@@ -47,12 +47,19 @@ class StoreProformaRequest extends FormRequest
 
             // Request posts
             'request_dsg_srno_1' => 'required|string|max:20',
+            'request_dsg_desc_1' => 'required|string|max:255',
             'request_group_code_1' => 'required|string|max:20',
+
             'request_dsg_srno_2' => 'required|string|max:20',
+            'request_dsg_desc_2' => 'required|string|max:255',
             'request_group_code_2' => 'required|string|max:20',
+
             'request_adm_dept_cd_3' => 'required|string|max:20',
+            'request_adm_dept_desc_3' => 'required|string|max:255',
             'request_field_dept_cd_3' => 'required|string|max:20',
+            'request_field_dept_desc_3' => 'required|string|max:255',
             'request_dsg_srno_3' => 'required|string|max:20',
+            'request_dsg_desc_3' => 'required|string|max:255',
             'request_group_code_3' => 'required|string|max:20',
 
             // Applicant details

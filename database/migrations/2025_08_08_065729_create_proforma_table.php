@@ -31,14 +31,19 @@ return new class extends Migration
 
             //applicant request post
             $table->string('request_dsg_srno_1', 20);
+            $table->string('request_dsg_desc_1', 255);
             $table->string('request_group_code_1', 20);
             $table->string('request_dsg_srno_2', 20);
+            $table->string('request_dsg_desc_2', 255);
             $table->string('request_group_code_2', 20);
 
             //request for 3 other departments
             $table->string('request_adm_dept_cd_3', 20);
+            $table->string('request_adm_dept_desc_3', 255);
             $table->string('request_field_dept_cd_3', 20);
+            $table->string('request_field_dept_desc_3', 255);
             $table->string('request_dsg_srno_3', 20);
+            $table->string('request_dsg_desc_3', 255);
             $table->string('request_group_code_3', 20);
 
             //applicant details
