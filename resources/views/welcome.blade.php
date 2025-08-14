@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.guest')
 @push('css')
     <link href="{{ asset('assets/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('css/welcome.css') }}" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(80deg, #cfddec, #f8f9fa);
         }
     </style>
 @endpush
