@@ -1,7 +1,8 @@
 <!-- Applicant Current Address -->
+
 <div class="accordion-item p-0">
-    <h2 class="accordion-header">
-        <button class="accordion-button bg-success bg-gradient text-white fw-bold p-2 ps-3"
+    <h2 class="accordion-header d-flex justify-content-between align-items-center bg-success bg-gradient text-white fw-bold p-2 ps-3">
+        <button class="accordion-button"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#viewCollapse-ApplicantAddress"
@@ -9,7 +10,15 @@
             aria-controls="viewCollapse-ApplicantAddress">
             Applicant Current Address
         </button>
+        <span class="toggle-icon fw-bold" style="font-size: 1.2rem;">−</span>
     </h2>
+
+
+
+
+
+
+
     <div id="viewCollapse-ApplicantAddress" class="accordion-collapse collapse show p-2 ps-3">
         <div class="accordion-body">
 

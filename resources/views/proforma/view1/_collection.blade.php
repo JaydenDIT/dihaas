@@ -13,3 +13,15 @@
         </div>
     </div>
 </div>
+
+@push('js')
+<script>
+    $(function() {
+        $('.accordion-collapse').on('show.bs.collapse', function() {
+            $(this).closest('.accordion-item').find('.toggle-icon').text('−');
+        }).on('hide.bs.collapse', function() {
+            $(this).closest('.accordion-item').find('.toggle-icon').text('+');
+        });
+    });
+</script>
+@endpush

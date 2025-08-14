@@ -1,4 +1,4 @@
-<h5 class="py-2 bg-success bg-gradient text-white fw-bold rounded mt-3">Information of the Deceased Govererntment Servant</h5>
+<h5 class="py-2 bg-success bg-gradient text-white fw-bold rounded mt-3">Information of the Deceased Government Servant</h5>
 
 
 <p class="text-danger">Expired on Duty: Government servants who died while performing official
