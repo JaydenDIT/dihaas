@@ -42,6 +42,7 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::post('form/{id}/submit', 'proformaFormSubmit')->name('form.final.submit');
             Route::get('/{tasks_id}/performa', 'index')->name('form.index');
             Route::post('/{tasks_id}/performa/ajaxlist', 'ajaxlist')->name('form.ajaxlist');
+            Route::get('/performa/{id}/view', 'view')->name('citizen.form.view');
         });
     });
 });

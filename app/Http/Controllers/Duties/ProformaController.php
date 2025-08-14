@@ -177,6 +177,10 @@ class ProformaController extends Controller
         ));
     }
 
+
+
+
+
     public function destroy($id)
     {
         try {

@@ -53,9 +53,6 @@ class CitizenFormFillUpController extends Controller
             case 'rejected': //forwarded from me or rejected during me but entire process is rejected later
                 $data = WorkflowHandler::proformaTaskRejectedData($task);
                 break;
-            case 'notreach': //which will be reaching me
-                $data = WorkflowHandler::proformaTaskNotReachData($task);
-                break;
             default:
                 return DataTables::of([])->make(true); // No data for other statuses
                 break;
@@ -72,14 +69,34 @@ class CitizenFormFillUpController extends Controller
             ->editColumn('applicant_dob', function ($row) {
                 return date('d M, Y', strtotime($row->applicant_dob));
             })
-            ->addColumn('action', function ($row) {
-                $data = urlencode(json_encode($row));
-                return "<div class='d-flex gap-2'>
-                            <a href='" . route('duties.proforma.edit', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>edit</a>
-                        </div>";
+            ->addColumn('action', function ($row) use ($application_status) {
+                // $data = urlencode(json_encode($row));
+                $resp = "<div class='d-flex gap-2'>";
+
+                if ($application_status === 'pending') {
+                    $resp .= "<a href='" . route('duties.proforma.edit', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>edit</a>";
+                } else {
+                    $resp .= "<a href='" . route('duties.citizen.form.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>View</a>";
+                }
+
+                $resp .= "</div>";
+                return $resp;
             })
             ->rawColumns(['status', 'action'])
             ->make(true);
+    }
+
+
+
+    public function view(Request $request, $id)
+    {
+        $action = "view";
+        $proforma = Proforma::findOrFail($id);
+        $this->authorize('canView',  [$proforma, 'client_form_submission']);
+        return view('proforma.viewProforma', compact(
+            'action',
+            'proforma',
+        ));
     }
 
 
