@@ -5620,7 +5620,7 @@ class HomeController extends Controller
             ]);
         }
 
-        return redirect()->route('viewStartEmp')->with('message', 'Applicant details is verified Succesfully!!!');
+        return redirect()->route('viewApplicantsForVerification')->with('message', 'Applicant details is verified Succesfully!!!');
     }
 
     //revert applicant by HOD Assistant to Applicant
@@ -6376,7 +6376,7 @@ public function forwardByDPAssistantToHODAssistant($id, Request $request)
 
         if ($empDetails != null) {
             $empDetails->update([
-                'file_status' => 2, //move to HOD Assistant
+                'file_status' => 2, //move to HOD
                 'received_by' => $receiver, //previous sender
                 'sent_by' => $getUser->name, //current sender
                 'forwarded_by' => $getUser->id,

@@ -370,7 +370,7 @@ class FillUOController extends Controller
         $selectedEinIds = explode(',', $request->input('selectedEinIds', ''));
         //  dd( $selectedEinIds);
         $records = ProformaModel::whereIn('ein', $selectedEinIds)->get();
-
+//dd( $records);
         // Extract distinct dept_id values
         // $same_ad_efile_id = $records->pluck('ad_efile_id_multi')->unique()->toArray();
 
@@ -381,7 +381,9 @@ class FillUOController extends Controller
         $same_transfer_dept_id = $records->pluck('transfer_dept_id')->unique()->toArray();
         $api_preference = array();
         // $notfound = "";
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd', [
             'dept_code' => $same_dept_id[0],
             'token' => "b000e921eeb20a0d395e341dfcd6117a",
