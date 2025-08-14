@@ -42,7 +42,7 @@
 }
 
 .gradient-section {
-    background: linear-gradient(80deg, #b2d0f3, #f1cc52);
+    background: linear-gradient(80deg, #b2d0f3, #f152d800);
     padding: 3rem 1rem;
     border-radius: 10px;
 }

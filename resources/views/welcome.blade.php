@@ -5,7 +5,11 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(80deg, #cfddec, #f8f9fa);
+            background: linear-gradient(80deg, #cfddec, #ffffff);
+        }
+
+        .bg-gradiant {
+            background: linear-gradient(80deg, #cfddec, #ffffff);
         }
     </style>
 @endpush
@@ -17,7 +21,35 @@
     {{-- AOS Animation CSS
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     --}}
+    {{-- Navbar --}}
+    <nav class="navbar navbar-expand-lg navbar-light bg-gradiant shadow-sm fixed-top">
+        <div class="container">
 
+            {{-- Mobile Menu Toggle --}}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            {{-- Navbar Links --}}
+            <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('home') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#aboutMore">About DIHAS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#objectiveMore">Objective</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#benefitsMore">Benefits</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container py-5">
         <div class="top-container ps">
             <div class="row g-4">
@@ -153,7 +185,8 @@
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     @if (Route::has('password.request'))
-                                        <a class="small text-decoration-underline" href="{{ route('password.request') }}">
+                                        <a class="small text-decoration-underline"
+                                            href="{{ route('password.request') }}">
                                             {{ __('Forgot password?') }}
                                         </a>
                                     @endif

@@ -1,9 +1,24 @@
 {
-    "dept_id": {
-        "name": "Department ID",
+    "proforma_id": {
+        "name": "Proforma ID",
         "description": "Type of the case check the id given in the case_type table",
         "type": "number",
         "default": null,
-        "operations": [">"]
+        "operations": [
+            ">"
+        ]
+    },
+    "dept_field_cd": {
+        "name": "Department ID",
+        "description": "Type of the case check the id given in the case_type table",
+        "type": "date",
+        "default": null,
+        "operations": [
+            ">",
+            "in",
+            "not_in",
+            "=",
+            "!="
+        ]
     }
 }
