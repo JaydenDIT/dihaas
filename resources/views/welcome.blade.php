@@ -264,17 +264,17 @@
                                     </div>
                                 </div>
                                 <!-- <div class="row mb-2">
-                                        <div class="col-md-5 offset-md-4">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember"
-                                                    id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                                    <div class="col-md-5 offset-md-4">
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input" type="checkbox" name="remember"
+                                                                                id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                                                <label class="form-check-label" for="remember">
-                                                    {{ __('Remember Me') }}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div> -->
+                                                                            <label class="form-check-label" for="remember">
+                                                                                {{ __('Remember Me') }}
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> -->
                             </form>
 
 
@@ -471,7 +471,6 @@
                             </div>
                         </div>
 
-
                         <!-- <div>Registration closes in <span id="time">05:00</span> minutes!</div> -->
                     </div>
 
@@ -480,28 +479,7 @@
 
                 </div>
 
-
-
-                <!-- sida loire -->
-
-
-
-
-
-
-
-
-                <!-- sida loire -->
-
                 <!-- second card -->
-
-
-
-
-
-
-
-
 
             </div>
 
@@ -625,11 +603,6 @@
                             $stories = SuccessStoriesModel::orderBy('status', 'asc')->first();
                             $image = SuccessStoriesModel::orderBy('status', 'asc')->first();
                             
-                            // if ($image) {
-                            //     // If an image with status 1 is found
-                            //     $imagePath = asset('storage/' . str_replace('\\', '/', $image->image)); // Constructing the image path
-                            // }
-                            
                             ?>
                             @if (count($storiesArray) > 0)
                                 <p class="bold textcolor apply_font_size empowering_font">Meet <i>{{ $stories->name }}</i>
@@ -670,14 +643,6 @@
 
 
         </div>
-
-        <!-- Seema -->
-
-
-
-        <br>
-
-
 
 
         <br>
@@ -737,7 +702,7 @@
                                             @foreach ($images as $index => $image)
                                                 <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                                                     <!-- <img src="{{ asset('storage/' . $image->image) }}" alt="Image {{ $index + 1 }}" class="d-block"
-                                height="300px" width="200px;"> -->
+                                                            height="300px" width="200px;"> -->
 
                                                     <img src="{{ route('image.show', ['filename' => $image->image]) }}"
                                                         alt="Your Image" height="300px" width="100%;">
@@ -807,114 +772,6 @@
         </div>
 
 
-        <br>
-        {{-- <div class="row row_width">
-
-        <div class="card text-bg-light mb-3">
-            <div class="row g-0">
-                <div class="col-md-2">
-                    <img src="{{asset('assets/images/faq_Section.svg')}}" class="img-fluid rounded-start imagesizeFAQ"
-                        alt="FAQ">
-                </div>
-                <div class="col-md-10">
-                    <div class="card-header verdana  new_background_color">
-                        <h4 class="verdana dihasTitle white_font_color apply_font_size_faq ">Any Question?</h4>
-                    </div>
-                    <div class="card-body verdana ">
-
-
-
-
-                        <p>
-
-
-                        <p class="verdana change_font">
-                            <b>
-                                What is Die-in-Harness scheme?
-                            </b>
-                        </p>
-                        <br>
-                        <p>
-                        <h6 class="verdana line_height change_font">Die-in-Harness scheme is to grant
-                            appointment on
-                            compassionate
-                            grounds to the next of kin
-                            (a dependent family member) of a Government servant who dies in harness leaving his
-                            family in penury and without any means of livelihood. The Scheme is not extendable to
-                            generations and should not be considered as hereditary right. In other words, the scheme
-                            shall not be admissible/extendable to dependent family member of a Government servant if
-                            the Government Servant was appointed under Die-in -harness Scheme (DIH).
-                            <span id="dotsfaq">......</span>
-                        </h6>
-                        </p>
-                        <span id="morefaq">
-                            <p>
-                                <b class="verdana">To whom the scheme is applicable?</b>
-                            </p>
-                            <p>
-                            <h6 class="verdana line_height">(a) The Scheme shall be applicable to unemployed
-                                dependent
-                                family
-                                member of the
-                                deceased Government servant in the following order of entitlement:</h6>
-
-                            <ul class="verdana line_height">
-                                <li>legal spouse</li>
-                                <li>elder child (unmarried son/daughter or married son of the deceased Government
-                                    Servant if living in the
-                                    same household) </li>
-                                <li>brother/ sister in case of unmarried Government servant</li>
-                            </ul>
-                            <h6 class="verdana line_height">(b) No Objection Certificate i.e., NOC
-                                (in the form of Affidavit) from other eligible dependents to be submitted if the
-                                claimant is other than legal spouse.</h6>
-                            <h6 class="verdana line_height">(c) Undertaking (in the form of Affidavit) to be
-                                submitted to
-                                look after the other dependent family members if appointed
-                                and liable to be terminated from the post failing to comply the Scheme.</h6>
-                            <h6 class="verdana line_height">
-                                (d) The scheme shall be applicable only to the dependent of such deceased Government
-                                servant who was appointed on regular basis/post and not under DIH Scheme.
-                            </h6>
-                            <h6 class="verdana line_height">
-                                (e) The scheme shall not cover those who work on daily wages, casual, apprentice,
-                                adhoc, contract, work-charged, muster roll, extension, re-employed basis and
-                                employees who retire on medical ground.
-                            </h6>
-                            <h6 class="verdana line_height">
-                                (f) The Scheme shall not cover missing/absconding Government servants and death
-                                caused by suicide or by excessive drinking or on account of natural death.
-                            </h6>
-                            <h6 class="verdana line_height">
-                                (g) The Scheme shall not be applicable to adopted son/ adopted daughter.
-                            </h6>
-                            <h6 class="verdana line_height">
-                                (h) The Government Servant should have put in at least 5 years regular service in
-                                the Government.
-                            </h6>
-
-                            </p>
-
-                        </span>
-                        </p>
-
-                        <!-- Seema -->
-                        <p id="myBtnfaq" style="color:blue" class="change_font">Know more </p>
-                        <br><br>
-
-
-
-
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-    </div> --}}
-
         <div class="row mb-3 justify-content-center " style="gap:0.1%">
 
             <div class="icon_width">
@@ -945,16 +802,6 @@
                 </a>
 
             </div>
-
-
-
-
-
-
-
-
-
-
         </div>
 
 
@@ -1049,18 +896,20 @@
                 var btn = document.getElementById("myBtnfaq");
                 var dots = document.getElementById("dotsfaq");
                 var moreText = document.getElementById("morefaq");
+                if (btn) {
+                    btn.addEventListener("click", function() {
+                        if (dots.style.display === "none") {
+                            dots.style.display = "inline";
+                            btn.innerHTML = "Know more";
+                            moreText.style.display = "none";
+                        } else {
+                            dots.style.display = "none";
+                            btn.innerHTML = "Know less";
+                            moreText.style.display = "inline";
+                        }
+                    });
+                }
 
-                btn.addEventListener("click", function() {
-                    if (dots.style.display === "none") {
-                        dots.style.display = "inline";
-                        btn.innerHTML = "Know more";
-                        moreText.style.display = "none";
-                    } else {
-                        dots.style.display = "none";
-                        btn.innerHTML = "Know less";
-                        moreText.style.display = "inline";
-                    }
-                });
             });
         </script>
 
