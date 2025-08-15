@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('document_list', function (Blueprint $table) {
@@ -15,12 +16,20 @@ return new class extends Migration {
             $table->enum('document_type', ['pdf', 'image', 'docx', 'excel'])
                 ->comment("mime type pdf=pdf, image=jpg,jpeg,png, docx=docx, excel=xlsx");
             $table->timestamps();
-            $table->softDeletes();  // deleted_at for soft deletion
+            $table->softDeletes(); // deleted_at for soft deletion
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('document_list');
+        //Schema::dropIfExists('document_list');
+        // Only disable foreign key checks if DB is MySQL
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+            Schema::dropIfExists('document_list');
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        } else {
+            Schema::dropIfExists('document_list');
+        }
     }
 };
