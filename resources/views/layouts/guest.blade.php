@@ -44,6 +44,7 @@
         </div>
     </div>
 </body>
+<script src="{{ asset('assets/popper/popper.min.js') }}"></script>
 <script src="{{ asset('assets/bootstrap-5.2.3/js/bootstrap.min.js') }}"></script>
 @stack('js')
 

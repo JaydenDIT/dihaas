@@ -22,6 +22,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     --}}
     {{-- Navbar --}}
+
     <nav class="navbar navbar-expand-lg navbar-light bg-gradiant shadow-sm fixed-top">
         <div class="container">
 
@@ -33,17 +34,42 @@
             {{-- Navbar Links --}}
             <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
                 <ul class="navbar-nav align-items-center">
+
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">Home</a>
+                        <a href="{{ url('/dihas_overview') }}" class="nav-link">
+                            <span>Overview</span>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#aboutMore">About DIHAS</a>
+                        <a href="{{ url('/sitemap') }}" class="nav-link">
+                            <span>Sitemap</span>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#objectiveMore">Objective</a>
+                        <a href="{{ url('/contact_us') }}" class="nav-link">
+                            <span>Contact Us </span>
+                        </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#benefitsMore">Benefits</a>
+
+                    <li class="nav-item dropdown">
+                        <a class="verdana_txtnone nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black;">
+                            Manual
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="verdana_txtnone dropdown-item yellow-bg"
+                                    href="{{ asset('assets/files/citizen.pdf') }}" target="_blank">Citizen User</a>
+                            </li>
+                            <li>
+                                <a class="verdana_txtnone dropdown-item yellow-bg"
+                                    href="{{ asset('assets/files/department.pdf') }}" target="_blank">Department User</a>
+                            </li>
+                            <li>
+                                <a class="verdana_txtnone dropdown-item yellow-bg"
+                                    href="{{ asset('assets/files/superadmin.pdf') }}" target="_blank">Superadmin User</a>
+                            </li>
+                        </ul>
                     </li>
 
                 </ul>
@@ -119,8 +145,13 @@
                                     </p>
                                     <div class="collapse" id="objectiveMore">
                                         <p class="lead-text">
-                                            ...to the next of kin of a Government servant who dies in harness, leaving
-                                            the family in penury. The scheme is not hereditary.
+                                            to the next of kin (a dependent family member) of a Government servant who
+                                            dies in harness leaving his family in penury and without
+                                            any means of livelihood. The Scheme is not extendable to
+                                            generations and should not be considered as hereditary right. In other words,
+                                            thescheme shall not be admissible/extendable to dependent family member of a
+                                            Government servant if the Government Servant was appointed under Die-in -harness
+                                            Scheme (DIH).
                                         </p>
                                     </div>
                                 </div>
@@ -144,8 +175,9 @@
                                     <div class="collapse" id="benefitsMore">
                                         <ul>
                                             <li>Legal spouse</li>
-                                            <li>Elder child living in same household</li>
-                                            <li>Brother/sister in case of unmarried Government servant</li>
+                                            <li>Elder child (unmarried son/daughter or married son of the deceased
+                                                Government Servant if living in the same household).</li>
+                                            <li>Brother/ sister in case of unmaarried Government servant.</li>
                                         </ul>
                                     </div>
                                 </div>
