@@ -1,38 +1,9 @@
 $(document).ready(function () {
     fieldHide(hiddenClass);
-
-    showStep(Number(current_step) + 1);
-
-    // Click to navigate to step
-    $(".btn-step").click(function () {
-        let step = $(this).data("step");
-        // Allow clicking only if step is unlocked
-        if (!$(this).hasClass("disabled")) {
-            showStep(step);
-        }
-    });
-
-    $(".nextBtn").click(function () {
-        let step = $(this).data("step");
-        showStep(step + 1);
-    });
-
-    $(".prevBtn").click(function () {
-        let step = $(this).data("step");
-        showStep(step - 1);
-    });
-});
-
-function showStep(step) {
+    let step = Number(current_step);
     step = step < 1 ? 1 : step > 3 ? 3 : step;
-    $(".setup-content").hide();
-    $("#step-" + step).show();
-
-    $(".btn-circle").removeClass("active");
-    $(".btn-circle")
-        .eq(step - 1)
-        .addClass("active");
-}
+    showStep(step);
+});
 
 $(document).on("click", ".ein-search-btn", async function (e) {
     e.preventDefault();
@@ -42,7 +13,6 @@ $(document).on("click", ".ein-search-btn", async function (e) {
             url: searchEmpByEIN.replace("__ID__", $("#deceased_ein").val()),
             method: "GET",
         });
-
         await loadPost(res[0]["dept_cd"]);
         $("#deceased_emp_name").val(res[0]["emp_lname"]);
         $("#deceased_desig_cd").val(res[0]["desig_cd"]);

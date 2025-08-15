@@ -32,7 +32,7 @@ class ProformaController extends Controller
         $castes = Caste::all();
         $states = State::all();
         $proforma = new Proforma();
-        $current_step = 0;
+        $current_step = 1;
 
         $result = CmisApiService::apiAdminDepartments();
         $adminDepartments = $result; //test for real data uncomment below and comment this line
@@ -148,7 +148,7 @@ class ProformaController extends Controller
         $adminDepartments = $result->json();
         */
 
-        $current_step = $proforma->form_fillup_step == "step1-completed" ? 1 : ($proforma->form_fillup_step == "step2-completed" ? 2 : 3);
+        $current_step = $proforma->form_fillup_step == "step1-completed" ? 2 : ($proforma->form_fillup_step == "step2-completed" ? 3 : 4);
 
         $tasks = getPrevNextTasks($proforma->proforma_id); //from helper.php
         return view('proforma.createProforma', compact(

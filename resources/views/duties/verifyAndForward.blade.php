@@ -88,39 +88,12 @@
 
 
 @push('js')
+<script src="{{ asset('js/step-wizard.js') }}"></script>
 <script>
     $(document).ready(function() {
-        showStep(1);
-
-        // Click to navigate to step
-        $(".btn-step").click(function() {
-            let step = $(this).data("step");
-            // Allow clicking only if step is unlocked
-            if (!$(this).hasClass("disabled")) {
-                showStep(step);
-            }
+        $(document).ready(function() {
+            showStep(1);
         });
-
-        $(".nextBtn").click(function() {
-            let step = $(this).data("step");
-            showStep(step + 1);
-        });
-
-        $(".prevBtn").click(function() {
-            let step = $(this).data("step");
-            showStep(step - 1);
-        });
-
-        function showStep(step) {
-            step = step;
-            $(".setup-content").hide();
-            $("#step-" + step).show();
-
-            $(".btn-circle").removeClass("active");
-            $(".btn-circle")
-                .eq(step - 1)
-                .addClass("active");
-        }
     });
 </script>
 @endpush

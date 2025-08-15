@@ -21,11 +21,11 @@
             <button class="btn btn-sm btn-circle statusBtn   {{ $current_step > 0 ? 'completed' : '' }}" type="button">1</button>
             <div>Details</div>
         </div>
-        <div class="btn-go-through {{$current_step >= 1 ? 'btn-step' : ''}}" data-step="2">
+        <div class="btn-go-through {{$current_step > 1 ? 'btn-step' : ''}}" data-step="2">
             <button class="btn btn-sm btn-circle statusBtn {{ $current_step > 1 ? 'completed' : '' }}" type="button">2</button>
             <div>Family Members</div>
         </div>
-        <div class="btn-go-through {{$current_step >= 2 ? 'btn-step' : ''}}" data-step="3">
+        <div class="btn-go-through {{$current_step > 2 ? 'btn-step' : ''}}" data-step="3">
             <button class="btn btn-sm btn-circle statusBtn {{ $current_step > 2 ? 'completed' : '' }}" type="button">3</button>
             <div>Documents Upload</div>
         </div>
@@ -94,10 +94,6 @@ if ($action == 'create') {
     const current_step = "{{ $current_step ?? '1' }}";
     //checking data or form fill to hide
     const hiddenClass = <?= json_encode($hiddenClass ?? []) ?>;
-
-
-
-
     //misc
     const getDistrictByStateId = "{{ route('misc.option.district', ['id'=>'__ID__'])}}";
     const getSubDivisionByDistrictId = "{{ route('misc.option.subdivision', ['id'=>'__ID__'])}}";
@@ -124,5 +120,7 @@ if ($action == 'create') {
     const redirectUrl = "{{ route('tasks.performa.index', [$tasks['current']['tasks_id'] ?? '__ID__' ]) }}";
 </script>
 <script src="{{ asset('js/proforma-create.js') }}"></script>
+<script src="{{ asset('js/step-wizard.js') }}"></script>
+
 
 @endpush

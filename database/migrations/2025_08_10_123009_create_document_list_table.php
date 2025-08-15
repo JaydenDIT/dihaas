@@ -12,7 +12,8 @@ return new class extends Migration {
             $table->string('document_name');
             $table->string('document_criteria'); // key from config/documentCriteria.php
             $table->integer('max_size_kb')->default(2048);
-            $table->string('document_type'); // or json if multi-type support needed
+            $table->enum('document_type', ['pdf', 'image', 'docx', 'excel'])
+                ->comment("mime type pdf=pdf, image=jpg,jpeg,png, docx=docx, excel=xlsx");
             $table->timestamps();
             $table->softDeletes();  // deleted_at for soft deletion
         });
