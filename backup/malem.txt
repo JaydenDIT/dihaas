@@ -5,3 +5,10 @@ php artisan migrate:refresh --path=database/migrations/2025_08_11_142209_create_
 
 --seed 
 php artisan db:seed --class=RolesSeeder
+
+
+
+
+date 15-08-2025 - malem
+php artisan migrate:refresh --path=database/migrations/2025_08_10_123009_create_document_list_table.php
+php artisan db:seed --class=DocumentListSeeder

@@ -34,7 +34,7 @@
          <div class="hstack gap-3 my-3 p-3">
              <div class="ms-auto">
                  <button class="btn btn-md btn-success" id="saveProforma" type="button">Save</button>
-                 @if($current_step >= 1)
+                 @if($current_step > 1)
                  <button class="btn btn-md btn-success nextBtn" type="button" data-step="1">Next</button>
                  @endif
              </div>

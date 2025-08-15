@@ -26,7 +26,7 @@ class DocumentListSeeder extends Seeder
             ['Electoral Roll', 'compulsory', 'pdf'],
             ['Police Report (if dead on duty)', 'dead_on_duty', 'pdf'],
             ['Physically Handicapped Certificate (if any)', 'handicapped', 'pdf'],
-            ['Passport Photo', 'compulsory', 'jpg'],
+            ['Passport Photo', 'compulsory', 'image'],
             ['Others', 'optional', 'pdf'],
         ];
 
