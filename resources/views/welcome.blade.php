@@ -168,16 +168,19 @@
                                 <div class="mb-3">
                                     <div class=" d-flex justify-content-between">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="loginType"
-                                                id="citizenLogin" value="citizenLogin"
-                                                @if (old('loginType') == 'citizenLogin') {{ 'checked' }} @endif>
+                                            @php
+                                                $oldLoginType = old('loginType', null);
+                                            @endphp
+                                            <input class="form-check-input @error('loginType') is-invalid @enderror"
+                                                type="radio" name="loginType" id="citizenLogin" value="citizenLogin"
+                                                @if ($oldLoginType == 'citizenLogin' || is_null($oldLoginType)) {{ 'checked' }} @endif>
                                             <label for="citizenLogin" class="form-check-label cursor-pointer"><small>Login
                                                     as
                                                     Citizen</small></label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="loginType"
-                                                id="departmentLogin" value="departmentLogin"
+                                            <input class="form-check-input @error('loginType') is-invalid @enderror"
+                                                type="radio" name="loginType" id="departmentLogin" value="departmentLogin"
                                                 @if (old('loginType') == 'departmentLogin') {{ 'checked' }} @endif>
                                             <label for="departmentLogin"
                                                 class="form-check-label cursor-pointer"><small>Login as
@@ -221,13 +224,16 @@
                                         {{ __('Log in') }}
                                     </button>
                                 </div>
-                                <div class="text-center text-muted mt-3 mb-2">
-                                    Don't have account?
-                                </div>
-                                <div class="text-center ">
-                                    <a class="btn btn-link btn-sm text-primary"
-                                        href="{{ route('register.citizen') }}">Click here to
-                                        register</a>
+                                <div class="text-center mt-3 @if ($oldLoginType == 'departmentLogin') {{ 'd-none' }} @endif"
+                                    id="citizenRegistrationLayout">
+                                    <div class="text-muted mb-2">
+                                        Don't have account?
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-link btn-sm text-primary"
+                                            href="{{ route('register.citizen') }}">Click here to
+                                            register as citizen</a>
+                                    </div>
                                 </div>
                             </form>
                             {{-- @if ($errors->any())
@@ -279,6 +285,16 @@
             AOS.init({
                 duration: 800,
                 once: true
+            });
+
+            document.querySelectorAll("input[name='loginType']").forEach(radioBtn => {
+                radioBtn.addEventListener('click', (e) => {
+                    if (radioBtn.value == "citizenLogin") {
+                        document.getElementById("citizenRegistrationLayout").classList.remove("d-none");
+                    } else {
+                        document.getElementById("citizenRegistrationLayout").classList.add("d-none");
+                    }
+                });
             });
         </script>
     @endpush

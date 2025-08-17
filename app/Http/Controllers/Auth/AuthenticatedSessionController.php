@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
         ])->first();
 
         if (empty($user)) {
-            return back()->withErrors([
+            return back()->withInput()->withErrors([
                 'email' => 'Sorry, your email is not registered in our app.',
             ]);
         }
@@ -43,13 +43,13 @@ class AuthenticatedSessionController extends Controller
             //for citizen role id should be 77
             //now check if the user is citizen or not
             if ($user->role_id != 77) {
-                return back()->withErrors([
+                return back()->withInput()->withErrors([
                     'loginType' => 'Sorry, you are not a citizen user.',
                 ]);
             }
         } else {
             if ($user->role_id == 77) {
-                return back()->withErrors([
+                return back()->withInput()->withErrors([
                     'loginType' => 'Sorry, you are not a department user.',
                 ]);
             }
