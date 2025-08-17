@@ -18,10 +18,6 @@
                     not extendable to generations and should not be considered as hereditary right. In other words, the
                     scheme shall not be admissible/extendable to dependent family member of a Government servant if
                     the Government Servant was appointed under Die-in -harness Scheme (DIH).
-
-
-
-
                 </div>
 
                 <br>

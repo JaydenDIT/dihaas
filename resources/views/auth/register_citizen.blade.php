@@ -1,11 +1,12 @@
 @extends('layouts.guest')
 @section('content')
     <div class="container my-3 mb-5 ">
-        <h4 class="text-center my-5 text-danger">Information: Install Sandes App from Google Playstore to receive OTP and
-            Message from the Portal</h4>
 
-        <h2 class="text-center my-5">REGISTER</h2>
-
+        <h2 class="text-center mt-5">REGISTER</h2>
+        <div class="text-center mb-3 text-danger">
+            <small>Information: Install Sandes App from Google Playstore to receive OTP and
+                Message from the Portal</small>
+        </div>
         <div class="card bg-light my-3 py-2">
             <div class="card-header" style="color: blue;text-align: center;">
                 <i class="fa-solid fa-user-plus fa-beat-fade"></i>&ensp;<b>New User
@@ -52,21 +53,24 @@
                         <label for="email" class="form-label"><b>Gender:</b></label>
                         <div class="hstack gap-3">
                             <div class="form-check">
-                                <input type="radio" name="gender" value="male" class="form-check-input" required>
-                                <label class="form-check-label" for="gender">
+                                <input type="radio" id="gender_male" name="gender" value="male"
+                                    class="form-check-input" required>
+                                <label class="form-check-label cursor-pointer" for="gender_male">
                                     Male
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" name="gender" value="female" class="form-check-input" required>
-                                <label class="form-check-label" for="gender">
+                                <input type="radio" id="gender_female" name="gender" value="female"
+                                    class="form-check-input" required>
+                                <label class="form-check-label cursor-pointer" for="gender_female">
                                     Female
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" name="gender" value="transgender" class="form-check-input" required>
-                                <label class="form-check-label" for="gender">
-                                    Other
+                                <input type="radio" id="gender_transgender" name="gender" value="transgender"
+                                    class="form-check-input" required>
+                                <label class="form-check-label cursor-pointer" for="gender_transgender">
+                                    Transgender
                                 </label>
                             </div>
                         </div>
@@ -92,7 +96,7 @@
                             class="form-select" required>
                             <option value="" disabled selected>Choose....</option>
                             @foreach ($relationships as $row)
-                                <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                <option value="{{ $row->relationship_id }}">{{ $row->relationship_name }}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback" role="alert">
@@ -135,23 +139,6 @@
                                         Please enter Pin Code.
                                     </div>
                                 </div>
-
-                                {{-- <div>
-                            <label for="current_country_id" class="form-label"><b>Country</b></label>
-                                <select name="current_country_id" id="current_country_id" data-change="current_state_id"
-                                    
-                                    class="form-select funSelectChange" required>
-
-                                    <option value="" disabled selected>Choose Country....</option>
-                                    @foreach ($countries as $row)
-                                    <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="invalid-feedback" role="alert">
-                                    Please Select Country.
-                                </div>
-                            </div> --}}
-
                                 <!--state-->
                                 <div>
                                     <label for="current_state_id" class="form-label"><b>State</b></label>
@@ -223,20 +210,6 @@
                                         Please enter Pin Code.
                                     </div>
                                 </div>
-                                {{-- <div>
-                            <label for="permanent_country_id" class="form-label"><b>Country</b></label>
-                                <select name="permanent_country_id" id="permanent_country_id" data-change="permanent_state_id"                                    
-                                    class="form-select funSelectChange" required>
-                                    <option value="" disabled selected>Choose Country....</option>
-                                    @foreach ($countries as $row)
-                                    <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="invalid-feedback" role="alert">
-                                    Please Select Country.
-                                </div>
-                            </div> --}}
-
                                 <!--state-->
                                 <div>
                                     <label for="permanent_state_id" class="form-label"><b>State</b></label>
@@ -294,7 +267,7 @@
                         <div class="form-check">
                             <input class="form-check-input @error('iagree') is-invalid @enderror" type="checkbox"
                                 name="iagree" id="iagree" required>
-                            <label class="form-check-label" for="flexCheckDefault">
+                            <label class="form-check-label cursor-pointer" for="iagree">
                                 I agree all the above information are correct.
                             </label>
                             <div class="invalid-feedback" role="alert">
@@ -342,15 +315,7 @@
                                     id="mobile_otp">
                             </div>
                         </div>
-                        <!-- <div class="row">
-                                    <div class="col-md-12 text-center fw-bold" style="color: GREEN;"><i id="emailOtpLabel"></i>
-                                        <a href="javascript: resendOTP('email');">( Resend OTP )</a>
-                                    </div>
-                                    <div class="col-md text-end fw-bold">Enter OTP :</div>
-                                    <div class="col-md">
-                                        <input type="number" maxlength="10" class="" name="email_otp" id="email_otp">
-                                    </div>
-                                </div> -->
+
                         <div class="row">
                             <i class="text-center text-danger">Note: The OTP may be delayed due to network issues.
                                 Please wait for 2-6 minutes and try requesting for another OTP by clicking the "Resend OTP"

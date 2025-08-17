@@ -2,6 +2,39 @@
 @push('css')
     <link href="{{ asset('assets/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('css/welcome.css') }}" rel="stylesheet">
+    <style>
+        .section-title {
+            position: relative;
+            display: inline-block;
+            font-weight: normal;
+            color: #3633f8;
+            /* Bootstrap primary color */
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title::before,
+        .section-title::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 60px;
+            /* line length */
+            height: 1px;
+            /* line thickness */
+            background: #4b40f1;
+            /* same as text color */
+        }
+
+        .section-title::before {
+            right: 100%;
+            margin-right: 15px;
+        }
+
+        .section-title::after {
+            left: 100%;
+            margin-left: 15px;
+        }
+    </style>
 @endpush
 @section('content')
     {{-- Google Font 
@@ -125,18 +158,43 @@
 
                 {{-- Login Section --}}
                 <div class="col-lg-4" data-aos="fade-left">
-                    <div class="card card-hover shadow-sm border-0 mt-4">
+                    <div class="card card-hover shadow-lg border-0 mt-4">
                         <div class="card-body">
-                            <h5 class="text-center text-primary mb-4">Login</h5>
+                            <div class="text-center mb-4 ">
+                                <h5 class="section-title">Login</h5>
+                            </div>
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf
+                                <div class="mb-3">
+                                    <div class=" d-flex justify-content-between">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="loginType"
+                                                id="citizenLogin" value="citizenLogin"
+                                                @if (old('loginType') == 'citizenLogin') {{ 'checked' }} @endif>
+                                            <label for="citizenLogin" class="form-check-label cursor-pointer"><small>Login
+                                                    as
+                                                    Citizen</small></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="loginType"
+                                                id="departmentLogin" value="departmentLogin"
+                                                @if (old('loginType') == 'departmentLogin') {{ 'checked' }} @endif>
+                                            <label for="departmentLogin"
+                                                class="form-check-label cursor-pointer"><small>Login as
+                                                    Department</small></label>
+                                        </div>
+                                    </div>
+                                    @if ($errors->has('loginType'))
+                                        <div class="text-danger small">{{ $errors->first('loginType') }}</div>
+                                    @endif
+                                </div>
                                 <div class="mb-3">
                                     <label for="email" class="form-label">{{ __('Email') }}</label>
                                     <input id="email" type="email"
                                         class="form-control @error('email') is-invalid @enderror" name="email"
                                         value="{{ old('email') }}" required autofocus>
                                     @error('email')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback small">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
@@ -145,7 +203,7 @@
                                         class="form-control @error('password') is-invalid @enderror" name="password"
                                         required>
                                     @error('password')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback small">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="mb-3 form-check">
@@ -154,7 +212,8 @@
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     @if (Route::has('password.request'))
-                                        <a class="small text-decoration-underline" href="{{ route('password.request') }}">
+                                        <a class="small text-decoration-underline"
+                                            href="{{ route('password.request') }}">
                                             {{ __('Forgot password?') }}
                                         </a>
                                     @endif
@@ -166,10 +225,20 @@
                                     Don't have account?
                                 </div>
                                 <div class="text-center ">
-                                    <a class="btn btn-success" href="{{ route('register.citizen') }}">Click here to
+                                    <a class="btn btn-link btn-sm text-primary"
+                                        href="{{ route('register.citizen') }}">Click here to
                                         register</a>
                                 </div>
                             </form>
+                            {{-- @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif --}}
                         </div>
                     </div>
                 </div>

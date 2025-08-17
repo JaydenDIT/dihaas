@@ -110,3 +110,7 @@
 .search input {
     font-size: 0.82em !important;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

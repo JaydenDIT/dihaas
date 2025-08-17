@@ -60,12 +60,11 @@ Route::middleware('auth')->group(function () {
 });
 
 //citizen
-Route::get('/register-citizen', [CitizenRegistrationController::class, 'citizenRegister'])
-    ->name('register.citizen');
+
 Route::group(['prefix' => 'citizen'], function () {
     Route::controller(CitizenRegistrationController::class)->group(function () {
         //Route::post('register', 'citizenRegister')->name('citizen.register');
-        Route::get('register', 'citizenRegister')->name('citizen.register');
+        Route::get('register', 'citizenRegister')->name('register.citizen');
         // Route::post('preRegistration', 'citizenPreRegistration')->name('citizen.preRegistration');
         Route::get('preRegistration', 'citizenPreRegistration')->name('citizen.preRegistration');
         Route::post('saveRegistration', 'citizenSaveRegistration')->name('citizen.saveRegistration');
