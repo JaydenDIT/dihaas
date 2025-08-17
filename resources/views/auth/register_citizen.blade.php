@@ -9,7 +9,7 @@
         </div>
         <div class="card bg-light my-3 py-2">
             <div class="card-header" style="color: blue;text-align: center;">
-                <i class="fa-solid fa-user-plus fa-beat-fade"></i>&ensp;<b>New User
+                <i class="fa-solid fa-user-plus fa-beat-fade"></i>&ensp;<b>New Citizen User
                     Registration Form</b>
             </div>
 
@@ -334,9 +334,6 @@
 
 
     <script nonce="{{ csp_nonce() }}">
-        var _token = "{{ csrf_token() }}";
-
-
         var districtoption_url = "{{ route('district.getOption') }}";
 
         var register_url = "{{ route('citizen.preRegistration') }}";

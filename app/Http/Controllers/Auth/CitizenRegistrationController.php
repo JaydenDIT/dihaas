@@ -46,11 +46,8 @@ class CitizenRegistrationController extends Controller
             'expiry_time'                             => 60 * 20]);
         // dd('mobile_otp');
         SmsSender::send_otp($request->post("mobile"), 'mobile_otp');
-        // SmsSender::sendEmailOtp($request->post("email"), 'email_otp');
-        //$mobile = substr_replace($request->post('mobile'),"****",2,4);
         $mobile = substr_replace($request->post('mobile'), "****", 1, 7);
-        //  $email = explode('@', $request->post("email"));
-        // $email = substr_replace( $email[0],"****",2,-3).'@'. $email[1] ;
+
         return response()->json([
             'status'       => 1,
             'msg'          => "OTP send",

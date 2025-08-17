@@ -66,9 +66,9 @@
 
     <main id="main" class="main">
         @isset($pagetitle)
-        <div class="pagetitle">
-            <h1>{{ $pagetitle }}</h1>
-        </div><!-- End Page Title -->
+            <div class="pagetitle">
+                <h1>{{ $pagetitle }}</h1>
+            </div><!-- End Page Title -->
         @endisset
 
 

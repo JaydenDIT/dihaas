@@ -54,9 +54,11 @@
 
         </div>
     </div>
+    <script src="{{ asset('assets/popper/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/bootstrap-5.2.3/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/common.js') }}"></script>
+    @stack('js')
 </body>
-<script src="{{ asset('assets/popper/popper.min.js') }}"></script>
-<script src="{{ asset('assets/bootstrap-5.2.3/js/bootstrap.min.js') }}"></script>
-@stack('js')
+
 
 </html>
