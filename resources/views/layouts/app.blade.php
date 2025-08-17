@@ -37,6 +37,8 @@
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/niceadmin/css/style.css') }}" rel="stylesheet">
+    <!-- common css -->
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     @stack('css')
 
     <!-- =======================================================
@@ -55,14 +57,18 @@
 <body>
 
     @include('layouts.niceadmin._header')
+    <div id="loading-div">
+        <img id="loading-image" src="{{ asset('assets/img/loader.gif') }}" alt="Loading...">
+    </div>
+    @include('layouts.error')
 
     @include('layouts.niceadmin._aside_menubar')
 
     <main id="main" class="main">
         @isset($pagetitle)
-            <div class="pagetitle">
-                <h1>{{ $pagetitle }}</h1>
-            </div><!-- End Page Title -->
+        <div class="pagetitle">
+            <h1>{{ $pagetitle }}</h1>
+        </div><!-- End Page Title -->
         @endisset
 
 

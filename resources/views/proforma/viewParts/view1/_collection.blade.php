@@ -1,3 +1,27 @@
+@push('css')
+<style>
+    /* Reset Bootstrap's default chevron */
+    .accordion-button::after {
+        background-image: none !important;
+        background: none !important;
+        content: '' !important;
+    }
+
+    /* Custom +/- toggle */
+    .accordion-button:not(.collapsed)::after {
+        content: '-' !important;
+        font-weight: bold;
+        transform: none !important;
+    }
+
+    .accordion-button.collapsed::after {
+        content: '+' !important;
+        font-weight: bold;
+    }
+</style>
+@endpush
+
+
 <div class="row  bg-pink  rounded">
     @include('proforma.viewParts.view1._1deceased_cmis_details')
     @include('proforma.viewParts.view1._2deceased_entry_details')
@@ -13,15 +37,3 @@
         </div>
     </div>
 </div>
-
-@push('js')
-<script>
-    $(function() {
-        $('.accordion-collapse').on('show.bs.collapse', function() {
-            $(this).closest('.accordion-item').find('.toggle-icon').text('−');
-        }).on('hide.bs.collapse', function() {
-            $(this).closest('.accordion-item').find('.toggle-icon').text('+');
-        });
-    });
-</script>
-@endpush

@@ -155,15 +155,13 @@ class CitizenFormFillUpController extends Controller
         try {
             DB::beginTransaction();
             // Find the proforma
-            $proforma = Proforma::where('proforma_status', 'step3-completed')->where('proforma_id', $id)->first();
-            $this->authorize('canPerformOnProforma',  [$proforma, 'client_form_submission']);
-            $proforma->save();
-
+            $proforma = Proforma::where('mini_sequence', 'step3-completed')->where('proforma_id', $id)->first();
+            $this->authorize('canForward',  [$proforma, 'client_form_submission']);
             WorkflowHandler::forwardApplication($proforma); //set the sequence to next 
 
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
-                'action_by' => 1,
+                'action_by' => Auth::user()->user_id,
                 'action_name' => 'forwarded',
                 'action_remark' => 'Form Submit by Applicant ' . $proforma->applicant_name,
             ]);

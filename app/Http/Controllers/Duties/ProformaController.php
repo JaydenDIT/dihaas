@@ -89,6 +89,7 @@ class ProformaController extends Controller
             $data = $request->validated();
             $proforma = Proforma::findOrFail($id);
             $this->authorize('canPerformOnProforma',  [$proforma, 'client_form_submission']);
+            $data['mini_sequence'] = 'step1-completed'; //next step
             $proforma->update($data);
             //This define which process the proforma will follow
             ProcessMatcher::matchAndAssignProcess($proforma);

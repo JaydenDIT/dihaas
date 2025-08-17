@@ -21,7 +21,7 @@
         <div class="ms-auto">
             <button class="btn btn-md btn-success prevBtn" type="button" data-step="3">Prev</button>
             @if( isset($total_step) && $total_step > 3)
-            <button class="btn btn-md btn-success nextBtn" type="button" data-step="4">Next</button>
+            <button class="btn btn-md btn-success nextBtn" type="button" data-step="3">Next</button>
             @endif
         </div>
     </div>

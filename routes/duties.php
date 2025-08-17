@@ -51,9 +51,11 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::get('/{tasks_id}/proforma', 'index')->name('verify.form.index');
             Route::post('/{tasks_id}/proforma/ajaxlist', 'ajaxlist')->name('verify.form.ajaxlist');
             Route::get('/verify/{id}/view', 'view')->name('verify.form.view');
-            Route::get('/verify/{id}/revert', 'revert')->name('verify.form.revert');
-            Route::get('/verify/{id}/forward', 'forward')->name('verify.form.forward');
-            Route::get('/verify/{id}/reject', 'reject')->name('verify.form.reject');
+
+            Route::post('/verify/{id}/verify', 'verify')->name('verify.form.verify');
+            Route::post('/verify/{id}/revert', 'revert')->name('verify.form.revert');
+            Route::post('/verify/{id}/forward', 'forward')->name('verify.form.forward');
+            Route::post('/verify/{id}/reject', 'reject')->name('verify.form.reject');
         });
     });
 });

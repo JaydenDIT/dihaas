@@ -26,6 +26,7 @@ class WorkflowHandler
             $app->proforma_status = 'completed';
         }
 
+        $app->mini_sequence = NULL;
         $app->save();
         return $app;
     }
@@ -40,6 +41,7 @@ class WorkflowHandler
         if ($prev) {
             $app->process_sequence = $prev->sequence;
             $app->proforma_status = 'reverted';
+            $app->mini_sequence = NULL;
             $app->save();
         }
 
@@ -49,6 +51,7 @@ class WorkflowHandler
     public static function rejectApplication(Proforma $app)
     {
         $app->proforma_status = 'rejected';
+        $app->process_sequence = -99;
         $app->save();
         return $app;
     }

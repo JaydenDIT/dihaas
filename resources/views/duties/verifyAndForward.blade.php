@@ -60,20 +60,21 @@
                     <h5 class="py-1 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">Verification Form </h5>
                     <!-- Bank Details -->
                     <div class="col-sm-12 mb-3 px-4">
-                        <form>
-                            <div class="mb-3">
-                                <label for="verification_remark" class="form-label">Verification Remark</label>
-                                <textarea class="form-control" id="verification_remark" rows="3"></textarea>
-                            </div>
-
-                            <div class="d-flex justify-content-center gap-2">
-                                <button class="btn btn-md btn-danger prevBtn" type="button" data-step="3">Revert</button>
-                                <button class="btn btn-md btn-primary nextBtn" type="button" data-step="4">Verify</button>
-                                <button class="btn btn-md btn-success nextBtn" type="button" data-step="4">Verify And Forward</button>
-                            </div>
-                        </form>
 
 
+                        <div class="d-flex justify-content-center gap-2 mt-5">
+
+                            @include('duties.tasks._revert')
+                            @include('duties.tasks._reject')
+
+                            @if ($proforma->mini_sequence != "verified")
+                            <button class="btn btn-md btn-primary verify-btn" type="button">Verify</button>
+                            @else
+                            @include('duties.tasks._forward')
+                            @endif
+
+
+                        </div>
                     </div>
                 </div>
 
@@ -83,6 +84,10 @@
 
     </div>
 </div>
+
+@include('duties.tasks.modals._confirmation_modal')
+
+
 @endsection
 
 
@@ -95,5 +100,27 @@
             showStep(1);
         });
     });
+    const proformaId = "{{ $proforma->proforma_id }}";
+    const rejectUrl = "{{ route('duties.verify.form.reject', $proforma->proforma_id) }}";
+    const revertUrl = "{{ route('duties.verify.form.revert', $proforma->proforma_id) }}";
+    const forwardUrl = "{{ route('duties.verify.form.forward', $proforma->proforma_id) }}";
+    const verifyUrl = "{{ route('duties.verify.form.verify', $proforma->proforma_id) }}";
+    const confirmRedirectUrl = "{{ route('duties.verify.form.index', $tasks['current']['tasks_id']) }}";
+
+
+    $(document).on("click", ".verify-btn", async function(e) {
+        e.preventDefault();
+        confirm_message = {
+            title: "Verify!",
+            text: "Are you sure to Verify?",
+            type: "info",
+        };
+        $("#confirmation_form").attr("action", verifyUrl);
+        $("#confirm_remarks").prop("required", false);
+        $("#confirm_title").html("Write a Remarks(Optional)");
+        $("#confirm_proforma_id").val(proformaId);
+        $("#confirmationModal").modal("show");
+    });
 </script>
+<script src="{{ asset('js/duties-btn.js') }}"></script>
 @endpush

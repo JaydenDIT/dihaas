@@ -1,15 +1,14 @@
 <div class="accordion-item p-0">
-    <h2 class="accordion-header d-flex justify-content-between align-items-center bg-success bg-gradient text-white fw-bold p-2 ps-3 rounded-top">
-        <button class="accordion-button" type="button"
+    <h2 class="accordion-header text-white">
+        <button class="accordion-button bg-success bg-gradient text-white fw-bold p-2" type="button"
             data-bs-toggle="collapse"
             data-bs-target="#viewCollapse-deceasedDetail"
             aria-expanded="true"
             aria-controls="viewCollapse-deceasedDetail">
             Deceased Details
         </button>
-        <span class="toggle-icon fw-bold" style="font-size: 1.2rem;">−</span>
     </h2>
-    <div id="viewCollapse-deceasedDetail" class="accordion-collapse collapse show p-2 ps-3">
+    <div id="viewCollapse-deceasedDetail" class="accordion-collapse collapse show p-2 ps-3  bg-pink">
         <div class="accordion-body">
             <div class="row mb-2">
                 <div class="col-sm-4 fw-bold">EIN of the Deceased Employee:</div>

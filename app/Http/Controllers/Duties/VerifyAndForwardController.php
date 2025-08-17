@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Proforma;
 use App\Models\Task;
 use App\Services\CmisApiService;
+use App\Services\LogService;
 use App\Services\WorkflowHandler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class VerifyAndForwardController extends Controller
@@ -86,7 +89,116 @@ class VerifyAndForwardController extends Controller
     {
         $proforma = Proforma::findOrFail($id);
         $total_step = 4;
+        $tasks = getPrevNextTasks($id);
         $this->authorize('canPerformOnProforma',  [$proforma, 'verify_and_forward']);
-        return view('duties.verifyAndForward', compact('proforma', 'total_step'));
+        return view('duties.verifyAndForward', compact('proforma', 'total_step', 'tasks'));
+    }
+
+
+
+
+
+
+
+    public function verify(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'remarks' => 'nullable|string|max:600',
+            ]);
+            $proforma = Proforma::findOrFail($id);
+            $this->authorize('canPerformOnProforma',  [$proforma, 'verify_and_forward']);
+            if ($proforma->mini_sequence == "verified") {
+                return response()->json(['message' => 'Proforma already verified.'], 422);
+            }
+
+            $proforma->mini_sequence = "verified";
+            $proforma->save();
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => Auth::user()->user_id,
+                'action_name' => 'verified',
+                'action_remark' => $request->remarks,
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Proforma verified successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error verifying proforma: ' . $e->getMessage()], 422);
+        }
+    }
+
+    public function forward(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'remarks' => 'nullable|string|max:600',
+            ]);
+            $proforma = Proforma::findOrFail($id);
+            $this->authorize('canForward',  [$proforma, 'verify_and_forward']);
+            if ($proforma->mini_sequence != "verified") {
+                return response()->json(['message' => 'Verify first before forwarding.'], 422);
+            }
+            WorkflowHandler::forwardApplication($proforma);
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => Auth::user()->user_id,
+                'action_name' => 'forwarded',
+                'action_remark' => $request->remarks,
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Proforma forwarded successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
+        }
+    }
+    public function revert(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'remarks' => 'required|string|max:600',
+            ]);
+            $proforma = Proforma::findOrFail($id);
+            $this->authorize('canDrop',  [$proforma, 'verify_and_forward']);
+            WorkflowHandler::dropApplication($proforma);
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => Auth::user()->user_id,
+                'action_name' => 'reverted',
+                'action_remark' => $request->remarks,
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Proforma reverted successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error reverting proforma: ' . $e->getMessage()], 422);
+        }
+    }
+    public function reject(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'remarks' => 'required|string|max:600',
+            ]);
+            $proforma = Proforma::findOrFail($id);
+            $this->authorize('canReject',  [$proforma, 'verify_and_forward']);
+            WorkflowHandler::rejectApplication($proforma);
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => Auth::user()->user_id,
+                'action_name' => 'rejected',
+                'action_remark' => $request->remarks,
+            ]);
+            DB::commit();
+            return response()->json(['message' => 'Proforma rejected successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error rejecting proforma: ' . $e->getMessage()], 422);
+        }
     }
 }

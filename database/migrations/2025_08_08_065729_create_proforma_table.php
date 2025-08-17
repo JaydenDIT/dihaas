@@ -78,7 +78,8 @@ return new class extends Migration
             $table->string('proforma_status', 30)->enum('forwarded', 'rejected', 'reverted', 'completed')
                 ->nullable()->comment("This status is to know the current state of the application");
             $table->integer('process_sequence')->nullable();
-            $table->string('mini_sequence', 30)->comment("This is to track the mini process sequence within a sequence for example form fillup has 3 mini steps. This is set to NULL when main sequence changes");
+            $table->string('mini_sequence', 30)->nullable()
+                ->comment("This is to track the mini process sequence within a sequence for example form fillup has 3 mini steps. This is set to NULL when main sequence changes");
 
             // others
             $table->timestamps();

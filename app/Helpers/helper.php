@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\TaskRoleMapping;
 use App\Models\WebSettingModel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 function generateRandomString($length = 32)
 {
@@ -195,6 +196,8 @@ function sixDigitsEin($value)
     return str_pad($value, 6, '0', STR_PAD_LEFT);
 }
 
+
+
 function getPrevNextTasks($proforma_id)
 {
     $application = Proforma::findOrFail($proforma_id);
@@ -207,23 +210,24 @@ function getPrevNextTasks($proforma_id)
         ->orderBy('sequence')
         ->get();
 
-    $user_role_id = Auth::user()->role_id;
-
     $tasks = [
-        'previous' => null,
-        'current' => null,
-        'next' => null,
+        'previous'    => null,
+        'current'     => null,
+        'next'        => null,
         'can_perform' => false,
+        'can_forward' => false,
+        'can_reject'  => false,
+        'can_drop'    => false,
     ];
 
     foreach ($mappings as $map) {
         $task_data = [
-            'tasks_id' => $map->tasks_id,
-            'sequence' => $map->sequence,
-            'tasks_name' => $map->task->tasks_name,
-            'tasks_duty' => $map->task->tasks_duty,
+            'tasks_id'    => $map->tasks_id,
+            'sequence'    => $map->sequence,
+            'tasks_name'  => $map->task->tasks_name,
+            'tasks_duty'  => $map->task->tasks_duty,
             'allow_reject' => $map->allow_reject,
-            'allow_drop' => $map->allow_drop,
+            'allow_drop'  => $map->allow_drop,
             'allow_esign' => $map->allow_esign,
         ];
 
@@ -231,12 +235,15 @@ function getPrevNextTasks($proforma_id)
             $tasks['previous'] = $task_data;
         } elseif ($map->sequence == $current_sequence) {
             $tasks['current'] = $task_data;
-            // Check if current user role is allowed to perform this task
-            $is_allowed = TaskRoleMapping::where('tasks_id', $map->tasks_id)
-                ->where('role_id', $user_role_id)
-                ->exists();
 
-            $tasks['can_perform'] = $is_allowed;
+            // ✅ Permissions via policy
+            $user = Auth::user();
+            $duty = $map->task->tasks_duty;
+
+            $tasks['can_perform'] = Gate::forUser($user)->allows('canPerformOnProforma', [$application, $duty]);
+            $tasks['can_forward'] = Gate::forUser($user)->allows('canForward', [$application, $duty]);
+            $tasks['can_reject']  = Gate::forUser($user)->allows('canReject', [$application, $duty]);
+            $tasks['can_drop']    = Gate::forUser($user)->allows('canDrop', [$application, $duty]);
         } elseif ($map->sequence == $current_sequence + 1) {
             $tasks['next'] = $task_data;
         }
