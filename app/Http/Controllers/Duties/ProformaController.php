@@ -62,7 +62,7 @@ class ProformaController extends Controller
             DB::beginTransaction();
             $data = $request->validated();
             $data['create_by'] = Auth::user()->user_id;
-            $data['form_fillup_step'] = 'step1-completed'; //next step
+            $data['mini_sequence'] = 'step1-completed'; //next step
             $proforma = Proforma::create($data);
             //This define which process the proforma will follow
             ProcessMatcher::matchAndAssignProcess($proforma);
@@ -148,7 +148,11 @@ class ProformaController extends Controller
         $adminDepartments = $result->json();
         */
 
-        $current_step = $proforma->form_fillup_step == "step1-completed" ? 2 : ($proforma->form_fillup_step == "step2-completed" ? 3 : 4);
+        if ($proforma->mini_sequence) { //if not null
+            $current_step = $proforma->mini_sequence == "step1-completed" ? 2 : ($proforma->mini_sequence == "step2-completed" ? 3 : 4);
+        } else {
+            $current_step = 1;
+        }
 
         $tasks = getPrevNextTasks($proforma->proforma_id); //from helper.php
         return view('proforma.createProforma', compact(

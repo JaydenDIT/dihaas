@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class CmisApiService
 {
     private static string $cmis_token = '';
-    private static string $cmis_api = '';
+    private static string $cmis_api   = '';
 
     private static function init(): void
     {
@@ -28,12 +28,17 @@ class CmisApiService
     {
         self::init();
 
-        // Always add token
         $payload['token'] = self::$cmis_token;
 
         try {
-            return Http::timeout(30)
+            $result = Http::timeout(30)
                 ->post(self::$cmis_api . $endpoint, $payload);
+
+            if ($result->failed()) {
+                throw new Exception("CMIS API request failed: " . $result->status());
+            }
+
+            return $result->json();
         } catch (ConnectionException $e) {
             throw new Exception("CMIS API connection failed: " . $e->getMessage(), 0, $e);
         } catch (Exception $e) {
@@ -42,95 +47,84 @@ class CmisApiService
     }
 
     /**
-     * Fetch employee details by EIN.
-     *
-     * @param string $ein
-     * @return array
+     * Fetch employee details by EIN
      */
-    public static function apiEmployeeDetailByEIN(string $ein)
+    public static function apiEmployeeDetailByEIN(string $ein): array
     {
-
-        return Storage::disk('private')->exists('empDetail.json')
-            ? json_decode(Storage::disk('private')->get('empDetail.json'), true)
-            : [];
-
-
-        return self::safePost('/get-employee-profile', [
-            'ein' => $ein,
-        ]);
+        if (env('CMIS_MODE', 'offline') === 'offline') {
+            return Storage::disk('private')->exists('empDetail.json')
+                ? json_decode(Storage::disk('private')->get('empDetail.json'), true)
+                : [];
+        } else {
+            return self::safePost('/get-employee-profile', [
+                'ein' => $ein,
+            ]);
+        }
     }
 
+    /**
+     * Fetch admin/ministry list
+     * if $adm_dept_cd is provided, fetch specific ministry with its department_list under it
+     */
+    public static function apiAdminDepartments(int $adm_dept_cd = 0): array
+    {
+        if (env('CMIS_MODE', 'offline') === 'offline') {
+            if ($adm_dept_cd !== 0) {
+                return Storage::disk('private')->exists('departMentList.json')
+                    ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
+                    : [];
+            }
+            return Storage::disk('private')->exists('allAdmList.json')
+                ? json_decode(Storage::disk('private')->get('allAdmList.json'), true)
+                : [];
+        } else {
+            $payload = [];
+            if ($adm_dept_cd !== 0) {
+                $payload['adm_dept_cd'] = $adm_dept_cd;
+            }
+
+            return self::safePost('/get-adm-department-list', $payload);
+        }
+    }
 
     /**
-     * Fetch admin or ministry list.
-     * If $adm_dept_cd is provided, fetch the detail of the ministry as well as the departments under it.
-     * @param int $adm_dept_cd
-     * @return array
+     * Fetch field departments
+     * if $field_dept_cd is provided, fetch only the data for that department
      */
-    public static function apiAdminDepartments(int $adm_dept_cd = 0)
+    public static function apiFieldDepartments(int $field_dept_cd = 0): array
     {
-
-        //test
-        if ($adm_dept_cd !== 0) {
+        if (env('CMIS_MODE', 'offline') === 'offline') {
+            if ($field_dept_cd !== 0) {
+                return Storage::disk('private')->exists('departmentDetail.json')
+                    ? json_decode(Storage::disk('private')->get('departmentDetail.json'), true)
+                    : [];
+            }
             return Storage::disk('private')->exists('departMentList.json')
                 ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
                 : [];
+        } else {
+            $payload = [];
+            if ($field_dept_cd !== 0) {
+                $payload['field_dept_cd'] = $field_dept_cd;
+            }
+
+            return self::safePost('/get-department-list', $payload);
         }
-        return Storage::disk('private')->exists('allAdmList.json')
-            ? json_decode(Storage::disk('private')->get('allAdmList.json'), true)
-            : [];
-
-
-
-
-        $payload = [];
-        if ($adm_dept_cd !== 0) {
-            $payload['adm_dept_cd'] = $adm_dept_cd;
-        }
-
-        return self::safePost('/get-adm-department-list', $payload);
     }
 
     /**
-     * Fetch field departments.
-     * If $field_dept_cd is provided, fetch the detail of the field department. if not then fetch all department list
-     * @param int $field_dept_cd
-     * @return array
+     * Fetch all posts under department
      */
-    public static function apiFieldDepartments(int $field_dept_cd = 0)
+    public static function apiAllPostUnderDepartment(string $dept_code): array
     {
-        //test
-        if ($field_dept_cd !== 0) {
-            return Storage::disk('private')->exists('departmentDetail.json')
-                ? json_decode(Storage::disk('private')->get('departmentDetail.json'), true)
+        if (env('CMIS_MODE', 'offline') === 'offline') {
+            return Storage::disk('private')->exists('allPost.json')
+                ? json_decode(Storage::disk('private')->get('allPost.json'), true)
                 : [];
+        } else {
+            return self::safePost('/get-all-dept-details-by-dept-cd', [
+                'dept_code' => $dept_code,
+            ]);
         }
-        return Storage::disk('private')->exists('departMentList.json')
-            ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
-            : [];
-
-        $payload = [];
-        if ($field_dept_cd !== 0) {
-            $payload['field_dept_cd'] = $field_dept_cd;
-        }
-
-        return self::safePost('/get-department-list', $payload);
-    }
-
-    /**
-     * Fetch all posts under a specific department.
-     * @param string $dept_code
-     * @return array
-     */
-    public static function apiAllPostUnderDepartment($dept_code)
-    {
-        //test
-        return Storage::disk('private')->exists('allPost.json')
-            ? json_decode(Storage::disk('private')->get('allPost.json'), true)
-            : [];
-
-        return self::safePost('/get-all-dept-details-by-dept-cd', [
-            'dept_code' => $dept_code,
-        ]);
     }
 }

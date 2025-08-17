@@ -67,7 +67,7 @@ class FamilyDetailController extends Controller
             DB::beginTransaction();
             $member = FamilyDetail::findOrFail($id);
             $proforma = Proforma::findOrFail($member->proforma_id);
-            $data['form_fillup_step'] = 'step1-completed';
+            $data['mini_sequence'] = 'step1-completed';
             $proforma->update($data);
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,

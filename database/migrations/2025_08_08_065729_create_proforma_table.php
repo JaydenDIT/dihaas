@@ -78,11 +78,11 @@ return new class extends Migration
             $table->string('proforma_status', 30)->enum('forwarded', 'rejected', 'reverted', 'completed')
                 ->nullable()->comment("This status is to know the current state of the application");
             $table->integer('process_sequence')->nullable();
+            $table->string('mini_sequence', 30)->comment("This is to track the mini process sequence within a sequence for example form fillup has 3 mini steps. This is set to NULL when main sequence changes");
 
             // others
             $table->timestamps();
             $table->unsignedBigInteger('create_by');
-            $table->string('form_fillup_step', 30)->enum('step1-completed', 'step2-completed', 'step3-completed', 'submitted');
 
             // Optional: If you want to support soft deletes
             // $table->softDeletes();
@@ -111,6 +111,5 @@ return new class extends Migration
         } else {
             Schema::dropIfExists('proforma');
         }
-
     }
 };

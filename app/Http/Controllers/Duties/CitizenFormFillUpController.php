@@ -96,7 +96,7 @@ class CitizenFormFillUpController extends Controller
             if ($familyMembers == 0) {
                 return response()->json(['message' => 'Add at least one family member'], 422);
             }
-            $data['form_fillup_step'] = 'step2-completed'; //default status
+            $data['mini_sequence'] = 'step2-completed'; //default status
             $proforma->update($data);
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
@@ -132,7 +132,7 @@ class CitizenFormFillUpController extends Controller
             if ($requiredDocumentsLeft > 0) {
                 return response()->json(['message' => 'Upload all required documents'], 422);
             }
-            $data['form_fillup_step'] = 'step3-completed'; //default status
+            $data['mini_sequence'] = 'step3-completed'; //default status
             $proforma->update($data);
 
             LogService::addProformaLog([
@@ -157,7 +157,6 @@ class CitizenFormFillUpController extends Controller
             // Find the proforma
             $proforma = Proforma::where('proforma_status', 'step3-completed')->where('proforma_id', $id)->first();
             $this->authorize('canPerformOnProforma',  [$proforma, 'client_form_submission']);
-            $proforma->form_fillup_step = 'submitted';
             $proforma->save();
 
             WorkflowHandler::forwardApplication($proforma); //set the sequence to next 
