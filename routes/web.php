@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Duties\VerificationController;
+//use App\Http\Controllers\Duties\VerificationController;
+use App\Http\Controllers\Auth\SmsController;
 use App\Http\Controllers\Misc\DistrictController;
 use App\Http\Controllers\Misc\SubDivisionController;
 use App\Http\Controllers\TaskApplicationController;
@@ -24,9 +25,9 @@ Route::get('/clear-cache', function () {
     echo 'Application cache has been cleared';
 });
 
-Route::group(['prefix' => 'duty', 'as' => 'duty.personal.'], function () {
+/* Route::group(['prefix' => 'duty', 'as' => 'duty.personal.'], function () {
     Route::get('/viewPersonalDetailsFrom/{id}', [VerificationController::class, 'viewDetail'])->name('detail');
-});
+}); */
 
 Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.'], function () {
     // Optional route to view applications for a specific task
