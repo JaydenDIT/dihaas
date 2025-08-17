@@ -1,6 +1,7 @@
 <?php
 
 //use App\Http\Controllers\Duties\VerificationController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Auth\SmsController;
 use App\Http\Controllers\Misc\DistrictController;
 use App\Http\Controllers\Misc\SubDivisionController;
@@ -62,4 +63,10 @@ Route::post('smsLoginCitizenOTPResend', [SmsController::class, 'smsLoginCitizenO
 Route::post('smsLoginOTP', [SmsController::class, 'smsLoginOTP'])->name('smsLoginOTP');                    //To verify username and mobile//verify resend otp
 Route::post('/smsLoginOTPResend', [SmsController::class, 'smsLoginOTPResend'])->name('smsLoginOTPResend'); //To verify username and mobile
 
+//state
+Route::group(['prefix' => 'state'], function () {
+    Route::controller(AddressController::class)->group(function () {
+        Route::post('getDistrict', 'getDistrictOption')->name('district.getOption');
+    });
+});
 require __DIR__ . '/auth.php';

@@ -2,16 +2,6 @@
 @push('css')
     <link href="{{ asset('assets/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('css/welcome.css') }}" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(80deg, #cfddec, #ffffff);
-        }
-
-        .bg-gradiant {
-            background: linear-gradient(80deg, #cfddec, #ffffff);
-        }
-    </style>
 @endpush
 @section('content')
     {{-- Google Font 
@@ -23,59 +13,7 @@
     --}}
     {{-- Navbar --}}
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-gradiant shadow-sm fixed-top">
-        <div class="container">
-
-            {{-- Mobile Menu Toggle --}}
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            {{-- Navbar Links --}}
-            <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
-                <ul class="navbar-nav align-items-center">
-
-                    <li class="nav-item">
-                        <a href="{{ url('/dihas_overview') }}" class="nav-link">
-                            <span>Overview</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url('/sitemap') }}" class="nav-link">
-                            <span>Sitemap</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url('/contact_us') }}" class="nav-link">
-                            <span>Contact Us </span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="verdana_txtnone nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black;">
-                            Manual
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a class="verdana_txtnone dropdown-item yellow-bg"
-                                    href="{{ asset('assets/files/citizen.pdf') }}" target="_blank">Citizen User</a>
-                            </li>
-                            <li>
-                                <a class="verdana_txtnone dropdown-item yellow-bg"
-                                    href="{{ asset('assets/files/department.pdf') }}" target="_blank">Department User</a>
-                            </li>
-                            <li>
-                                <a class="verdana_txtnone dropdown-item yellow-bg"
-                                    href="{{ asset('assets/files/superadmin.pdf') }}" target="_blank">Superadmin User</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @include('layouts._navbar')
     <div class="container py-5">
         <div class="top-container ps">
             <div class="row g-4">
@@ -217,14 +155,20 @@
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     @if (Route::has('password.request'))
-                                        <a class="small text-decoration-underline"
-                                            href="{{ route('password.request') }}">
+                                        <a class="small text-decoration-underline" href="{{ route('password.request') }}">
                                             {{ __('Forgot password?') }}
                                         </a>
                                     @endif
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Log in') }}
                                     </button>
+                                </div>
+                                <div class="text-center text-muted mt-3 mb-2">
+                                    Don't have accont?
+                                </div>
+                                <div class="text-center ">
+                                    <a class="btn btn-success" href="{{ route('register.citizen') }}">Click here to
+                                        register</a>
                                 </div>
                             </form>
                         </div>
