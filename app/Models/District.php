@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,12 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class District extends Model
 {
     use HasFactory;
-    protected $table = 'districts';
+    protected $table      = 'districts';
     protected $primaryKey = 'district_id';
-    protected $guarded = ['district_id'];
+    protected $guarded    = ['district_id'];
 
     public function subdivisions()
     {
         return $this->hasMany(SubDivision::class, 'district_id', 'district_id');
+    }
+
+    public function scopeGetOptionByState($query, $id)
+    {
+        $qry = $query->selectRaw("district_id as id, district_name as name")
+            ->where('state_id', $id);
+        return $qry;
     }
 }

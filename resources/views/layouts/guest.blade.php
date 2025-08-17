@@ -23,6 +23,16 @@
 
     <!-- Custom CSS -->
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(80deg, #cfddec, #ffffff);
+        }
+
+        .bg-gradiant {
+            background: linear-gradient(80deg, #cfddec, #ffffff);
+        }
+    </style>
 
     <script src="{{ asset('assets/js/jquery-3.7.0.js') }}"></script>
     <script>
@@ -32,6 +42,7 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
+    @include('layouts._navbar')
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
 
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md overflow-hidden sm:rounded-lg">
