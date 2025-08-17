@@ -1,0 +1,48 @@
+.section-heading {
+    font-weight: 600;
+    color: #004085;
+}
+
+.lead-text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0d6efd, #007bff);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.partner-logo {
+    max-height: 80px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.partner-logo:hover {
+    transform: scale(1.05);
+}
+
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.gradient-section {
+    background: linear-gradient(80deg, #b2d0f3, #f152d800);
+    padding: 3rem 1rem;
+    border-radius: 10px;
+}
