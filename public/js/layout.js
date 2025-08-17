@@ -295,19 +295,36 @@ function colourTable(id) {
     $(id).addClass("border-primary");
 }
 
-function error_message(message) {
-    var html = `<div class="alert alert-danger alert-dismissible fade show " role="alert">
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>`;
+function error_message(message, timeout = 3000) {
+    var html = $(`
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `);
+
     $(".error-container").append(html);
+
+    // Auto close after timeout
+    setTimeout(() => {
+        html.alert("close");
+    }, timeout);
 }
-function success_message(message) {
-    var html = `<div class="alert alert-success alert-dismissible fade show" role="alert" >
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>`;
+
+function success_message(message, timeout = 3000) {
+    var html = $(`
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `);
+
     $(".error-container").append(html);
+
+    // Auto close after timeout
+    setTimeout(() => {
+        html.alert("close");
+    }, timeout);
 }
 
 function removeError() {
