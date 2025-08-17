@@ -34,8 +34,13 @@ class VerifyAndForwardController extends Controller
 
         switch ($application_status) {
             //proforma_status tells the current state of the application
-            case 'pending': //currently pending on me
-                $data = WorkflowHandler::proformaTaskCurrentData($task);
+            case 'un-verified': // currently pending on me
+                $data = WorkflowHandler::proformaTaskCurrentData($task)
+                    ->where('mini_sequence', '!=', 'verified');   // collection whereNot
+                break;
+            case 'verified': // currently pending on me
+                $data = WorkflowHandler::proformaTaskCurrentData($task)
+                    ->where('mini_sequence', 'verified');        // collection where
                 break;
             case 'forwarded': //forwarded from me but entire process not completed
                 $data = WorkflowHandler::proformaTaskForwardedData($task);
@@ -71,7 +76,7 @@ class VerifyAndForwardController extends Controller
             ->addColumn('action', function ($row) use ($application_status) {
                 // $data = urlencode(json_encode($row));
                 $resp = "<div class='d-flex gap-2'>";
-                if ($application_status === 'pending') {
+                if ($application_status === 'un-verified' || $application_status === 'verified') {
                     $resp .= "<a href='" . route('duties.verify.form.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>View</a>";
                 } else {
                     $resp .= "<a href='" . route('duties.proforma.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>View</a>";

@@ -24,7 +24,7 @@
         ];
         loadAjaxTable({
             id: "#application-table",
-            url: "{{ route('duties.verify.form.ajaxlist', $task->tasks_id) }}",
+            url: "{{ route('duties.verify.document.ajaxlist', $task->tasks_id) }}",
             message: "No Performa Found",
             columns: columns,
             param: {

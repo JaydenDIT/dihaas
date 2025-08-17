@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Duties\CitizenFormFillUpController;
+use App\Http\Controllers\Duties\DocumentVerificationController;
 use App\Http\Controllers\Duties\FamilyDetailController;
 use App\Http\Controllers\Duties\ProformaController;
 use App\Http\Controllers\Duties\UploadedDocumentController;
 use App\Http\Controllers\Duties\VerifyAndForwardController;
+use Dom\Document;
 use Illuminate\Support\Facades\Route;
 /*
 * Duties ROUTES
@@ -56,6 +58,18 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::post('/verify/{id}/revert', 'revert')->name('verify.form.revert');
             Route::post('/verify/{id}/forward', 'forward')->name('verify.form.forward');
             Route::post('/verify/{id}/reject', 'reject')->name('verify.form.reject');
+        });
+    });
+    Route::group(['prefix' => 'verify/document'], function () {
+        Route::controller(DocumentVerificationController::class)->group(function () {
+            Route::get('/{tasks_id}/proforma', 'index')->name('verify.document.index');
+            Route::post('/{tasks_id}/proforma/ajaxlist', 'ajaxlist')->name('verify.document.ajaxlist');
+            Route::get('/verify/{id}/view', 'view')->name('verify.document.view');
+
+            Route::post('/verify/{id}/verify', 'verify')->name('verify.document.verify');
+            Route::post('/verify/{id}/revert', 'revert')->name('verify.document.revert');
+            Route::post('/verify/{id}/forward', 'forward')->name('verify.document.forward');
+            Route::post('/verify/{id}/reject', 'reject')->name('verify.document.reject');
         });
     });
 });

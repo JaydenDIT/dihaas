@@ -27,6 +27,9 @@ class TaskApplicationController extends Controller
             case  'verify_and_forward':
                 return redirect()->route('duties.verify.form.index', [$tasks_id]);
                 break;
+            case  'verify_physical_copy':
+                return redirect()->route('duties.verify.document.index', [$tasks_id]);
+                break;
         }
         $departments = CmisApiService::apiFieldDepartments();
         return view('duties.list_of_applications', compact('departments', 'task'));

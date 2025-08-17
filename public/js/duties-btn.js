@@ -47,10 +47,19 @@ $(document).on("submit", "#confirmation_form", async function (e) {
         const param = new FormData(this);
         const actionUrl = $(this).attr("action");
         await showConfirmation(confirm_message);
-        await ajax_send_multipart({
+        const res = await ajax_send_multipart({
             url: actionUrl,
             param: param,
         });
+        if (res.redirect === false) {
+            await showConfirmation({
+                title: "Success",
+                text: res.message,
+                type: "success",
+                showCancelButton: false,
+            });
+            return;
+        }
         await showConfirmation({
             title: "Success",
             text: "Redirecting to proforma list...",
