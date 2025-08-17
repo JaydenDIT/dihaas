@@ -6,6 +6,7 @@ use App\Library\Senitizer;
 use App\Library\SmsSender;
 use App\Models\Relationship;
 use App\Models\State;
+use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -94,7 +95,7 @@ class CitizenRegistrationController extends Controller
         try {
             DB::beginTransaction();
             $users = User::create([
-                'name'     => $new_user_temp['name'],
+                'fullname' => $new_user_temp['name'],
                 'mobile'   => $new_user_temp['mobile'],
                 'email'    => $new_user_temp['email'],
                 'password' => Hash::make($new_user_temp['password']),
@@ -103,7 +104,7 @@ class CitizenRegistrationController extends Controller
             ]);
 
             UserDetail::create([
-                'user_id'               => $users->id,
+                'user_id'               => $users->user_id,
                 'gender'                => $new_user_temp['gender'],
                 'relative_name'         => $new_user_temp['relative_name'],
                 'relationship_id'       => $new_user_temp['relationship_id'],
