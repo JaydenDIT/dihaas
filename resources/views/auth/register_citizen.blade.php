@@ -178,7 +178,7 @@
                             <div><b>Permanent Address</b> &ensp;</div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="checkPermanent">
-                                <label class="form-check-label">
+                                <label class="form-check-label cursor-pointer" for="checkPermanent">
                                     Same as Current Address
                                 </label>
                             </div>
