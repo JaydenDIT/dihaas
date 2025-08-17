@@ -845,9 +845,7 @@ Route::group(['prefix' => 'notification'], function () {
         Route::get('edit', 'editNotification')->name('notification.edit');
         Route::post('save', 'saveNotification')->name('notification.save');
         Route::get('delete/{id}', 'deleteNotification')->name('notification.delete');
-        // Route::get('edit', 'editNotification')->name('notification.edit')->middleware(['auth','role:999']);
-        // Route::post('save', 'saveNotification')->name('notification.save')->middleware(['auth','role:999']);
-        // Route::get('delete/{id}', 'deleteNotification')->name('notification.delete')->middleware(['auth','role:999']);
+
         Route::get('getdoc/{id}', 'getdocNotification')->name('notification.getdoc');
     });
 });
