@@ -11,30 +11,34 @@
             <ul class="navbar-nav align-items-center">
 
                 <li class="nav-item">
-                    <a href="{{ route('welcome') }}" class="nav-link">
+                    <a href="{{ route('welcome') }}"
+                        class="nav-link @if (request()->routeIs('welcome')) {{ 'active' }} @endif">
                         <span>Home</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ url('/dihas_overview') }}" class="nav-link">
+                    <a href="{{ route('dihas_overview') }}"
+                        class="nav-link @if (request()->routeIs('dihas_overview')) {{ 'active' }} @endif">
                         <span>Overview</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/sitemap') }}" class="nav-link">
+                    <a href="{{ route('sitemap') }}"
+                        class="nav-link @if (request()->routeIs('sitemap')) {{ 'active' }} @endif">
                         <span>Sitemap</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/contact_us') }}" class="nav-link">
+                    <a href="{{ route('contact_us') }}"
+                        class="nav-link @if (request()->routeIs('contact_us')) {{ 'active' }} @endif">
                         <span>Contact Us </span>
                     </a>
                 </li>
 
                 <li class="nav-item dropdown">
                     <a class="verdana_txtnone nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black;">
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Manual
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

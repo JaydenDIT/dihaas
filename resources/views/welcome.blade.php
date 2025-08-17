@@ -11,9 +11,6 @@
     {{-- AOS Animation CSS
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     --}}
-    {{-- Navbar --}}
-
-    @include('layouts._navbar')
     <div class="container py-5">
         <div class="top-container ps">
             <div class="row g-4">
@@ -111,9 +108,11 @@
                                         <a class="fw-bold" data-bs-toggle="collapse" href="#benefitsMore">Read more</a>
                                     </p>
                                     <div class="collapse" id="benefitsMore">
+                                        deceased Government servant in the following order of entitlement:
                                         <ul>
-                                            <li>Legal spouse</li>
-                                            <li>Elder child (unmarried son/daughter or married son of the deceased
+                                            <li class="mb-2">Legal spouse</li>
+                                            <li class="mb-2">Elder child (unmarried son/daughter or married son of the
+                                                deceased
                                                 Government Servant if living in the same household).</li>
                                             <li>Brother/ sister in case of unmaarried Government servant.</li>
                                         </ul>
@@ -164,7 +163,7 @@
                                     </button>
                                 </div>
                                 <div class="text-center text-muted mt-3 mb-2">
-                                    Don't have accont?
+                                    Don't have account?
                                 </div>
                                 <div class="text-center ">
                                     <a class="btn btn-success" href="{{ route('register.citizen') }}">Click here to

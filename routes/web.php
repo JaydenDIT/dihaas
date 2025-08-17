@@ -3,6 +3,7 @@
 //use App\Http\Controllers\Duties\VerificationController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Auth\SmsController;
+use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Misc\DistrictController;
 use App\Http\Controllers\Misc\SubDivisionController;
 use App\Http\Controllers\TaskApplicationController;
@@ -69,4 +70,10 @@ Route::group(['prefix' => 'state'], function () {
         Route::post('getDistrict', 'getDistrictOption')->name('district.getOption');
     });
 });
+
+Route::get('/dihas_overview', [LandingPageController::class, 'dihas_overview'])->name('dihas_overview');
+Route::get('/sitemap', [LandingPageController::class, 'sitemap'])->name('sitemap');
+Route::get('/department_login', [LandingPageController::class, 'department_login'])->name('department_login');
+Route::get('/contact_us', [LandingPageController::class, 'contact_us'])->name('contact_us');
+
 require __DIR__ . '/auth.php';
