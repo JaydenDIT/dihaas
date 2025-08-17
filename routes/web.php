@@ -1,59 +1,32 @@
 <?php
 
+use App\Http\Controllers\Authentication\CaptchaController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\AuthSuperAdminController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\Process\NotificationController;
-use App\Http\Controllers\Process\ScreeningController;
 use App\Http\Controllers\Auth\LoginRegisterController;
-use App\Http\Controllers\Process\AddressController;
-use App\Http\Controllers\Authentication\CaptchaController;
+use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\CmisVacancyController;
-use App\Http\Controllers\VacancyController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\EmployeeCmisController;
-use App\Http\Controllers\PensionEmployeeController;
-use App\Http\Controllers\FamilyMembersController;
-use App\Http\Controllers\EmolumentController;
-use App\Http\Controllers\EmpMilitaryServiceDetailsController;
-use App\Http\Controllers\EmpAutonomousBodyServiceController;
-use App\Http\Controllers\EmpQualifyingSvcController;
-use App\Http\Controllers\EmpGovtDuesController;
-use App\Http\Controllers\EmployeeFormControler;
-use App\Http\Controllers\EmpFileUploadController;
-use App\Http\Controllers\OthersFormDetailsController;
-use App\Http\Controllers\NdcController;
-use App\Http\Controllers\ExportFileController;
-use App\Http\Controllers\DdoController;
-use App\Http\Controllers\ESignController;
-use App\Http\Controllers\PensionCalculationController;
-use App\Http\Controllers\HodController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PensionCellController;
-use App\Http\Controllers\AgController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DescriptiveRoleEditController;
-use App\Http\Controllers\PasswordChangeController;
-use App\Http\Controllers\Upload;
-use App\Http\Controllers\VacancyUpdateController;
-use App\Models\EmployeeCmis;
-use App\Models\PensionEmployee;
-use App\Models\PortalModel;
-use App\Models\ProformaModel;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Mail;
-use App\Http\Controllers\SubmitController;
+use App\Http\Controllers\FamilyMembersController;
 use App\Http\Controllers\FillUOController;
-use App\Http\Controllers\CreatePdfController;
 use App\Http\Controllers\GenerateUOController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\OthersFormDetailsController;
+use App\Http\Controllers\Process\AddressController;
+use App\Http\Controllers\Process\NotificationController;
+use App\Http\Controllers\Process\ScreeningController;
+use App\Http\Controllers\SubmitController;
 use App\Http\Controllers\SuccessStoriesController;
-use App\Models\NotificationModel;
-use App\Models\User;
+use App\Http\Controllers\Upload;
+use App\Http\Controllers\VacancyController;
+use App\Http\Controllers\VacancyUpdateController;
+use App\Http\Controllers\WelcomeController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,250 +47,14 @@ Route::get('/clear-cache', function () {
     echo 'Application cache has been cleared';
 });
 
-// Route::group(['middleware' => 'auth'], function () {
-
-//     Route::get('/changePassword', [PasswordChangeController::class, 'showChangePasswordGet'])->name('changePasswordGet');
-//     Route::post('/changePassword', [PasswordChangeController::class, 'changePasswordPost'])->name('changePasswordPost');
-// });
-
-
 /////////////////////API////////////////
 
 ///http://manipurtemp02.nic.in/cmis_api/public/api/get-employee-profile?ein=088323&token=b000e921eeb20a0d395e341dfcd6117a
 
 /////////////////////////////////////////
 
-
 // dashboard public
-try {
-    Route::get('/', function () {
-
-        if (Route::has('login') && Auth::user() != null) {
-            $user_id = Auth::user()->id;
-            $getUser = User::get()->where('id', $user_id)->first();
-            $role = $getUser->role_id;
-
-            $common_code = "";
-            $user_id = Auth::user()->id;
-            $getUser = User::get()->where('id', $user_id)->first();
-            $role = $getUser->role_id;
-            $post = array();
-            $totalApplicants = 0;
-            $ProInCompleted = 0;
-            $notYetVerified = 0;
-            $verificationCompleted = 0;
-            $underProcess = 0;
-            $ProCompleted = 0;
-
-            if ($role == 77) {
-                $user_id1 = Auth::user()->id;
-                $getUser1 = User::get()->where('id', $user_id1)->first();
-                //dd($getUser1) ;
-
-                $getPortalName = PortalModel::where('id', 1)->first();
-                //Portal name short form    
-                $getProjectShortForm = $getPortalName->short_form_name;
-                //Application long name
-                $getSoftwareName = $getPortalName->software_name;
-                //session()->put('portal_name', $getSoftwareName);
-                //this is for footer
-                $getDeptName = $getPortalName->department_name;
-                $getGovtName = $getPortalName->govt_name;
-                $getDeveloper = $getPortalName->developed_by;
-
-
-                //$status = [0, 6];
-                $getStatus = ProformaModel::get()->where('uploaded_id', '=', $getUser->id)->first();
-                if ($getStatus != null) {
-                    if ($getStatus->status == 0) {
-                        $status = "You have not submitted your application.... Incomplete Application";
-                    } elseif ($getStatus->status == 1) {
-                        $status = "Application Subitted";
-                    } elseif ($getStatus->status == 2) {
-                        $status = "Verified";
-                    } elseif (($getStatus->status == 3 || $getStatus->status == 4 || $getStatus->status == 5)) {
-                        $status = "Under Process";
-                    } else {
-                        $status = "Appointment Given";
-                    }
-                } else {
-                    $status = "Not yet Applied";
-                }
-
-                //$notifications = NotificationModel::all();
-                $notificationsArray = NotificationModel::get()->toArray();
-                $notifications = NotificationModel::orderBy("created_at")->paginate(5);
-
-
-                return view('admin/dashboard', compact('status', 'getUser1', 'notificationsArray', 'getDeveloper', 'getGovtName', 'getDeptName', 'getSoftwareName', 'getProjectShortForm', 'notifications'));
-            }
-
-            if ($role == 1) {
-                $user_id1 = Auth::user()->id;
-                $getUser1 = User::get()->where('id', $user_id1)->first();
-                $getPortalName = PortalModel::where('id', 1)->first();
-                //Portal name short form    
-                $getProjectShortForm = $getPortalName->short_form_name;
-                //Application long name
-                $getSoftwareName = $getPortalName->software_name;
-                //session()->put('portal_name', $getSoftwareName);
-                //this is for footer
-                $getDeptName = $getPortalName->department_name;
-                $getGovtName = $getPortalName->govt_name;
-                $getDeveloper = $getPortalName->developed_by;
-
-
-                $status = [0, 6];
-                $getUnderProcess = ProformaModel::where('status', '!=', $status)->where('dept_id', '=', $getUser->dept_id)->get();
-                $getIncomplete = ProformaModel::where('status', '=', 0)->where('dept_id', '=', $getUser->dept_id)->get();
-                $ProcessCompleted = ProformaModel::where('status', '=', 6)->where('dept_id', '=', $getUser->dept_id)->get(); //1 IS SUBMITTED 2 IS VERIFIED 3 IS UO GENERATED
-
-                $getTotalApplicants = ProformaModel::where('dept_id', '=', $getUser->dept_id)->get();
-                $ProInCompleted = count($getIncomplete);
-
-                $verificationCompleted = ProformaModel::where('status', '=', 2)->where('dept_id', '=', $getUser->dept_id)->get(); // removed list 
-
-
-                $notYetVerified = ProformaModel::where('status', '=', 1)->where('dept_id', '=', $getUser->dept_id)->get(); // not yet activated
-
-                $totalApplicants = count($getTotalApplicants); //Total
-
-                $notYetVerified = count($notYetVerified); // no of retiree not yet activate
-                $verificationCompleted = count($verificationCompleted); // no of retiree removed 
-
-                $underProcess = count($getUnderProcess);
-                $ProCompleted = count($ProcessCompleted);
-
-                $notificationsArray = NotificationModel::get()->toArray();
-                $notifications = NotificationModel::orderBy("created_at")->paginate(5);
-
-                return view('admin/dashboard', compact('getUser1', 'notificationsArray', 'ProInCompleted', 'getDeveloper', 'getGovtName', 'getDeptName', 'getSoftwareName', 'getProjectShortForm', 'notYetVerified', 'verificationCompleted', 'totalApplicants', 'underProcess', 'ProCompleted', 'notifications'));
-            }
-
-
-            if ($role == 2 || $role == 3 || $role == 4 || $role == 9) {
-                $user_id1 = Auth::user()->id;
-                $getUser1 = User::get()->where('id', $user_id1)->first();
-                //dd($getUser1);
-                $getPortalName = PortalModel::where('id', 1)->first();
-                //Portal name short form    
-                $getProjectShortForm = $getPortalName->short_form_name;
-                //Application long name
-                $getSoftwareName = $getPortalName->software_name;
-                //session()->put('portal_name', $getSoftwareName);
-                //this is for footer
-                $getDeptName = $getPortalName->department_name;
-                $getGovtName = $getPortalName->govt_name;
-                $getDeveloper = $getPortalName->developed_by;
-
-
-                $status = [0, 6];
-                $getUnderProcess = ProformaModel::where('status', '!=', $status)->where('dept_id', '=', $getUser->dept_id)->get();
-                $getIncomplete = ProformaModel::where('status', '=', 0)->where('dept_id', '=', $getUser->dept_id)->get();
-                $ProcessCompleted = ProformaModel::where('status', '=', 6)->where('dept_id', '=', $getUser->dept_id)->get(); //1 IS SUBMITTED 2 IS VERIFIED 3 IS UO GENERATED
-
-                $getTotalApplicants = ProformaModel::where('dept_id', '=', $getUser->dept_id)->get();
-                $ProInCompleted = count($getIncomplete);
-
-                $verificationCompleted = ProformaModel::where('status', '=', 2)->where('dept_id', '=', $getUser->dept_id)->get(); // removed list 
-
-
-                $notYetVerified = ProformaModel::where('status', '=', 1)->where('dept_id', '=', $getUser->dept_id)->get(); // not yet activated
-
-                $totalApplicants = count($getTotalApplicants); //Total
-
-                $notYetVerified = count($notYetVerified); // no of retiree not yet activate
-                $verificationCompleted = count($verificationCompleted); // no of retiree removed 
-
-                $underProcess = count($getUnderProcess);
-                $ProCompleted = count($ProcessCompleted);
-
-                $notificationsArray = NotificationModel::get()->toArray();
-                $notifications = NotificationModel::orderBy("created_at")->paginate(5);
-                return view('admin/dashboard', compact('getUser1', 'notificationsArray', 'ProInCompleted', 'getDeveloper', 'getGovtName', 'getDeptName', 'getSoftwareName', 'getProjectShortForm', 'notYetVerified', 'verificationCompleted', 'totalApplicants', 'underProcess', 'ProCompleted', 'notifications'));
-            }
-
-
-            if ($role == 999 || $role == 5 || $role == 6 || $role == 8) {
-                $user_id1 = Auth::user()->id;
-                $getUser1 = User::get()->where('id', $user_id1)->first();
-
-                $getPortalName = PortalModel::where('id', 1)->first();
-                //Portal name short form    
-                $getProjectShortForm = $getPortalName->short_form_name;
-                //Application long name
-                $getSoftwareName = $getPortalName->software_name;
-                //session()->put('portal_name', $getSoftwareName);
-                //this is for footer
-                $getDeptName = $getPortalName->department_name;
-                $getGovtName = $getPortalName->govt_name;
-                $getDeveloper = $getPortalName->developed_by;
-
-
-                $status = [0, 6];
-                $getUnderProcess = ProformaModel::where('status', '!=', $status)->get();
-                $getIncomplete = ProformaModel::where('status', '=', 0)->get();
-                $ProcessCompleted = ProformaModel::where('status', '=', 6)->get(); //1 IS SUBMITTED 2 IS VERIFIED 3 IS UO GENERATED
-
-                $getTotalApplicants = ProformaModel::get();
-                $ProInCompleted = count($getIncomplete);
-
-                $verificationCompleted = ProformaModel::where('status', '=', 2)->get(); // removed list 
-
-
-                $notYetVerified = ProformaModel::where('status', '=', 1)->get(); // not yet activated
-
-                $totalApplicants = count($getTotalApplicants); //Total
-
-                $notYetVerified = count($notYetVerified); // no of retiree not yet activate
-                $verificationCompleted = count($verificationCompleted); // no of retiree removed 
-
-                $underProcess = count($getUnderProcess);
-                $ProCompleted = count($ProcessCompleted);
-
-                $notificationsArray = NotificationModel::get()->toArray();
-                $notifications = NotificationModel::orderBy("created_at")->paginate(5);
-
-                return view('admin/dashboard', compact('getUser1', 'notificationsArray', 'ProInCompleted', 'getDeveloper', 'getGovtName', 'getDeptName', 'getSoftwareName', 'getProjectShortForm', 'notYetVerified', 'verificationCompleted', 'totalApplicants', 'underProcess', 'ProCompleted', 'notifications'));
-            }
-        } else {
-
-            $getPortalName = PortalModel::where('id', 1)->first();
-            //Portal name short form    
-            $getProjectShortForm = $getPortalName->short_form_name;
-
-            //this is for footer
-            $getDeptName = $getPortalName->department_name;
-            //return $getDeptName;
-            $getGovtName = $getPortalName->govt_name;
-            $getDeveloper = $getPortalName->developed_by;
-            // $getCopyright = $getPortalName->copyright;
-
-
-            $notificationsArray = NotificationModel::get()->toArray();
-            $notifications = NotificationModel::orderBy("created_at")->paginate(5);
-
-
-            // dd($notifications,$notificationsArray);
-
-            //return view('welcome', compact('getCopyright','getDeveloper','getGovtName','getDeptName','getProjectShortForm', 'getSoftwareName', 'notYetVerified', 'verificationCompleted', 'totalApplicants', 'underProcess', 'ProCompleted', 'lastLoaddate',));
-            return view('welcome', compact('notificationsArray', 'getDeveloper', 'getGovtName', 'getDeptName', 'getProjectShortForm', 'notifications',));
-        }
-    })->name('welcome');
-} catch (Exception $e) {
-
-    return response()->json([
-        'status' => 0,
-        'msg' => "Server not responding!!Pls see your internet connection!!or CMIS portal down",
-        //'errors' => $e->getMessage()
-    ]);
-}
-
-
-// Route::get('/test', function () {
-//     return view('test');
-// })->name('test');
-
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Auth::routes();
 // Admin Routes
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -326,12 +63,11 @@ Route::post('/home', [HomeController::class, 'index'])->name('home');
 
 Route::post('/reload-captcha', [CaptchaController::class, 'reloadCaptcha'])->name('reloadCaptcha');
 
-
 /////dept login////
 //verify otp
-Route::post('smsLoginOTP', [App\Http\Controllers\Auth\LoginController::class, 'smsLoginOTP'])->name('smsLoginOTP'); //To verify username and mobile 
+Route::post('smsLoginOTP', [App\Http\Controllers\Auth\LoginController::class, 'smsLoginOTP'])->name('smsLoginOTP'); //To verify username and mobile
 //verify resend otp
-Route::post('/smsLoginOTPResend', [App\Http\Controllers\Auth\LoginController::class, 'smsLoginOTPResend'])->name('smsLoginOTPResend'); //To verify username and mobile 
+Route::post('/smsLoginOTPResend', [App\Http\Controllers\Auth\LoginController::class, 'smsLoginOTPResend'])->name('smsLoginOTPResend'); //To verify username and mobile
 Route::post('/authenticate', [App\Http\Controllers\Auth\LoginController::class, 'authenticate'])->name('authenticate');
 //this is for login of official the above
 
@@ -341,13 +77,11 @@ Route::get('loginApplicant', 'App\Http\Controllers\Auth\AuthController@index')->
 Route::post('postlogincitizen', 'App\Http\Controllers\Auth\AuthController@postlogincitizen')->name('postlogincitizen');
 Route::get('postlogincitizen', 'App\Http\Controllers\Auth\AuthController@postlogincitizen')->name('postlogincitizen');
 
-
 Route::get('retrieve_dept_register_user', 'App\Http\Controllers\Auth\AuthSuperAdminController@retrieve_dept_register_user')->name('retrieve_dept_register_user');
 
 //citizen
 Route::post('smsLoginCitizenOTP', [App\Http\Controllers\Auth\AuthController::class, 'smsLoginCitizenOTP'])->name('smsLoginCitizenOTP');
 Route::get('smsLoginCitizenOTP', [App\Http\Controllers\Auth\AuthController::class, 'smsLoginCitizenOTP'])->name('smsLoginCitizenOTP');
-
 
 Route::post('smsLoginCitizenOTPResend', [App\Http\Controllers\Auth\AuthController::class, 'smsLoginCitizenOTPResend'])->name('smsLoginCitizenOTPResend');
 Route::post('/authenticateCitizen', [App\Http\Controllers\Auth\AuthController::class, 'authenticateCitizen'])->name('authenticate.citizen');
@@ -378,10 +112,8 @@ Route::get('save-updateViewUser', [App\Http\Controllers\Auth\AuthSuperAdminContr
 Route::post('official-delete/{id}', [App\Http\Controllers\Auth\AuthSuperAdminController::class, 'deleteOfficialUser'])->name('official-delete');
 Route::get('official-delete/{id}', [App\Http\Controllers\Auth\AuthSuperAdminController::class, 'deleteOfficialUser'])->name('official-delete');
 
-
 Route::get('dashboard', [AuthController::class, 'dashboard']);
 //Route::get('logout', 'App\Http\Controllers\Auth\AuthController@logout');
-
 
 Route::controller(LoginController::class)->group(function () {
 
@@ -396,21 +128,17 @@ Route::controller(UserController::class)->group(function () {
     Route::get('password/forgot', 'forgotPassword')->name('password.forgot')->middleware('auth');
     //Route::post('password/reset', 'passwordResetEmail')->name('password.reset');
 
-    Route::get('idproof/{doc_id}',  'userProofIdDoc')->name('userProofIdDoc')->middleware(['auth', 'noBack', 'noStore']);
+    Route::get('idproof/{doc_id}', 'userProofIdDoc')->name('userProofIdDoc')->middleware(['auth', 'noBack', 'noStore']);
 
     Route::get('setting/profile', 'profileSetting')->name('setting.profile')->middleware('auth');
     Route::post('setting/saveProfilePassword', 'saveProfilePassword')->name('setting.saveProfilePassword')->middleware('auth');
 
-
     Route::post('setting/saveProfileMain', 'saveProfileMain')->name('setting.saveProfileMain')->middleware(['auth', 'noBack', 'noStore']);
     Route::post('setting/saveProfileAddress', 'saveProfileAddress')->name('setting.saveProfileAddress')->middleware(['auth', 'noBack', 'noStore']);
-
-
 
     Route::get('view', 'officialViewUser')->name('official.officialViewUser')->middleware(['auth', 'role:999', 'noBack', 'noStore']);
     Route::get('viewLog', 'auditLogView')->name('official.auditLogView')->middleware(['auth', 'role:999', 'noBack', 'noStore']);
 });
-
 
 Route::controller(AuthSuperAdminController::class)->group(function () {
 
@@ -471,14 +199,12 @@ Route::get('/vpercentage/{id}/edit', 'App\Http\Controllers\VPercentageController
 Route::put('/vpercentage/{id}/edit', 'App\Http\Controllers\VPercentageController@update');
 Route::delete('/vpercentage/delete/{id}', 'App\Http\Controllers\VPercentageController@destroy');
 
-
 Route::get('/designations', 'App\Http\Controllers\DesignationController@index');
 Route::get('/designation/create', 'App\Http\Controllers\DesignationController@create');
 Route::post('/designation/create', 'App\Http\Controllers\DesignationController@store');
 Route::get('/designation/{id}/edit', 'App\Http\Controllers\DesignationController@edit');
 Route::put('/designation/{id}/edit', 'App\Http\Controllers\DesignationController@update');
 Route::delete('/designation/delete/{id}', 'App\Http\Controllers\DesignationController@destroy');
-
 
 Route::get('/educations', 'App\Http\Controllers\EducationController@index');
 Route::get('/education/create', 'App\Http\Controllers\EducationController@create');
@@ -550,14 +276,12 @@ Route::get('/dpauthority/{id}/edit', 'App\Http\Controllers\DPSigningAuthoritiesC
 Route::put('/dpauthority/{id}/edit', 'App\Http\Controllers\DPSigningAuthoritiesController@update');
 Route::delete('/dpauthority/delete/{id}', 'App\Http\Controllers\DPSigningAuthoritiesController@destroy');
 
-
 Route::get('/deptauthorities', 'App\Http\Controllers\DepartmentSigningAuthoritiesController@index');
 Route::get('/deptauthority/create', 'App\Http\Controllers\DepartmentSigningAuthoritiesController@create');
 Route::post('/deptauthority/create', 'App\Http\Controllers\DepartmentSigningAuthoritiesController@store');
 Route::get('/deptauthority/{id}/edit', 'App\Http\Controllers\DepartmentSigningAuthoritiesController@edit');
 Route::put('/deptauthority/{id}/edit', 'App\Http\Controllers\DepartmentSigningAuthoritiesController@update');
 Route::delete('/deptauthority/delete/{id}', 'App\Http\Controllers\DepartmentSigningAuthoritiesController@destroy');
-
 
 Route::get('/viewEsignByDP', [HomeController::class, 'viewEsignByDP'])->name('viewEsignByDP');
 
@@ -569,33 +293,21 @@ Route::get('/viewEsignByDepartmentSigningAuthority', [HomeController::class, 'vi
 
 Route::post('/viewEsignByDepartmentSigningAuthoritySearch', [HomeController::class, 'viewEsignByDepartmentSigningAuthoritySearch'])->name('viewEsignByDepartmentSigningAuthoritySearch');
 
-
-
-
-
-
-
-
-
-
-
-
 // DDO-ASSIST route group
 Route::prefix("ddo-assist")->group(function () {
 
     Route::post('/transferFromDPAssistToAnyDepartment/{id}', [HomeController::class, 'transferFromDPAssistToAnyDepartment'])->name('transferFromDPAssistToAnyDepartment');
     Route::get('/transferFromDPAssistToAnyDepartment/{id}', [HomeController::class, 'transferFromDPAssistToAnyDepartment'])->name('transferFromDPAssistToAnyDepartment');
-    
+
     Route::get('/transfer_applicant_By_DPAssist', [HomeController::class, 'transfer_applicant_By_DPAssist'])->name('transfer_applicant_By_DPAssist');
     Route::get('/viewTransferListByHodAssistant', [HomeController::class, 'viewTransferListByHodAssistant'])->name('viewTransferListByHodAssistant');
-    
+
     Route::post('/viewTransferListByHodAssistantSearch', [HomeController::class, 'viewTransferListByHodAssistantSearch'])->name('viewTransferListByHodAssistantSearch');
     Route::get('/viewTransferListByHod', [HomeController::class, 'viewTransferListByHod'])->name('viewTransferListByHod');
 
-    Route::post('/updateTransferStatus',  [HomeController::class, 'updateTransferStatus'])->name('updateTransferStatus');
-    
-    Route::get('/vacancy_update', [VacancyUpdateController::class, 'vacancyUpdate'])->name('vacancy_update');
+    Route::post('/updateTransferStatus', [HomeController::class, 'updateTransferStatus'])->name('updateTransferStatus');
 
+    Route::get('/vacancy_update', [VacancyUpdateController::class, 'vacancyUpdate'])->name('vacancy_update');
 
     // delete docs
 
@@ -605,8 +317,6 @@ Route::prefix("ddo-assist")->group(function () {
     Route::get('/get-assem-const/{districtId}', [HomeController::class, 'getAssemblyConst'])->name('get-assem-const');
     // get get pay scale dependent to pay commission
 
-
-
     // Upload Employee Files
 
     //below is for upload files and for viewing submitted applicants list
@@ -614,11 +324,9 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/viewStartEmpSearch', [HomeController::class, 'viewStartEmpSearch'])->name('viewStartEmpSearch');
     Route::get('/viewStartEmp/downloadPDFApplView', 'App\Http\Controllers\HomeController@downloadPDFApplView')->name('viewStartEmp.downloadPDFApplView');
 
-
     Route::get('/viewApplicantsForVerification', [HomeController::class, 'viewApplicantsForVerification'])->name('viewApplicantsForVerification');
     Route::post('/viewApplicantsForVerificationSearch', [HomeController::class, 'viewApplicantsForVerificationSearch'])->name('viewApplicantsForVerificationSearch');
     Route::get('/viewApplicantsForVerification/downloadPDFApplView', 'App\Http\Controllers\HomeController@downloadPDFApplView')->name('viewApplicantsForVerification.downloadPDFApplView');
-
 
     //verify and forward
     Route::get('/viewEmpSubmitted', [HomeController::class, 'viewEmpSubmitted'])->name('viewEmpSubmitted');
@@ -646,7 +354,7 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/selectDeptByDPAssistSearch', [HomeController::class, 'selectDeptByDPAssistSearch'])->name('selectDeptByDPAssistSearch');
     ////Download PDF
 
-    Route::get('/view-file/{filename}',  [HomeController::class, 'viewFileByADNodal'])->name('viewFileForwardByADNodal');
+    Route::get('/view-file/{filename}', [HomeController::class, 'viewFileByADNodal'])->name('viewFileForwardByADNodal');
     Route::post('/forward-selected-eins', [HomeController::class, 'forwardSelectedEINs'])->name('forwardSelectedEINs');
 
     Route::get('/fill_uo_update/{id}', [FillUOController::class, 'update_view'])->name('fill_uo_update');
@@ -682,7 +390,6 @@ Route::prefix("ddo-assist")->group(function () {
     Route::get('/selectDPAppointment', [HomeController::class, 'selectDPAppointment'])->name('selectDPAppointment');
     Route::post('/selectDPAppointmentSearch', [HomeController::class, 'selectDPAppointment'])->name('selectDPAppointmentSearch');
 
-
     Route::get('/selectDeptByDPApprove', [HomeController::class, 'selectDeptByDPApprove'])->name('selectDeptByDPApprove');
     Route::post('/selectDeptByDPApproveSearch', [HomeController::class, 'selectDeptByDPApproveSearch'])->name('selectDeptByDPApproveSearch');
 
@@ -697,7 +404,6 @@ Route::prefix("ddo-assist")->group(function () {
 
     Route::get('/selectDeptByDPApprove/download-pdfApproved', 'App\Http\Controllers\HomeController@downloadPDFApproved')->name('selectDeptByDPApprove.downloadPDFApproved');
     ////////////////////////////////////////
-
 
     //below is for Reverted List view for HOD Assistant
     Route::get('/viewRejectedListHODAssist', [HomeController::class, 'viewRejectedListHODAssist'])->name('viewRejectedListHODAssist');
@@ -714,13 +420,10 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/viewRevertedListADAssistSearch', [HomeController::class, 'viewRevertedListADAssistSearch'])->name('viewRevertedListADAssistSearch');
     Route::get('/viewRevertedListADAssist/download-pdf', 'App\Http\Controllers\HomeController@downloadPDFRejectADAssist')->name('viewRevertedListADAssist.downloadPDFRejectADAssist');
 
-
     //below is for Reverted List view for HOD
     Route::get('/viewRevertedListADNodal', [HomeController::class, 'viewRevertedListADNodal'])->name('viewRevertedListADNodal');
     Route::post('/viewRevertedListADNodalSearch', [HomeController::class, 'viewRevertedListADNodalSearch'])->name('viewRevertedListADNodalSearch');
     Route::get('/viewRevertedListADNodal/download-pdf', 'App\Http\Controllers\HomeController@downloadPDFRejectADNodal')->name('viewRevertedListADNodal.downloadPDFRejectADNodal');
-
-
 
     //below is for Reverted List view for DP
 
@@ -754,21 +457,19 @@ Route::prefix("ddo-assist")->group(function () {
     ////////////////////////////////////////////
     ////////////////////DP Assistant Select Dept and display////////////////////////
 
-    ////////////Screening  Table 
+    ////////////Screening  Table
     Route::post('/viewSeniorityStatus', [HomeController::class, 'viewSeniorityStatus'])->name('viewSeniorityStatus');
     Route::get('/viewSeniorityStatus', [HomeController::class, 'viewSeniorityStatus'])->name('viewSeniorityStatus');
     ///////////////Screening Search
     Route::post('/viewSeniorityStatusSearch', [HomeController::class, 'viewSeniorityStatusSearch'])->name('viewSeniorityStatusSearch');
     Route::get('/viewSeniorityStatusSearch', [HomeController::class, 'viewSeniorityStatusSearch'])->name('viewSeniorityStatusSearch');
-    /////////////////Department Select 
+    /////////////////Department Select
 
     Route::post('/seniorityDeptSelect', [HomeController::class, 'seniorityDeptSelect'])->name('seniorityDeptSelect');
     Route::get('/seniorityDeptSelect', [HomeController::class, 'seniorityDeptSelect'])->name('seniorityDeptSelect');
     //////Dowload Pdf for Screening Report
     Route::get('/viewSeniorityStatus/downloadseniorityPDF', 'App\Http\Controllers\HomeController@downloadseniorityPDF')->name('viewSeniorityStatus.downloadseniorityPDF');
 
-   
-  
     ///////////////////////////////////////////////////////
 
     Route::post('/submitForm', [SubmitController::class, 'submitForm'])->name('submitForm');
@@ -780,7 +481,6 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/submit-formDP', [SubmitController::class, 'submitFormDP'])->name('submitFormDP');
 
     Route::post('/submitApplicant', [SubmitController::class, 'submitFormApplicant'])->name('submitApplicant');
-
 
     ///////////////////////////////////////////////////////////
 
@@ -805,15 +505,10 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/upload-applicant-self-submit', [Upload::class, 'finalFileUploadSubmitself'])->name('upload-applicant-self-submit');
     Route::post('/upload-applicant-self-delete', [Upload::class, 'deleteFileUploadSubmitself'])->name('upload-applicant-self-delete');
 
-
-
     Route::get('/other_form_applicant_update', [OthersFormDetailsController::class, 'applicantUpdate'])->name('other_form_applicant_update');
     Route::get('/submit-applicant-update', [OthersFormDetailsController::class, 'submitApplicantUpdate'])->name('submit-applicant-update');
 
-
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     //File upload DIHAS
 
@@ -822,8 +517,7 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/upload-applicant-files-draft', [Upload::class, 'fileUploadSubmit'])->name('upload-applicant-files-draft');
     Route::post('/upload-applicant-files-fdelete', [Upload::class, 'deleteFileUpload'])->name('upload-applicant-files-fdelete');
 
-
-    //files upload backlog   
+    //files upload backlog
     Route::get('/create-backlog-files', [Upload::class, 'createFormbacklog'])->name('create-backlog-files');
     Route::post('/upload-backlog-files', [Upload::class, 'fileUploadbacklog'])->name('upload-backlog-files');
     Route::post('/upload-applicant-files-draftbacklog', [Upload::class, 'fileUploadSubmitbacklog'])->name('upload-applicant-files-draftbacklog');
@@ -844,7 +538,6 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/upload-applicant-files-submit', [Upload::class, 'finalFileUploadSubmit'])->name('upload-applicant-files-submit');
     Route::post('/upload-applicant-files-delete', [Upload::class, 'deleteFileUploadSubmit'])->name('upload-applicant-files-delete');
 
-
     //view for uploaded applicants
     Route::get('/uploaded-applicant-files', [Upload::class, 'index'])->name('uploaded-applicant-files');
 
@@ -852,11 +545,10 @@ Route::prefix("ddo-assist")->group(function () {
 
     Route::get('/downLoad/{doc_id}', [Upload::class, 'downloadFile'])->name('viewFile');
 
-
     // discard start employee
     Route::get('/discard-started-employee/{ein}', [HomeController::class, 'discardStartEmp'])->name('discard-started-employee');
 
-    // not yet activated list 
+    // not yet activated list
     Route::get('/not-yet-activated', [HomeController::class, 'getNotYetActivateEmpList'])->name('not-yet-activated');
     // activated
     Route::get('/activated', [HomeController::class, 'getActivatedEmpList'])->name('activated');
@@ -876,7 +568,7 @@ Route::prefix("ddo-assist")->group(function () {
 
     // view descriptve role
 
-    // Proforma data entry 
+    // Proforma data entry
 
     Route::get('/retrieve_dept', [HomeController::class, 'retrieve_dept'])->name('retrieve_dept');
 
@@ -896,19 +588,16 @@ Route::prefix("ddo-assist")->group(function () {
 
     Route::post('discard_Changes', [HomeController::class, 'discardChanges'])->name('discard_Changes');
 
-
-
     Route::get('/enterBacklogDetails', [HomeController::class, 'viewFormBacklog'])->name('enterBacklogDetails');
     Route::post('/enterBacklogDetails', [HomeController::class, 'viewFormBacklog'])->name('enterBacklogDetails');
     //Route::get('/save-proforma-details-backlog', [HomeController::class, 'create1'])->name('save-proforma-details-backlog');
     Route::post('/save-proforma-details-backlog', [HomeController::class, 'store1'])->name('save-proforma-details-backlog');
 
-
     Route::get('/viewchangeApplicant', [HomeController::class, 'viewChangeApplicant'])->name('viewchangeApplicant');
     Route::post('/viewchangeApplicant', [HomeController::class, 'viewChangeApplicant'])->name('viewchangeApplicant');
 
     Route::get('/changeApplicant/{id}', [HomeController::class, 'show'])->name('changeApplicant');
-    //Route to save second applicant_name 
+    //Route to save second applicant_name
     Route::post('/save_applicant', [HomeController::class, 'saveApplicant'])->name('save_applicant');
 
     Route::post('/update_second_applicant_data', [HomeController::class, 'updateSecondApplicantData'])->name('update_second_applicant_data');
@@ -918,11 +607,9 @@ Route::prefix("ddo-assist")->group(function () {
     //Route::get('/save-proforma-details2ndAppl', [HomeController::class, 'create2ndAppl'])->name('save-proforma-details2ndAppl');
     Route::post('/save-proforma-details2ndAppl', [HomeController::class, 'store2ndAppl'])->name('save-proforma-details2ndAppl');
 
-
     //Update Proforma Form-1
     Route::post('/Proforma_ApplicantDetails/{id}', [HomeController::class, 'viewFormUpdate'])->name('Proforma_ApplicantDetails');
     Route::get('/Proforma_ApplicantDetails/{id}', [HomeController::class, 'viewFormUpdate'])->name('Proforma_ApplicantDetails');
-
 
     //View Proforma Form-1
     Route::get('/viewPersonalDetailsFrom/{id}', [HomeController::class, 'viewForm'])->name('viewPersonalDetailsFrom');
@@ -951,7 +638,6 @@ Route::prefix("ddo-assist")->group(function () {
 
     //below is forward by hod assist to hod
     Route::post('/forwardDetailsFromDP/{id}', [HomeController::class, 'forwardByDPAssistantToHODAssistant'])->name('forwardDetailsFromDP');
-
 
     //below is forward by hod assist to hod
     Route::post('/forwardDetailsFrom/{id}', [HomeController::class, 'forwardHOD'])->name('forwardDetailsFrom');
@@ -982,7 +668,6 @@ Route::prefix("ddo-assist")->group(function () {
 
     Route::post('/revertDetailsFromDPNodal/{id}', [HomeController::class, 'revertDetailsFromDPNodal'])->name('revertDetailsFromDPNodal');
     Route::get('/revertDetailsFromDPNodal/{id}', [HomeController::class, 'revertDetailsFromDPNodal'])->name('revertDetailsFromDPNodal');
-
 
     // below is revert by DP nodal to dp assist
     Route::post('/revertDetailsFromDPNodal/{id}', [HomeController::class, 'revertDetailsFromDPNodal'])->name('revertDetailsFromDPNodal');
@@ -1025,12 +710,10 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/save-family-details', [FamilyMembersController::class, 'store'])->name('save-family-details');
     Route::get('/delete-family-member/{id}', [FamilyMembersController::class, 'destroy'])->name('delete-family-member');
 
-
     //Update Family Details
     Route::get('/view-family-details-dihas', [FamilyMembersController::class, 'indexupdate'])->name('view-family-details-dihas');
     Route::post('/save-family-details-update', [FamilyMembersController::class, 'storeLeft'])->name('save-family-details-update');
     Route::get('/delete-family-member-update/{id}', [FamilyMembersController::class, 'destroyUpdate'])->name('delete-family-member-update');
-
 
     // Family Details backlog
     Route::get('/enter-family-details-backlog', [FamilyMembersController::class, 'indexBacklog'])->name('enter-family-details-backlog');
@@ -1049,7 +732,6 @@ Route::prefix("ddo-assist")->group(function () {
 
     Route::post('/fill_uo_save_checked/{id}', [FillUOController::class, 'fill_uo_save_checked'])->name('fill_uo_save_checked');
     Route::get('/fill_uo_save_checked/{id}', [FillUOController::class, 'fill_uo_save_checked'])->name('fill_uo_save_checked');
-
 
     // others from details
     Route::get('/other_form_details', [OthersFormDetailsController::class, 'index'])->name('other_form_details');
@@ -1083,7 +765,6 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/revertListFromDP/{id}', [HomeController::class, 'revertListFromDP'])->name('revertListFromDP');
     Route::get('/revertListFromDP/{id}', [HomeController::class, 'revertListFromDP'])->name('revertListFromDP');
 
-
     //FOR HOD ASSISTANT
     Route::put('/updateajaxvacancy/{id}', [VacancyController::class, 'update']);
     Route::post('/updateVacancy', [VacancyController::class, 'updateVacan']);
@@ -1093,7 +774,7 @@ Route::prefix("ddo-assist")->group(function () {
     Route::put('/vacancy/{id}', [VacancyController::class, 'update'])->name('vacancy.update');
 
     Route::get('/vacancySearch', [VacancyController::class, 'vacancySearch'])->name('vacancySearch');
-    
+
     Route::post('/vacancySearch', [VacancyController::class, 'vacancySearch'])->name('vacancySearch');
 
     Route::get('/vacancystatusSearch', [VacancyController::class, 'vacancystatusSearch'])->name('vacancystatusSearch');
@@ -1121,21 +802,15 @@ Route::prefix("ddo-assist")->group(function () {
     Route::get('submit-card1-form', [SubmitController::class, 'submitCard1Form'])->name('submitCard1Form');
     // Route::get('submit-card2-form',  [SubmitController::class, 'submitCard2Form'])->name('submitCard2Form');
 
-
     // Route::get('/fill_uo/{id}', [FillUOController::class, 'FillUO'])->name('fill_uo');
     // Route::post('/fill_uo/{id}', [FillUOController::class, 'FillUO'])->name('fill_uo');
 
     // Route::post('/fill_uo_save/{id}', [FillUOController::class, 'save'])->name('fill_uo_save');
     // Route::get('/fill_uo_save/{id}', [FillUOController::class, 'save'])->name('fill_uo_save');
 
-
     Route::post('/uo_submit/{id}', [HomeController::class, 'UOform'])->name('uo_submit');
 
-
     ///////////////////////////////////////////////////
-
-
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     Route::post('/viewFormWord/{id}', [HomeController::class, 'viewFormWord'])->name('viewFormWord');
@@ -1150,21 +825,17 @@ Route::prefix("ddo-assist")->group(function () {
     Route::post('/viewApproveGroup', [GenerateUOController::class, 'pdfselected'])->name('viewApproveGroup');
     Route::get('/viewApproveGroup', [GenerateUOController::class, 'pdfselected'])->name('viewApproveGroup');
 
-
     Route::post('/viewOrderGroup', [GenerateUOController::class, 'pdfselectedORDER'])->name('viewOrderGroup');
     Route::get('/viewOrderGroup', [GenerateUOController::class, 'pdfselectedORDER'])->name('viewOrderGroup');
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Route::post('/viewUOForm/{id}', [HomeController::class, 'viewUOForm'])->name('viewUOForm');
     // Route::get('/viewUOForm/{id}', [HomeController::class, 'viewUOForm'])->name('viewUOForm');
 
-
 });
-
 
 // form data edit for descriptive role route
 Route::post('/save-form-info', [DescriptiveRoleEditController::class, 'store'])->name('save-form-info');
 Route::post('/save-addressDetails-info', [DescriptiveRoleEditController::class, 'saveAddressDetails'])->name('save-addressDetails-info');
-
 
 /////////////////////////////////////////////////PDF//////////////////////
 Route::group(['prefix' => 'notification'], function () {
@@ -1195,7 +866,7 @@ Route::group(['prefix' => 'screening'], function () {
     });
 });
 
-//citizen 
+//citizen
 Route::group(['prefix' => 'citizen'], function () {
     Route::controller(LoginRegisterController::class)->group(function () {
         Route::post('register', 'citizenregister')->name('citizen.register');
@@ -1235,7 +906,6 @@ Route::delete('/deleteself/{ein}', [HomeController::class, 'deleteRecordself']);
 
 Route::delete('/delete2ndAppl/{ein}', [HomeController::class, 'delete2ndAppl']);
 
-
 //Route::post('/save_proforma',[HomeController::class, 'store'])->name('save_proforma');
 
 //One time run from Cron Jobs
@@ -1264,10 +934,8 @@ Route::get('/uploadimage/{id}/edit', 'App\Http\Controllers\UploadImageController
 Route::put('/uploadimage/{id}/edit', 'App\Http\Controllers\UploadImageController@update');
 Route::delete('/uploadimage/delete/{id}', 'App\Http\Controllers\UploadImageController@destroy');
 
-
 //new change on 17 may 2024
 Route::post('/transferFromDPNodal/{id}', [HomeController::class, 'transferFromDPNodal'])->name('transferFromDPNodal');
-    Route::get('/transferFromDPNodal/{id}', [HomeController::class, 'transferFromDPNodal'])->name('transferFromDPNodal');
-	
-	Route::get('/view-file/{filename}',  [HomeController::class, 'viewFileForwardByHODAssistant'])->name('viewFileForwardByHODAssistant');
-	
+Route::get('/transferFromDPNodal/{id}', [HomeController::class, 'transferFromDPNodal'])->name('transferFromDPNodal');
+
+Route::get('/view-file/{filename}', [HomeController::class, 'viewFileForwardByHODAssistant'])->name('viewFileForwardByHODAssistant');
