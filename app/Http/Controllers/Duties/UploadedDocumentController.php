@@ -46,6 +46,7 @@ class UploadedDocumentController extends Controller
             $doc->file_type = $file->getClientMimeType();
             $doc->file_size = $file->getSize();
             $doc->file_path = $path;
+            $doc->uploaded_by = Auth::user()->user_id;
             $doc->save();
 
             DB::commit();

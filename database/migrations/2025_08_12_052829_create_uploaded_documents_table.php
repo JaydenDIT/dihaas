@@ -20,9 +20,12 @@ return new class extends Migration
             $table->string('file_type')->nullable(); // mime type
             $table->unsignedBigInteger('file_size')->nullable(); // in bytes
 
-            // Status flags
+
+            //uploaded by
+            $table->unsignedBigInteger('uploaded_by');
+            //verified by
             $table->boolean('verified')->default(false);
-            $table->text('remarks')->nullable();
+            $table->unsignedBigInteger('verified_by')->nullable();
 
             $table->timestamps();
             $table->foreign('proforma_id')
@@ -33,6 +36,16 @@ return new class extends Migration
             $table->foreign('document_list_id')
                 ->references('document_list_id')
                 ->on('document_list')
+                ->cascadeOnDelete();
+
+            $table->foreign('uploaded_by')
+                ->references('user_id')
+                ->on('users')
+                ->cascadeOnDelete();
+
+            $table->foreign('verified_by')
+                ->references('user_id')
+                ->on('users')
                 ->cascadeOnDelete();
         });
     }

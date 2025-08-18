@@ -127,7 +127,10 @@ class DocumentVerificationController extends Controller
             //then set true
             UploadedDocument::whereIn('uploaded_document_id', $request->uploaded_documents)
                 ->where('proforma_id', $proforma->proforma_id)
-                ->update(['verified' => true]);
+                ->update([
+                    'verified' => true,
+                    'verified_by' => Auth::user()->user_id
+                ]);
 
             $unverifiedDocuments = UploadedDocument::where('proforma_id', $proforma->proforma_id)
                 ->where('verified', false)
