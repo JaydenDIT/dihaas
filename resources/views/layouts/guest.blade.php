@@ -47,16 +47,17 @@
 
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md overflow-hidden sm:rounded-lg">
             @isset($slot)
-                {{ $slot }}
+            {{ $slot }}
             @else
-                @yield('content')
+            @yield('content')
             @endisset
 
         </div>
     </div>
     <script src="{{ asset('assets/popper/popper.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap-5.2.3/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/common.js') }}"></script>
+    <script src="{{ asset('assets/sweetalert2/sweetalert3.js') }}"></script>
+    <script src="{{ asset('js/layout.js') }}"></script>
     @stack('js')
 </body>
 

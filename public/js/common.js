@@ -133,45 +133,4 @@ $('#servie_end_reason').change(function () {
 
 });
 
-
-function ajax_send_multipart(url, param, my_function, json = false) {
-    var contentType = false;
-    if (json) {
-        var dataType = 'json';
-        contentType = "application/json; charset=UTF-8";
-    }
-
-    $.ajax({
-        async: true,
-        url: url,
-        method: "POST",
-        data: param,
-        processData: false,
-        contentType: contentType,
-        enctype: 'multipart/form-data',
-        beforeSend: function () {
-            $("#loading-div").show();
-        },
-        success: function (datalist) {
-            $("#loading-div").hide();
-            if (typeof my_function == 'function') {
-                my_function(datalist);
-            }
-        },
-        error: function (jqXHR, exception, errorThrown) {
-            result = {
-                status: -1,
-                msg: JSON.parse(jqXHR.responseText)
-            };
-            //console.log(JSON.parse(jqXHR.responseText));
-            $("#loading-div").hide();
-            if (typeof my_function == 'function') {
-                my_function({
-                    status: -1,
-                    msg: JSON.parse(jqXHR.responseText)
-                });
-            }
-        }
-    });
-
 }

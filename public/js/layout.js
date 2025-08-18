@@ -372,6 +372,16 @@ async function ajax_send_multipart(arg) {
     const contentType = json ? "application/json; charset=UTF-8" : false;
     const data = json ? JSON.stringify(param) : param;
 
+    // 🔹 Add _token if not GET & not JSON
+    if (method.toUpperCase() !== "GET" && !json) {
+        if (data instanceof FormData) {
+            data.append("_token", $('meta[name="csrf-token"]').attr("content"));
+        } else if (typeof data === "object") {
+            // if someone passed a plain object
+            data._token = $('meta[name="csrf-token"]').attr("content");
+        }
+    }
+
     return new Promise((resolve, reject) => {
         $.ajax({
             url,

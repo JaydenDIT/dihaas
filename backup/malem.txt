@@ -2,6 +2,7 @@
 php artisan migrate:refresh --path=database/migrations/0001_00_01_000000__create_roles_table.php
 php artisan migrate:refresh --path=database/migrations/2025_08_08_065729_create_proforma_table.php
 php artisan migrate:refresh --path=database/migrations/2025_08_11_142209_create_proforma_log_table.php
+php artisan migrate:refresh --path=database/migrations/2025_08_17_114444_create_user_details_table.php
 
 --seed 
 php artisan db:seed --class=RolesSeeder

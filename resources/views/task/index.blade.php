@@ -2,8 +2,10 @@
 
 @push('js')
 <script type="text/javascript">
-    $(function() {
-        taskTable();
+    $(document).ready(function() {
+        setTimeout(function() {
+            taskTable();
+        }, 300); // short delay ensures cookies/session are ready
     });
 
     function taskTable() {

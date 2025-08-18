@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <hr class="hr-brown">
+    <hr class="hr-brown m-0">
     @endforeach
 
     <!-- I agree -->

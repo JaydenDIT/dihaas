@@ -27,10 +27,7 @@
     <link href="{{ asset('assets/niceadmin/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/niceadmin/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/niceadmin/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/niceadmin/vendor/quill/quill.snow.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/niceadmin/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/niceadmin/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-    {{-- <link href="{{ asset('assets/niceadmin/vendor/simple-datatables/style.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('assets/sweetalert2/sweetalert3.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/DataTables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/select2/select2.min.css') }}" rel="stylesheet">
@@ -66,9 +63,9 @@
 
     <main id="main" class="main">
         @isset($pagetitle)
-            <div class="pagetitle">
-                <h1>{{ $pagetitle }}</h1>
-            </div><!-- End Page Title -->
+        <div class="pagetitle">
+            <h1>{{ $pagetitle }}</h1>
+        </div><!-- End Page Title -->
         @endisset
 
 
@@ -84,14 +81,7 @@
     <!-- Font awesome -->
     <script src="{{ asset('assets/fontawesome-free-6.6.0-web/js/all.min.js') }}"></script>
     <!-- Vendor JS Files -->
-    <script src="{{ asset('assets/niceadmin/vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/niceadmin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/niceadmin/vendor/chart.js/chart.min.js') }}"></script>
-    <script src="{{ asset('assets/niceadmin/vendor/echarts/echarts.min.js') }}"></script>
-    <script src="{{ asset('assets/niceadmin/vendor/quill/quill.min.js') }}"></script>
-    {{-- <script src="{{ asset('assets/niceadmin/vendor/simple-datatables/simple-datatables.js') }}"></script> --}}
-    <script src="{{ asset('assets/niceadmin/vendor/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ asset('assets/niceadmin/vendor/php-email-form/validate.js') }}"></script>
     <script src="{{ asset('assets/DataTables/datatables.min.js') }}"></script>
     <script src="{{ asset('assets/select2/select2.min.js') }}"></script>
     <script src="{{ asset('assets/sweetalert2/sweetalert3.js') }}"></script>
@@ -99,7 +89,6 @@
     <!-- Template Main JS File -->
     <script src="{{ asset('assets/niceadmin/js/main.js') }}"></script>
     <script src="{{ asset('js/layout.js') }}"></script>
-    <script src="{{ asset('js/common.js') }}"></script>
     @stack('js')
 
 </body>
