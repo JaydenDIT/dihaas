@@ -22,6 +22,7 @@ return new class extends Migration
                     But action_name forwarded, rejected, reverted, completed
                     must be use carefully these are use for displaying histories or status of the proforma");
             $table->text('action_remark')->nullable();
+            $table->integer('process_sequence')->nullable();
             $table->timestamps();
             $table->foreign('proforma_id')->references('proforma_id')->on('proforma');
             $table->foreign('action_by')->references('user_id')->on('users');

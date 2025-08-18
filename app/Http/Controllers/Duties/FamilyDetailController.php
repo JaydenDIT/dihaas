@@ -74,6 +74,7 @@ class FamilyDetailController extends Controller
                 'action_by' => Auth::user()->user_id,
                 'action_name' => 'Family member deleted draft-step1',
                 'action_remark' => 'Step 1 completed',
+                'process_sequence' => $proforma->process_sequence
             ]);
             $member->delete();
             DB::commit();

@@ -22,6 +22,7 @@ class LogService
                 'action_by' => $param['action_by'],
                 'action_name' => $param['action_name'],
                 'action_remark' => $param['action_remark'] ?? null,
+                'process_sequence' => $param['process_sequence'] ?? null
             ]);
         } catch (Exception $e) {
             // Handle exceptions, possibly log them or rethrow

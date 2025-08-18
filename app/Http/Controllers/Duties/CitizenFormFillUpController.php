@@ -103,6 +103,7 @@ class CitizenFormFillUpController extends Controller
                 'action_by' => Auth::user()->user_id,
                 'action_name' => 'Family Detail save draft-step2',
                 'action_remark' => 'Step 2 completed',
+                'process_sequence' => $proforma->process_sequence
             ]);
             DB::commit();
             return response()->json(['message' => 'Successfully save', 'proforma_id' => $proforma->proforma_id], 201);
@@ -140,6 +141,7 @@ class CitizenFormFillUpController extends Controller
                 'action_by' => Auth::user()->user_id,
                 'action_name' => 'Proforma document save draft-step3',
                 'action_remark' => 'Step 3 completed',
+                'process_sequence' => $proforma->process_sequence
             ]);
             DB::commit();
             return response()->json(['message' => 'Successfully save', 'proforma_id' => $proforma->proforma_id], 201);
@@ -157,14 +159,15 @@ class CitizenFormFillUpController extends Controller
             // Find the proforma
             $proforma = Proforma::where('mini_sequence', 'step3-completed')->where('proforma_id', $id)->first();
             $this->authorize('canForward',  [$proforma, 'client_form_submission']);
-            WorkflowHandler::forwardApplication($proforma); //set the sequence to next 
-
+            //WorkflowHandler comes after LogService
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => Auth::user()->user_id,
                 'action_name' => 'forwarded',
                 'action_remark' => 'Form Submit by Applicant ' . $proforma->applicant_name,
+                'process_sequence' => $proforma->process_sequence
             ]);
+            WorkflowHandler::forwardApplication($proforma); //set the sequence to next 
             DB::commit();
             return response()->json(['message' => 'Proforma updated successfully', 'proforma_id' => $proforma->proforma_id], 200);
         } catch (\Exception $e) {

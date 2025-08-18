@@ -73,6 +73,7 @@ class ProformaController extends Controller
                 'action_by' => $data['create_by'],
                 'action_name' => 'Save Proforma on Draft',
                 'action_remark' => 'Step 1 completed',
+                'process_sequence' => $proforma->process_sequence
             ]);
             DB::commit();
             return response()->json(['message' => 'Proforma created successfully', 'proforma_id' => $proforma->proforma_id], 201);
@@ -100,6 +101,7 @@ class ProformaController extends Controller
                 'action_by' => Auth::user()->user_id,
                 'action_name' => 'Update Proforma on Draft',
                 'action_remark' => 'Step 1 updated',
+                'process_sequence' => $proforma->process_sequence
             ]);
             DB::commit();
             return response()->json(['message' => 'Proforma updated successfully', 'proforma_id' => $proforma->proforma_id], 200);

@@ -145,6 +145,7 @@ class DocumentVerificationController extends Controller
                 'action_by' => Auth::user()->user_id,
                 'action_name' => 'verified',
                 'action_remark' => $request->remarks,
+                'process_sequence' => $proforma->process_sequence
             ]);
             DB::commit();
             return response()->json(['message' => 'Document Verification Data Save Successfully.', 'redirect' => $unverifiedDocuments === 0], 200);
@@ -166,13 +167,15 @@ class DocumentVerificationController extends Controller
             if ($proforma->mini_sequence != "verified") {
                 return response()->json(['message' => 'Verify first before forwarding.'], 422);
             }
-            WorkflowHandler::forwardApplication($proforma);
+            //WorkflowHandler comes after LogService
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => Auth::user()->user_id,
                 'action_name' => 'forwarded',
                 'action_remark' => $request->remarks,
+                'process_sequence' => $proforma->process_sequence
             ]);
+            WorkflowHandler::forwardApplication($proforma);
             DB::commit();
             return response()->json(['message' => 'Proforma forwarded successfully.'], 200);
         } catch (\Exception $e) {
@@ -189,13 +192,16 @@ class DocumentVerificationController extends Controller
             ]);
             $proforma = Proforma::findOrFail($id);
             $this->authorize('canDrop',  [$proforma, 'verify_physical_copy']);
-            WorkflowHandler::dropApplication($proforma);
+
+            //WorkflowHandler comes after LogService
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => Auth::user()->user_id,
                 'action_name' => 'reverted',
                 'action_remark' => $request->remarks,
+                'process_sequence' => $proforma->process_sequence
             ]);
+            WorkflowHandler::dropApplication($proforma);
             DB::commit();
             return response()->json(['message' => 'Proforma reverted successfully.'], 200);
         } catch (\Exception $e) {
@@ -212,13 +218,15 @@ class DocumentVerificationController extends Controller
             ]);
             $proforma = Proforma::findOrFail($id);
             $this->authorize('canReject',  [$proforma, 'verify_physical_copy']);
-            WorkflowHandler::rejectApplication($proforma);
+            //WorkflowHandler comes after LogService
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => Auth::user()->user_id,
                 'action_name' => 'rejected',
                 'action_remark' => $request->remarks,
+                'process_sequence' => $proforma->process_sequence
             ]);
+            WorkflowHandler::rejectApplication($proforma);
             DB::commit();
             return response()->json(['message' => 'Proforma rejected successfully.'], 200);
         } catch (\Exception $e) {
