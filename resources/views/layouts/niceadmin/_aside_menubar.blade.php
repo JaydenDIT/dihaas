@@ -1,6 +1,18 @@
 @php
     $menus = config('menus');
     $role_id = Auth::user()->role_id;
+
+    //extracting the menus that is allowed to the current user
+    $allowedMenus = [];
+    foreach ($menus as $group_name => $menu_items) {
+        foreach ($menu_items as $menu_item) {
+            if (empty($menu_item['allowed_roles']) || in_array($role_id, $menu_item['allowed_roles'])) {
+                $allowedMenus[$group_name][] = $menu_item;
+            }
+        }
+    }
+
+    $activeParentMenu = '';
 @endphp
 
 <!-- ======= Sidebar ======= -->
@@ -8,15 +20,15 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        @foreach ($menus as $group_name => $menu_items)
+        @foreach ($allowedMenus as $group_name => $menu_items)
             <li class="nav-heading">{{ $group_name }}</li>
             @foreach ($menu_items as $menu_item)
-                @if (!empty($menu_item['allowed_roles']) && !in_array($role_id, $menu_item['allowed_roles']))
+                {{-- @if (!empty($menu_item['allowed_roles']) && !in_array($role_id, $menu_item['allowed_roles']))
                     @continue
-                @endif
+                @endif --}}
                 @if (sizeof($menu_item['sub_menus']) == 0)
                     <li class="nav-item">
-                        <a class="nav-link collapsed"
+                        <a class="nav-link @if (request()->routeIs($menu_item['route'])) {{ 'active' }} @else {{ 'collapsed' }} @endif "
                             href="{{ Route::has($menu_item['route']) ? Route($menu_item['route']) : '#' }}">
                             <i class="{{ $menu_item['icon'] ?? 'bi bi-grid' }}"></i>
                             <span>{{ $menu_item['menu_label'] }}</span>
@@ -24,8 +36,8 @@
                     </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link collapsed" data-bs-target="#{{ $menu_item['menu_name'] }}"
-                            data-bs-toggle="collapse" href="#">
+                        <a class="nav-link collapsed" id="parent_{{ $menu_item['menu_name'] }}"
+                            data-bs-target="#{{ $menu_item['menu_name'] }}" data-bs-toggle="collapse" href="#">
                             <i class="bi bi-menu-button-wide"></i><span>{{ $menu_item['menu_label'] }}</span><i
                                 class="bi bi-chevron-down ms-auto"></i>
                         </a>
@@ -35,8 +47,15 @@
                                 @if (!empty($sub_menu_item['allowed_roles']) && !in_array($role_id, $sub_menu_item['allowed_roles']))
                                     @continue
                                 @endif
+                                @php
+                                    if (request()->routeIs($sub_menu_item['route'])) {
+                                        $activeParentMenu = 'parent_' . $menu_item['menu_name'];
+                                    }
+
+                                @endphp
                                 <li>
-                                    <a href="{{ Route::has($sub_menu_item['route']) ? $sub_menu_item['route'] : '#' }}">
+                                    <a href="{{ Route::has($sub_menu_item['route']) ? $sub_menu_item['route'] : '#' }}"
+                                        class="@if (request()->routeIs($sub_menu_item['route'])) {{ 'active' }} @endif">
                                         <i class="bi bi-circle"></i><span>{{ $sub_menu_item['menu_label'] }}</span>
                                     </a>
                                 </li>
@@ -47,5 +66,14 @@
             @endforeach
         @endforeach
     </ul>
+    <script>
+        var activeParentMenu = "{{ $activeParentMenu }}";
+        if (activeParentMenu != "") {
+            var menu = document.getElementById(activeParentMenu);
+            if (menu) {
+                menu.classList.remove("collapse");
+            }
+        }
+    </script>
 
 </aside><!-- End Sidebar-->

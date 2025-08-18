@@ -73,7 +73,6 @@ Route::group(['prefix' => 'state'], function () {
 
 Route::get('/dihas_overview', [LandingPageController::class, 'dihas_overview'])->name('dihas_overview');
 Route::get('/sitemap', [LandingPageController::class, 'sitemap'])->name('sitemap');
-Route::get('/department_login', [LandingPageController::class, 'department_login'])->name('department_login');
 Route::get('/contact_us', [LandingPageController::class, 'contact_us'])->name('contact_us');
 
 require __DIR__ . '/auth.php';

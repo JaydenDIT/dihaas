@@ -1,6 +1,6 @@
 <?php
 return [
-    'main'  => [
+    'main'    => [
         [
             'menu_label'    => 'Dashboard',
             'menu_name'     => 'dashboard',
@@ -12,7 +12,7 @@ return [
         ],
     ],
 
-    'admin' => [
+    'admin'   => [
         [
             'menu_label'    => 'Process',
             'menu_name'     => 'process',
@@ -75,6 +75,18 @@ return [
             'displayOrder'  => 6,
         ],
 
+    ],
+
+    'citizen' => [
+        [
+            'menu_label'    => 'Submit Application',
+            'menu_name'     => 'submit_application',
+            'route'         => 'duties.proforma.create',
+            'allowed_roles' => [77], //Only superadmin
+            'sub_menus'     => [],
+            'displayOrder'  => 1,
+            'icon'          => 'bi bi-journal-text',
+        ],
     ],
 
 ];

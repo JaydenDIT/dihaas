@@ -2,39 +2,6 @@
 @push('css')
     <link href="{{ asset('assets/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('css/welcome.css') }}" rel="stylesheet">
-    <style>
-        .section-title {
-            position: relative;
-            display: inline-block;
-            font-weight: normal;
-            color: #3633f8;
-            /* Bootstrap primary color */
-            margin-bottom: 1.5rem;
-        }
-
-        .section-title::before,
-        .section-title::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            width: 60px;
-            /* line length */
-            height: 1px;
-            /* line thickness */
-            background: #4b40f1;
-            /* same as text color */
-        }
-
-        .section-title::before {
-            right: 100%;
-            margin-right: 15px;
-        }
-
-        .section-title::after {
-            left: 100%;
-            margin-left: 15px;
-        }
-    </style>
 @endpush
 @section('content')
     {{-- Google Font 
