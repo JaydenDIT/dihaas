@@ -4,6 +4,8 @@ use App\Http\Controllers\Duties\CitizenFormFillUpController;
 use App\Http\Controllers\Duties\DocumentVerificationController;
 use App\Http\Controllers\Duties\FamilyDetailController;
 use App\Http\Controllers\Duties\ProformaController;
+use App\Http\Controllers\Duties\UoFileSubmissionController;
+use App\Http\Controllers\Duties\UoFormFillUpController;
 use App\Http\Controllers\Duties\UploadedDocumentController;
 use App\Http\Controllers\Duties\VerifyAndForwardController;
 use Dom\Document;
@@ -62,14 +64,39 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
     });
     Route::group(['prefix' => 'verify/document'], function () {
         Route::controller(DocumentVerificationController::class)->group(function () {
+            //compulsory for a tasks
             Route::get('/{tasks_id}/proforma', 'index')->name('verify.document.index');
             Route::post('/{tasks_id}/proforma/ajaxlist', 'ajaxlist')->name('verify.document.ajaxlist');
             Route::get('/verify/{id}/view', 'view')->name('verify.document.view');
-
-            Route::post('/verify/{id}/verify', 'verify')->name('verify.document.verify');
             Route::post('/verify/{id}/revert', 'revert')->name('verify.document.revert');
             Route::post('/verify/{id}/forward', 'forward')->name('verify.document.forward');
             Route::post('/verify/{id}/reject', 'reject')->name('verify.document.reject');
+            //tasks save 
+            Route::post('/verify/{id}/verify', 'verify')->name('verify.document.verify');
+        });
+    });
+    Route::group(['prefix' => 'uo/formfillup'], function () {
+        Route::controller(UoFormFillUpController::class)->group(function () {
+            //compulsory
+            Route::get('/{tasks_id}/index', 'index')->name('uo.formfillup.index');
+            Route::post('/{tasks_id}/ajaxlist', 'ajaxlist')->name('uo.formfillup.ajaxlist');
+            Route::get('/{id}/view', 'view')->name('uo.formfillup.view');
+            Route::post('/{id}/revert', 'revert')->name('uo.formfillup.revert');
+            Route::post('/{id}/forward', 'forward')->name('uo.formfillup.forward');
+            Route::post('/{id}/reject', 'reject')->name('uo.formfillup.reject');
+        });
+    });
+    Route::group(['prefix' => 'uo/file/submission'], function () {
+        Route::controller(UoFileSubmissionController::class)->group(function () {
+            //compulsory
+            Route::get('/{tasks_id}/index', 'index')->name('uo.filesubmission.index');
+            Route::post('/{tasks_id}/ajaxlist', 'ajaxlist')->name('uo.filesubmission.ajaxlist');
+            Route::get('/{id}/view', 'view')->name('uo.filesubmission.view');
+            Route::post('/{id}/revert', 'revert')->name('uo.filesubmission.revert');
+            Route::post('/{id}/forward', 'forward')->name('uo.filesubmission.forward');
+            Route::post('/{id}/reject', 'reject')->name('uo.filesubmission.reject');
+
+            Route::post('file/{id}/submit', 'submit')->name('uo.filesubmission.submit');
         });
     });
 });

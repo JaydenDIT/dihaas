@@ -5,6 +5,7 @@ return [
     'verify_physical_copy' => 'Verification of Documents by Department',
     'uo_form_generation' => 'Generate UO Form',
     'client_form_submission' => 'Citizen Form Submission',
-    'uo_fillup' => 'UO Form Fill UP',
+    'uo_file_submission' => "Submit File for UO Form Fill Up",
+    'uo_formfillup' => 'UO Form Fill UP',
     'uo_approval' => 'UO Approval',
 ];

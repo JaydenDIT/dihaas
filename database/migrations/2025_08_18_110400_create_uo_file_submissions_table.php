@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('approve_for_uo', function (Blueprint $table) {
-            $table->id('approve_for_uo_id');
+        Schema::create('uo_file_submissions', function (Blueprint $table) {
+            $table->id('uo_file_submission_id');
 
             $table->unsignedBigInteger('proforma_id');
             $table->string('file_path'); // storage/app/public/...

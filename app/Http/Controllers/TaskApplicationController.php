@@ -30,6 +30,12 @@ class TaskApplicationController extends Controller
             case  'verify_physical_copy':
                 return redirect()->route('duties.verify.document.index', [$tasks_id]);
                 break;
+            case  'uo_file_submission':
+                return redirect()->route('duties.uo.filesubmission.index', [$tasks_id]);
+                break;
+            case  'uo_formfillup':
+                return redirect()->route('duties.uo.formfillup.index', [$tasks_id]);
+                break;
         }
         $departments = CmisApiService::apiFieldDepartments();
         return view('duties.list_of_applications', compact('departments', 'task'));
