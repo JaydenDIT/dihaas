@@ -113,8 +113,8 @@
         });
     });
     const proformaId = "{{ $proforma->proforma_id }}";
-    const rejectUrl = "{{ route('duties.verify.form.reject', $proforma->proforma_id) }}";
-    const revertUrl = "{{ route('duties.verify.form.revert', $proforma->proforma_id) }}";
+    const rejectUrl = "{{ route('tasks.performa.reject', ['proforma_id' => $proforma->proforma_id, 'tasks_id' => $tasks['current']['tasks_id']]) }}";
+    const revertUrl = "{{ route('tasks.performa.revert', ['proforma_id' => $proforma->proforma_id, 'tasks_id' => $tasks['current']['tasks_id']]) }}";
     const forwardUrl = "{{ route('duties.verify.form.forward', $proforma->proforma_id) }}";
     const verifyUrl = "{{ route('duties.verify.form.verify', $proforma->proforma_id) }}";
     const confirmRedirectUrl = "{{ route('duties.verify.form.index', $tasks['current']['tasks_id']) }}";
