@@ -6,7 +6,6 @@ php artisan migrate:refresh --path=database/migrations/2025_06_11_031633_create_
 php artisan migrate:refresh --path=database/migrations/2025_08_17_114444_create_user_details_table.php
 php artisan migrate:refresh --path=database/migrations/2025_08_11_142209_create_proforma_log_table.php
 php artisan migrate:refresh --path=database/migrations/2025_08_12_052829_create_uploaded_documents_table.php
-php artisan migrate:refresh --path=database/migrations/2025_08_18_110400_create_approve_for_uo_table.php
 php artisan migrate:refresh --path=database/migrations/2025_08_18_110508_create_uo_generations_table.php
 php artisan migrate:refresh --path=database/migrations/2025_08_18_110400_create_uo_file_submissions_table.php
 
