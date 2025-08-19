@@ -6,35 +6,37 @@ use App\Http\Controllers\Controller;
 use App\Models\Proforma;
 use App\Models\Task;
 use App\Services\CmisApiService;
+use App\Services\LogService;
 use App\Services\WorkflowHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class TaskApplicationController extends Controller
 {
 
 
-    public function index($tasks_id)
+    public function index(Request $request, $tasks_id)
     {
 
         $task = Task::findOrFail($tasks_id);
         switch ($task->tasks_duty) {
             case  'client_form_submission':
-                return redirect()->route('duties.form.index', [$tasks_id]);
+                return redirect()->route('duties.form.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'pending')]);
                 break;
             case  'verify_and_forward':
-                return redirect()->route('duties.verify.form.index', [$tasks_id]);
+                return redirect()->route('duties.verify.form.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'un-verified')]);
                 break;
             case  'verify_physical_copy':
-                return redirect()->route('duties.verify.document.index', [$tasks_id]);
+                return redirect()->route('duties.verify.document.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'un-verified')]);
                 break;
             case  'uo_file_submission':
-                return redirect()->route('duties.uo.filesubmission.index', [$tasks_id]);
+                return redirect()->route('duties.uo.filesubmission.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'pending')]);
                 break;
             case  'uo_formfillup':
-                return redirect()->route('duties.uo.formfillup.index', [$tasks_id]);
+                return redirect()->route('duties.uo.formfillup.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'pending')]);
                 break;
         }
         $departments = CmisApiService::apiFieldDepartments();
@@ -116,5 +118,60 @@ class TaskApplicationController extends Controller
             })
             ->rawColumns(['status', 'action'])
             ->make(true);
+    }
+
+
+
+    public function revert(Request $request, $proforma_id, $tasks_id)
+    {
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'remarks' => 'required|string|max:600',
+            ]);
+            $proforma = Proforma::findOrFail($proforma_id);
+            $tasks = Task::findOrFail($tasks_id);
+            $this->authorize('canDrop',  [$proforma, $tasks->tasks_duty]);
+            //WorkflowHandler comes after LogService
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => Auth::user()->user_id,
+                'action_name' => 'reverted',
+                'action_remark' => $request->remarks,
+                'process_sequence' => $proforma->process_sequence
+            ]);
+            WorkflowHandler::dropApplication($proforma);
+            DB::commit();
+            return response()->json(['message' => 'Proforma reverted successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error reverting proforma: ' . $e->getMessage()], 422);
+        }
+    }
+    public function reject(Request $request, $proforma_id, $tasks_id)
+    {
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'remarks' => 'required|string|max:600',
+            ]);
+            $proforma = Proforma::findOrFail($proforma_id);
+            $tasks = Task::findOrFail($tasks_id);
+            $this->authorize('canReject',  [$proforma, $tasks->tasks_duty]);
+            //WorkflowHandler comes after LogService
+            LogService::addProformaLog([
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => Auth::user()->user_id,
+                'action_name' => 'rejected',
+                'action_remark' => $request->remarks,
+                'process_sequence' => $proforma->process_sequence
+            ]);
+            WorkflowHandler::rejectApplication($proforma);
+            DB::commit();
+            return response()->json(['message' => 'Proforma rejected successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error rejecting proforma: ' . $e->getMessage()], 422);
+        }
     }
 }

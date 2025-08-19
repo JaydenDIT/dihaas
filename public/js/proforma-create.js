@@ -518,7 +518,7 @@ $(document).on("click", "#finalFormSubmitBtn", async function (e) {
             type: "success",
             showCancelButton: false,
         });
-        window.location.href = redirectUrl;
+        window.location.href = `${redirectUrl}?view=forwarded`;
     } catch (err) {
         console.error(err);
     }

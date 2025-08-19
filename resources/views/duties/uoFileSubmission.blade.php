@@ -112,8 +112,8 @@
         });
     });
     const proformaId = "{{ $proforma->proforma_id }}";
-    const rejectUrl = "{{ route('duties.uo.filesubmission.reject', $proforma->proforma_id) }}";
-    const revertUrl = "{{ route('duties.uo.filesubmission.revert', $proforma->proforma_id) }}";
+    const rejectUrl = "{{ route('tasks.performa.reject', ['proforma_id' => $proforma->proforma_id, 'tasks_id' => $tasks['current']['tasks_id']]) }}";
+    const revertUrl = "{{ route('tasks.performa.revert', ['proforma_id' => $proforma->proforma_id, 'tasks_id' => $tasks['current']['tasks_id']]) }}";
     const forwardUrl = "{{ route('duties.uo.filesubmission.forward', $proforma->proforma_id) }}";
     const confirmRedirectUrl = "{{ route('duties.uo.filesubmission.index', $tasks['current']['tasks_id']) }}";
 

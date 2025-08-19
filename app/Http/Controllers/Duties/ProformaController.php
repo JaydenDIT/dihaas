@@ -53,8 +53,6 @@ class ProformaController extends Controller
         ));
     }
 
-
-
     public function store(StoreProformaRequest $request)
     {
         try {
@@ -110,7 +108,6 @@ class ProformaController extends Controller
             return response()->json(['message' => 'Proforma update failed', 'error' => $e->getMessage()], 422);
         }
     }
-
 
 
     public function edit(Request $request, $id)
@@ -182,7 +179,6 @@ class ProformaController extends Controller
     }
 
 
-
     public function view(Request $request, $id)
     {
         $action = "view";
@@ -193,7 +189,6 @@ class ProformaController extends Controller
             'proforma',
         ));
     }
-
 
 
     public function destroy($id)

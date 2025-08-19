@@ -146,11 +146,12 @@
         }
     });
     const proformaId = "{{ $proforma->proforma_id }}";
-    const rejectUrl = "{{ route('duties.verify.document.reject', $proforma->proforma_id) }}";
+    const rejectUrl = "{{ route('tasks.performa.reject', ['proforma_id' => $proforma->proforma_id, 'tasks_id' => $tasks['current']['tasks_id']]) }}";
+    //need own revert need extra tasks
     const revertUrl = "{{ route('duties.verify.document.revert', $proforma->proforma_id) }}";
     const forwardUrl = "{{ route('duties.verify.document.forward', $proforma->proforma_id) }}";
     const verifyUrl = "{{ route('duties.verify.document.verify', $proforma->proforma_id) }}";
-    const confirmRedirectUrl = "{{ route('duties.verify.document.index', $tasks['current']['tasks_id']) }}";
+    const confirmRedirectUrl = "{{ route('duties.verify.document.index', $tasks['current']['tasks_id']) }}?view=verified";
 
 
     $(document).on("click", ".doc-checkbox", function(e) {

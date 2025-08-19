@@ -18,12 +18,13 @@ class DocumentVerificationController extends Controller
 {
     //
     //
-    public function index($tasks_id)
+    public function index(Request $request, $tasks_id)
     {
 
         $task = Task::findOrFail($tasks_id);
         $departments = CmisApiService::apiFieldDepartments();
-        return view('duties.documentVerificationList', compact('departments', 'task'));
+        $view = $request->input('view', '');
+        return view('duties.documentVerificationList', compact('departments', 'task', 'view'));
     }
 
 
@@ -195,7 +196,9 @@ class DocumentVerificationController extends Controller
             ]);
             $proforma = Proforma::findOrFail($id);
             $this->authorize('canDrop',  [$proforma, 'verify_physical_copy']);
-
+            //reset all before reverting
+            UploadedDocument::where('proforma_id', $proforma->proforma_id)
+                ->update(['verified' => false]);
             //WorkflowHandler comes after LogService
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
@@ -210,31 +213,6 @@ class DocumentVerificationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Error reverting proforma: ' . $e->getMessage()], 422);
-        }
-    }
-    public function reject(Request $request, $id)
-    {
-        try {
-            DB::beginTransaction();
-            $request->validate([
-                'remarks' => 'required|string|max:600',
-            ]);
-            $proforma = Proforma::findOrFail($id);
-            $this->authorize('canReject',  [$proforma, 'verify_physical_copy']);
-            //WorkflowHandler comes after LogService
-            LogService::addProformaLog([
-                'proforma_id' => $proforma->proforma_id,
-                'action_by' => Auth::user()->user_id,
-                'action_name' => 'rejected',
-                'action_remark' => $request->remarks,
-                'process_sequence' => $proforma->process_sequence
-            ]);
-            WorkflowHandler::rejectApplication($proforma);
-            DB::commit();
-            return response()->json(['message' => 'Proforma rejected successfully.'], 200);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['message' => 'Error rejecting proforma: ' . $e->getMessage()], 422);
         }
     }
 }

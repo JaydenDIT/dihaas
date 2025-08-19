@@ -5,11 +5,13 @@
     $(document).ready(function() {
         setTimeout(function() {
             applicationTable();
-        }, 300); // short delay ensures cookies/session are ready
-        reinitSelect2();
+        }, 300);
     });
 
-    function applicationTable(application_status = 'pending') {
+    function applicationTable(application_status = "{{ $view ?? 'pending' }}") {
+        $(".statusBtn").removeClass('btn-success').addClass('btn-primary');
+        $(this).addClass('btn-success');
+        $(".statusBtn[data-application_status='" + application_status + "']").addClass('btn-success');
         let columns = [
             "DT_RowIndex|nonorderable|nonsearchable",
             "deceased_ein",
@@ -37,8 +39,6 @@
         e.preventDefault();
         let application_status = $(this).data('application_status');
         applicationTable(application_status); // Reload with selected status
-        $(".statusBtn").removeClass('btn-success').addClass('btn-primary');
-        $(this).addClass('btn-success');
     });
 </script>
 @endpush

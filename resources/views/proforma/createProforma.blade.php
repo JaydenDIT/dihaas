@@ -115,7 +115,7 @@ if ($action == 'create') {
     //form submit
     const completeUploadDocument = "{{ route('duties.form.completeUploadDocument', ['id'=>'__ID__']) }}";
     const completeFamilyDetail = "{{ route('duties.form.completeFamilyDetail', ['id'=>'__ID__']) }}";
-    const formSubmitUrl = "{{ route('duties.form.final.submit', ['id'=>'__ID__']) }}";
+    const formSubmitUrl = "{{ route('duties.form.forward', ['id'=>'__ID__']) }}";
     //tasks
     const redirectUrl = "{{ route('tasks.performa.index', [$tasks['current']['tasks_id'] ?? '__ID__' ]) }}";
 </script>

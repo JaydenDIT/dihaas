@@ -31,12 +31,7 @@ Route::get('/clear-cache', function () {
     Route::get('/viewPersonalDetailsFrom/{id}', [VerificationController::class, 'viewDetail'])->name('detail');
 }); */
 
-Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.'], function () {
-    // Optional route to view applications for a specific task
-    Route::get('/all/performa', [TaskApplicationController::class, 'allProcess'])->name('all');
-    Route::get('/{tasks_id}/performa', [TaskApplicationController::class, 'index'])->name('index');
-    Route::post('/{tasks_id}/performa/ajaxlist', [TaskApplicationController::class, 'ajaxlist'])->name('ajaxlist');
-});
+
 
 //misc routes
 Route::group(['prefix' => 'misc', 'as' => 'misc.option.'], function () {

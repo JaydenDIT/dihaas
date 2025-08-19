@@ -18,12 +18,13 @@ use Yajra\DataTables\Facades\DataTables;
 class CitizenFormFillUpController extends Controller
 {
 
-    public function index($tasks_id)
+    public function index(Request $request, $tasks_id)
     {
 
         $task = Task::findOrFail($tasks_id);
         $departments = CmisApiService::apiFieldDepartments();
-        return view('duties.listFormFillUp', compact('departments', 'task'));
+        $view = $request->input('view', '');
+        return view('duties.listFormFillUp', compact('departments', 'task', 'view'));
     }
 
 
@@ -80,10 +81,6 @@ class CitizenFormFillUpController extends Controller
             ->rawColumns(['status', 'action'])
             ->make(true);
     }
-
-
-
-
 
     //Step 2 - Complete Family Detail
     public function completeFamilyDetail($id)
@@ -152,7 +149,7 @@ class CitizenFormFillUpController extends Controller
     }
 
     //final form submission
-    public function proformaFormSubmit($id)
+    public function forward($id)
     {
         try {
             DB::beginTransaction();
