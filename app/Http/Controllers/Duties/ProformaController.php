@@ -183,6 +183,12 @@ class ProformaController extends Controller
     {
         $action = "view";
         $proforma = Proforma::findOrFail($id);
+        /*
+        //if want filter using role_group like what citizen should do
+        if (Auth::user()->role_group === 'citizen') {
+            $proforma = Proforma::where('proforma_id', $id)->where('created_by', Auth::user()->user_id)->first();
+        }
+        */
         $this->authorize('canView',  [$proforma, 'client_form_submission']);
         return view('proforma.viewProforma', compact(
             'action',

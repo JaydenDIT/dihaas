@@ -60,6 +60,13 @@ class DocumentVerificationController extends Controller
                 break;
         }
 
+        /*
+        //if want filter using role_group like what citizen should do
+        if (Auth::user()->role_group === 'citizen') {
+            $data = $data->where('created_by', Auth::user()->user_id);
+        }
+        */
+
         return DataTables::of($data)
             ->addIndexColumn()
             ->editColumn('deceased_doe', function ($row) {

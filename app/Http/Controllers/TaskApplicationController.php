@@ -120,8 +120,6 @@ class TaskApplicationController extends Controller
             ->make(true);
     }
 
-
-
     public function revert(Request $request, $proforma_id, $tasks_id)
     {
         try {
@@ -148,6 +146,7 @@ class TaskApplicationController extends Controller
             return response()->json(['message' => 'Error reverting proforma: ' . $e->getMessage()], 422);
         }
     }
+
     public function reject(Request $request, $proforma_id, $tasks_id)
     {
         try {

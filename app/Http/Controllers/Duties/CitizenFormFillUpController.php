@@ -53,6 +53,14 @@ class CitizenFormFillUpController extends Controller
                 return DataTables::of([])->make(true); // No data for other statuses
                 break;
         }
+        /*
+        //if want filter using role_group like what citizen should do
+        if (Auth::user()->role_group === 'citizen') {
+            $data = $data->where('created_by', Auth::user()->user_id);
+        }
+        */
+
+
 
         return DataTables::of($data)
             ->addIndexColumn()
