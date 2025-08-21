@@ -393,8 +393,8 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Confirm Submission</h5>
                     <!-- <button type="button" class="close" data-dismiss="modal" id="confirmCancel" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button> -->
+                                                <span aria-hidden="true">&times;</span>
+                                            </button> -->
                 </div>
                 <div class="modal-body">
                     Are you sure you want to save this as draft?
@@ -654,7 +654,6 @@
                     $relationship = \App\Models\RelationshipModel::find($relationshipId);
                     $relationship_multi = $relationship->relationship;
 
-                   
                     $department = \App\Models\DepartmentModel::where('dept_id', $data->dept_id_option)->first();
 
                     // Third preference department
@@ -700,15 +699,15 @@
                     @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->second_post_id)
                         @php $second_preference_grade = $item['group_cd'];@endphp
                         @break
-                        @endif
-                        @endforeach
+                    @endif
+                @endforeach
 
 
                 @foreach ($api_preference as $item)
-                @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->applicant_desig_id)
+                    @if (isset($item['dsg_srno']) && $item['dsg_srno'] == $data->applicant_desig_id)
                         @php $first_preference_dept = $item['field_dept_desc'];@endphp
                         @break
-                         @endif
+                    @endif
                 @endforeach
 
 
@@ -804,28 +803,33 @@
                         .applicant_desig_id)
                     .attr('data-grade', selectedApplicantData.grade1).attr('data-dept', selectedApplicantData.dept1)
                     .appendTo('#postSelect');
-             
-                  // Check if "second_post_id" exists before adding the second_preference
-if (selectedApplicantData.second_post_id) {
-    $('<option>').val(selectedApplicantData.second_post_id).text(selectedApplicantData.second_post_id)
-        .attr('data-grade', selectedApplicantData.grade2).attr('data-dept', selectedApplicantData.dept2)
-        .appendTo('#postSelect');
-}
 
-// Check if "third_post_id" exists before adding the third_preference
-if (selectedApplicantData.third_post_id) {
-    $('<option>').val(selectedApplicantData.third_post_id).text(selectedApplicantData.third_post_id)
-        .attr('data-grade', selectedApplicantData.grade3).attr('data-dept', selectedApplicantData.dept3)
-        .appendTo('#postSelect');
-}
-               
-              // Check if "transfer_post_id" exists before adding the fourth_preference
-    if (selectedApplicantData.transfer_post_id) {
-        // fourth_preference
-        $('<option>').val(selectedApplicantData.transfer_post_id).text(selectedApplicantData.transfer_post_id)
-            .attr('data-grade', selectedApplicantData.grade4).attr('data-dept', selectedApplicantData.dept4)
-            .appendTo('#postSelect');
-    }
+                // Check if "second_post_id" exists before adding the second_preference
+                if (selectedApplicantData.second_post_id) {
+                    $('<option>').val(selectedApplicantData.second_post_id).text(selectedApplicantData
+                            .second_post_id)
+                        .attr('data-grade', selectedApplicantData.grade2).attr('data-dept', selectedApplicantData
+                            .dept2)
+                        .appendTo('#postSelect');
+                }
+
+                // Check if "third_post_id" exists before adding the third_preference
+                if (selectedApplicantData.third_post_id) {
+                    $('<option>').val(selectedApplicantData.third_post_id).text(selectedApplicantData.third_post_id)
+                        .attr('data-grade', selectedApplicantData.grade3).attr('data-dept', selectedApplicantData
+                            .dept3)
+                        .appendTo('#postSelect');
+                }
+
+                // Check if "transfer_post_id" exists before adding the fourth_preference
+                if (selectedApplicantData.transfer_post_id) {
+                    // fourth_preference
+                    $('<option>').val(selectedApplicantData.transfer_post_id).text(selectedApplicantData
+                            .transfer_post_id)
+                        .attr('data-grade', selectedApplicantData.grade4).attr('data-dept', selectedApplicantData
+                            .dept4)
+                        .appendTo('#postSelect');
+                }
 
 
             }
