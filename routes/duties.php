@@ -4,14 +4,13 @@ use App\Http\Controllers\Duties\CitizenFormFillUpController;
 use App\Http\Controllers\Duties\DocumentVerificationController;
 use App\Http\Controllers\Duties\FamilyDetailController;
 use App\Http\Controllers\Duties\ProformaController;
+use App\Http\Controllers\Duties\UoFileApprovalController;
 use App\Http\Controllers\Duties\UoFileSubmissionController;
 use App\Http\Controllers\Duties\UoFormFillUpController;
 use App\Http\Controllers\Duties\UploadedDocumentController;
 use App\Http\Controllers\Duties\VerifyAndForwardController;
 use App\Http\Controllers\TaskApplicationController;
-use Dom\Document;
 use Illuminate\Support\Facades\Route;
-
 
 Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.'], function () {
     // Optional route to view applications for a specific task
@@ -50,6 +49,7 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::post('{id}/update', 'update')->name('family.update');
         });
     });
+
     Route::group(['prefix' => 'form/fillup'], function () {
         Route::controller(CitizenFormFillUpController::class)->group(function () {
             Route::get('/{tasks_id}/index', 'index')->name('form.index');
@@ -59,11 +59,12 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::post('/{id}/forward', 'forward')->name('form.forward');
         });
     });
+
     Route::group(['prefix' => 'verify/form'], function () {
         Route::controller(VerifyAndForwardController::class)->group(function () {
             Route::get('/{tasks_id}/index', 'index')->name('verify.form.index');
             Route::post('/{tasks_id}/ajaxlist', 'ajaxlist')->name('verify.form.ajaxlist');
-            Route::get('/{id}/view', 'view')->name('verify.form.view');
+            Route::get('/{id}/view', 'viewVerifyAndForward')->name('verify.form.view');
 
             Route::post('/{id}/verify', 'verify')->name('verify.form.verify');
             Route::post('/{id}/forward', 'forward')->name('verify.form.forward');
@@ -77,7 +78,7 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::get('/{id}/view', 'view')->name('verify.document.view');
             Route::post('/{id}/forward', 'forward')->name('verify.document.forward');
             Route::post('/{id}/revert', 'revert')->name('verify.document.revert');
-            //tasks save 
+            //tasks save
             Route::post('/{id}/verify', 'verify')->name('verify.document.verify');
         });
     });
@@ -99,6 +100,18 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::post('/{id}/forward', 'forward')->name('uo.filesubmission.forward');;
 
             Route::post('file/{id}/submit', 'submit')->name('uo.filesubmission.submit');
+        });
+    });
+
+    Route::group(['prefix' => 'uo/file/approval'], function () {
+        Route::controller(UoFileApprovalController::class)->group(function () {
+            //compulsory
+            Route::get('/{tasks_id}/index', 'index')->name('uo.file-approval.index');
+            Route::post('/{tasks_id}/ajaxlist', 'ajaxlist')->name('uo.file-approval.ajaxlist');
+            Route::get('/{id}/view', 'view')->name('uo.file-approval.view');
+            Route::post('/{id}/forward', 'forward')->name('uo.file-approval.forward');;
+
+            Route::post('file/{id}/submit', 'submit')->name('uo.file-approval.submit');
         });
     });
 });

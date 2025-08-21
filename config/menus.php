@@ -5,7 +5,16 @@ return [
             'menu_label'    => 'Dashboard',
             'menu_name'     => 'dashboard',
             'route'         => 'home',
-            'allowed_roles' => [], //arbitrary, anyone is allowed
+            'allowed_roles' => [77], //arbitrary, anyone is allowed if empty array, 77 means for citizen
+            'sub_menus'     => [],
+            'displayOrder'  => 1,
+            'icon'          => 'bi bi-grid',
+        ],
+        [
+            'menu_label'    => 'Dashboard',
+            'menu_name'     => 'department_dashboard',
+            'route'         => 'tasks.performa.all',
+            'allowed_roles' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 999], //Only for department users
             'sub_menus'     => [],
             'displayOrder'  => 1,
             'icon'          => 'bi bi-grid',
@@ -66,14 +75,6 @@ return [
             'sub_menus'     => [],
             'displayOrder'  => 5,
         ],
-        [
-            'menu_label'    => 'All My Process',
-            'menu_name'     => 'all_my_process',
-            'route'         => 'tasks.performa.all',
-            'allowed_roles' => [999], //Only superadmin
-            'sub_menus'     => [],
-            'displayOrder'  => 6,
-        ],
 
     ],
 
@@ -82,6 +83,16 @@ return [
             'menu_label'    => 'Submit Application',
             'menu_name'     => 'submit_application',
             'route'         => 'duties.proforma.create',
+            'allowed_roles' => [77], //Only superadmin
+            'sub_menus'     => [],
+            'displayOrder'  => 1,
+            'icon'          => 'bi bi-journal-text',
+        ],
+        [
+            'menu_label'    => 'Submitted Application',
+            'menu_name'     => 'submit_application',
+            'route'         => 'duties.form.index',
+            'param'         => ['tasks_id' => 1],
             'allowed_roles' => [77], //Only superadmin
             'sub_menus'     => [],
             'displayOrder'  => 1,

@@ -28,8 +28,21 @@
                 @endif --}}
                 @if (sizeof($menu_item['sub_menus']) == 0)
                     <li class="nav-item">
+                        @php
+                            $link = '#'; //by default
+
+                            if(Route::has($menu_item['route'])){
+                                if(!empty($menu_item['param'])){
+                                    $link = Route($menu_item['route'], $menu_item['param']);
+                                }
+                                else{
+                                    $link = Route($menu_item['route']);
+                                }
+                            }
+                        @endphp
+
                         <a class="nav-link @if (request()->routeIs($menu_item['route'])) {{ 'active' }} @else {{ 'collapsed' }} @endif "
-                            href="{{ Route::has($menu_item['route']) ? Route($menu_item['route']) : '#' }}">
+                            href="{{ $link }}">
                             <i class="{{ $menu_item['icon'] ?? 'bi bi-grid' }}"></i>
                             <span>{{ $menu_item['menu_label'] }}</span>
                         </a>
@@ -52,9 +65,21 @@
                                         $activeParentMenu = 'parent_' . $menu_item['menu_name'];
                                     }
 
+                                    //sublink
+                                    $sub_menu_link = '#'; //by default
+
+                                    if(Route::has($sub_menu_item['route'])){
+                                        if(!empty($sub_menu_item['param'])){
+                                            $sub_menu_link = Route($sub_menu_item['route'], $sub_menu_item['param']);
+                                        }
+                                        else{
+                                            $sub_menu_link = Route($sub_menu_item['route']);
+                                        }
+                                    }
+
                                 @endphp
                                 <li>
-                                    <a href="{{ Route::has($sub_menu_item['route']) ? $sub_menu_item['route'] : '#' }}"
+                                    <a href="{{ $sub_menu_link }}"
                                         class="@if (request()->routeIs($sub_menu_item['route'])) {{ 'active' }} @endif">
                                         <i class="bi bi-circle"></i><span>{{ $sub_menu_item['menu_label'] }}</span>
                                     </a>

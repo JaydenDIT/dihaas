@@ -150,7 +150,7 @@
                     </div>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input chk-esign" ${duty.allow_esign ? 'checked' : ''}>
-                        <label class="form-check-label">Need Esign (It must be after certified copy is prepared).</label>
+                        <label class="form-check-label">Need Esign.</label>
                     </div>
                 </div>
             `;

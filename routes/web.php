@@ -1,12 +1,14 @@
 <?php
 
 //use App\Http\Controllers\Duties\VerificationController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Auth\SmsController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Misc\DistrictController;
 use App\Http\Controllers\Misc\SubDivisionController;
 use App\Http\Controllers\TaskApplicationController;
+use App\Http\Controllers\UoFileController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -17,9 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('home')->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'home'])->name('home')->middleware('auth');
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
@@ -69,5 +69,8 @@ Route::group(['prefix' => 'state'], function () {
 Route::get('/dihas_overview', [LandingPageController::class, 'dihas_overview'])->name('dihas_overview');
 Route::get('/sitemap', [LandingPageController::class, 'sitemap'])->name('sitemap');
 Route::get('/contact_us', [LandingPageController::class, 'contact_us'])->name('contact_us');
+
+// Route for getting UO file
+Route::get('/uo-file/{proforma_id}', [UoFileController::class, 'getFile'])->name('uo-file.get');
 
 require __DIR__ . '/auth.php';

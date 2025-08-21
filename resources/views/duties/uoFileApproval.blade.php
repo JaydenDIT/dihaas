@@ -31,7 +31,7 @@
         </div>
         <div class="btn-go-through btn-step" data-step="4">
             <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
-            <div>UO File Submission</div>
+            <div>UO File Approval</div>
         </div>
     </div>
 
@@ -51,62 +51,38 @@
         <div class="setup-content" id="step-3">
             <div class="form-group">
                 @include('proforma.viewParts.view3._uploadDocument')
-
             </div>
         </div>
         <div class="setup-content" id="step-4">
             <div class="form-group">
                 <div class="bg-committee p-0 pb-5 rounded">
-                    <h5 class="py-1 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">UO File Submission Form </h5>
+                    <h5 class="py-1 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">UO File Approval </h5>
                     <div class="col-sm-12 mb-3 px-4">
-
-                        <form id="uo_file_submit_form" name="uo_file_submit_form">
-
-                            <div class="form-group">
-                                <label class="form-label" id="fileLabel">Choose File</label>
-                                <div class="row justifi-content-between">
-                                    <div class="col-sm-8">
-                                        <input type="file" class="form-control" name="document_file" id="upload_document_file" 
-                                        required/>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <button class="btn btn-md btn-success file-submit-btn" type="button">Upload File </button>
-                                    </div>
-                                </div>
-                                
-                            </div>
-
-                            
-
-                        </form>
+                        <iframe style="width:100%;height:100vh;" src="{{ route('uo-file.get', $proforma->proforma_id) }}" frameborder="0"></iframe>
+                        
                     </div>
-
-
-
-
                     <!-- Bank Details -->
                     <div class="col-sm-12 mb-3 px-4">
                         <div class="d-flex justify-content-center gap-2 mt-5">
                             @include('duties.tasks._revert')
                             @include('duties.tasks._reject')
-
-                            @if($proforma->mini_sequence === "file_uploaded" )
-                            @include('duties.tasks._forward')
+                            @if( $tasks['can_forward'] )
+                                @if( $tasks['next'] )                               
+                                <button class="btn btn-md btn-success forward-btn" type="button">Approve UO file and Forward for {{$tasks['next']['tasks_name']}} </button>
+                                @else
+                                <button class="btn btn-md btn-success forward-btn" type="button">Submit </button>
+                                @endif
                             @endif
-
                         </div>
                     </div>
                 </div>
 
             </div>
         </div>
-
-
     </div>
 </div>
 
-@include('duties.tasks.modals._confirmation_modal')
-
+@include('duties.tasks.modals._confirmation_of_uo_file_and_forward_modal')
 
 @endsection
 
@@ -123,38 +99,13 @@
     const proformaId = "{{ $proforma->proforma_id }}";
     const rejectUrl = "{{ route('tasks.performa.reject', ['proforma_id' => $proforma->proforma_id, 'tasks_id' => $tasks['current']['tasks_id']]) }}";
     const revertUrl = "{{ route('tasks.performa.revert', ['proforma_id' => $proforma->proforma_id, 'tasks_id' => $tasks['current']['tasks_id']]) }}";
-    const forwardUrl = "{{ route('duties.uo.filesubmission.forward', $proforma->proforma_id) }}";
-    const confirmRedirectUrl = "{{ route('duties.uo.filesubmission.index', $tasks['current']['tasks_id']) }}";
+    const forwardUrl = "{{ route('duties.uo.file-approval.forward', $proforma->proforma_id) }}";
+    const confirmRedirectUrl = "{{ route('duties.uo.file-approval.index', $tasks['current']['tasks_id']) }}";
 
     //optional
-    const formSubmitUrl = "{{ route('duties.uo.filesubmission.submit', $proforma->proforma_id) }}";
+    //const formSubmitUrl = "{{ route('duties.uo.file-approval.submit', $proforma->proforma_id) }}";
 
 
-    $(document).on("click", ".file-submit-btn", async function(e) {
-        e.preventDefault();
-        try {
-            const form = document.getElementById("uo_file_submit_form");
-            const param = new FormData(form);
-            await validateForm(form);
-            let res = await ajax_send_multipart({
-                url: formSubmitUrl,
-                param: param,
-            });
-            await showConfirmation({
-                title: "Successfully Save",
-                text: "You can now Forward",
-                type: "success",
-                showCancelButton: false,
-            });
-            window.location.reload();
-
-
-        } catch (error) {
-            console.log(error);
-        }
-
-
-    });
 </script>
 <script src="{{ asset('js/duties-btn.js') }}"></script>
 @endpush

@@ -15,6 +15,7 @@
             at the moment.
         </div>
     </div>
+    
     <!-- NEW STEP TRACKER -->
     <div class="step-tracker">
         <div class="btn-go-through btn-step" data-step="1">

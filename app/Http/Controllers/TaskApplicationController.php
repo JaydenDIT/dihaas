@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Proforma;
+use App\Models\Role;
 use App\Models\Task;
+use App\Models\User;
 use App\Services\CmisApiService;
 use App\Services\LogService;
 use App\Services\WorkflowHandler;
@@ -35,6 +37,10 @@ class TaskApplicationController extends Controller
             case  'uo_file_submission':
                 return redirect()->route('duties.uo.filesubmission.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'pending')]);
                 break;
+            case  'uo_file_approval':
+                return redirect()->route('duties.uo.file-approval.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'pending')]);
+                break;
+
             case  'uo_formfillup':
                 return redirect()->route('duties.uo.formfillup.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'pending')]);
                 break;

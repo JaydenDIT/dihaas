@@ -1,12 +1,12 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" style="margin-top: 180px;">
         @csrf
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <x-input-label for="fullname" :value="__('Name')" />
+            <x-text-input id="fullname" class="block mt-1 w-full" type="text" name="fullname" :value="old('fullname')" required autofocus autocomplete="name" />
+            <x-input-error :messages="$errors->get('fullname')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
@@ -14,6 +14,12 @@
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+        <!-- Mobile NO -->
+        <div class="mt-4">
+            <x-input-label for="mobile" :value="__('Mobile Phone Number')" />
+            <x-text-input id="mobile" class="block mt-1 w-full" type="number" name="mobile" :value="old('mobile')" required />
+            <x-input-error :messages="$errors->get('mobile')" class="mt-2" />
         </div>
 
         <!-- Password -->
@@ -48,5 +54,15 @@
                 {{ __('Register') }}
             </x-primary-button>
         </div>
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </form>
 </x-guest-layout>

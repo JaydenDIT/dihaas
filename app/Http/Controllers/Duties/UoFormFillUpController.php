@@ -85,10 +85,13 @@ class UoFormFillUpController extends Controller
     public function view($id)
     {
         $proforma = Proforma::findOrFail($id);
+        $this->authorize('canPerformOnProforma',  [$proforma, 'uo_formfillup']);
+
         $total_step = 4;
         $tasks = getPrevNextTasks($id);
-        $this->authorize('canPerformOnProforma',  [$proforma, 'uo_formfillup']);
-        return view('duties.uoFormFillup', compact('proforma', 'total_step', 'tasks'));
+        $deptListArray = CmisApiService::apiFieldDepartments();
+        //dd($deptListArray);
+        return view('duties.uoFormFillup', compact('proforma', 'total_step', 'tasks', 'deptListArray'));
     }
 
 

@@ -121,8 +121,7 @@ class UoFileSubmissionController extends Controller
             $doc->file_path = $path;
             $doc->uploaded_by = Auth::user()->user_id;
             $doc->save();
-
-            DB::commit();
+            
             $proforma->mini_sequence = "file_uploaded";
             $proforma->save();
             LogService::addProformaLog([

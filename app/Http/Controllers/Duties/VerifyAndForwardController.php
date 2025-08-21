@@ -91,7 +91,7 @@ class VerifyAndForwardController extends Controller
 
 
 
-    public function view($id)
+    public function viewVerifyAndForward($id)
     {
         $proforma = Proforma::findOrFail($id);
         $total_step = 4;
@@ -99,11 +99,6 @@ class VerifyAndForwardController extends Controller
         $this->authorize('canPerformOnProforma',  [$proforma, 'verify_and_forward']);
         return view('duties.verifyAndForward', compact('proforma', 'total_step', 'tasks'));
     }
-
-
-
-
-
 
 
     public function verify(Request $request, $id)

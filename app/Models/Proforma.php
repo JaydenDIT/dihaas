@@ -71,4 +71,8 @@ class Proforma extends Model
     {
         return $this->hasMany(ProformaLog::class, 'proforma_id', 'proforma_id');
     }
+
+    public function uoFileSubmission(){
+        return $this->hasOne(UoFileSubmission::class, 'proforma_id', 'proforma_id');
+    }
 }

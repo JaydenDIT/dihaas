@@ -10,13 +10,21 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
             <ul class="navbar-nav align-items-center">
 
-                <li class="nav-item">
-                    <a href="{{ route('welcome') }}"
-                        class="nav-link @if (request()->routeIs('welcome')) {{ 'active' }} @endif">
-                        <span>Home</span>
-                    </a>
-                </li>
-
+                @if (Auth::check())
+                    <li class="nav-item">
+                        <a href="{{ route('home') }}"
+                            class="nav-link @if (request()->routeIs('home')) {{ 'active' }} @endif">
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a href="{{ route('welcome') }}"
+                            class="nav-link @if (request()->routeIs('welcome')) {{ 'active' }} @endif">
+                            <span>Home</span>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a href="{{ route('dihas_overview') }}"
                         class="nav-link @if (request()->routeIs('dihas_overview')) {{ 'active' }} @endif">

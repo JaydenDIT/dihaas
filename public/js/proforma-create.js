@@ -306,7 +306,9 @@ $(document).on("click", "#saveProforma", async function (e) {
             type: "success",
             showCancelButton: false,
         });
-        window.location.href = editProforma.replace("__ID__", res.proforma_id);
+
+        //console.log(editProforma.replace("__ID__", res.proforma_id));
+        window.location.href = editProforma.replace("__ID__", res.proforma_id);        
     } catch (err) {
         console.error(err);
     }
