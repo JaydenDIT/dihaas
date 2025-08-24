@@ -42,21 +42,17 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-        if ($loginType == "citizenLogin") {
-            //for citizen role id should be 77
-            //now check if the user is citizen or not
-            if ($user->role_id != 77) {
-                return back()->withInput()->withErrors([
-                    'loginType' => 'Sorry, you are not a citizen user.',
-                ]);
-            }
-        } else {
-            if ($user->role_id == 77) {
-                return back()->withInput()->withErrors([
-                    'loginType' => 'Sorry, you are not a department user.',
-                ]);
-            }
+        if (
+            ($loginType === "citizenLogin" && $user->role_id != 77) ||
+            ($loginType !== "citizenLogin" && $user->role_id == 77)
+        ) {
+            $message = $loginType === "citizenLogin"
+                ? 'Sorry, you are not a citizen user.'
+                : 'Sorry, you are not a department user.';
+
+            return back()->withInput()->withErrors(['loginType' => $message]);
         }
+
         $request->authenticate();
         // Prevent full login until OTP verified
         Auth::logout();
