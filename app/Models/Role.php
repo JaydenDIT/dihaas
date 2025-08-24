@@ -9,6 +9,11 @@ class Role extends Model
     protected $primaryKey = 'role_id';
     public $timestamps = false;
     protected $guarded = ['role_id'];
+    protected $fillable = [
+        'role_id',
+        'role_name',
+        'role_group'
+    ];
 
 
     public function duties()
