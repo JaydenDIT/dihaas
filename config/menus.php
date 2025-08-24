@@ -109,6 +109,33 @@ return [
             'displayOrder'  => 1,
             'icon'          => 'bi bi-person',
         ],
+        [
+            'menu_label'    => 'Users',
+            'menu_name'     => 'show_user',
+            'route'         => 'user.saveOfficialUser',
+            'allowed_roles' => [999], //Only superadmin
+            'sub_menus'     => [
+                [
+                    'menu_label'    => 'Official',
+                    'menu_name'     => 'show_official_user',
+                    'route'         => 'user.getOfficialUsers',
+                    'allowed_roles' => [999], //Only superadmin
+                    'sub_menus'     => [],
+                    'displayOrder'  => 1,
+                ],
+                [
+                    'menu_label'    => 'Citizen',
+                    'menu_name'     => 'show_sitizen_user',
+                    'route'         => 'user.getCitizenUsers',
+                    'allowed_roles' => [999], //Only superadmin
+                    'sub_menus'     => [],
+                    'displayOrder'  => 1,
+                ],
+            ],
+            'displayOrder'  => 1,
+            'icon'          => 'bi bi-people',
+        ],
+
     ],
 
 ];

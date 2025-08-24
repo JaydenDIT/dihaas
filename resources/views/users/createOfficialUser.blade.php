@@ -3,337 +3,226 @@
 @section('content')
 
     <?php $selected = session()->get('deptId'); ?>
-    <main class="login-form">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                    @if ($errors)
-                        @foreach ($errors->all() as $error)
-                            <div class="alert alert-danger">{{ $error }}</div>
-                        @endforeach
-                    @endif
-                    <div class="card">
-                        <div class="card-header" align="center"
-                            style="font-family: Elephant;font-size: 20px;font-weight:bold;line-height:66px;color: rgb(51, 51, 233);">
-                            {{ __('Official Register Form') }}</div>
 
-                        <div class="card-body">
+    <div class="">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if ($errors)
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-danger">{{ $error }}</div>
+                    @endforeach
+                @endif
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ __('Official Users\' Register Form') }}</h5>
+                        <form id="officialSaveForm" method="POST" action=" {{ route('user.saveOfficialUser') }} ">
+                            @csrf
 
-                            <form id="officialSaveForm" method="POST" action=" {{ route('user.saveOfficialUser') }} ">
-                                @csrf
+                            <div class="row mb-3">
+                                <label for="fullname" class="col-md-4 col-form-label ">{{ __('Name') }}</label>
 
-                                <div class="row mb-3">
-                                    <label for="name"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
-
-                                    <div class="col-md-6">
-                                        <input id="name" type="text"
-                                            class="form-control @error('name') is-invalid @enderror" name="name"
-                                            value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                        {{-- @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror --}}
-                                        @if ($errors->has('name'))
-                                            <span class="text-danger">{{ $errors->first('name') }}</span>
-                                        @endif
-                                    </div>
+                                <div class="col-md-8">
+                                    <input id="fullname" type="text"
+                                        class="form-control @error('fullname') is-invalid @enderror" name="fullname"
+                                        value="{{ old('fullname') }}" required autocomplete="name" autofocus>
+                                    @if ($errors->has('fullname'))
+                                        <span class="text-danger">{{ $errors->first('fullname') }}</span>
+                                    @endif
                                 </div>
+                            </div>
 
 
-                                <div class="row mb-3">
-                                    <label for="email"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+                            <div class="row mb-3">
+                                <label for="email" class="col-md-4 col-form-label ">{{ __('Email Address') }}</label>
 
-                                    <div class="col-md-6">
-                                        <input id="email" type="email"
-                                            class="form-control @error('email') is-invalid @enderror" name="email"
-                                            value="{{ old('email') }}" required autocomplete="email">
+                                <div class="col-md-8">
+                                    <input id="email" type="email"
+                                        class="form-control @error('email') is-invalid @enderror" name="email"
+                                        value="{{ old('email') }}" required autocomplete="email">
 
-                                        @if ($errors->has('email'))
-                                            <span class="text-danger">{{ $errors->first('email') }}</span>
-                                        @endif
-                                        {{-- @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror  --}}
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="mobile"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Mobile') }}</label>
-
-                                    <div class="col-md-6">
-                                        <input id="mobile" type="mobile"
-                                            class="form-control @error('mobile') is-invalid @enderror" name="mobile"
-                                            maxlength="10" required autocomplete="mobile">
-                                        @if ($errors->has('mobile'))
-                                            <span class="text-danger">{{ $errors->first('mobile') }}</span>
-                                        @endif
-                                        {{-- @error('mobile')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror  --}}
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="roles"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Roles') }}</label>
-                                    <div class="col-md-6">
-                                        <select class="form-select" aria-label="Default select example" id="role_id"
-                                            name="role_id">
-                                            <option selected>Select</option>
-                                            @foreach ($roles as $option)
-                                                <option value="{{ $option['role_id'] }}" required>
-                                                    {{ $option['role_name'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('role_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-
-
-                                <!-- Department -->
-                                <!-- Department -->
-                                <div class="row mb-3">
-                                    <label for="Departments"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Department') }}</label>
-
-                                    <div class="col-md-6">
-                                        <select class="form-select" aria-label="Default select example" id="dept_id"
-                                            name="dept_id">
-                                            <option value="" selected>All Department</option>
-                                            @foreach ($departments as $option)
-                                                <option data-ministry="{{ $option->adm_dept_cd }}"
-                                                    value="{{ $option['dept_id'] == null ? null : $option['dept_id'] }}"
-                                                    required {{ $selected == $option['dept_id'] ? 'selected' : '' }}>
-                                                    {{ $option['dept_name'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('dept_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <!-- Ministry -->
-                                <div class="row mb-3">
-                                    <label for="Ministrys"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Administrative Department') }}</label>
-
-                                    <div class="col-md-6">
-                                        <select class="form-select" aria-label="Default select example" id="ministry_id"
-                                            name="ministry_id" disabled>
-                                            <option selected disabled>Select</option>
-                                            @foreach ($ministry as $option)
-                                                <option value="{{ $option['ministry_id'] }}">{{ $option['ministry'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('ministry_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
+                                    @if ($errors->has('email'))
+                                        <span class="text-danger">{{ $errors->first('email') }}</span>
+                                    @endif
 
                                 </div>
-                                <!-- Post  role_id == 9 -->
-                                <div id="departmentSection" style="display: none;">
-                                    <div class="row mb-3">
-                                        <label for="department_signing_authority"
-                                            class="col-md-4 col-form-label text-md-end">{{ __('Post') }}</label>
-                                        <div class="col-md-6">
-                                            <select class="form-select" aria-label="Default select example"
-                                                id="department_signing_authority" name="department_signing_authority">
-                                                <option value="" selected> Signing Authority of Department</option>
-                                                @foreach ($departmentSigningAuthority as $option)
-                                                    <option value="{{ $option['id'] }}" required>
-                                                        {{ $option['name'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('department_signing_authority')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="mobile" class="col-md-4 col-form-label ">{{ __('Mobile') }}</label>
+
+                                <div class="col-md-8">
+                                    <input id="mobile" type="mobile" value="{{ old('mobile') }}"
+                                        class="form-control @error('mobile') is-invalid @enderror" name="mobile"
+                                        maxlength="10" required autocomplete="mobile">
+                                    @if ($errors->has('mobile'))
+                                        <span class="text-danger">{{ $errors->first('mobile') }}</span>
+                                    @endif
                                 </div>
-                                <!-- Post  role_id == 1,2,3,4,5,6,7,8 -->
-                                <div id="postList">
-                                    <!-- Post-->
-                                    <div class="row mb-3">
-                                        <label for="post" class="col-md-4 col-form-label text-md-end">Post</label>
-
-                                        <div class="col-md-6">
-
-
-
-
-                                            <select class="form-select  @error('post') is-invalid @enderror "
-                                                aria-label="Default select example" id="post" name="post">
-                                                <option value="" selected disabled>Select Designation</option>
-
-                                                <option
-                                                    value="{{ $option['dsg_srno'] == null ? null : $option['dsg_srno'] }}"
-                                                    required {{ $selected == $option['dsg_srno'] ? 'selected' : '' }}>
-                                                    {{ $option['dsg_desc'] }}
-                                                </option>
-
-
-
-
-                                            </select>
-
-                                            @error('post')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-
-                                        </div>
-
-                                    </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="roles" class="col-md-4 col-form-label ">{{ __('Roles') }}</label>
+                                <div class="col-md-8">
+                                    <select class="form-select" aria-label="Default select example" id="role_id"
+                                        name="role_id">
+                                        <option selected>Select</option>
+                                        @foreach ($roles as $option)
+                                            <option value="{{ $option['role_id'] }}" required>
+                                                {{ $option['role_name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('role_id')
+                                        <span class="invalid-feedback text-danger" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
+                            </div>
 
+                            <!-- Ministry (Administrative Department) -->
+                            <div class="row mb-3">
+                                <label for="ministry_id"
+                                    class="col-md-4 col-form-label ">{{ __('Administrative Department') }}</label>
 
-
-                                <div class="row mb-3">
-                                    <label for="password"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                                    <div class="col-md-6">
-                                        <input id="password" type="password"
-                                            class="form-control @error('password') is-invalid @enderror" name="password"
-                                            required>
-
-                                        @if ($errors->has('password'))
-                                            <span class="text-danger">{{ $errors->first('password') }}</span>
-                                        @endif
-
-                                    </div>
+                                <div class="col-md-8">
+                                    <select class="form-select" aria-label="Default select example" id="ministry_id"
+                                        name="ministry_id">
+                                        <option selected disabled>Select</option>
+                                        @foreach ($ministry as $option)
+                                            <option value="{{ $option['adm_dept_cd'] }}">
+                                                {{ $option['adm_dept_desc'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('ministry_id')
+                                        <span class="invalid-feedback text-danger" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
+                            </div>
 
-                                <div class="row mb-3">
-                                    <label for="password_confirmation"
-                                        class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                                    <div class="col-md-6">
-                                        <input id="password_confirmation" type="password" class="form-control"
-                                            name="password_confirmation" required>
-                                        @if ($errors->has('password'))
-                                            <span class="text-danger">{{ $errors->first('password') }}</span>
-                                        @endif
-                                    </div>
+                            <!-- Department -->
+                            <!-- Getting departments under the selected administrative department -->
+                            <div class="row mb-3">
+                                <label for="dept_id" class="col-md-4 col-form-label ">{{ __('Department') }}</label>
+                                <div class="col-md-8">
+                                    <select name="field_dept_cd" id="dept_id" class="form-select">
+                                        <option value="">Select Department</option>
+                                    </select>
                                 </div>
+                            </div>
 
-
-
-
-                                <div class="row mb-0">
-                                    <div class="col-md-6 offset-md-4">
-                                        <button type="submit" id="registerSaveOfficial" class="btn btn-primary">
-                                            {{ __('Register') }}
-                                        </button>
-                                    </div>
+                            <!-- Post -->
+                            <!-- Getting posts under the selected department -->
+                            <div class="row mb-3">
+                                <label for="post_id" class="col-md-4 col-form-label ">{{ __('Post') }}</label>
+                                <div class="col-md-8">
+                                    <select name="dsg_serial_no" id="post_id" class="form-select">
+                                        <option value="">Select Post</option>
+                                    </select>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="password" class="col-md-4 col-form-label ">{{ __('Password') }}</label>
+
+                                <div class="col-md-8">
+                                    <input id="password" type="password"
+                                        class="form-control @error('password') is-invalid @enderror" name="password"
+                                        autocomplete="new-password" required>
+
+                                    @if ($errors->has('password'))
+                                        <span class="text-danger">{{ $errors->first('password') }}</span>
+                                    @endif
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="password_confirmation"
+                                    class="col-md-4 col-form-label ">{{ __('Confirm Password') }}</label>
+
+                                <div class="col-md-8">
+                                    <input id="password_confirmation" type="password" class="form-control"
+                                        name="password_confirmation" required autocomplete="new-password">
+                                    @if ($errors->has('password'))
+                                        <span class="text-danger">{{ $errors->first('password') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" id="registerSaveOfficial" class="btn btn-primary">
+                                        {{ __('Register') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    </div>
+@endsection
+@push('js')
     <script nonce="{{ csp_nonce() }}">
-        var _token = "{{ csrf_token() }}";
-
-
         $(document).ready(function() {
-            $('#dept_id').change(function() {
-                var selectedDepartment = $(this).children("option:selected").data('ministry');
-                $('#ministry_id').val(selectedDepartment);
-            });
-        });
+            $('#ministry_id').change(function() {
+                var dept_url = "{{ route('cmis.api.department.adm_cd', '__adm_cd__') }}";
+                dept_url = dept_url.replace("__adm_cd__", $(this).val());
 
-        // $('#registerSaveOfficial').click(function() {
+                $.ajax({
+                    url: dept_url,
+                    success: (resp) => {
+                        let departments = resp.field_dept;
+                        console.log(departments);
 
-
-        // });
-    </script>
-
-    <script>
-        $('#post').change(function() {
-            var id = $(this).find('option:selected').val();
-            var item = $(this).find(item => item.dsg_srno === id);
-            //alert($('#post option[value="'+this.value+'"]').data('grade'));
-
-
-        })
-
-
-        $('#dept_id').change(function() {
-
-            //make blank      
-
-            $("#post").empty();
-            $('#post').append(new Option('Select Post', ''));
-
-            $('#post option[value=""]').attr('disabled', true);
-
-
-
-
-            var id = $(this).find('option:selected').val();
-            var data_dept_id = {
-                'dept_id': $(this).find('option:selected').val(),
-            };
-            // console.log(data_dept_id);
-            $.get('{{ route('retrieve_dept_register_user') }}', data_dept_id, function(id, textStatus, xhr) {
-
-                //now load the result data in id post i.e. for designation  
-
-                $.each(id, function(index, element) {
-
-                    $('#post').append(new Option(element.dsg_desc, element
-                        .dsg_srno)); //only value and text
-                    //Below is for adding extra attribute
-                    // $('<option>').val(element.dsg_srno).text(element.dsg_desc).attr('data-grade', element.group_cd).appendTo('#post');
-
+                        var options = '<option value="">Select Department</option>';
+                        departments.forEach(dept => {
+                            options +=
+                                `<option value="${dept.field_dept_cd}">${dept.field_dept_desc}</option>`;
+                        });
+                        $("#dept_id").html(options);
+                    }
                 });
 
             });
+        });
 
+        $('#dept_id').change(function() {
+            //url for getting all post under a department id
+            var post_url = "{{ route('cmis.api.post.dept_code', '__dept_cd__') }}";
+            post_url = post_url.replace("__dept_cd__", $(this).val());
 
-        })
+            $.ajax({
+                url: post_url,
+                success: (resp) => {
+                    let posts = resp;
+                    console.log(posts);
+
+                    var options = '<option value="">Select Post</option>';
+                    posts.forEach(post => {
+                        options +=
+                            `<option value="${post.dsg_serial_no}">${post.dsg_desc}</option>`;
+                    });
+                    $("#post_id").html(options);
+                }
+            });
+
+        });
     </script>
-
 
     <script>
         // To display the post according to roles 
@@ -356,5 +245,4 @@
             });
         });
     </script>
-
-@endsection
+@endpush

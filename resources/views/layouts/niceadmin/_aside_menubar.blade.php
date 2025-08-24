@@ -13,6 +13,7 @@
     }
 
     $activeParentMenu = '';
+    $subMenuHolder = ''; //The id  of the ul element that holds the list of sub menus
 @endphp
 
 <!-- ======= Sidebar ======= -->
@@ -31,11 +32,10 @@
                         @php
                             $link = '#'; //by default
 
-                            if(Route::has($menu_item['route'])){
-                                if(!empty($menu_item['param'])){
+                            if (Route::has($menu_item['route'])) {
+                                if (!empty($menu_item['param'])) {
                                     $link = Route($menu_item['route'], $menu_item['param']);
-                                }
-                                else{
+                                } else {
                                     $link = Route($menu_item['route']);
                                 }
                             }
@@ -63,16 +63,16 @@
                                 @php
                                     if (request()->routeIs($sub_menu_item['route'])) {
                                         $activeParentMenu = 'parent_' . $menu_item['menu_name'];
+                                        $subMenuHolder = $menu_item['menu_name'];
                                     }
 
                                     //sublink
                                     $sub_menu_link = '#'; //by default
 
-                                    if(Route::has($sub_menu_item['route'])){
-                                        if(!empty($sub_menu_item['param'])){
+                                    if (Route::has($sub_menu_item['route'])) {
+                                        if (!empty($sub_menu_item['param'])) {
                                             $sub_menu_link = Route($sub_menu_item['route'], $sub_menu_item['param']);
-                                        }
-                                        else{
+                                        } else {
                                             $sub_menu_link = Route($sub_menu_item['route']);
                                         }
                                     }
@@ -93,10 +93,19 @@
     </ul>
     <script>
         var activeParentMenu = "{{ $activeParentMenu }}";
+        var subMenuHolder = "{{ $subMenuHolder }}";
+
         if (activeParentMenu != "") {
             var menu = document.getElementById(activeParentMenu);
             if (menu) {
-                menu.classList.remove("collapse");
+                menu.classList.remove("collapsed");
+            }
+        }
+
+        if (subMenuHolder != "") {
+            var subMenu = document.getElementById(subMenuHolder);
+            if (subMenu) {
+                subMenu.classList.remove("collapse");
             }
         }
     </script>

@@ -15,4 +15,9 @@ class Role extends Model
     {
         return $this->belongsToMany(Task::class, 'tasks_role_mapping', 'role_id', 'tasks_id');
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'role_id', 'role_id');
+    }
 }

@@ -17,9 +17,12 @@ return new class extends Migration {
             $table->string('password', 255);
             $table->unsignedBigInteger('role_id'); //from role table 
 
-            //cmis api 
+            //data retrieved from CMIS via api 
             $table->string('dsg_serial_no', 20)->nullable();  //cmis api
+            //dsg_serial_no is the post
+
             $table->string('field_dept_cd', 20)->nullable(); //cmis api
+            //field_dept_cd is the department under which the user should work/operate
 
 
 
@@ -32,7 +35,6 @@ return new class extends Migration {
             $table->integer('attempts')->nullable();
             $table->date('last_attempt_date')->nullable();
             $table->boolean('active_status')->default(true)->nullable();
-
 
             // Foreign key constraints
             $table->foreign('role_id')->references('role_id')->on('roles');
