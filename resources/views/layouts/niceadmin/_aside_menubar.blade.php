@@ -51,7 +51,8 @@
                     <li class="nav-item">
                         <a class="nav-link collapsed" id="parent_{{ $menu_item['menu_name'] }}"
                             data-bs-target="#{{ $menu_item['menu_name'] }}" data-bs-toggle="collapse" href="#">
-                            <i class="bi bi-menu-button-wide"></i><span>{{ $menu_item['menu_label'] }}</span><i
+                            <i
+                                class="{{ $menu_item['icon'] ?? 'bi bi-menu-button-wide' }}"></i><span>{{ $menu_item['menu_label'] }}</span><i
                                 class="bi bi-chevron-down ms-auto"></i>
                         </a>
                         <ul id="{{ $menu_item['menu_name'] }}" class="nav-content collapse "
