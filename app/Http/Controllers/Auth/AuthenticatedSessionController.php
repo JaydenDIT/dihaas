@@ -42,9 +42,10 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
+        $isCitizen = $user->role->role_group === 'citizen';
         if (
-            ($loginType === "citizenLogin" && $user->role_id != 77) ||
-            ($loginType !== "citizenLogin" && $user->role_id == 77)
+            ($loginType === "citizenLogin" && !$isCitizen) ||
+            ($loginType !== "citizenLogin" && $isCitizen)
         ) {
             $message = $loginType === "citizenLogin"
                 ? 'Sorry, you are not a citizen user.'
