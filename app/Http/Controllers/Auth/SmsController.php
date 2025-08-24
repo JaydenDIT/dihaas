@@ -33,7 +33,8 @@ class SmsController extends Controller
 
         $user = User::where('email', $request->post('email'))->first();
 
-        if (abs($user->role_id != 77)) {
+        // if (abs($user->role_id != 77)) { //$user->role->role_group
+        if ($user->role->role_group != "citizen") { //$user->role->role_group
             return response()->json([
                 'status' => 0,
                 'msg'    => 'Failed',
@@ -43,7 +44,7 @@ class SmsController extends Controller
 
         if (Hash::check($request->post('password'), $user->password)) {
 
-            SmsSender::send_otp($user->mobile, 'login_otp');
+            SmsSender::send_SmsOtp($user->mobile, 'login_otp');
 
             $mobile = substr_replace($user->mobile, '*******', 1, 7);
 
@@ -63,7 +64,7 @@ class SmsController extends Controller
     public function smsLoginCitizenOTPResend(Request $request)
     {
         $user = User::where('email', $request->post('email'))->first();
-        SmsSender::resend_otp($user->mobile, 'login_otp');
+        SmsSender::resend_SmsOtp($user->mobile, 'login_otp');
         //$mobile_number = substr_replace( $user->mobile_number, '****', 2, 4 );
         $mobile_number = substr_replace($user->mobile, '*******', 1, 7);
         return response()->json([
@@ -112,7 +113,7 @@ class SmsController extends Controller
 
         if (Hash::check($request->post('passwordDept'), $user->password)) {
 
-            SmsSender::send_otp($user->mobile, 'login_otp_Dept');
+            SmsSender::send_SmsOtp($user->mobile, 'login_otp_Dept');
 
             $mobile = substr_replace($user->mobile, "*******", 1, 7);
 
