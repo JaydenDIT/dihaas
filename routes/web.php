@@ -3,6 +3,7 @@
 //use App\Http\Controllers\Duties\VerificationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\Auth\OtpVerificationController;
 use App\Http\Controllers\Auth\SmsController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Misc\DistrictController;
@@ -26,6 +27,11 @@ Route::get('/clear-cache', function () {
     Artisan::call('view:clear');
     echo 'Application cache has been cleared';
 });
+
+/** Route for OTP verification */
+Route::get('/verify-otp', [OtpVerificationController::class, 'show'])->name('otp.show');
+Route::post('/verify-otp', [OtpVerificationController::class, 'verify'])->name('otp.verify');
+Route::post('/resend-otp', [OtpVerificationController::class, 'resendOTP'])->name('otp.resend');
 
 /* Route::group(['prefix' => 'duty', 'as' => 'duty.personal.'], function () {
     Route::get('/viewPersonalDetailsFrom/{id}', [VerificationController::class, 'viewDetail'])->name('detail');

@@ -30,7 +30,7 @@
                             <h4 class="section-heading">(DIHAS)</h3>
                         </div>
                         <p class="lead-text">
-                            Empowering <i>Families</i>, Continuing <i>Legacies</i>.
+                            Empowering <i><strong>Families</strong></i>, Continuing <i><strong>Legacies</strong></i>.
                         </p>
                     </div>
                     <p class="lead-text text-muted">
@@ -188,6 +188,7 @@
                                         </a>
                                     @endif
                                     <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-key"></i>
                                         {{ __('Log in') }}
                                     </button>
                                 </div>

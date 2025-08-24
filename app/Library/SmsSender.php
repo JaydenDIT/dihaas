@@ -23,7 +23,10 @@ class SmsSender
 
     public static function sendsms($mobileno, $message)
     {
-        return true; //check
+        if (env('APP_ENV', 'local') == 'local') {
+            return true; //check
+        }
+
         try {
 
             //$message = urlencode($message);
@@ -65,7 +68,10 @@ class SmsSender
 
     public static function sendsmsOTP($mobileno, $OTP)
     {
-        return true; //check
+        if (env('APP_ENV', 'local') == 'local') {
+            return true; //check
+        }
+
         try {
 
             $message = urlencode($OTP . self::$otp_text);
@@ -145,7 +151,10 @@ class SmsSender
 
     public static function sendEmail($email, array $mailData)
     {
-        return true;
+        if (env('APP_ENV', 'local') == 'local') {
+            return true; //check
+        }
+
         try {
             Mail::to($email)->send(new NotifyMail($mailData));
         } catch (Exception $e) {
@@ -156,13 +165,16 @@ class SmsSender
 
     public static function generateOTP($key)
     {
-        $number = rand(111111, 999999);
-        $number = 123456;
+        $otp = (env('APP_ENV', 'local') === 'local') ? '123456' : rand(111111, 999999);
+
+        // Save OTP in session ()
+        $otpExpires = env('OTP_EXPIRES_IN', 5); //By default 5 minutes
+
         Session::put([
-            $key => $number,
-            'expiry_time' => 60 * 10
+            $key => $otp,
+            'expiry_time' => now()->addMinutes($otpExpires),
         ]);
-        return $number;
+        return $otp;
     }
 
     public static function sendEmailOtp($email, $key)

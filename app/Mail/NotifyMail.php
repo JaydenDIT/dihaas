@@ -24,7 +24,7 @@ class NotifyMail extends Mailable
     public function __construct($mailData)
     {
         $this->mailData = $mailData;
-    } 
+    }
 
     /**
      * Get the message envelope.
@@ -34,8 +34,8 @@ class NotifyMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(env('MAIL_USERNAME'), 'High Court Manipur'),
-            subject: $this->mailData['subject']??"No-Reply",
+            from: new Address(env('MAIL_USERNAME'), 'Die In Harness'),
+            subject: $this->mailData['subject'] ?? "No-Reply",
         );
     }
 
@@ -47,10 +47,10 @@ class NotifyMail extends Mailable
     public function content()
     {
         return new Content(
-            view: $this->mailData['view']??'email.demoMail', 
+            view: $this->mailData['view'] ?? 'email.demoMail',
             with: [
-                'title' =>  $this->mailData['title']??"",
-                'mailbody' => $this->mailData['body']??"",
+                'title' =>  $this->mailData['title'] ?? "",
+                'mailbody' => $this->mailData['body'] ?? "",
             ],
         );
     }
@@ -64,6 +64,4 @@ class NotifyMail extends Mailable
     {
         return [];
     }
-
-
 }

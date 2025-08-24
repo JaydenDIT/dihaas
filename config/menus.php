@@ -99,5 +99,16 @@ return [
             'icon'          => 'bi bi-journal-text',
         ],
     ],
+    'User Management' => [
+        [
+            'menu_label'    => 'Register Official User',
+            'menu_name'     => 'create_user',
+            'route'         => 'user.saveOfficialUser',
+            'allowed_roles' => [999], //Only superadmin
+            'sub_menus'     => [],
+            'displayOrder'  => 1,
+            'icon'          => 'bi bi-person',
+        ],
+    ],
 
 ];

@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Library\SmsSender;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
@@ -25,6 +27,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Step 1: Validate email, password & login type
         $data      = $request->validated();
         $loginType = $data['loginType'];
 
@@ -54,12 +57,40 @@ class AuthenticatedSessionController extends Controller
                 ]);
             }
         }
-
         $request->authenticate();
+        // Prevent full login until OTP verified
+        Auth::logout();
+
+        // Step 2: Generate OTP        
+        $otp = SmsSender::generateOTP('login_otp');
+        $otpExpires = env('OTP_EXPIRES_IN', 5); //By default 5 minutes
+        // Save OTP in session ()
+        session([
+            '2fa_user_id' => $user->user_id, //Auth::id(),
+            'otp' => $otp,
+            'otp_expires_at' =>  now()->addMinutes($otpExpires),
+        ]);
+
+        //Now sending OTP in email
+        $mailData = [
+            "view" => "email.otpMail",
+            "subject" => "OTP verification",
+            "title" => "No-Reply",
+            "body" => $otp
+        ];
+        SmsSender::sendEmail($user->email, $mailData);
+
+        //Now sending OTP as sms in mobile phone
+        SmsSender::sendsmsOTP($user->mobile, $otp);
+
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Step 4: Redirect to OTP verification page
+        return redirect()->route('otp.show')->with(
+            'success',
+            'An OTP has ben sent to both your registered email ID as well as your mobile number.'
+        );
     }
 
     /**
