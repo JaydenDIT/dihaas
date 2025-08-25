@@ -59,7 +59,7 @@ Auth::routes();
 // Admin Routes
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::post('/home', [HomeController::class, 'index'])->name('home');
+// Route::post('/home', [HomeController::class, 'index']);
 
 Route::post('/reload-captcha', [CaptchaController::class, 'reloadCaptcha'])->name('reloadCaptcha');
 

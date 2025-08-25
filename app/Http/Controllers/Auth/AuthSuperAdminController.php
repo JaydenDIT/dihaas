@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -155,10 +156,12 @@ class AuthSuperAdminController extends Controller
                 ->exists();
             if ($existingEntry) {
                 // Entry already exists, show alert
+                /*
                 return response()->json([
                     'status' => 0,
                     'msg'    => 'Your account is logged in on another device.',
                 ]);
+                */
             } else {
                 // Entry doesn't exist, proceed with insertion
                 CurrentSessionModel::create([
@@ -167,7 +170,6 @@ class AuthSuperAdminController extends Controller
                     'email'    => $user->email,
                     'status'   => 'true',
                 ]);
-
             }
             // return redirect()->route( 'dashboard' );
             return response()->json([
@@ -828,7 +830,7 @@ class AuthSuperAdminController extends Controller
                     'role_id'       => '',
                     'password'      => '',
                     'post'          => '',
-                ], );
+                ],);
 
                 // Find the user by ID
                 $user = User::findOrFail($request->id);
@@ -855,7 +857,7 @@ class AuthSuperAdminController extends Controller
                         'active_status' => $request->active_status,
                         'dept_id'       => $dept->dept_id,
                         'ministry_id'   => $ministry->ministry_id, // Update with the fetched dept_id
-                                                                   // 'ministry_id' => isset( $ministry[ 'ministry_id' ] ) ? $ministry[ 'ministry_id' ] : null,
+                        // 'ministry_id' => isset( $ministry[ 'ministry_id' ] ) ? $ministry[ 'ministry_id' ] : null,
                         'role_id'       => $role->role_id,
                         'password'      => $user->password,
                         'post_id'       => $user->post_id,
@@ -868,9 +870,7 @@ class AuthSuperAdminController extends Controller
                     } else {
                         return back()->with('error', 'Failed to update...');
                     }
-
                 }
-
             } else {
                 $request->validate([
                     'id'            => 'required|exists:users,id',
@@ -922,7 +922,7 @@ class AuthSuperAdminController extends Controller
                         'active_status' => $request->active_status,
                         'dept_id'       => $dept->dept_id,
                         'ministry_id'   => $ministry->ministry_id, // Update with the fetched dept_id
-                                                                   // 'ministry_id' => isset( $ministry[ 'ministry_id' ] ) ? $ministry[ 'ministry_id' ] : null,
+                        // 'ministry_id' => isset( $ministry[ 'ministry_id' ] ) ? $ministry[ 'ministry_id' ] : null,
                         'role_id'       => $role->role_id,
                         'password'      => Hash::make($request->password),
                         'post_id'       => $request->post,
@@ -935,11 +935,8 @@ class AuthSuperAdminController extends Controller
                     } else {
                         return back()->with('error', 'Failed to update...');
                     }
-
                 }
-
             }
-
         }
 
         if ($request->role_id == 9) {
@@ -991,7 +988,7 @@ class AuthSuperAdminController extends Controller
                     'mobile'      => $request->mobile,
                     'dept_id'     => $dept->dept_id,
                     'ministry_id' => $ministry->ministry_id, // Update with the fetched dept_id
-                                                             // 'ministry_id' => isset( $ministry[ 'ministry_id' ] ) ? $ministry[ 'ministry_id' ] : null,
+                    // 'ministry_id' => isset( $ministry[ 'ministry_id' ] ) ? $ministry[ 'ministry_id' ] : null,
                     'role_id'     => $role->role_id,
                     'password'    => Hash::make($request->password),
                     'post_id'     => $request->department_signing_authority,
@@ -1004,9 +1001,7 @@ class AuthSuperAdminController extends Controller
                 } else {
                     return back()->with('error', 'Failed to update...');
                 }
-
             }
-
         }
     }
     // For Official User Edit
@@ -1037,16 +1032,18 @@ class AuthSuperAdminController extends Controller
             $data->role_name = $role->role_name;
 
             $cd_grade = [];
+            /*
             $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd', [
                 'dept_code' => $data->dept_id,
                 'token'     => 'b000e921eeb20a0d395e341dfcd6117a',
-            ]);
-            $cd_grade = json_decode($response->getBody(), true);
+            ]);*/
 
+            $response = Http::post('http://manipurtemp02.nic.in/cmis_api/public/api/get-all-dept-details-by-dept-cd?dept_code=' . $data->dept_id . '&token=b000e921eeb20a0d395e341dfcd6117a');
+
+            $cd_grade = json_decode($response->getBody(), true);
             $postnames = [];
             foreach ($cd_grade as $cdgrade) {
                 if (isset($cdgrade['dsg_srno']) && $cdgrade['dsg_srno'] == $data->post_id) {
-
                     $postnames[] = $cdgrade['dsg_desc'];
                 }
             }

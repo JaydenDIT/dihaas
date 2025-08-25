@@ -257,24 +257,24 @@
                                         </label>
                                         <input placeholder="Enter your password" id="password" type="password"
                                             class="form-control @error('password') is-invalid @enderror" name="password"
-                                            required autocomplete="current-password">
+                                            required autocomplete="new-password">
 
                                         <div class="invalid-feedback" role="alert">
                                         </div>
                                     </div>
                                 </div>
                                 <!-- <div class="row mb-2">
-                                                                    <div class="col-md-5 offset-md-4">
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input" type="checkbox" name="remember"
-                                                                                id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                                            <div class="col-md-5 offset-md-4">
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input" type="checkbox" name="remember"
+                                                                                        id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                                                                            <label class="form-check-label" for="remember">
-                                                                                {{ __('Remember Me') }}
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> -->
+                                                                                    <label class="form-check-label" for="remember">
+                                                                                        {{ __('Remember Me') }}
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div> -->
                             </form>
 
 
@@ -388,7 +388,7 @@
 
                                     <input placeholder="Enter your password" id="passwordDept" type="password"
                                         class="form-control @error('passwordDept') is-invalid @enderror"
-                                        name="passwordDept" required autocomplete="current-password">
+                                        name="passwordDept" required autocomplete="new-password">
 
                                     <div class="invalid-feedback" role="alert">
                                     </div>
@@ -702,7 +702,7 @@
                                             @foreach ($images as $index => $image)
                                                 <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                                                     <!-- <img src="{{ asset('storage/' . $image->image) }}" alt="Image {{ $index + 1 }}" class="d-block"
-                                                            height="300px" width="200px;"> -->
+                                                                    height="300px" width="200px;"> -->
 
                                                     <img src="{{ route('image.show', ['filename' => $image->image]) }}"
                                                         alt="Your Image" height="300px" width="100%;">

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\NotificationModel;
@@ -17,7 +18,7 @@ class WelcomeController extends Controller
 
         $user = Auth::user();
         $role = $user->role_id;
-
+        //dd($role);
         return match ($role) {
             77 => $this->citizenDashboard($user),
             1 => $this->hodAssistantDashboard($user),
@@ -88,12 +89,15 @@ class WelcomeController extends Controller
         $notYetVerified        = (clone $query)->where('status', 1)->count();
         $underProcess          = (clone $query)->whereNotIn('status', [0, 6])->count();
         $ProCompleted          = (clone $query)->where('status', 6)->count();
+        $user_id1 = Auth::user()->id;
+        $getUser1 = User::get()->where('id', $user_id1)->first();
 
         return view('admin/dashboard', array_merge(
             $portal,
             $notifications,
             compact(
                 'user',
+                'getUser1',
                 'ProInCompleted',
                 'notYetVerified',
                 'verificationCompleted',
