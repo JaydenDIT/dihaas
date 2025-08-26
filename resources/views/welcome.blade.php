@@ -169,9 +169,15 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">{{ __('Password') }}</label>
-                                    <input id="password" type="password"
-                                        class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required>
+
+                                    <div class="form-password-toggle">
+                                        <input type="password" id="password"
+                                            class="form-control @error('password') is-invalid @enderror" name="password"
+                                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                            autocomplete="new-password" aria-describedby="password" required />
+                                    </div>
+
+
                                     @error('password')
                                         <div class="invalid-feedback small">{{ $message }}</div>
                                     @enderror

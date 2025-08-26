@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Components / Accordion - NiceAdmin Bootstrap Template</title>
+    <title>{{ env('APP_NAME', 'Die in harness') }}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <!-- CSRF Token -->
@@ -63,9 +63,9 @@
 
     <main id="main" class="main">
         @isset($pagetitle)
-        <div class="pagetitle">
-            <h1>{{ $pagetitle }}</h1>
-        </div><!-- End Page Title -->
+            <div class="pagetitle">
+                <h1>{{ $pagetitle }}</h1>
+            </div><!-- End Page Title -->
         @endisset
 
 

@@ -4,7 +4,7 @@
     <div class="container my-5">
 
         <!-- Header -->
-        <div class="text-center mb-5">
+        <div class="text-center mb-5 animate-fade-in-down">
             <h2 class="fw-bold text-dark border-bottom pb-2 d-inline-block">
                 <i class="fas fa-headset text-primary me-2"></i> Contact Us
             </h2>
@@ -18,10 +18,10 @@
         <div class="row g-4 justify-content-center">
 
             <!-- Email Card -->
-            <div class="col-md-5">
-                <div class="card shadow-lg border-0 h-100 rounded-3">
+            <div class="col-md-5 animate-slide-up delay-1">
+                <div class="card shadow-lg border-0 h-100 rounded-3 hover-lift">
                     <div class="card-body text-center p-4">
-                        <div class="icon mb-3">
+                        <div class="icon mb-3 pulse">
                             <i class="fas fa-envelope fa-3x text-white bg-primary rounded-circle p-3 shadow"></i>
                         </div>
                         <h5 class="fw-bold mb-3">Email Us</h5>
@@ -43,10 +43,10 @@
             </div>
 
             <!-- Phone Card -->
-            <div class="col-md-5">
-                <div class="card shadow-lg border-0 h-100 rounded-3">
+            <div class="col-md-5 animate-slide-up delay-2">
+                <div class="card shadow-lg border-0 h-100 rounded-3 hover-lift">
                     <div class="card-body text-center p-4">
-                        <div class="icon mb-3">
+                        <div class="icon mb-3 pulse">
                             <i class="fas fa-phone-alt fa-3x text-white bg-success rounded-circle p-3 shadow"></i>
                         </div>
                         <h5 class="fw-bold mb-3">Call Us</h5>
@@ -66,3 +66,77 @@
         </div>
     </div>
 @endsection
+
+@push('css')
+    <style>
+        /* Fade in from top */
+        .animate-fade-in-down {
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Slide up for cards */
+        .animate-slide-up {
+            opacity: 0;
+            animation: slideUp 1s ease forwards;
+        }
+
+        .animate-slide-up.delay-1 {
+            animation-delay: 0.3s;
+        }
+
+        .animate-slide-up.delay-2 {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Icon Pulse */
+        .pulse i {
+            animation: pulseAnim 1.5s infinite;
+        }
+
+        @keyframes pulseAnim {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Card Hover */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
+        }
+    </style>
+@endpush

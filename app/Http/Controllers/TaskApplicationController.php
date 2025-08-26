@@ -40,9 +40,11 @@ class TaskApplicationController extends Controller
             case  'uo_file_approval':
                 return redirect()->route('duties.uo.file-approval.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'pending')]);
                 break;
-
             case  'uo_formfillup':
                 return redirect()->route('duties.uo.formfillup.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'pending')]);
+                break;
+            case 'uo_form_generation':
+                return redirect()->route('duties.uo.formgeneration.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'pending')]);
                 break;
         }
         $departments = CmisApiService::apiFieldDepartments();

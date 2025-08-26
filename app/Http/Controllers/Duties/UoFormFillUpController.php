@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\Duties;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UoFormFillupRequest;
 use App\Models\Proforma;
 use App\Models\Task;
+use App\Models\UoGeneration;
+use App\Models\User;
 use App\Services\CmisApiService;
 use App\Services\LogService;
 use App\Services\WorkflowHandler;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+
 
 class UoFormFillUpController extends Controller
 {
@@ -89,16 +94,23 @@ class UoFormFillUpController extends Controller
 
         $total_step = 4;
         $tasks = getPrevNextTasks($id);
-        $deptListArray = CmisApiService::apiFieldDepartments();
-        //dd($deptListArray);
-        return view('duties.uoFormFillup', compact('proforma', 'total_step', 'tasks', 'deptListArray'));
+
+        $adminDepartments = CmisApiService::apiAdminDepartments();
+
+        $adminDepts = [];
+        foreach ($adminDepartments as $dept) {
+            $adminDepts[$dept['adm_dept_cd']] = $dept['adm_dept_desc'];
+        }
+
+        $departments = CmisApiService::apiFieldDepartments();
+
+        //Retrieving Nodal Officers for Department of personels for signing authority
+        $dpNodals = $users = User::with('role')
+            ->whereHas('role', function ($query) {
+                $query->where('role_name', '=', 'DP Nodal');
+            })->get();
+        return view('duties.uoFormFillup', compact('proforma', 'total_step', 'tasks', 'departments', 'dpNodals', 'adminDepts'));
     }
-
-
-
-
-
-
 
     public function verify(Request $request, $id)
     {
@@ -130,32 +142,89 @@ class UoFormFillUpController extends Controller
         }
     }
 
-    public function forward(Request $request, $id)
+    public function forward(UoFormFillupRequest  $request, $id)
     {
         try {
             DB::beginTransaction();
-            $request->validate([
-                'remarks' => 'nullable|string|max:600',
-            ]);
+            $validated = $request->validated();
             $proforma = Proforma::findOrFail($id);
-            $this->authorize('canForward',  [$proforma, 'verify_and_forward']);
+            //$this->authorize('canForward',  [$proforma, 'verify_and_forward']);
+            /* 
             if ($proforma->mini_sequence != "verified") {
                 return response()->json(['message' => 'Verify first before forwarding.'], 422);
-            }
+            } */
+
+            // Example: Save into DB
+            // Prepare data
+            $data = [
+                'proforma_id'                       => $id,
+                'post_option'                       => $validated['post_option'],
+
+                // Applicant preferred option
+                'applicant_prefered_post_id'        => $validated['applicant_prefered_post_id'] ?? null,
+                'applicant_prefered_post_desc'      => $validated['applicant_prefered_post_desc'] ?? null,
+                'applicant_prefered_group_code'     => $validated['applicant_prefered_group_code'] ?? null,
+                'applicant_prefered_dept_cd'        => $validated['applicant_prefered_dept_cd'] ?? null,
+                'applicant_prefered_dept_desc'      => $validated['applicant_prefered_dept_desc'] ?? null,
+                'applicant_prefered_adm_dept_cd'    => $validated['applicant_prefered_adm_dept_cd'] ?? null,
+                'applicant_prefered_adm_dept_desc'  => $validated['applicant_prefered_adm_dept_desc'] ?? null,
+
+                // Dept preferred options
+                'department_prefered_post_id'       => $validated['department_prefered_post_id'] ?? null,
+                'department_prefered_post_desc'     => $validated['department_prefered_post_desc'] ?? null,
+                'department_prefered_group_code'    => $validated['department_prefered_group_code'] ?? null,
+                'department_prefered_dept_cd'       => $validated['department_prefered_dept_cd'] ?? null,
+                'department_prefered_dept_desc'     => $validated['department_prefered_dept_desc'] ?? null,
+                'department_prefered_adm_dept_desc' => $validated['department_prefered_adm_dept_desc'] ?? null,
+                'department_prefered_adm_dept_cd'   => $validated['department_prefered_adm_dept_cd'] ?? null,
+
+                // Always required
+                'signing_authority'                => $validated['signing_authority'],
+                'generated_by'                     => auth()->id(),
+            ];
+
+            //$preference = ($validated['post_option'] == "applicant-prefered") ? 'applicant_prefered' : 'department_prefered';
+            $preference = str_replace('-', '_', $validated['post_option']);
+
+            $params = [];
+            $params['proforma_id'] = $data['proforma_id'];
+            $params['alloted_adm_dept_cd'] = $data[$preference . '_adm_dept_cd'];
+            $params['alloted_adm_dept_desc'] = $data[$preference . '_adm_dept_desc'];
+            $params['alloted_field_dept_cd'] = $data[$preference . '_dept_cd'];
+            $params['alloted_field_dept_desc'] = $data[$preference . '_dept_desc'];
+            $params['alloted_dsg_srno'] = $data[$preference . '_post_id'];
+            $params['alloted_dsg_desc'] = $data[$preference . '_post_desc'];
+            $params['alloted_group_code'] = $data[$preference . '_group_code'];
+
+            $params['signing_authority'] = $data['signing_authority'];
+            $params['generated_by'] = $data['generated_by'];
+            $params['generated_on'] = Carbon::now();
+            $params['is_applicant_choice_post'] = ($validated['post_option'] == "applicant-prefered");
+
+            UoGeneration::updateOrCreate([
+                'proforma_id' => $data['proforma_id']
+            ], $params);
+
             //WorkflowHandler comes after LogService
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => Auth::user()->user_id,
                 'action_name' => 'forwarded',
-                'action_remark' => $request->remarks,
+                'action_remark' => $request->remarks ?? '',
                 'process_sequence' => $proforma->process_sequence
             ]);
             WorkflowHandler::forwardApplication($proforma);
             DB::commit();
-            return response()->json(['message' => 'Proforma forwarded successfully.'], 200);
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Proforma forwarded successfully.'], 200);
+            }
+            return redirect()->back()->with('success', 'Proforma forwarded successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
+            }
+            return redirect()->back()->with('error', 'Error forwarding proforma: ' . $e->getMessage());
         }
     }
 }

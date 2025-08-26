@@ -2,7 +2,7 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
+        <a href="{{ route('home') }}" class="logo d-flex align-items-center">
             {{-- assets/niceadmin/img/logo.png --}}
             <img src="{{ asset('assets/images/kanglasha.png') }}" alt="">
             <span class="d-none d-lg-block">{{ env('APP_NAME') }}</span>

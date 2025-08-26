@@ -7,12 +7,13 @@ use App\Http\Controllers\Duties\ProformaController;
 use App\Http\Controllers\Duties\UoFileApprovalController;
 use App\Http\Controllers\Duties\UoFileSubmissionController;
 use App\Http\Controllers\Duties\UoFormFillUpController;
+use App\Http\Controllers\Duties\UoGenerationController;
 use App\Http\Controllers\Duties\UploadedDocumentController;
 use App\Http\Controllers\Duties\VerifyAndForwardController;
 use App\Http\Controllers\TaskApplicationController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.'], function () {
+Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.', 'middleware' => ['auth']], function () {
     // Optional route to view applications for a specific task
     Route::get('/all/performa', [TaskApplicationController::class, 'allProcess'])->name('all');
     Route::get('/{tasks_id}/performa', [TaskApplicationController::class, 'index'])->name('index');
@@ -23,7 +24,7 @@ Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.'], function () {
 /*
 * Duties ROUTES
 */
-Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
+Route::group(['prefix' => 'duties', 'as' => 'duties.', 'middleware' => ['auth']], function () {
     // proforma
     Route::group(['prefix' => 'proforma'], function () {
         Route::controller(ProformaController::class)->group(function () {
@@ -82,15 +83,7 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::post('/{id}/verify', 'verify')->name('verify.document.verify');
         });
     });
-    Route::group(['prefix' => 'uo/formfillup'], function () {
-        Route::controller(UoFormFillUpController::class)->group(function () {
-            //compulsory
-            Route::get('/{tasks_id}/index', 'index')->name('uo.formfillup.index');
-            Route::post('/{tasks_id}/ajaxlist', 'ajaxlist')->name('uo.formfillup.ajaxlist');
-            Route::get('/{id}/view', 'view')->name('uo.formfillup.view');
-            Route::post('/{id}/forward', 'forward')->name('uo.formfillup.forward');
-        });
-    });
+
     Route::group(['prefix' => 'uo/file/submission'], function () {
         Route::controller(UoFileSubmissionController::class)->group(function () {
             //compulsory
@@ -112,6 +105,27 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.'], function () {
             Route::post('/{id}/forward', 'forward')->name('uo.file-approval.forward');;
 
             Route::post('file/{id}/submit', 'submit')->name('uo.file-approval.submit');
+        });
+    });
+
+    Route::group(['prefix' => 'uo/formfillup'], function () {
+        Route::controller(UoFormFillUpController::class)->group(function () {
+            //compulsory
+            Route::get('/{tasks_id}/index', 'index')->name('uo.formfillup.index');
+            Route::post('/{tasks_id}/ajaxlist', 'ajaxlist')->name('uo.formfillup.ajaxlist');
+            Route::get('/{id}/view', 'view')->name('uo.formfillup.view');
+            Route::post('/{id}/forward', 'forward')->name('uo.formfillup.forward'); //duties.uo.formfillup.forward
+        });
+    });
+
+    Route::group(['prefix' => 'uo/formgeneration'], function () {
+        Route::controller(UoGenerationController::class)->group(function () {
+            //compulsory
+            Route::get('/{tasks_id}/index', 'index')->name('uo.formgeneration.index');
+            Route::post('/{tasks_id}/ajaxlist', 'ajaxlist')->name('uo.formgeneration.ajaxlist');
+            Route::get('/{id}/view', 'view')->name('uo.formgeneration.view');
+            Route::post('/{id}/submit', 'submit')->name('uo.formgeneration.submit'); //duties.uo.formfillup.forward
+            Route::get('/{id}/loadProformaDocument', 'loadProformaDocument')->name('uo.formgeneration.document'); //duties.uo.formgeneration.document
         });
     });
 });

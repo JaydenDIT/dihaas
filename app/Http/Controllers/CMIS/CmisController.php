@@ -36,10 +36,12 @@ class CmisController extends Controller
                 $result->status()
             );
         } catch (Exception $e) {
-            return response()->json([
+            $response = is_null(CmisApiService::$error_response) ? [
                 'message' => 'Internal Server Error',
                 'error'   => $e->getMessage()
-            ], 500);
+            ] : CmisApiService::$error_response;
+
+            return response()->json($response, CmisApiService::$status_code);
         }
     }
     public function getPostByDeptCd(String $id)
@@ -55,10 +57,11 @@ class CmisController extends Controller
                 $result->status()
             );
         } catch (Exception $e) {
-            return response()->json([
+            /* return response()->json([
                 'message' => 'Internal Server Error',
                 'error'   => $e->getMessage()
-            ], 500);
+            ], 500); */
+            return $this->sendResponse($e);
         }
     }
     public function getDepartmentByAdmCd(int $id)
@@ -74,10 +77,17 @@ class CmisController extends Controller
                 $result->status()
             );
         } catch (Exception $e) {
-            return response()->json([
-                'message' => 'Internal Server Error',
-                'error'   => $e->getMessage()
-            ], 500);
+            return $this->sendResponse($e);
         }
+    }
+
+    private function sendResponse(Exception $e)
+    {
+        $response = is_null(CmisApiService::$error_response) ? [
+            'message' => 'Internal Server Error',
+            'error'   => $e->getMessage()
+        ] : CmisApiService::$error_response;
+
+        return response()->json($response, CmisApiService::$status_code);
     }
 }

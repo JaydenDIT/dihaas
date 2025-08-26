@@ -11,6 +11,8 @@ class CmisApiService
 {
     private static string $cmis_token = '';
     private static string $cmis_api   = '';
+    public static int $status_code = 0;
+    public static $error_response = null;
 
     private static function init(): void
     {
@@ -35,7 +37,9 @@ class CmisApiService
                 ->post(self::$cmis_api . $endpoint, $payload);
 
             if ($result->failed()) {
-                throw new Exception("CMIS API request failed: " . $result->status());
+                self::$status_code =  $result->status();
+                self::$error_response = json_decode($result->getBody(), true);
+                throw new Exception("CMIS API request failed.");
             }
 
             return $result->json();
@@ -99,9 +103,10 @@ class CmisApiService
                     ? json_decode(Storage::disk('private')->get('departmentDetail.json'), true)
                     : [];
             }
-            return Storage::disk('private')->exists('departMentList.json')
+            $departMentList = Storage::disk('private')->exists('departMentList.json')
                 ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
                 : [];
+            return $departMentList['field_dept'] ?? [];
         } else {
             $payload = [];
             if ($field_dept_cd !== 0) {

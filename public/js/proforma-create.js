@@ -235,9 +235,13 @@ async function loadPost(dept_code, targetSelect = $(".request_post")) {
             .empty()
             .append('<option value="" disabled selected>Choose...</option>');
         res.forEach(function (item) {
-            targetSelect.append(
-                `<option value="${item.dsg_serial_no}" data-group="${item.group_code}" >${item.dsg_desc}</option>`
-            );
+            console.log(item);
+            if(item.group_cd == "C" || item.group_cd=="D")
+            {
+                targetSelect.append(
+                    `<option value="${item.dsg_srno}" data-group="${item.group_cd}" >${item.dsg_desc}</option>`
+                );
+            }
         });
     } catch (error) {
         console.error("Error loading sub-entities:", error);

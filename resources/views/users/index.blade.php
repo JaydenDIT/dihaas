@@ -7,7 +7,7 @@
                 @if ($users->isEmpty())
                     <div class="alert alert-info">No official users found.</div>
                 @else
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped small">
                         <thead>
                             <tr>
                                 <th>#</th>
