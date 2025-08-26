@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('alloted_dsg_srno', 20)->comment('Post id selected or requested by the applicant');
             $table->string('alloted_dsg_desc', 255);
             $table->string('alloted_group_code', 20);
+            $table->string('signed_proforma_doc', 255)->nullable()->comment('Storage path for signed proforma document after uo generation');
             $table->unsignedBigInteger('signing_authority')->nullable();
 
             $table->timestamps(); // created_at, updated_at
