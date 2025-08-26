@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UoGenerationController extends Controller
 {
@@ -150,8 +151,24 @@ class UoGenerationController extends Controller
     {
         $proforma = Proforma::with('UoGeneration', 'uoFileSubmission')->findOrFail($id);
 
-        return response()->json([
+        /* return response()->json([
             'proforma' => $proforma
-        ]);
+        ]); */
+        $pdf = Pdf::loadView('duties.pdfs.proforma-doc', compact('proforma'));
+
+        //to display in browser:
+        return $pdf->stream('proforma-doc.pdf');
+
+        // To directly download:
+        //return $pdf->download('proforma_doc.pdf');
+
+        /*
+        $pdfContent = $pdf->output();
+        // Return base64 encoded version
+        $base64 = base64_encode($pdfContent);
+
+        return response()->json([
+            'base64' => $base64
+        ]);*/
     }
 }
