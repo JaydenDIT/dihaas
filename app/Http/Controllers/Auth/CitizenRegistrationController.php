@@ -7,6 +7,7 @@ use App\Http\Requests\CitizenPreRegisterRequest;
 use App\Library\Senitizer;
 use App\Library\SmsSender;
 use App\Models\Relationship;
+use App\Models\Role;
 use App\Models\State;
 use App\Models\User;
 use App\Models\UserDetail;
@@ -63,12 +64,15 @@ class CitizenRegistrationController extends Controller
             }
 
             DB::beginTransaction();
+            //Find citizen role
+            $role = Role::where('role_name', 'Citizen')->first();
+            $citizen_role_id = empty($role) ? 77 : $role->role_id;
             $user = User::create([
                 'fullname' => $new_user_temp['name'],
                 'mobile'   => $new_user_temp['mobile'],
                 'email'    => $new_user_temp['email'],
                 'password' => Hash::make($new_user_temp['password']),
-                'role_id'  => 77,
+                'role_id'  => $citizen_role_id,
             ]);
 
             $new_user_temp['user_id'] = $user->user_id;
