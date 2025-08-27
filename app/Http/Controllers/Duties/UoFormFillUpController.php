@@ -105,7 +105,7 @@ class UoFormFillUpController extends Controller
         $departments = CmisApiService::apiFieldDepartments();
 
         //Retrieving Nodal Officers for Department of personels for signing authority
-        $dpNodals = $users = User::with('role')
+        $dpNodals = User::with('role')
             ->whereHas('role', function ($query) {
                 $query->where('role_name', '=', 'DP Nodal');
             })->get();
@@ -197,7 +197,7 @@ class UoFormFillUpController extends Controller
             $params['alloted_group_code'] = $data[$preference . '_group_code'];
 
             $params['signing_authority'] = $data['signing_authority'];
-            $params['generated_by'] = $data['generated_by'];
+            $params['generated_by'] = auth()->id();
             $params['generated_on'] = Carbon::now();
             $params['is_applicant_choice_post'] = ($validated['post_option'] == "applicant-prefered");
 

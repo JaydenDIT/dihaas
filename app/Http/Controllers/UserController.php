@@ -77,7 +77,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($user_id);
         $role_ids                       = [1, 2, 3, 4, 5, 6, 8, 9, 999];
-        $roles                      = Role::whereIn('role_id', $role_ids)->get()->toArray();
+        $roles                      = Role::whereIn('role_id', $role_ids)->orderBy('role_name')->get()->toArray();
 
         $user_department            = !is_null($user->field_dept_cd) ? CmisApiService::apiFieldDepartments($user->field_dept_cd) : [];
         $adm_dept_cd                = $user_department['adm_dept_cd'] ?? '';
