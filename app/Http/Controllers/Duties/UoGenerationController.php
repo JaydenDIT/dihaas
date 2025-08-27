@@ -104,7 +104,7 @@ class UoGenerationController extends Controller
             DB::beginTransaction();
 
             $proforma = Proforma::findOrFail($id);
-            /*
+
             //WorkflowHandler comes after LogService
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
@@ -115,18 +115,18 @@ class UoGenerationController extends Controller
             ]);
 
             WorkflowHandler::forwardApplication($proforma);
-            */
+
             DB::commit();
-            if ($request->wantsJson()) {
-                return response()->json(['message' => 'You have successfully submitted signed document.'], 200);
-            }
-            return redirect()->back()->with('success', 'You have successfully submitted signed document.');
+
+            return response()->json(['message' => 'You have successfully submitted signed document.'], 200);
+
+            //return redirect()->back()->with('success', 'You have successfully submitted signed document.');
         } catch (\Exception $e) {
             DB::rollBack();
-            if ($request->wantsJson()) {
-                return response()->json(['message' => 'Error submitting signed UO document: ' . $e->getMessage()], 422);
-            }
-            return redirect()->back()->with('error', 'Error submitting signed UO document: ' . $e->getMessage());
+            //if ($request->wantsJson()) {
+            return response()->json(['message' => 'Error submitting signed UO document: ' . $e->getMessage()], 422);
+            //}
+            //return redirect()->back()->with('error', 'Error submitting signed UO document: ' . $e->getMessage());
         }
     }
 

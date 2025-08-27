@@ -226,7 +226,12 @@
 
                         // Lazy load the response
                         let responseData = await response.json();
-                        alert(responseData.message);
+                        //alert(responseData.message);
+                        Swal.fire({
+                            title: "Done!",
+                            text: responseData.message,
+                            icon: "success"
+                        });
                         esigned_pdf_base64.value = responseData.signedPDFBase64;
 
                         document.querySelector("#proforma_document").src =
@@ -299,7 +304,6 @@
                                     }).then((done) => {
                                         window.locatin.reload();
                                     });
-
                                 },
                                 error: function(xhr) {
                                     try {
