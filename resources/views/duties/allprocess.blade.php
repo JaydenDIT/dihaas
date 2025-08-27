@@ -1,4 +1,23 @@
 @extends('layouts.app')
+@push('css')
+    <style>
+        .font-bold {
+            font-weight: bold;
+        }
+
+        .counts-section {
+            background-color: #e4f1ec;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .card-heading {
+            height: 70px;
+            overflow-y: hidden
+        }
+    </style>
+@endpush
 
 @section('content')
     <div class="container">
@@ -10,27 +29,26 @@
 
                     <div class="card mb-4 shadow-sm text-center">
                         <div class="card-body">
-                            <div style="height: 70px;overflow-y:hidden">
+                            <div class="card-heading">
                                 <h6 class="card-title mb-3">{{ $card['task'] }}</h6>
                             </div>
 
-                            <div class="row"
-                                style="background-color: #e2f2fc;padding-top:15px;padding-bottom:15px;border-radius:8px;">
+                            <div class="row counts-section">
                                 <div class="col">
                                     <div class="stat-box text-warning">
-                                        <h5>{{ $card['pending'] }}</h5>
+                                        <h5 class="font-bold">{{ $card['pending'] }}</h5>
                                         <small>Pending</small>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="stat-box text-success">
-                                        <h5>{{ $card['completed'] }}</h5>
+                                        <h5 class="font-bold">{{ $card['completed'] }}</h5>
                                         <small>Completed</small>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="stat-box text-info">
-                                        <h5>{{ $card['total'] }}</h5>
+                                        <h5 class="font-bold">{{ $card['total'] }}</h5>
                                         <small>Total</small>
                                     </div>
                                 </div>
