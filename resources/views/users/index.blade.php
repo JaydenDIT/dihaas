@@ -15,6 +15,9 @@
                                 <th>Mobile</th>
                                 <th>Email</th>
                                 <th>Role</th>
+                                @if ($title == 'Official Users')
+                                    <th></th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -25,6 +28,12 @@
                                     <td>{{ $user->mobile }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->role->role_name ?? '-' }}</td>
+                                    @if ($title == 'Official Users')
+                                        <td>
+                                            <a href="{{ route('user.editOfficialUser', $user->user_id) }}"><i
+                                                    class="fas fa-edit"></i></a>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

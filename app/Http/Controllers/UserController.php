@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\CmisApiService;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateOfficialUserRequest;
+use App\Http\Requests\UpdateOfficialUserRequest;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -70,5 +71,54 @@ class UserController extends Controller
             })->get();
         $title = "Citizen Users";
         return view('users.index', compact('title', 'users'));
+    }
+
+    public function editOfficialUser($user_id)
+    {
+        $user = User::findOrFail($user_id);
+        $role_ids                       = [1, 2, 3, 4, 5, 6, 8, 9, 999];
+        $roles                      = Role::whereIn('role_id', $role_ids)->get()->toArray();
+
+        $user_department            = !is_null($user->field_dept_cd) ? CmisApiService::apiFieldDepartments($user->field_dept_cd) : [];
+        $adm_dept_cd                = $user_department['adm_dept_cd'] ?? '';
+
+        $ministry                   = CmisApiService::apiAdminDepartments();
+        $departments                = ($adm_dept_cd == "") ? CmisApiService::apiFieldDepartments() //List all the available departments if the admin department is not available
+            : CmisApiService::apiAdminDepartments($adm_dept_cd)['field_dept']; //Other wise list the departments within the administrative department(ministry)
+        $posts                      = !is_null($user->field_dept_cd) ? CmisApiService::apiAllPostUnderDepartment($user->field_dept_cd) : [];
+
+        $departmentSigningAuthority = [];
+
+        //sorting ministry in alphabetical order
+        usort($ministry, function ($a, $b) {
+            return strcasecmp($a['adm_dept_desc'], $b['adm_dept_desc']);
+        });
+
+        //sorting departments in alphabetical order
+        usort($departments, function ($a, $b) {
+            return strcasecmp($a['field_dept_desc'], $b['field_dept_desc']);
+        });
+
+        $data = [
+            'roles'                      => $roles,
+            'departments'                => $departments,
+            'ministry'                   => $ministry,
+            'departmentSigningAuthority' => $departmentSigningAuthority,
+            'user' => $user,
+            'posts' => $posts,
+            'adm_dept_cd' => $adm_dept_cd,
+        ];
+        return view('users.edit', $data);
+    }
+
+    public function updateOfficialUser(UpdateOfficialUserRequest $request)
+    {
+        $data = $request->validated();
+        //dd($data);
+
+        $user = User::findOrFail($data['user_id']);
+
+        $user->update($data);
+        return redirect()->back()->with('success', 'User has been updated');
     }
 }
