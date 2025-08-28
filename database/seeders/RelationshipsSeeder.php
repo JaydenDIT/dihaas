@@ -15,12 +15,12 @@ class RelationshipsSeeder extends Seeder
     {
         //
         DB::insert("insert into relationships (relationship_name) values  
+                ('Wife'),
                 ('Husband'),
-                ('Father'),
-                ('Mother'),
-                ('Grandparents'),
-                ('Unmarried Daughter'),
-                ('Others')
+                ('Son'),
+                ('Daughter'),
+                ('Unmarried Sister'),
+                ('Unmaried Brother')
                 ");
     }
 }
