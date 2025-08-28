@@ -83,7 +83,7 @@ return [
             'menu_label'    => 'Submit Application',
             'menu_name'     => 'submit_application',
             'route'         => 'duties.proforma.create',
-            'allowed_roles' => [77], //Only superadmin
+            'allowed_roles' => [77, 999], //Only Citizen
             'sub_menus'     => [],
             'displayOrder'  => 1,
             'icon'          => 'bi bi-journal-text',
@@ -93,7 +93,7 @@ return [
             'menu_name'     => 'submit_application',
             'route'         => 'duties.form.index',
             'param'         => ['tasks_id' => 1],
-            'allowed_roles' => [77], //Only superadmin
+            'allowed_roles' => [77, 999], //Only Citizen
             'sub_menus'     => [],
             'displayOrder'  => 1,
             'icon'          => 'bi bi-journal-text',
