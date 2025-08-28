@@ -37,11 +37,11 @@
 
         <div class="row">
 
-            <div class="col-md-5">
-                @include('proforma.viewParts._status')
-            </div>
+            {{-- <div class="col-md-5"> --}}
+            {{--  @include --}}{{-- ('proforma.viewParts._status') --}}
+            {{--  </div> --}}
 
-            <div class="col-md-7">
+            <div class="col-md-12 small">
                 <!-- STEP 1 -->
                 <div class="setup-content" id="step-1">
                     @include('proforma.viewParts.view1._collection')
@@ -55,7 +55,12 @@
                 <!-- STEP 3 -->
                 <div class="setup-content" id="step-3">
                     <div class="form-group">
-                        @include('proforma.viewParts.view3._uploadDocument')
+                        @php
+                            $total_step = $proforma->proforma_status == 'completed' ? 4 : 3;
+                        @endphp
+                        @include('proforma.viewParts.view3._uploadDocument', [
+                            'total_step' => $total_step,
+                        ])
                     </div>
                 </div>
 
@@ -66,6 +71,11 @@
                         <div class="form-group">
                             <iframe src="{{ route('duties.uo.formgeneration.document', $proforma->proforma_id) }}"
                                 style="position:relative;height:700px;width: 100%;" frameborder="0"></iframe>
+                        </div>
+                        <div class="hstack gap-3 my-3 p-3">
+                            <div class="ms-auto">
+                                <button class="btn btn-md btn-success prevBtn" type="button" data-step="3">Prev</button>
+                            </div>
                         </div>
                     </div>
                 @endif
