@@ -11,11 +11,9 @@
                 </legend>
                 <!-- Bank Name -->
                 <div class="col-sm-12 mb-1 p-2">
-                    <b>Submitted On : </b>{{ date("d-m-Y") }} <br>
-                    <b>Remark : </b> fsdfsf<br>
-                    <b>Dispose Order : </b> <a
-                        href="#"
-                        target="_blank">View PDF</a> <br>
+                    <b>Submitted On : </b>{{ date('d-m-Y', strtotime($proforma->created_at)) }} <br>
+                    <b>Status : </b> {{ $proforma->proforma_status }}<br>
+                    <b>Dispose Order : </b> <a href="#" target="_blank">View PDF</a> <br>
                 </div>
             </fieldset>
         </div>
