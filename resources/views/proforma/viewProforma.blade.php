@@ -65,7 +65,8 @@
                     {{-- Loading signed document from the uo_gnerations table --}}
                     <div class="setup-content" id="step-4">
                         <div class="form-group">
-                            <iframe src="{{ route('duties.uo.formgeneration.document', $proforma->proforma_id) }}"
+                            <iframe sandbox="allow-scripts allow-same-origin"
+                                src="{{ route('duties.uo.formgeneration.document', $proforma->proforma_id) }}"
                                 style="position:relative;height:700px;width: 100%;" frameborder="0"></iframe>
                         </div>
                     </div>
