@@ -45,8 +45,8 @@
             <option value="" selected disabled>Choose...</option>
             @if($action == 'edit' )
             @foreach($otherPostList as $row)
-            <option value="{{ $row['dsg_serial_no'] }}" data-group="{{$row['group_code']}}"
-                {{ $row['dsg_serial_no'] == $proforma->request_dsg_srno_3 ? 'selected' : '' }}>{{ $row['dsg_desc'] }}</option>
+            <option value="{{ $row['dsg_srno'] }}" data-group="{{$row['group_cd']}}"
+                {{ $row['dsg_srno'] == $proforma->request_dsg_srno_3 ? 'selected' : '' }}>{{ $row['dsg_desc'] }}</option>
             @endforeach
             @endif
         </select>

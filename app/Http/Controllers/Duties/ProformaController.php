@@ -154,6 +154,8 @@ class ProformaController extends Controller
             $current_step = 1;
         }
 
+        // dd($parentPostList);
+
         $tasks = getPrevNextTasks($proforma->proforma_id); //from helper.php
         return view('proforma.createProforma', compact(
             'action',
