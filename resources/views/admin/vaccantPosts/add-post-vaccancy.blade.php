@@ -37,18 +37,7 @@
                             <th>Direct Recruitment</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($vaccancies as $key => $vaccancy)
-                            <tr>
-                                <td>{{ $key + 1 }}.</td>
-                                <td>{{ $vaccancy['adm_dept_name'] }}</td>
-                                <td>{{ $vaccancy['field_dept_name'] }}</td>
-                                <td>{{ $vaccancy['dsg_name'] }}</td>
-                                <td>{{ $vaccancy['dia_vacc_posts'] }}</td>
-                                <td>{{ $vaccancy['dr_vacc_posts'] }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -118,6 +107,9 @@
         const get_vaccancy_url = "{{ route('admin.postvaccancies.getVaccancyData') }}";
 
         $(function() {
+
+            getAllVaccancies();
+
             $('select').select2({
                 dropdownParent: $('#offcanvasRight')
             });
@@ -245,7 +237,7 @@
             function getAllVaccancies() {
                 let vaccancyTable = document.querySelector("#vaccancy_table");
                 vaccancyTable.querySelector("tbody").innerHTML =
-                    `<tr><td colspan="6" class="text-center">Refreshing data ...</td></tr>`;
+                    `<tr><td colspan="6" class="text-center text-muted">Refreshing data ...</td></tr>`;
                 fetch(get_vaccancy_url)
                     .then(response => response.json())
                     .then((data) => {
@@ -262,7 +254,11 @@
                                         <td>${vaccancy.dia_vacc_posts}</td>
                                         <td>${vaccancy.dr_vacc_posts}</td>
                                     </tr>`;
-                            })
+                            });
+                            if (vaccancies.length == 0) {
+                                layout =
+                                    `<tr><td colspan="6" class="text-center text-muted">No vaccancies available</td></tr>`;
+                            }
                             vaccancyTable.querySelector("tbody").innerHTML = layout;
                         }
                     })

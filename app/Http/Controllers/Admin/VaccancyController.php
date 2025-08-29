@@ -15,18 +15,11 @@ class VaccancyController extends Controller
     public function addPostVaccancy(Request $request)
     {
         $adminDepts = CmisApiService::apiAdminDepartments();
-        $departments = CmisApiService::apiFieldDepartments();
-
         usort($adminDepts, function ($a, $b) {
             return strcasecmp($a['adm_dept_desc'], $b['adm_dept_desc']);
         });
-
-
-
         $vaccancies = PostVaccancy::getVaccancy();
 
-
-        //dd($vaccancies, $mapAdminDept, $mapDept);
         return view('admin.vaccantPosts.add-post-vaccancy', compact('adminDepts', 'vaccancies'));
     }
 
