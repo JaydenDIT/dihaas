@@ -59,8 +59,6 @@ class VaccancyController extends Controller
     public function storePostVaccancies(AddPostVaccancyRequest $request)
     {
         $data = $request->validated();
-        //return response()->json(compact('data'), 500);
-
         $data['created_by'] = Auth::id();
         try {
             PostVaccancy::create($data);
