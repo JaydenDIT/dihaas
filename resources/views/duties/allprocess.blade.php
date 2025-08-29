@@ -27,7 +27,7 @@
             @forelse($cards as $card)
                 <div class="col-sm-4">
 
-                    <div class="card mb-4 shadow-sm text-center">
+                    <div class="card mb-4 shadow-lg text-center">
                         <div class="card-body">
                             <div class="card-heading">
                                 <h6 class="card-title mb-3">{{ $card['task'] }}</h6>
