@@ -63,6 +63,7 @@ function isEmptyObject($object): bool
 
 /*--------------------- FILE RELATED FUNCTIONS --------------------------*/
 //file reading and writing functions
+//$flag = true means user will be enforced to download, false means just for displaying in the browser itself
 function downloadFile($file_path, $flag = false)
 {
     if (file_exists($file_path)) {
@@ -86,8 +87,6 @@ function downloadFile($file_path, $flag = false)
         die("File not found.");
     }
 }
-
-
 
 function getDiff($date1, $date2)
 {

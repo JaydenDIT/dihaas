@@ -186,7 +186,7 @@
                                     <input type="checkbox" class="form-check-input" id="remember_me" name="remember">
                                     <label class="form-check-label" for="remember_me">{{ __('Remember me') }}</label>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
                                     @if (Route::has('password.request'))
                                         <a class="small text-decoration-underline"
                                             href="{{ route('password.request') }}">
@@ -203,7 +203,7 @@
                                     <div class="text-muted mb-2">
                                         Don't have account?
                                     </div>
-                                    <div>
+                                    <div class="mt-3">
                                         <a class="btn btn-link btn-sm text-primary"
                                             href="{{ route('register.citizen') }}">Click here to
                                             register as citizen</a>

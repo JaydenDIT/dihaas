@@ -48,6 +48,10 @@ class CmisController extends Controller
     {
         try {
             $result = CmisApiService::apiAllPostUnderDepartment($id);
+            usort($result, function ($a, $b) {
+                return strcasecmp($a['dsg_desc'], $b['dsg_desc']);
+            });
+
             return response()->json( //test
                 $result,
                 200
@@ -68,6 +72,11 @@ class CmisController extends Controller
     {
         try {
             $result = CmisApiService::apiAdminDepartments($id);
+
+            usort($result['field_dept'], function ($a, $b) {
+                return strcasecmp($a['field_dept_desc'], $b['field_dept_desc']);
+            });
+
             return response()->json( //test
                 $result,
                 200

@@ -4,12 +4,13 @@ use App\Http\Controllers\Admin\ProcessController;
 use App\Http\Controllers\Admin\ProcessTaskMappingController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TaskController;
+use App\Http\Controllers\Admin\VaccancyController;
 use Illuminate\Support\Facades\Route;
 /*
 * ADMIN ROUTES
 */
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
 
     // Processes
     Route::group(['prefix' => 'process', 'as' => 'process.'], function () {
@@ -41,10 +42,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::delete('/{id}', [TaskController::class, 'destroy'])->name('destroy');
         Route::post('/ajaxlist', [TaskController::class, 'ajaxlist'])->name('ajaxlist');
     });
+
     //Tasks routes
     Route::group(['prefix' => 'process-task-mapping', 'as' => 'processtaskmapping.'], function () {
         Route::get('/', [ProcessTaskMappingController::class, 'index'])->name('index');
         Route::post('/{id}/data', [ProcessTaskMappingController::class, 'fetchData'])->name('data');
         Route::post('/save', [ProcessTaskMappingController::class, 'saveMapping'])->name('save');
+    });
+
+    //Post Vaccancies
+    Route::group(['prefix' => 'post-vaccancy', 'as' => 'postvaccancies.'], function () {
+        Route::get('/get-vaccancies', [VaccancyController::class, 'getVaccancyData'])->name('getVaccancyData'); //admin.postvaccancies.getVaccancyData
+        Route::get('/add', [VaccancyController::class, 'addPostVaccancy'])->name('addPostVaccancy'); //admin.postvaccancies.addPostVaccancy
+        Route::get('/calculate/{totalPost}', [VaccancyController::class, 'calculateVacancyDistribution'])->name('calculateVaccancy'); //admin.postvaccancies.calculateVaccancy
+        Route::post('/store', [VaccancyController::class, 'storePostVaccancies'])->name('store'); //admin.postvaccancies.store
     });
 });

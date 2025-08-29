@@ -133,4 +133,11 @@ $('#servie_end_reason').change(function () {
 
 });
 
-}
+//Debouncing function call definition
+const debounceCall = (fn, delay = 1000) => {
+    let timerId = null;
+    return (...args) => {
+        clearTimeout(timerId);
+        timerId = setTimeout(() => fn(...args), delay);
+    };
+};

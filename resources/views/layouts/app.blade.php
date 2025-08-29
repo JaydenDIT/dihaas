@@ -89,6 +89,7 @@
     <!-- Template Main JS File -->
     <script src="{{ asset('assets/niceadmin/js/main.js') }}"></script>
     <script src="{{ asset('js/layout.js') }}"></script>
+    <script src="{{ asset('js/common.js') }}"></script>
     @stack('js')
 
 </body>
