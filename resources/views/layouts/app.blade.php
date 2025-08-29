@@ -12,7 +12,7 @@
     <meta id="csrf_token" name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicons -->
-    <link href="{{ asset('assets/niceadmin/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('assets/images/kanglasha.png') }}" rel="icon">
     <link href="{{ asset('assets/niceadmin/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Google Fonts -->

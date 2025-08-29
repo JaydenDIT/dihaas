@@ -10,6 +10,9 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Favicons -->
+    <link href="{{ asset('assets/images/kanglasha.png') }}" rel="icon">
+
     <!-- Fonts -->
     <link href="{{ asset('assets/googlefont/font.css') }}" rel="stylesheet">
 
@@ -47,9 +50,9 @@
 
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md overflow-hidden sm:rounded-lg">
             @isset($slot)
-            {{ $slot }}
+                {{ $slot }}
             @else
-            @yield('content')
+                @yield('content')
             @endisset
 
         </div>
