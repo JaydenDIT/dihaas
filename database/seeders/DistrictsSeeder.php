@@ -13,43 +13,48 @@ class DistrictsSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        DB::insert("insert into districts (state_id, district_name) values 
-        (1, 'Bishnupur'),
-        (1,  'Chandel'),
-        (1,  'Churachandpur'),
-        (1,  'Imphal East'),
-        (1,  'Imphal West'),
-        (1,  'Jiribam'),
-        (1,  'Kakching'),
-        (1,  'Kamjong'),
-        (1,  'Kangpokpi'),
-        (1,  'Noney'),
-        (1,  'Pherzawl'),
-        (1,  'Senapati'),
-        (1,  'Tamenglong'),
-        (1,  'Tengnoupal'),
-        (1,  'Thoubal'),
-        (1,  'Ukhrul'),
-        (2,  'Aizawl'),
-        (2,  'Champhai'),
-        (2,  'Hnahthial'),
-        (2,  'Kolasib'),
-        (2,  'Lawngtlai'),
-        (2,  'Lunglei'),
-        (2,  'Mamit'),
-        (2,  'Saiha'),
-        (2,  'Serchhip'),
-        (3,  'Dimapur'),
-        (3,  'Kiphire'),
-        (3,  'Longleng'),
-        (3,  'Mokokchung'),
-        (3,  'Mon'),
-        (3,  'Peren'),
-        (3,  'Phek'),
-        (3,  'Tuensang'),
-        (3,  'Wokha'),
-        (3,  'Zunheboto')
-    ");
+        $districts = [
+            ['state_id' => 1, 'district_name' => 'Bishnupur'],
+            ['state_id' => 1, 'district_name' => 'Chandel'],
+            ['state_id' => 1, 'district_name' => 'Churachandpur'],
+            ['state_id' => 1, 'district_name' => 'Imphal East'],
+            ['state_id' => 1, 'district_name' => 'Imphal West'],
+            ['state_id' => 1, 'district_name' => 'Jiribam'],
+            ['state_id' => 1, 'district_name' => 'Kakching'],
+            ['state_id' => 1, 'district_name' => 'Kamjong'],
+            ['state_id' => 1, 'district_name' => 'Kangpokpi'],
+            ['state_id' => 1, 'district_name' => 'Noney'],
+            ['state_id' => 1, 'district_name' => 'Pherzawl'],
+            ['state_id' => 1, 'district_name' => 'Senapati'],
+            ['state_id' => 1, 'district_name' => 'Tamenglong'],
+            ['state_id' => 1, 'district_name' => 'Tengnoupal'],
+            ['state_id' => 1, 'district_name' => 'Thoubal'],
+            ['state_id' => 1, 'district_name' => 'Ukhrul'],
+            ['state_id' => 2, 'district_name' => 'Aizawl'],
+            ['state_id' => 2, 'district_name' => 'Champhai'],
+            ['state_id' => 2, 'district_name' => 'Hnahthial'],
+            ['state_id' => 2, 'district_name' => 'Kolasib'],
+            ['state_id' => 2, 'district_name' => 'Lawngtlai'],
+            ['state_id' => 2, 'district_name' => 'Lunglei'],
+            ['state_id' => 2, 'district_name' => 'Mamit'],
+            ['state_id' => 2, 'district_name' => 'Saiha'],
+            ['state_id' => 2, 'district_name' => 'Serchhip'],
+            ['state_id' => 3, 'district_name' => 'Dimapur'],
+            ['state_id' => 3, 'district_name' => 'Kiphire'],
+            ['state_id' => 3, 'district_name' => 'Longleng'],
+            ['state_id' => 3, 'district_name' => 'Mokokchung'],
+            ['state_id' => 3, 'district_name' => 'Mon'],
+            ['state_id' => 3, 'district_name' => 'Peren'],
+            ['state_id' => 3, 'district_name' => 'Phek'],
+            ['state_id' => 3, 'district_name' => 'Tuensang'],
+            ['state_id' => 3, 'district_name' => 'Wokha'],
+            ['state_id' => 3, 'district_name' => 'Zunheboto'],
+        ];
+
+        DB::table('districts')->upsert(
+            $districts,
+            ['district_name'], // unique column for check
+            ['state_id']       // update state_id if district already exists
+        );
     }
 }
