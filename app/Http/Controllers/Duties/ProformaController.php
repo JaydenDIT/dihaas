@@ -183,7 +183,7 @@ class ProformaController extends Controller
             $proforma = Proforma::where('proforma_id', $id)->where('created_by', Auth::user()->user_id)->first();
         }
         */
-        $this->authorize('canView',  [$proforma, 'client_form_submission']);
+        //$this->authorize('canView',  [$proforma, 'client_form_submission']);
         return view('proforma.viewProforma', compact(
             'action',
             'proforma',
