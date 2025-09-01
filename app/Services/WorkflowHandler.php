@@ -94,45 +94,61 @@ class WorkflowHandler
     /* -------------------------------
      * SPECIFIC STATUS HANDLERS
      * ----------------------------- */
-    public static function proformaTaskCurrentData($task)
+    public static function proformaTaskCurrentData($task, $create_by = null)
     {
-        return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) {
+        return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) use ($create_by) {
+
+            if (!is_null($create_by)) {
+                $query->where('create_by', $create_by);
+            }
             return $query
                 ->where('process_sequence', '=', $mapping->sequence)
                 ->whereIn('proforma_status', ['forwarded', 'reverted']);
         });
     }
 
-    public static function proformaTaskForwardedData($task)
+    public static function proformaTaskForwardedData($task, $create_by = null)
     {
-        return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) {
+        return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) use ($create_by) {
+            if (!is_null($create_by)) {
+                $query->where('create_by', $create_by);
+            }
             return $query
                 ->where('process_sequence', '>', $mapping->sequence)
                 ->whereIn('proforma_status', ['forwarded', 'reverted']);
         });
     }
 
-    public static function proformaTaskCompletedData($task)
+    public static function proformaTaskCompletedData($task, $create_by = null)
     {
-        return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) {
+        return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) use ($create_by) {
+            if (!is_null($create_by)) {
+                $query->where('create_by', $create_by);
+            }
             return $query
                 ->where('process_sequence', '>', $mapping->sequence)
                 ->where('proforma_status', 'completed');
         });
     }
 
-    public static function proformaTaskRejectedData($task)
+    public static function proformaTaskRejectedData($task, $create_by = null)
     {
-        return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) {
+        return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) use ($create_by) {
+            if (!is_null($create_by)) {
+                $query->where('create_by', $create_by);
+            }
             return $query
                 ->where('process_sequence', '>=', $mapping->sequence)
                 ->where('proforma_status', 'rejected');
         });
     }
 
-    public static function proformaTaskNotReachData($task)
+    public static function proformaTaskNotReachData($task, $create_by = null)
     {
-        return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) {
+        return self::getApplicationsByMapping($task->tasks_id, function ($query, $mapping) use ($create_by) {
+            if (!is_null($create_by)) {
+                $query->where('create_by', $create_by);
+            }
             return $query->where('process_sequence', '<', $mapping->sequence);
         });
     }
