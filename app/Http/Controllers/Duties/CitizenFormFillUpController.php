@@ -73,7 +73,7 @@ class CitizenFormFillUpController extends Controller
                 $resp = "<div class='d-flex gap-2'>";
 
                 if ($application_status === 'pending') {
-                    $resp .= "<a href='" . route('duties.proforma.edit', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>edit</a>";
+                    $resp .= "<a href='" . route('duties.proforma.edit', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>Edit</a>";
                 } else {
                     $resp .= "<a href='" . route('duties.proforma.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>View</a>";
                 }

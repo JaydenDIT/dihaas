@@ -80,7 +80,7 @@ class WorkflowHandler
 
         foreach ($mappings as $mapping) {
             $query = Proforma::where('process_id', $mapping->process_id)
-                ->orderByRaw("expire_on_duty = 'no', deceased_doe, created_at, applicant_dob");
+                ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob");
 
             // Apply filter logic from the specific case
             $query = $filterCallback($query, $mapping);
