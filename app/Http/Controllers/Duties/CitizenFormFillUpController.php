@@ -23,7 +23,9 @@ class CitizenFormFillUpController extends Controller
 
         $task = Task::findOrFail($tasks_id);
         $departments = CmisApiService::apiFieldDepartments();
-        $view = $request->input('view', '');
+        //By default the pending data (Applications partially sibmitted which have been treated as draft) if exists should be displayed first.
+        //Pending means application in draft
+        $view = $request->input('view', 'pending');
         return view('duties.listFormFillUp', compact('departments', 'task', 'view'));
     }
 
@@ -37,7 +39,8 @@ class CitizenFormFillUpController extends Controller
 
         switch ($application_status) {
             //proforma_status tells the current state of the application
-            case 'pending': //currently pending on me
+            case 'pending': //currently pending on me (which means draft)
+            case 'draft':
                 $data = WorkflowHandler::proformaTaskCurrentData($task);
                 break;
             case 'forwarded': //forwarded from me but entire process not completed
@@ -53,14 +56,6 @@ class CitizenFormFillUpController extends Controller
                 return DataTables::of([])->make(true); // No data for other statuses
                 break;
         }
-        /*
-        //if want filter using role_group like what citizen should do
-        if (Auth::user()->role_group === 'citizen') {
-            $data = $data->where('created_by', Auth::user()->user_id);
-        }
-        */
-
-
 
         return DataTables::of($data)
             ->addIndexColumn()

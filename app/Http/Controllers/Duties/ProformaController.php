@@ -140,14 +140,6 @@ class ProformaController extends Controller
         //for family members
         $familyMembers = FamilyDetail::where('proforma_id', $proforma->proforma_id)->get();
 
-        //test for real data uncomment below and comment this line
-        /*
-        if ($result->failed()) {
-            return response()->json(['message' => 'Failed to fetch departments'], $result->status());
-        }
-        $adminDepartments = $result->json();
-        */
-
         if ($proforma->mini_sequence) { //if not null
             $current_step = $proforma->mini_sequence == "step1-completed" ? 2 : ($proforma->mini_sequence == "step2-completed" ? 3 : 4);
         } else {
