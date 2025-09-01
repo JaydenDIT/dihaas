@@ -8,15 +8,16 @@
             <input type="hidden" name="family_detail_id" id="family_detail_id">
             <div class="col-md-4">
                 <label class="form-label fw-bold">Full Name</label>
-                <input type="text" name="fullname" id="family_detail_fullname" class="form-control" placeholder="Enter full name">
+                <input type="text" name="fullname" id="family_detail_fullname" class="form-control"
+                    placeholder="Enter full name">
             </div>
 
             <div class="col-md-4">
                 <label class="form-label fw-bold">Relationship</label>
                 <select name="relationship_id" id="family_detail_relationship_id" class="form-select" required>
                     <option value="" selected disabled>Choose...</option>
-                    @foreach($relationships as $row)
-                    <option value="{{$row->relationship_id}}">{{$row->relationship_name}}</option>
+                    @foreach ($relationships as $row)
+                        <option value="{{ $row->relationship_id }}">{{ $row->relationship_name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -36,11 +37,13 @@
                         <label for="family_detail_gender_male">Male</label>
                     </div>
                     <div>
-                        <input type="radio" name="family_detail_gender" id="family_detail_gender_female" value="female">
+                        <input type="radio" name="family_detail_gender" id="family_detail_gender_female"
+                            value="female">
                         <label for="family_detail_gender_female">Female</label>
                     </div>
                     <div>
-                        <input type="radio" name="family_detail_gender" id="family_detail_gender_transgender" value="transgender">
+                        <input type="radio" name="family_detail_gender" id="family_detail_gender_transgender"
+                            value="transgender">
                         <label for="family_detail_gender_transgender">Transgender</label>
                     </div>
                 </div>
@@ -66,17 +69,22 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($familyMembers as $member)
-                <tr data-id="{{ $member->family_detail_id }}">
-                    <td>{{ $member->fullname }}</td>
-                    <td>{{ $member->relationship->relationship_name }}</td>
-                    <td>{{ $member->gender }}</td>
-                    <td>{{ $member->dob }}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary editMember" data-row='{{ urlencode(json_encode($member)) }}'>Edit</button>
-                        <button class="btn btn-sm btn-danger deleteMember" data-row='{{ urlencode(json_encode($member)) }}'>Delete</button>
-                    </td>
-                </tr>
+                @foreach ($familyMembers as $member)
+                    <tr data-id="{{ $member->family_detail_id }}">
+                        <td>{{ $member->fullname }}</td>
+                        <td>{{ $member->relationship->relationship_name }}</td>
+                        <td>{{ $member->gender }}</td>
+                        <td>{{ $member->dob }}</td>
+                        <td>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-sm btn-primary editMember" title="Edit"
+                                    data-row='{{ urlencode(json_encode($member)) }}'><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger deleteMember" title="Delete"
+                                    data-row='{{ urlencode(json_encode($member)) }}'><i
+                                        class="fa fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
@@ -97,8 +105,8 @@
     <div class="hstack gap-3 my-3 p-3">
         <div class="ms-auto">
             <button class="btn btn-md btn-success" id="saveFamilyDetail" type="button">Save</button>
-            @if($current_step > 2)
-            <button class="btn btn-md btn-success nextBtn" type="button" data-step="2">Next</button>
+            @if ($current_step > 2)
+                <button class="btn btn-md btn-success nextBtn" type="button" data-step="2">Next</button>
             @endif
         </div>
     </div>

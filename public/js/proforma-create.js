@@ -362,8 +362,10 @@ function renderFamilyTableRow(encodeData, isNew = true) {
             <td>${member.gender}</td>
             <td>${member.dob}</td>
             <td>
-                <button class="btn btn-sm btn-primary editMember" data-row='${encodeData}'>Edit</button>
-                <button class="btn btn-sm btn-danger deleteMember" data-row='${encodeData}'>Delete</button>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-sm btn-primary editMember" title="Edit" data-row='${encodeData}'><i class="fa fa-edit"></i></button>
+                    <button class="btn btn-sm btn-danger deleteMember" title="Delete"  data-row='${encodeData}'><i class="fa fa-trash"></i></button>
+                </div>
             </td>
         </tr>
     `;
