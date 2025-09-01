@@ -148,13 +148,7 @@ class UoFormFillUpController extends Controller
             DB::beginTransaction();
             $validated = $request->validated();
             $proforma = Proforma::findOrFail($id);
-            //$this->authorize('canForward',  [$proforma, 'verify_and_forward']);
-            /* 
-            if ($proforma->mini_sequence != "verified") {
-                return response()->json(['message' => 'Verify first before forwarding.'], 422);
-            } */
 
-            // Example: Save into DB
             // Prepare data
             $data = [
                 'proforma_id'                       => $id,

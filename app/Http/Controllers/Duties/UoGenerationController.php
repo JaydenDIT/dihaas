@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Duties;
 
 use App\Http\Controllers\Controller;
+use App\Models\PostVaccancy;
 use App\Models\Proforma;
 use App\Models\Task;
 use App\Models\UoGeneration;
@@ -114,19 +115,24 @@ class UoGenerationController extends Controller
                 'process_sequence' => $proforma->process_sequence
             ]);
 
+            /**
+             * 1.   Get the UO Generation
+             */
+            $uoGeneration = UoGeneration::where('proforma_id', $proforma->proforma_id)->firstOrFail();
+
+            /**
+             * Here we will reduce the no of posts in Die-in-harness from post_vaccancies table             * 
+             * */
+            PostVaccancy::deductDiaPost($uoGeneration->alloted_field_dept_cd, $uoGeneration->alloted_dsg_srno);
+
             WorkflowHandler::forwardApplication($proforma);
 
             DB::commit();
 
             return response()->json(['message' => 'You have successfully submitted signed document.'], 200);
-
-            //return redirect()->back()->with('success', 'You have successfully submitted signed document.');
         } catch (\Exception $e) {
             DB::rollBack();
-            //if ($request->wantsJson()) {
             return response()->json(['message' => 'Error submitting signed UO document: ' . $e->getMessage()], 422);
-            //}
-            //return redirect()->back()->with('error', 'Error submitting signed UO document: ' . $e->getMessage());
         }
     }
 
@@ -141,7 +147,6 @@ class UoGenerationController extends Controller
             //to display in browser:
             return $pdf->stream('proforma-doc.pdf');
         }
-
 
         // Stream the file instead of forcing download
         $filePath = storage_path('app/' . $proforma->UoGeneration->signed_proforma_doc);
