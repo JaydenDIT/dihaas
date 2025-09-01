@@ -70,7 +70,7 @@ class VerifyAndForwardController extends Controller
             })
             ->addColumn('remarks', function ($row) {
                 return $row->proformaLogs()
-                    ->whereIn('action_name', ['forwarded', 'rejected', 'reverted', 'completed'])
+                    ->whereIn('action_name', ['verified', 'forwarded', 'rejected', 'reverted', 'completed'])
                     ->latest()
                     ->value('action_remark') ?? 'N/A';
             })
