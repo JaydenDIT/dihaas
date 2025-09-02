@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\SmsController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Misc\DistrictController;
 use App\Http\Controllers\Misc\SubDivisionController;
+use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\TaskApplicationController;
 use App\Http\Controllers\UoFileController;
 use App\Http\Controllers\WelcomeController;
@@ -78,5 +79,8 @@ Route::get('/contact_us', [LandingPageController::class, 'contact_us'])->name('c
 
 // Route for getting UO file
 Route::get('/uo-file/{proforma_id}', [UoFileController::class, 'getFile'])->name('uo-file.get');
+
+Route::resource('qualifications', QualificationController::class);
+
 
 require __DIR__ . '/auth.php';

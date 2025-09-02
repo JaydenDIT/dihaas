@@ -83,7 +83,7 @@ return [
             'menu_label'    => 'Add Post Vaccancy',
             'menu_name'     => 'add_vaccant_post',
             'route'         => 'admin.postvaccancies.addPostVaccancy',
-            'allowed_roles' => [1,2,999], //Only superadmin
+            'allowed_roles' => [1, 2, 999], //Only superadmin
             'sub_menus'     => [],
             'displayOrder'  => 6,
         ],
@@ -93,6 +93,14 @@ return [
             'menu_label'    => 'Configure Vaccancy',
             'menu_name'     => 'configure_vaccant_post',
             'route'         => 'admin.postvaccancies.configure',
+            'allowed_roles' => [999], //Only superadmin
+            'sub_menus'     => [],
+            'displayOrder'  => 1,
+        ],
+        [
+            'menu_label'    => 'Qualifications',
+            'menu_name'     => 'configure_qualification',
+            'route'         => 'qualifications.index',
             'allowed_roles' => [999], //Only superadmin
             'sub_menus'     => [],
             'displayOrder'  => 1,
