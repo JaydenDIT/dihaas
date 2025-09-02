@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddPostVaccancyRequest;
 use App\Models\PostVaccancy;
+use App\Models\VaccancyPercentage;
 use App\Services\CmisApiService;
 use Exception;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class VaccancyController extends Controller
      * Calculate vacancy distribution between Die-in-Harness and Direct Recruitment.
      *
      * Business Rule:
-     * - At least 10% of the total posts will be reserved for Die-in-Harness (DIA).
+     * - At least 10% or 20% or (anything given in vaccancy_percentages table) of the total posts will be reserved for Die-in-Harness (DIA).
      * - The remaining posts will be assigned to Direct Recruitment (DR).
      * - Ceiling function is used to ensure at least 10% is allocated.
      *
@@ -36,8 +37,16 @@ class VaccancyController extends Controller
      */
     public function calculateVacancyDistribution($total_posts)
     {
+        //Get the DIA vaccancy percentage % from the vaccancy_percentages table
+        $vaccancyPercentage = VaccancyPercentage::first();
+        if (empty($vaccancyPercentage)) {
+            return response()->json([
+                'message' => 'There is no configuration set for vaccancy. First make it sure that the configuration is set properly.'
+            ], 500);
+        }
+
         // Calculate 10% of total posts and round it up to the nearest integer
-        $dia = (int) ceil($total_posts * 0.10);
+        $dia = (int) ceil($total_posts * ($vaccancyPercentage->dia_percentage / 100));
 
         // Remaining posts go to Direct Recruitment
         $dr = $total_posts - $dia;
