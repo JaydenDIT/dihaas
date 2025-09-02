@@ -36,6 +36,20 @@
     <link href="{{ asset('assets/niceadmin/css/style.css') }}" rel="stylesheet">
     <!-- common css -->
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+    <style>
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f8f9fa;
+            padding: 10px 20px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            z-index: 10;
+            margin-top: 25px;
+        }
+    </style>
     @stack('css')
 
     <!-- =======================================================
