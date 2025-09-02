@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\State;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\DB;
 
 class StatesSeeder extends Seeder
 {
@@ -14,7 +16,8 @@ class StatesSeeder extends Seeder
     public function run(): void
     {
         //
-        DB::insert("insert into states (state_id,  state_name) values 
+        /*
+       DB::insert("insert into states (state_id,  state_name) values 
                     (1, 'Manipur'),
                     (2, 'Mizoram'),
                     (3, 'Nagaland'),
@@ -27,6 +30,15 @@ class StatesSeeder extends Seeder
                     (10, 'Bihar'),
                     (11, 'Jharkhand'),
                     (12, 'Odisha')
-                ");
+                ");*/
+
+        $states = [
+            ['state_id' => 1, 'state_name' => 'Manipur'],
+        ];
+        State::upsert(
+            $states,
+            ['state_name'],
+            [] // nothing to update
+        );
     }
 }

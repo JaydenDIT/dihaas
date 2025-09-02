@@ -12,8 +12,11 @@
             $(".statusBtn").removeClass('btn-success').addClass('btn-primary');
             // $(this).addClass('btn-success');
             $(".statusBtn[data-application_status='" + application_status + "']").addClass('btn-success');
+            let user_id = document.querySelector("#user_id").value;
             let columns = [
                 "DT_RowIndex|nonorderable|nonsearchable",
+                "overall_seniority_idx",
+                "dept_seniority_idx",
                 "deceased_ein",
                 "deceased_emp_name",
                 "deceased_doe",
@@ -29,7 +32,8 @@
                 message: "No Performa Found",
                 columns: columns,
                 param: {
-                    application_status: application_status
+                    application_status: application_status,
+                    create_by: user_id,
                 },
                 action: true,
             });
@@ -45,6 +49,7 @@
 
 @section('content')
     <div class="container-fluid pt-3 px-5">
+        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
         <h3><b>Applications for Task: {{ $task->tasks_name }}</b></h3> <!-- Add this -->
         <div class="my-4">
             <button class="btn btn-sm btn-success statusBtn" data-application_status="pending" type="button">Draft</button>
@@ -61,7 +66,9 @@
         <table class="report-table table" id="application-table">
             <thead>
                 <tr>
-                    <th>Seniority<br />List<br />Order</th>
+                    <th>#</th>
+                    <th>Overall Seniority</th>
+                    <th>Departmental Seniority</th>
                     <th>EIN</th>
                     <th>Deceased Name</th>
                     <th>DOE</th>

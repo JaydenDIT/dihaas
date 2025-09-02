@@ -32,7 +32,7 @@ class VerifyAndForwardController extends Controller
         $task = Task::findOrFail($tasks_id);
 
         $application_status = $request->input('application_status');
-
+        $overallSeniorityIndex = Proforma::getOverallSeniorityList();
         switch ($application_status) {
             //proforma_status tells the current state of the application
             case 'un-verified': // currently pending on me
@@ -84,6 +84,12 @@ class VerifyAndForwardController extends Controller
                 }
                 $resp .= "</div>";
                 return $resp;
+            })
+            ->addColumn('overall_seniority_idx', function ($row) use ($overallSeniorityIndex) {
+                return $overallSeniorityIndex[$row->proforma_id] ?? 'N/A';
+            })
+            ->addColumn('dept_seniority_idx', function ($row) {
+                return Proforma::getDepartmentalSeniorityIndex($row->proforma_id);
             })
             ->rawColumns(['status', 'action'])
             ->make(true);

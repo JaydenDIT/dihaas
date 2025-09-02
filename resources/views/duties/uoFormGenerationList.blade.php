@@ -12,6 +12,8 @@
         function applicationTable(application_status = 'pending') {
             let columns = [
                 "DT_RowIndex|nonorderable|nonsearchable",
+                "overall_seniority_idx",
+                "dept_seniority_idx",
                 "deceased_ein",
                 "deceased_emp_name",
                 "deceased_doe",
@@ -63,7 +65,9 @@
         <table class="report-table table" id="application-table">
             <thead>
                 <tr>
-                    <th>Seniority<br />List<br />Order</th>
+                    <th>#</th>
+                    <th>Overall Seniority</th>
+                    <th>Departmental Seniority</th>
                     <th>EIN</th>
                     <th>Deceased Name</th>
                     <th>DOE</th>

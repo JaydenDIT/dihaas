@@ -36,21 +36,23 @@ class CitizenFormFillUpController extends Controller
         $task = Task::findOrFail($tasks_id);
 
         $application_status = $request->input('application_status');
+        $create_by = $request->input('create_by');
+        $overallSeniorityIndex = Proforma::getOverallSeniorityList();
 
         switch ($application_status) {
             //proforma_status tells the current state of the application
             case 'pending': //currently pending on me (which means draft)
             case 'draft':
-                $data = WorkflowHandler::proformaTaskCurrentData($task);
+                $data = WorkflowHandler::proformaTaskCurrentData($task, $create_by);
                 break;
             case 'forwarded': //forwarded from me but entire process not completed
-                $data = WorkflowHandler::proformaTaskForwardedData($task);
+                $data = WorkflowHandler::proformaTaskForwardedData($task, $create_by);
                 break;
             case 'completed': //forwarded from me but entire process not completed
-                $data = WorkflowHandler::proformaTaskCompletedData($task);
+                $data = WorkflowHandler::proformaTaskCompletedData($task, $create_by);
                 break;
             case 'rejected': //forwarded from me or rejected during me but entire process is rejected later
-                $data = WorkflowHandler::proformaTaskRejectedData($task);
+                $data = WorkflowHandler::proformaTaskRejectedData($task, $create_by);
                 break;
             default:
                 return DataTables::of([])->make(true); // No data for other statuses
@@ -80,6 +82,12 @@ class CitizenFormFillUpController extends Controller
 
                 $resp .= "</div>";
                 return $resp;
+            })
+            ->addColumn('overall_seniority_idx', function ($row) use ($overallSeniorityIndex) {
+                return $overallSeniorityIndex[$row->proforma_id] ?? 'N/A';
+            })
+            ->addColumn('dept_seniority_idx', function ($row) {
+                return Proforma::getDepartmentalSeniorityIndex($row->proforma_id);
             })
             ->rawColumns(['status', 'action'])
             ->make(true);

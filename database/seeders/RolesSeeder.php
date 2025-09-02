@@ -13,18 +13,24 @@ class RolesSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        DB::insert("insert into roles (role_id, role_name, role_group) values  
-                    (1, 'HOD Assistant', 'single_department'),       
-                    (2, 'HOD', 'single_department'),
-                    (3, 'AD Assistant', 'all_department'),
-                    (4, 'AD Nodal', 'all_department'),
-                    (5, 'DP Assistant', 'all_department'),
-                    (6, 'DP Nodal', 'all_department'),
-                    (8, 'DP Signing Authority', 'all_department'),
-                    (9, 'Department Signing Authority', 'single_department'),
-                    (77, 'Citizen', 'citizen'),
-                    (999, 'Superadmin', 'superadmin')
-        ");
+
+        $roles = [
+            ['role_id' => 1, 'role_name' => 'HOD Assistant', 'role_group' => 'single_department'],
+            ['role_id' => 2, 'role_name' => 'HOD', 'role_group' => 'single_department'],
+            ['role_id' => 3, 'role_name' => 'AD Assistant', 'role_group' => 'all_department'],
+            ['role_id' => 4, 'role_name' => 'AD Nodal', 'role_group' => 'all_department'],
+            ['role_id' => 5, 'role_name' => 'DP Assistant', 'role_group' => 'all_department'],
+            ['role_id' => 6, 'role_name' => 'DP Nodal', 'role_group' => 'all_department'],
+            ['role_id' => 7, 'role_name' => 'DP Signing Authority', 'role_group' => 'all_department'],
+            ['role_id' => 8, 'role_name' => 'Department Signing Authority', 'role_group' => 'single_department'],
+            ['role_id' => 77, 'role_name' => 'Citizen', 'role_group' => 'citizen'],
+            ['role_id' => 999, 'role_name' => 'Superadmin', 'role_group' => 'superadmin'],
+        ];
+
+        DB::table('roles')->upsert(
+            $roles,
+            ['role_name'], // unique constraint to check existing
+            ['role_id', 'role_group']  // columns to update if exists
+        );
     }
 }

@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             CasteSeeder::class,
             UsersSeeder::class,
             DocumentListSeeder::class,
+            VaccancyPercentageSeeder::class,
         ]);
     }
 }

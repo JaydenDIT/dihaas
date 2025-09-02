@@ -88,6 +88,16 @@ return [
             'displayOrder'  => 6,
         ],
     ],
+    'Master Data' => [
+        [
+            'menu_label'    => 'Configure Vaccancy',
+            'menu_name'     => 'configure_vaccant_post',
+            'route'         => 'admin.postvaccancies.configure',
+            'allowed_roles' => [999], //Only superadmin
+            'sub_menus'     => [],
+            'displayOrder'  => 1,
+        ],
+    ],
     'citizen' => [
         [
             'menu_label'    => 'Submit Application',

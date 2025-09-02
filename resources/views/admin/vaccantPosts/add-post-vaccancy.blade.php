@@ -19,9 +19,17 @@
             <div class="card-body small">
                 <div class="card-title d-flex justify-content-between">
                     <h5>List of vaccant posts department wise:</h5>
-                    <button class="btn btn-success btn-sm" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="fa fa-circle-plus"></i> Add
-                        Vaccant Post</button>
+                    <div class="d-flex">
+                        <a href="{{ route('admin.postvaccancies.configure') }}" class="btn btn-primary btn-sm mr-3"><i
+                                class="fa fa-gear"></i> Configure
+                            Vaccancy</a>
+                        &nbsp;&nbsp;
+                        <button class="btn btn-success btn-sm" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i
+                                class="fa fa-circle-plus"></i> Add
+                            Vaccant Post</button>
+                    </div>
+
                 </div>
                 <table id="vaccancy_table" class="table table-stripped table-bordered">
                     <thead class="bg-gray">
@@ -171,14 +179,29 @@
 
                 let url = calculate_vaccancy_url.replace("_total_", totalPost);
                 fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
+                    .then(async response => {
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            // Server returned an error with a message
+                            const errorMsg = data?.message || `HTTP error ${response.status}`;
+                            throw new Error(errorMsg);
+                        }
+
                         console.log("Calculated values:", data);
-                        // update your inputs (dia/dr) here
                         $("#dia").val(data.dia);
                         $("#dr").val(data.dr);
                     })
-                    .catch(console.error);
+                    .catch(error => {
+                        const errorMessage = error.message || "An unknown error has occured";
+                        //alert("Something went wrong while calculating vacancy: " + errorMessage);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops! Something went wrong while calculating vacancy",
+                            text: errorMessage
+                        });
+                        console.error(errorMessage);
+                    });
             }
 
             // Wrap it with debounce
