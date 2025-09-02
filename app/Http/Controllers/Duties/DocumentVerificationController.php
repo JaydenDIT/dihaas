@@ -34,6 +34,7 @@ class DocumentVerificationController extends Controller
         $task = Task::findOrFail($tasks_id);
 
         $application_status = $request->input('application_status');
+        $overallSeniorityIndex = Proforma::getOverallSeniorityList();
 
         switch ($application_status) {
             //proforma_status tells the current state of the application
@@ -60,12 +61,6 @@ class DocumentVerificationController extends Controller
                 break;
         }
 
-        /*
-        //if want filter using role_group like what citizen should do
-        if (Auth::user()->role_group === 'citizen') {
-            $data = $data->where('created_by', Auth::user()->user_id);
-        }
-        */
 
         return DataTables::of($data)
             ->addIndexColumn()
@@ -94,6 +89,12 @@ class DocumentVerificationController extends Controller
                 }
                 $resp .= "</div>";
                 return $resp;
+            })
+            ->addColumn('overall_seniority_idx', function ($row) use ($overallSeniorityIndex) {
+                return $overallSeniorityIndex[$row->proforma_id] ?? 0;
+            })
+            ->addColumn('dept_seniority_idx', function ($row) {
+                return Proforma::getDepartmentalSeniorityIndex($row->proforma_id);
             })
             ->rawColumns(['status', 'action'])
             ->make(true);

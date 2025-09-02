@@ -34,6 +34,7 @@ class UoFileApprovalController extends Controller
         $task = Task::findOrFail($tasks_id);
 
         $application_status = $request->input('application_status');
+        $overallSeniorityIndex = Proforma::getOverallSeniorityList();
 
         switch ($application_status) {
             case 'pending':  // currently pending on me
@@ -83,6 +84,12 @@ class UoFileApprovalController extends Controller
                 }
                 $resp .= "</div>";
                 return $resp;
+            })
+            ->addColumn('overall_seniority_idx', function ($row) use ($overallSeniorityIndex) {
+                return $overallSeniorityIndex[$row->proforma_id] ?? 0;
+            })
+            ->addColumn('dept_seniority_idx', function ($row) {
+                return Proforma::getDepartmentalSeniorityIndex($row->proforma_id);
             })
             ->rawColumns(['action'])
             ->make(true);

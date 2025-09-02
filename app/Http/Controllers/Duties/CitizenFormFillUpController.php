@@ -37,6 +37,7 @@ class CitizenFormFillUpController extends Controller
 
         $application_status = $request->input('application_status');
         $create_by = $request->input('create_by');
+        $overallSeniorityIndex = Proforma::getOverallSeniorityList();
 
         switch ($application_status) {
             //proforma_status tells the current state of the application
@@ -81,6 +82,12 @@ class CitizenFormFillUpController extends Controller
 
                 $resp .= "</div>";
                 return $resp;
+            })
+            ->addColumn('overall_seniority_idx', function ($row) use ($overallSeniorityIndex) {
+                return $overallSeniorityIndex[$row->proforma_id] ?? 0;
+            })
+            ->addColumn('dept_seniority_idx', function ($row) {
+                return Proforma::getDepartmentalSeniorityIndex($row->proforma_id);
             })
             ->rawColumns(['status', 'action'])
             ->make(true);
