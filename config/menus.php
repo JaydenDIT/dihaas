@@ -83,7 +83,7 @@ return [
             'menu_label'    => 'Add Post Vaccancy',
             'menu_name'     => 'add_vaccant_post',
             'route'         => 'admin.postvaccancies.addPostVaccancy',
-            'allowed_roles' => [999], //Only superadmin
+            'allowed_roles' => [1,2,999], //Only superadmin
             'sub_menus'     => [],
             'displayOrder'  => 6,
         ],
