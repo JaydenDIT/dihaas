@@ -83,4 +83,47 @@ class VaccancyController extends Controller
             'vaccancies' => $vaccancies
         ]);
     }
+
+    //Method to configure the percentage (%) of vaccancy
+    public function configureVaccancy()
+    {
+        $vaccancyPercentage = VaccancyPercentage::first();
+        return view('admin.vaccantPosts.configureVaccancy', compact('vaccancyPercentage'));
+    }
+
+    //Method to update the vaccancy configureation
+    public function saveVaccancyConfigureation(Request $request)
+    {
+
+        $request->validate([
+            'dia_percentage' => ['required', 'numeric'],
+            'effective_date' => ['required', 'date']
+        ]);
+
+        $vaccancyPercentage = VaccancyPercentage::first();
+
+        try {
+            if (empty($vaccancyPercentage)) {
+                //then create
+                VaccancyPercentage::create([
+                    'dia_percentage' => $request->input('dia_percentage'),
+                    'effective_date' => $request->input('effective_date'),
+                ]);
+            } else {
+                $vaccancyPercentage->old_dia_percentage = $vaccancyPercentage->dia_percentage;
+                $vaccancyPercentage->old_effective_date = $vaccancyPercentage->effective_date;
+                $vaccancyPercentage->dia_percentage = $request->input('dia_percentage');
+                $vaccancyPercentage->effective_date = $request->input('effective_date');
+                $vaccancyPercentage->save();
+            }
+            return response()->json([
+                'message' => 'Configuration updated.'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'An error has occured while updating vaccancy configuration',
+                'server_error' => $e,
+            ], 403);
+        }
+    }
 }

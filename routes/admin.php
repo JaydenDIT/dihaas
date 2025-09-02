@@ -56,5 +56,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         Route::get('/add', [VaccancyController::class, 'addPostVaccancy'])->name('addPostVaccancy'); //admin.postvaccancies.addPostVaccancy
         Route::get('/calculate/{totalPost}', [VaccancyController::class, 'calculateVacancyDistribution'])->name('calculateVaccancy'); //admin.postvaccancies.calculateVaccancy
         Route::post('/store', [VaccancyController::class, 'storePostVaccancies'])->name('store'); //admin.postvaccancies.store
+        Route::get('/configure', [VaccancyController::class, 'configureVaccancy'])->name('configure'); //admin.postvaccancies.configure
+        Route::post('/save-configuration', [VaccancyController::class, 'saveVaccancyConfigureation'])->name('save-configuration'); //admin.postvaccancies.save-configuration
     });
 });

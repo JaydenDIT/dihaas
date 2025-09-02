@@ -14,7 +14,7 @@ class VaccancyPercentage extends Model
     protected $fillable = [
         'dia_percentage',
         'old_dia_percentage',
-        'year',
-        'old_year',
+        'effective_date',
+        'old_effective_date',
     ];
 }
