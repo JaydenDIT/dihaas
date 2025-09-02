@@ -83,7 +83,7 @@ class UoFormFillUpController extends Controller
                 return $resp;
             })
             ->addColumn('overall_seniority_idx', function ($row) use ($overallSeniorityIndex) {
-                return $overallSeniorityIndex[$row->proforma_id] ?? 0;
+                return $overallSeniorityIndex[$row->proforma_id] ?? 'N/A';
             })
             ->addColumn('dept_seniority_idx', function ($row) {
                 return Proforma::getDepartmentalSeniorityIndex($row->proforma_id);

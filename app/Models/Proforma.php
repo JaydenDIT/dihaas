@@ -108,7 +108,7 @@ class Proforma extends Model
                 return ($key + 1);
             }
         }
-        return 0;
+        return 'N/A';
     }
 
     //Get the departmental seniority index
@@ -126,6 +126,6 @@ class Proforma extends Model
                 return ($key + 1);
             }
         }
-        return 0;
+        return 'N/A';
     }
 }
