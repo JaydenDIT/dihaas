@@ -7,7 +7,7 @@
                 <h2>Qualifications</h2>
                 <div><a href="{{ route('qualifications.create') }}" class="btn btn-primary">Add New</a></div>
             </div>
-            <table class="table table-stripped">
+            <table class="table table-stripped small">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -21,8 +21,8 @@
                             <td>{{ $q->qualification_id }}</td>
                             <td>{{ $q->qualification_name }}</td>
                             <td>
-                                <a href="{{ route('qualifications.show', $q->qualification_id) }}"
-                                    class="btn btn-info btn-sm">View</a>
+                                {{-- <a href="{{ route('qualifications.show', $q->qualification_id) }}"
+                                    class="btn btn-info btn-sm">View</a> --}}
                                 <a href="{{ route('qualifications.edit', $q->qualification_id) }}"
                                     class="btn btn-primary btn-sm">Edit</a>
                                 <form action="{{ route('qualifications.destroy', $q->qualification_id) }}" method="POST"
