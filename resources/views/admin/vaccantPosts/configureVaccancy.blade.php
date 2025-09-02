@@ -4,6 +4,12 @@
     <p class="small text-muted">Configure how many of the total vaccant posts will go to the die-in-harness</p>
 
     <div class="my-2">
+        @php
+            $dia_percentage = empty($vaccancyPercentage) ? 0 : $vaccancyPercentage->dia_percentage;
+            $effective_date = empty($vaccancyPercentage)
+                ? ''
+                : \Carbon\Carbon::parse($vaccancyPercentage->effective_date)->format('Y-m-d');
+        @endphp
         <form action="{{ route('admin.postvaccancies.save-configuration') }}" name="vaccancyConfigurationForm">
             @csrf
             <div class="col-sm-4">
@@ -13,8 +19,7 @@
             </div>
             <div class="col-sm-4 mt-4">
                 <label for="effective_date" class="mb-2">With effect from:</label>
-                <input type="date" name="effective_date" id="effective_date"
-                    value="{{ $vaccancyPercentage->effective_date ? \Carbon\Carbon::parse($vaccancyPercentage->effective_date)->format('Y-m-d') : '' }}"
+                <input type="date" name="effective_date" id="effective_date" value="{{ $effective_date }}"
                     class="form-control">
             </div>
             <div class="mt-4">
