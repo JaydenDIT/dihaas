@@ -67,7 +67,7 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Overall Seniority</th>
+                    <th>Intra-departmental Seniority</th>
                     <th>Departmental Seniority</th>
                     <th>EIN</th>
                     <th>Deceased Name</th>
