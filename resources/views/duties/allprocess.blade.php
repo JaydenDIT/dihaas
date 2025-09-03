@@ -41,6 +41,12 @@
                                     </div>
                                 </div>
                                 <div class="col">
+                                    <div class="stat-box text-secondary">
+                                        <h5 class="font-bold">{{ $card['forwarded'] }}</h5>
+                                        <small>Forwarded</small>
+                                    </div>
+                                </div>
+                                <div class="col">
                                     <div class="stat-box text-success">
                                         <h5 class="font-bold">{{ $card['completed'] }}</h5>
                                         <small>Completed</small>
