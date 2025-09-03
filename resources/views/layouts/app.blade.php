@@ -49,6 +49,10 @@
             z-index: 10;
             margin-top: 25px;
         }
+
+        .main {
+            padding-bottom: 80px;
+        }
     </style>
     @stack('css')
 

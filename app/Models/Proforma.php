@@ -86,7 +86,12 @@ class Proforma extends Model
     public function scopeGetOverallSeniorityList($query)
     {
         $list = $query->where('proforma_status', '!=', 'completed')
-            ->whereNull('mini_sequence')
+            ->whereNotIn('mini_sequence', [
+                'step1-completed',
+                'step2-completed',
+                'step3-completed',
+            ])
+            ->orWhereNull('mini_sequence')
             ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob")->get();
         //get Only the proforma id and index
         $data = [];
@@ -100,7 +105,12 @@ class Proforma extends Model
     public function scopeGetOverallSeniorityIndex($query, $proforma_id)
     {
         $list = $query->where('proforma_status', '!=', 'completed')
-            ->whereNull('mini_sequence')
+            ->whereNotIn('mini_sequence', [
+                'step1-completed',
+                'step2-completed',
+                'step3-completed',
+            ])
+            ->orWhereNull('mini_sequence')
             ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob")->get();
         foreach ($list as $key => $item) {
             if ($item->proforma_id == $proforma_id) {
@@ -117,7 +127,12 @@ class Proforma extends Model
         $proforma = Proforma::find($proforma_id);
         $list = $query->where('deceased_field_dept_cd', $proforma->deceased_field_dept_cd)
             ->where('proforma_status', '!=', 'completed')
-            ->whereNull('mini_sequence')
+            ->whereNotIn('mini_sequence', [
+                'step1-completed',
+                'step2-completed',
+                'step3-completed',
+            ])
+            ->orWhereNull('mini_sequence')
             ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob")
             ->get();
         foreach ($list as $key => $item) {

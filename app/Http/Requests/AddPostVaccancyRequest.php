@@ -103,30 +103,14 @@ class AddPostVaccancyRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'adm_dept_cd' => $this->splitCode($this->input('adm_dept_cd'))['code'] ?? null,
-            'adm_dept_name' => is_null($this->input('adm_dept_name', null)) ? $this->splitCode($this->input('adm_dept_cd'))['name'] ?? null : $this->input('adm_dept_name'),
+            'adm_dept_cd' => splitCode($this->input('adm_dept_cd'))['code'] ?? null,
+            'adm_dept_name' => is_null($this->input('adm_dept_name', null)) ? splitCode($this->input('adm_dept_cd'))['name'] ?? null : $this->input('adm_dept_name'),
 
-            'field_dept_cd' => $this->splitCode($this->input('field_dept_cd'))['code'] ?? null,
-            'field_dept_name' => is_null($this->input('field_dept_name', null)) ? $this->splitCode($this->input('field_dept_cd'))['name'] ?? null : $this->input('field_dept_name'),
+            'field_dept_cd' => splitCode($this->input('field_dept_cd'))['code'] ?? null,
+            'field_dept_name' => is_null($this->input('field_dept_name', null)) ? splitCode($this->input('field_dept_cd'))['name'] ?? null : $this->input('field_dept_name'),
 
-            'dsg_srno' => $this->splitCode($this->input('dsg_srno'))['code'] ?? null,
-            'dsg_name' => is_null($this->input('dsg_name', null)) ? $this->splitCode($this->input('dsg_srno'))['name'] ?? null : $this->input('dsg_name'),
+            'dsg_srno' => splitCode($this->input('dsg_srno'))['code'] ?? null,
+            'dsg_name' => is_null($this->input('dsg_name', null)) ? splitCode($this->input('dsg_srno'))['name'] ?? null : $this->input('dsg_name'),
         ]);
-    }
-
-    /**
-     * Helper to split "code~name" into array parts.
-     */
-    private function splitCode(?string $value): array
-    {
-        if (!$value) {
-            return ['code' => null, 'name' => null];
-        }
-
-        $parts = explode('~', $value, 2);
-        return [
-            'code' => $parts[0] ?? null,
-            'name' => $parts[1] ?? null,
-        ];
     }
 }

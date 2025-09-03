@@ -47,7 +47,7 @@
 @endpush
 
 @section('content')
-    <div class="container-fluid pt-3 px-5">
+    <div class="container-fluid pt-3">
         <h3><b>Applications for Task: {{ $task->tasks_name }}</b></h3> <!-- Add this -->
         <div class="my-4">
 
@@ -62,25 +62,6 @@
 
         </div>
 
-        <table class="report-table table" id="application-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Intra-departmental Seniority</th>
-                    <th>Departmental Seniority</th>
-                    <th>EIN</th>
-                    <th>Deceased Name</th>
-                    <th>DOE</th>
-                    <th>Submitted Date</th>
-                    <th>Applicant Name</th>
-                    <th>Applicant DOB</th>
-                    <th>Status</th>
-                    <th>Department</th>
-                    <th>Remarks</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        @include('duties._report-table')
     </div>
 @endsection

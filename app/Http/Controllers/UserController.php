@@ -54,10 +54,35 @@ class UserController extends Controller
     //method to get only the official users
     public function getOfficialUsers()
     {
+        $departments = CmisApiService::apiFieldDepartments();
+
+        $belongingDepts = [];
+        foreach ($departments as $dept) {
+            $belongingDepts[$dept['field_dept_cd']] = $dept;
+        }
+
         $users = User::with('role')
             ->whereHas('role', function ($query) {
                 $query->where('role_group', '!=', 'citizen');
-            })->get();
+            })->get()->map(function (User $user) use ($belongingDepts) {
+                //Finding concerned department
+                $concernDept = $belongingDepts[$user->field_dept_cd];
+                $user->field_dept_desc = $concernDept['field_dept_desc'];
+                $user->adm_dept_cd = $concernDept['adm_dept']['adm_dept_cd'];
+                $user->adm_dept_desc = $concernDept['adm_dept']['adm_dept_desc'];
+
+                //Getting post
+                $availablePosts = !is_null($user->field_dept_cd) ? CmisApiService::apiAllPostUnderDepartment($user->field_dept_cd) : [];
+                foreach ($availablePosts as $post) {
+                    if ($post['dsg_srno'] == $user->dsg_serial_no) {
+                        $user->dsg_desc = $post['dsg_desc'];
+                        break;
+                    }
+                }
+                return $user;
+            });
+
+        //dd($users);
         $title = "Official Users";
         return view('users.index', compact('title', 'users'));
     }
@@ -86,7 +111,6 @@ class UserController extends Controller
         $departments                = ($adm_dept_cd == "") ? CmisApiService::apiFieldDepartments() //List all the available departments if the admin department is not available
             : CmisApiService::apiAdminDepartments($adm_dept_cd)['field_dept']; //Other wise list the departments within the administrative department(ministry)
         $posts                      = !is_null($user->field_dept_cd) ? CmisApiService::apiAllPostUnderDepartment($user->field_dept_cd) : [];
-
         $departmentSigningAuthority = [];
 
         //sorting ministry in alphabetical order

@@ -14,8 +14,11 @@
                                 <th>Full Name</th>
                                 <th>Mobile</th>
                                 <th>Email</th>
-                                <th>Role</th>
+
                                 @if ($title == 'Official Users')
+                                    <th>Role</th>
+                                    <th>Designation/Post</th>
+                                    <th>Department</th>
                                     <th></th>
                                 @endif
                             </tr>
@@ -27,8 +30,11 @@
                                     <td>{{ $user->fullname }}</td>
                                     <td>{{ $user->mobile }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->role->role_name ?? '-' }}</td>
+
                                     @if ($title == 'Official Users')
+                                        <td>{{ $user->role->role_name ?? '-' }}</td>
+                                        <td>{{ $user->dsg_desc ?? '-' }}</td>
+                                        <td>{{ $user->field_dept_desc }}</td>
                                         <td>
                                             <a href="{{ route('user.editOfficialUser', $user->user_id) }}"><i
                                                     class="fas fa-edit"></i></a>

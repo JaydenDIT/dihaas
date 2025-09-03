@@ -250,3 +250,19 @@ function getPrevNextTasks($proforma_id)
 
     return $tasks;
 }
+
+/**
+ * Helper to split "code~name" into array parts.
+ */
+function splitCode(?string $value): array
+{
+    if (!$value) {
+        return ['code' => null, 'name' => null];
+    }
+
+    $parts = explode('~', $value, 2);
+    return [
+        'code' => $parts[0] ?? null,
+        'name' => $parts[1] ?? null,
+    ];
+}
