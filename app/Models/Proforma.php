@@ -87,12 +87,13 @@ class Proforma extends Model
     public function scopeGetOverallSeniorityList($query)
     {
         $list = $query->where('proforma_status', '!=', 'completed')
-            ->whereNotIn('mini_sequence', [
-                'step1-completed',
-                'step2-completed',
-                'step3-completed',
-            ])
-            ->orWhereNull('mini_sequence')
+            ->where(function ($q) {
+                $q->whereNotIn('mini_sequence', [
+                    'step1-completed',
+                    'step2-completed',
+                    'step3-completed',
+                ])->orWhereNull('mini_sequence');
+            })
             ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob")->get();
         //get Only the proforma id and index
         $data = [];
@@ -106,12 +107,13 @@ class Proforma extends Model
     public function scopeGetOverallSeniorityIndex($query, $proforma_id)
     {
         $list = $query->where('proforma_status', '!=', 'completed')
-            ->whereNotIn('mini_sequence', [
-                'step1-completed',
-                'step2-completed',
-                'step3-completed',
-            ])
-            ->orWhereNull('mini_sequence')
+            ->where(function ($q) {
+                $q->whereNotIn('mini_sequence', [
+                    'step1-completed',
+                    'step2-completed',
+                    'step3-completed',
+                ])->orWhereNull('mini_sequence');
+            })
             ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob")->get();
         foreach ($list as $key => $item) {
             if ($item->proforma_id == $proforma_id) {
@@ -137,14 +139,15 @@ class Proforma extends Model
         }
 
         $list = $query->where('proforma_status', '!=', 'completed')
-            ->whereNotIn('mini_sequence', [
-                'step1-completed',
-                'step2-completed',
-                'step3-completed',
-            ])
-            ->orWhereNull('mini_sequence')
-            ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob")
-            ->get();
+                        ->where(function ($q) {
+                            $q->whereNotIn('mini_sequence', [
+                                'step1-completed',
+                                'step2-completed',
+                                'step3-completed',
+                            ])->orWhereNull('mini_sequence');
+                        })
+                        ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob")
+                        ->get();
         foreach ($list as $key => $item) {
             if ($item->proforma_id == $proforma_id) {
                 //returning the index
