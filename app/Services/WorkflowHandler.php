@@ -79,8 +79,30 @@ class WorkflowHandler
         $allApplications = collect();
 
         foreach ($mappings as $mapping) {
-            $query = Proforma::where('process_id', $mapping->process_id)
-                ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob");
+            $query = Proforma::where('process_id', $mapping->process_id);
+            /**
+             * Only the concern department user will be able to see the proforma list.
+             * However if the user is of the department 'Department of Personal' or if the user is 
+             * super-admin then he/she will be able to see all the proforma list irrespective of 
+             * departments of Manipur.
+             */
+
+            $user = Auth::user(); //Retrieve the currently authenticated user
+
+            if (
+                $user->role_id == 999/* Check if the suser is super-admin, role id for super admin is 999 */
+                || $user->field_dept_cd == 201 /* Check if the user belongs to Department of Personal. field_dept_cd is 201*/
+            ) {
+                //user belongs to Department of Personel(DP)
+            } else {
+                /* *
+                Here, it is found that user doesn't belong to DP, so he/she must be able to see only the proforma list
+                that belong to the department which he/she belongs
+                */
+                $query->where('deceased_field_dept_cd', $user->field_dept_cd);
+            }
+
+            $query->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob");
 
             // Apply filter logic from the specific case
             $query = $filterCallback($query, $mapping);
