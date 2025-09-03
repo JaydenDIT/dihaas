@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Proforma extends Model
 {
@@ -124,9 +125,18 @@ class Proforma extends Model
     //Get the departmental seniority index
     public function scopeGetDepartmentalSeniorityIndex($query, $proforma_id)
     {
-        $proforma = Proforma::find($proforma_id);
-        $list = $query->where('deceased_field_dept_cd', $proforma->deceased_field_dept_cd)
-            ->where('proforma_status', '!=', 'completed')
+        $user = Auth::user();
+        $field_dept_cd = ($user->role_id == 999) ? null : $user->field_dept_cd;
+
+        /** Either if the user is super admin or if the user belongs to Department of Personel */
+        if (($user->role_id == 999) || ($user->field_dept_cd == 201)) {
+            $proforma = Proforma::find($proforma_id);
+            $query->where('deceased_field_dept_cd', $proforma->deceased_field_dept_cd);
+        } else if (!is_null($field_dept_cd)) {
+            $query->where('deceased_field_dept_cd', $field_dept_cd);
+        }
+
+        $list = $query->where('proforma_status', '!=', 'completed')
             ->whereNotIn('mini_sequence', [
                 'step1-completed',
                 'step2-completed',
