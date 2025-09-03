@@ -51,7 +51,7 @@
         }
 
         .main {
-            padding-bottom: 80px;
+            padding-bottom: 80px !important;
         }
     </style>
     @stack('css')

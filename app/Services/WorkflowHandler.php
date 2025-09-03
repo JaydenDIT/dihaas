@@ -90,13 +90,15 @@ class WorkflowHandler
             $user = Auth::user(); //Retrieve the currently authenticated user
 
             if (
-                $user->role_id == 999/* Check if the suser is super-admin, role id for super admin is 999 */
+                $user->role->role_group == "superadmin"/* Check if the suser is super-admin, role id for super admin is 999 */
                 || $user->field_dept_cd == 201 /* Check if the user belongs to Department of Personal. field_dept_cd is 201*/
             ) {
                 //user belongs to Department of Personel(DP)
+            } else if ($user->role->role_group == "citizen") {
+                $query->where('create_by', $user->user_id);
             } else {
                 /* *
-                Here, it is found that user doesn't belong to DP, so he/she must be able to see only the proforma list
+                Here, it is found that user is a departmental user but doesn't belong to DP, so he/she must be able to see only the proforma list
                 that belong to the department which he/she belongs
                 */
                 $query->where('deceased_field_dept_cd', $user->field_dept_cd);

@@ -70,6 +70,12 @@ class CitizenFormFillUpController extends Controller
             ->editColumn('applicant_dob', function ($row) {
                 return date('d M, Y', strtotime($row->applicant_dob));
             })
+            ->addColumn('remarks', function ($row) {
+                return $row->proformaLogs()
+                    ->whereIn('action_name', ['forwarded', 'rejected', 'reverted', 'completed'])
+                    ->latest()
+                    ->value('action_remark') ?? 'N/A';
+            })
             ->addColumn('action', function ($row) use ($application_status) {
                 // $data = urlencode(json_encode($row));
                 $resp = "<div class='d-flex gap-2'>";

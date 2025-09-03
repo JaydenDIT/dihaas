@@ -16,7 +16,7 @@
         </tr>
         <tr>
             <th>Intra-departmental</th>
-            <th>Departmental</th>
+            <th>Inter-Departmental</th>
         </tr>
     </thead>
     <tbody></tbody>

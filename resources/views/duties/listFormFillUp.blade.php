@@ -24,7 +24,8 @@
                 "applicant_name",
                 "applicant_dob",
                 "proforma_status",
-                "deceased_field_dept_desc"
+                "deceased_field_dept_desc",
+                "remarks"
             ];
             loadAjaxTable({
                 id: "#application-table",
