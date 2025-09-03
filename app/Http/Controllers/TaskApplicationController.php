@@ -67,20 +67,21 @@ class TaskApplicationController extends Controller
             foreach ($task->processes as $process) {
                 $sequence = $process->pivot->sequence;
 
-                $apps = Proforma::where('process_id', $process->process_id);
-                //Here, we need to check if the authenticated user is super admin or if the user belongs to Department of Personel,
-                //Otherwise, we should filter only the proformas that belong to department of the currently authenticated user.
-                if ($user->role->role_group != "superadmin" && $user->field_dept_cd != 201) {
-                    $apps->where('deceased_field_dept_cd', $user->field_dept_cd);
-                }
+                $apps = Proforma::where('process_id', $process->process_id)->get();
+
 
                 //If the user is just a citizen
                 if ($user->role->role_group == "citizen") {
                     $apps->where('create_by', $user->user_id);
                 }
+                //Here, we need to check if the authenticated user is super admin or if the user belongs to Department of Personel,
+                //Otherwise, we should filter only the proformas that belong to department of the currently authenticated user.
+                else if ($user->role->role_group != "superadmin" && $user->field_dept_cd != 201) {
+                    $apps->where('deceased_field_dept_cd', $user->field_dept_cd);
+                }
 
-                $pending += $apps->where('process_sequence', $sequence)->get()->count();
-                $completed += $apps->where('process_sequence', '>', $sequence)->get()->count();
+                $pending += $apps->where('process_sequence', $sequence)->count();
+                $completed += $apps->where('process_sequence', '>', $sequence)->count();
                 $total += $pending + $completed;
             }
 

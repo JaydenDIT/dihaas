@@ -9,10 +9,12 @@ class DashboardController extends Controller
 {
     public function home(Request $request)
     {
+        /* 
         $user = Auth::user();
         if ($user->role->role_group == "citizen") {
             return view('dashboard');
-        }
+        } */
+
         return redirect(route('tasks.performa.all'));
     }
 }
