@@ -67,7 +67,7 @@ class TaskApplicationController extends Controller
             foreach ($task->processes as $process) {
                 $sequence = $process->pivot->sequence;
 
-                $apps = Proforma::where('process_id', $process->process_id)->get();
+                $apps = Proforma::where('process_id', $process->process_id); //->get();
 
 
                 //If the user is just a citizen
