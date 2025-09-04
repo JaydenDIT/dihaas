@@ -37,7 +37,7 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 #main {
   margin-top: 60px;
-  padding: 20px 30px;
+  padding: 15px 20px;
   transition: all 0.3s;
 }
 @media (max-width: 1199px) {
@@ -731,6 +731,28 @@ h1, h2, h3, h4, h5, h6 {
 .dashboard .customers-card .card-icon {
   color: #ff771d;
   background: #ffecdf;
+}
+
+/** Additional card icons **/
+.dashboard .primary-card .card-icon {
+  color: #4154f1;
+  background: #dadaec;
+}
+.dashboard .secondary-card .card-icon {
+  color: #636364;
+  background: #dddddd;
+}
+.dashboard .success-card .card-icon {
+  color: #2eca6a;
+  background: #e0f8e9;
+}
+.dashboard .warning-card .card-icon {
+  color: #ff771d;
+  background: #ffecdf;
+}
+.dashboard .danger-card .card-icon {
+  color: #f72c2c;
+  background: #fdcece;
 }
 
 /* Activity */

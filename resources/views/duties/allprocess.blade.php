@@ -21,7 +21,7 @@
 
 @section('content')
     <div class="container">
-        <h5 class="mb-2">Dashboard</h5>
+        <h5 class="mb-2">Proforma</h5>
 
         <div class="row">
             @forelse($cards as $card)
@@ -35,7 +35,7 @@
 
                             <div class="row counts-section">
                                 <div class="col">
-                                    <div class="stat-box text-warning">
+                                    <div class="stat-box text-primary">
                                         <h5 class="font-bold">{{ $card['pending'] }}</h5>
                                         <small>Pending</small>
                                     </div>
@@ -62,7 +62,7 @@
                             <div class="text-end">
                                 <a href="{{ route('tasks.performa.index', ['tasks_id' => $card['tasks_id']]) }}"
                                     class="btn btn-outline-primary btn-sm mt-3">
-                                    View Performa
+                                    View Proforma
                                 </a>
                             </div>
                         </div>

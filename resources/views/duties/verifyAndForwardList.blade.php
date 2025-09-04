@@ -15,8 +15,8 @@
             $(".statusBtn[data-application_status='" + application_status + "']").addClass('btn-success');
             let columns = [
                 "DT_RowIndex|nonorderable|nonsearchable",
-                "overall_seniority_idx",
-                "dept_seniority_idx",
+                "overall_seniority_idx|nonorderable|nonsearchable",
+                "dept_seniority_idx|nonorderable|nonsearchable",
                 "deceased_ein",
                 "deceased_emp_name",
                 "deceased_doe",
@@ -48,22 +48,23 @@
 @endpush
 
 @section('content')
-    <div class="container-fluid pt-3">
+    <div class="pt-3">
         <h3><b>Applications for Task: {{ $task->tasks_name }}</b></h3> <!-- Add this -->
-        <div class="my-4">
-            <button class="btn btn-sm btn-success statusBtn" data-application_status="un-verified"
-                type="button">Un-Verified</button> |
-            <button class="btn btn-sm btn-primary statusBtn" data-application_status="verified"
-                type="button">Verified</button> |
-            <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In
-                Progress</button> |
-            <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed"
-                type="button">Completed</button> |
-            <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected"
-                type="button">Rejected</button>
+        <div class="table-container p-2">
+            <div class="my-4">
+                <button class="btn btn-sm btn-success statusBtn" data-application_status="un-verified"
+                    type="button">Un-Verified</button> |
+                <button class="btn btn-sm btn-primary statusBtn" data-application_status="verified"
+                    type="button">Verified</button> |
+                <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In
+                    Progress</button> |
+                <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed"
+                    type="button">Completed</button> |
+                <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected"
+                    type="button">Rejected</button>
 
+            </div>
+            @include('duties._report-table')
         </div>
-
-        @include('duties._report-table')
     </div>
 @endsection

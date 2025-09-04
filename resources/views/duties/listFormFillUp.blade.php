@@ -15,8 +15,8 @@
             let user_id = document.querySelector("#user_id").value;
             let columns = [
                 "DT_RowIndex|nonorderable|nonsearchable",
-                "overall_seniority_idx",
-                "dept_seniority_idx",
+                "overall_seniority_idx|nonorderable|nonsearchable",
+                "dept_seniority_idx|nonorderable|nonsearchable",
                 "deceased_ein",
                 "deceased_emp_name",
                 "deceased_doe",
@@ -49,21 +49,23 @@
 @endpush
 
 @section('content')
-    <div class="container-fluid pt-3">
+    <div class="pt-3">
         <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
         <h3><b>Applications for Task: {{ $task->tasks_name }}</b></h3> <!-- Add this -->
-        <div class="my-4">
-            <button class="btn btn-sm btn-success statusBtn" data-application_status="pending" type="button">Draft</button>
-            |
-            <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In
-                Progress</button> |
-            <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed"
-                type="button">Completed</button> |
-            <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected"
-                type="button">Rejected</button>
+        <div class="table-container p-2">
+            <div class="my-4">
+                <button class="btn btn-sm btn-success statusBtn" data-application_status="pending"
+                    type="button">Draft</button>
+                |
+                <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In
+                    Progress</button> |
+                <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed"
+                    type="button">Completed</button> |
+                <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected"
+                    type="button">Rejected</button>
 
+            </div>
+            @include('duties._report-table')
         </div>
-
-        @include('duties._report-table')
     </div>
 @endsection

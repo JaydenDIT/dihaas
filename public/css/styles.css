@@ -114,3 +114,12 @@
 .cursor-pointer {
     cursor: pointer;
 }
+
+.table-container{
+    background-color: #FFFFFF;
+    padding:5px;
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+    width:100%;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+}

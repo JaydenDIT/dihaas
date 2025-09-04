@@ -15,6 +15,7 @@ class DocumentList extends Model
 
     protected $fillable = [
         'document_name',
-        'document_criteria'
+        'document_criteria',
+        'max_size_kb',
     ];
 }

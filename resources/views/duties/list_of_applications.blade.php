@@ -12,8 +12,8 @@
         function applicationTable(dept_id = '') {
             let columns = [
                 "DT_RowIndex|nonorderable|nonsearchable",
-                "overall_seniority_idx",
-                "dept_seniority_idx",
+                "overall_seniority_idx|nonorderable|nonsearchable",
+                "dept_seniority_idx|nonorderable|nonsearchable",
                 "deceased_ein",
                 "deceased_emp_name",
                 "deceased_doe",

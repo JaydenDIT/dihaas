@@ -58,29 +58,27 @@ class TaskApplicationController extends Controller
         $tasks = $user->role->duties()->with('processes')->get();
 
         $taskSummaries = [];
-        //$apps = Proforma::all();
         foreach ($tasks as $task) {
             $pending = 0;
             $forwarded = 0;
             $completed = 0;
             $total = 0;
-            $sequences = [];
+
 
             foreach ($task->processes as $process) {
                 $sequence = $process->pivot->sequence;
 
                 // Proforma query initialized based on process id
-                $apps = Proforma::where('process_id', $process->process_id);              
-                
+                $apps = Proforma::where('process_id', $process->process_id);
+
                 // If the user is just a citizen
                 if ($user->role->role_group == "citizen") {
                     $apps->where('create_by', $user->user_id);
                 }
                 // Here, we need to check if the authenticated user is super admin or if the user belongs to Department of Personel,
-                else if($user->role->role_group == 'superadmin' || $user->field_dept_cd == '201'){
+                else if ($user->role->role_group == 'superadmin' || $user->field_dept_cd == '201') {
                     //do nothing
-                }
-                else if(!is_null($user->field_dept_cd)){
+                } else if (!is_null($user->field_dept_cd)) {
                     //Otherwise, we should filter only the proformas that belong to department of the currently authenticated user.
                     $apps->where('deceased_field_dept_cd', $user->field_dept_cd);
                 }
@@ -89,10 +87,10 @@ class TaskApplicationController extends Controller
 
                 // Counts are calculated from the collection of proformas retrieved by the query '$apps'
                 $pending += $result->where('process_sequence', $sequence)->count();
-                $forwarded += $result->where('process_sequence', '>', $sequence)->count();//tasks already completed by him, but the whole process may not be completed
+                $forwarded += $result->where('process_sequence', '>', $sequence)
+                    ->where('proforma_status', '!=', 'completed')
+                    ->count(); //tasks already forwarded by him, but the whole process may not be completed
                 $completed += $result->where('proforma_status', 'completed')->count();
-                
-                $sequences[] = $sequence;
             }
             $total = $pending + $forwarded + $completed;
             // Use tasks_id as key to avoid duplicates
@@ -103,7 +101,6 @@ class TaskApplicationController extends Controller
                 'forwarded' => $forwarded,
                 'completed' => $completed,
                 'total' => $total,
-                'sequences' => $sequences,
             ];
         }
 
