@@ -1,0 +1,1752 @@
+[
+    {
+        "adm_dept_cd": "17",
+        "field_dept_cd": 918,
+        "field_dept_desc": "Manipur Human Rights Commission",
+        "field_secrt": "F",
+        "dept_scope": "",
+        "dept_short": "MHRC",
+        "adm_dept": {
+            "adm_dept_cd": 17,
+            "adm_bdgt_cd": "17",
+            "adm_dept_desc": "Law & Legislative Affairs",
+            "adm_dept_cd_char": "17"
+        }
+    },
+    {
+        "adm_dept_cd": "38",
+        "field_dept_cd": 968,
+        "field_dept_desc": "Directorate for welfare of OBCs & SCs",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "MOBC",
+        "adm_dept": {
+            "adm_dept_cd": 38,
+            "adm_bdgt_cd": "38",
+            "adm_dept_desc": "MOBC & SC",
+            "adm_dept_cd_char": "38"
+        }
+    },
+    {
+        "adm_dept_cd": "38",
+        "field_dept_cd": 969,
+        "field_dept_desc": "Directorate of Minority Affairs",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "MOBC",
+        "adm_dept": {
+            "adm_dept_cd": 38,
+            "adm_bdgt_cd": "38",
+            "adm_dept_desc": "MOBC & SC",
+            "adm_dept_cd_char": "38"
+        }
+    },
+    {
+        "adm_dept_cd": "18",
+        "field_dept_cd": 563,
+        "field_dept_desc": "Churachandpur Medical College",
+        "field_secrt": "F",
+        "dept_scope": null,
+        "dept_short": null,
+        "adm_dept": {
+            "adm_dept_cd": 18,
+            "adm_bdgt_cd": "18",
+            "adm_dept_desc": "Health & Family Welfare",
+            "adm_dept_cd_char": "18"
+        }
+    },
+    {
+        "adm_dept_cd": "44",
+        "field_dept_cd": 971,
+        "field_dept_desc": "Manipur Lokayukta",
+        "field_secrt": "F",
+        "dept_scope": null,
+        "dept_short": null,
+        "adm_dept": {
+            "adm_dept_cd": 44,
+            "adm_bdgt_cd": "44",
+            "adm_dept_desc": "Administrative Reforms",
+            "adm_dept_cd_char": "44"
+        }
+    },
+    {
+        "adm_dept_cd": "18",
+        "field_dept_cd": 972,
+        "field_dept_desc": "J. N. Institute Of Medical Sciences",
+        "field_secrt": "F",
+        "dept_scope": null,
+        "dept_short": null,
+        "adm_dept": {
+            "adm_dept_cd": 18,
+            "adm_bdgt_cd": "18",
+            "adm_dept_desc": "Health & Family Welfare",
+            "adm_dept_cd_char": "18"
+        }
+    },
+    {
+        "adm_dept_cd": "44",
+        "field_dept_cd": 920,
+        "field_dept_desc": "Manipur Information Commission",
+        "field_secrt": "F",
+        "dept_scope": null,
+        "dept_short": null,
+        "adm_dept": {
+            "adm_dept_cd": 44,
+            "adm_bdgt_cd": "44",
+            "adm_dept_desc": "Administrative Reforms",
+            "adm_dept_cd_char": "44"
+        }
+    },
+    {
+        "adm_dept_cd": "5",
+        "field_dept_cd": 160,
+        "field_dept_desc": "Panchayat",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Panchayat",
+        "adm_dept": {
+            "adm_dept_cd": 5,
+            "adm_bdgt_cd": "5 ",
+            "adm_dept_desc": "Rural Development & Panchayati Raj",
+            "adm_dept_cd_char": "05"
+        }
+    },
+    {
+        "adm_dept_cd": "44",
+        "field_dept_cd": 919,
+        "field_dept_desc": "Manipur Staff Selection Commission",
+        "field_secrt": "F",
+        "dept_scope": null,
+        "dept_short": null,
+        "adm_dept": {
+            "adm_dept_cd": 44,
+            "adm_bdgt_cd": "44",
+            "adm_dept_desc": "Administrative Reforms",
+            "adm_dept_cd_char": "44"
+        }
+    },
+    {
+        "adm_dept_cd": "97",
+        "field_dept_cd": 0,
+        "field_dept_desc": "NIC ",
+        "field_secrt": null,
+        "dept_scope": "Own Dept",
+        "dept_short": "NIC ",
+        "adm_dept": {
+            "adm_dept_cd": 97,
+            "adm_bdgt_cd": "XX",
+            "adm_dept_desc": "NIC Admin Department",
+            "adm_dept_cd_char": "97"
+        }
+    },
+    {
+        "adm_dept_cd": "98",
+        "field_dept_cd": 0,
+        "field_dept_desc": "Other Goverment Bodies/ Institutions/ Local Sectors/ Private Sectors",
+        "field_secrt": null,
+        "dept_scope": "Own Dept",
+        "dept_short": "Other Goverment Bodi",
+        "adm_dept": {
+            "adm_dept_cd": 98,
+            "adm_bdgt_cd": "98",
+            "adm_dept_desc": "Other Goverment Bodies/ Institutions/ Local Sectors/ Private Sector",
+            "adm_dept_cd_char": "98"
+        }
+    },
+    {
+        "adm_dept_cd": "99",
+        "field_dept_cd": 0,
+        "field_dept_desc": "Not Applicable",
+        "field_secrt": null,
+        "dept_scope": "Own Dept",
+        "dept_short": "Not Applicable",
+        "adm_dept": {
+            "adm_dept_cd": 99,
+            "adm_bdgt_cd": "ZZ",
+            "adm_dept_desc": "Not Applicable",
+            "adm_dept_cd_char": "99"
+        }
+    },
+    {
+        "adm_dept_cd": "37",
+        "field_dept_cd": 2,
+        "field_dept_desc": "Test Dept",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Test Dept",
+        "adm_dept": {
+            "adm_dept_cd": 37,
+            "adm_bdgt_cd": "37",
+            "adm_dept_desc": "Test Admin",
+            "adm_dept_cd_char": "37"
+        }
+    },
+    {
+        "adm_dept_cd": "1",
+        "field_dept_cd": 132,
+        "field_dept_desc": "CADA",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "CADA",
+        "adm_dept": {
+            "adm_dept_cd": 1,
+            "adm_bdgt_cd": "1 ",
+            "adm_dept_desc": "Agriculture",
+            "adm_dept_cd_char": "01"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 524,
+        "field_dept_desc": "CMTW ",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "CMTW ",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 528,
+        "field_dept_desc": "Home Guards",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Home Guards",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 156,
+        "field_dept_desc": "Rehabilitation",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Rehabilitation",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "16",
+        "field_dept_cd": 127,
+        "field_dept_desc": "Employment",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Employment",
+        "adm_dept": {
+            "adm_dept_cd": 16,
+            "adm_bdgt_cd": "16",
+            "adm_dept_desc": "Labour",
+            "adm_dept_cd_char": "16"
+        }
+    },
+    {
+        "adm_dept_cd": "16",
+        "field_dept_cd": 128,
+        "field_dept_desc": "Labour",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Labour",
+        "adm_dept": {
+            "adm_dept_cd": 16,
+            "adm_bdgt_cd": "16",
+            "adm_dept_desc": "Labour",
+            "adm_dept_cd_char": "16"
+        }
+    },
+    {
+        "adm_dept_cd": "17",
+        "field_dept_cd": 144,
+        "field_dept_desc": "Prosecution",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Prosecution",
+        "adm_dept": {
+            "adm_dept_cd": 17,
+            "adm_bdgt_cd": "17",
+            "adm_dept_desc": "Law & Legislative Affairs",
+            "adm_dept_cd_char": "17"
+        }
+    },
+    {
+        "adm_dept_cd": "18",
+        "field_dept_cd": 122,
+        "field_dept_desc": "Family Welfare",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Family Welfare",
+        "adm_dept": {
+            "adm_dept_cd": 18,
+            "adm_bdgt_cd": "18",
+            "adm_dept_desc": "Health & Family Welfare",
+            "adm_dept_cd_char": "18"
+        }
+    },
+    {
+        "adm_dept_cd": "22",
+        "field_dept_cd": 152,
+        "field_dept_desc": "Planning  ",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Planning  ",
+        "adm_dept": {
+            "adm_dept_cd": 22,
+            "adm_bdgt_cd": "22",
+            "adm_dept_desc": "Planning",
+            "adm_dept_cd_char": "22"
+        }
+    },
+    {
+        "adm_dept_cd": "23",
+        "field_dept_cd": 141,
+        "field_dept_desc": "Power",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Power",
+        "adm_dept": {
+            "adm_dept_cd": 23,
+            "adm_bdgt_cd": "23",
+            "adm_dept_desc": "Power",
+            "adm_dept_cd_char": "23"
+        }
+    },
+    {
+        "adm_dept_cd": "29",
+        "field_dept_cd": 161,
+        "field_dept_desc": "Sericulture",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Sericulture",
+        "adm_dept": {
+            "adm_dept_cd": 29,
+            "adm_bdgt_cd": "29",
+            "adm_dept_desc": "Sericulture",
+            "adm_dept_cd_char": "29"
+        }
+    },
+    {
+        "adm_dept_cd": "30",
+        "field_dept_cd": 166,
+        "field_dept_desc": "Social Welfare",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Social Welfare",
+        "adm_dept": {
+            "adm_dept_cd": 30,
+            "adm_bdgt_cd": "30",
+            "adm_dept_desc": "Social Welfare",
+            "adm_dept_cd_char": "30"
+        }
+    },
+    {
+        "adm_dept_cd": "31",
+        "field_dept_cd": 167,
+        "field_dept_desc": "Tourism",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Tourism",
+        "adm_dept": {
+            "adm_dept_cd": 31,
+            "adm_bdgt_cd": "31",
+            "adm_dept_desc": "Tourism",
+            "adm_dept_cd_char": "31"
+        }
+    },
+    {
+        "adm_dept_cd": "33",
+        "field_dept_cd": 114,
+        "field_dept_desc": "Transport",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Transport",
+        "adm_dept": {
+            "adm_dept_cd": 33,
+            "adm_bdgt_cd": "33",
+            "adm_dept_desc": "Transport",
+            "adm_dept_cd_char": "33"
+        }
+    },
+    {
+        "adm_dept_cd": "34",
+        "field_dept_cd": 540,
+        "field_dept_desc": "Vigilance",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Vigilance",
+        "adm_dept": {
+            "adm_dept_cd": 34,
+            "adm_bdgt_cd": "34",
+            "adm_dept_desc": "Vigilance",
+            "adm_dept_cd_char": "34"
+        }
+    },
+    {
+        "adm_dept_cd": "36",
+        "field_dept_cd": 148,
+        "field_dept_desc": "Election",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Election",
+        "adm_dept": {
+            "adm_dept_cd": 36,
+            "adm_bdgt_cd": "36",
+            "adm_dept_desc": "Election",
+            "adm_dept_cd_char": "36"
+        }
+    },
+    {
+        "adm_dept_cd": "39",
+        "field_dept_cd": 889,
+        "field_dept_desc": "Relief and Disaster Management",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Relief and Disaster ",
+        "adm_dept": {
+            "adm_dept_cd": 39,
+            "adm_bdgt_cd": "39",
+            "adm_dept_desc": "Relief and Disaster Management",
+            "adm_dept_cd_char": "39"
+        }
+    },
+    {
+        "adm_dept_cd": "20",
+        "field_dept_cd": 126,
+        "field_dept_desc": "Mahud",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Mahud",
+        "adm_dept": {
+            "adm_dept_cd": 20,
+            "adm_bdgt_cd": "20",
+            "adm_dept_desc": "MAHUD",
+            "adm_dept_cd_char": "20"
+        }
+    },
+    {
+        "adm_dept_cd": "1",
+        "field_dept_cd": 133,
+        "field_dept_desc": "Agriculture",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Agriculture",
+        "adm_dept": {
+            "adm_dept_cd": 1,
+            "adm_bdgt_cd": "1 ",
+            "adm_dept_desc": "Agriculture",
+            "adm_dept_cd_char": "01"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 917,
+        "field_dept_desc": "Revenue",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Revenue",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "18",
+        "field_dept_cd": 899,
+        "field_dept_desc": "AYUSH",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "AYUSH",
+        "adm_dept": {
+            "adm_dept_cd": 18,
+            "adm_bdgt_cd": "18",
+            "adm_dept_desc": "Health & Family Welfare",
+            "adm_dept_cd_char": "18"
+        }
+    },
+    {
+        "adm_dept_cd": "20",
+        "field_dept_cd": 124,
+        "field_dept_desc": "Town Planning",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Town Planning",
+        "adm_dept": {
+            "adm_dept_cd": 20,
+            "adm_bdgt_cd": "20",
+            "adm_dept_desc": "MAHUD",
+            "adm_dept_cd_char": "20"
+        }
+    },
+    {
+        "adm_dept_cd": "4",
+        "field_dept_cd": 131,
+        "field_dept_desc": "Cooperation",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Cooperation",
+        "adm_dept": {
+            "adm_dept_cd": 4,
+            "adm_bdgt_cd": "4 ",
+            "adm_dept_desc": "Cooperation",
+            "adm_dept_cd_char": "04"
+        }
+    },
+    {
+        "adm_dept_cd": "38",
+        "field_dept_cd": 169,
+        "field_dept_desc": "Mobc",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "MOBC",
+        "adm_dept": {
+            "adm_dept_cd": 38,
+            "adm_bdgt_cd": "38",
+            "adm_dept_desc": "MOBC & SC",
+            "adm_dept_cd_char": "38"
+        }
+    },
+    {
+        "adm_dept_cd": "11",
+        "field_dept_cd": 130,
+        "field_dept_desc": "Food Civil Supply",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "FCS",
+        "adm_dept": {
+            "adm_dept_cd": 11,
+            "adm_bdgt_cd": "11",
+            "adm_dept_desc": "CAF & PD",
+            "adm_dept_cd_char": "11"
+        }
+    },
+    {
+        "adm_dept_cd": "12",
+        "field_dept_cd": 157,
+        "field_dept_desc": "Printing and Stationery, Manipur",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Print and Sta",
+        "adm_dept": {
+            "adm_dept_cd": 12,
+            "adm_bdgt_cd": "12",
+            "adm_dept_desc": "Manipur Secretariat",
+            "adm_dept_cd_char": "12"
+        }
+    },
+    {
+        "adm_dept_cd": "8",
+        "field_dept_cd": 105,
+        "field_dept_desc": "Institute of Finance Cell",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Fin Cell",
+        "adm_dept": {
+            "adm_dept_cd": 8,
+            "adm_bdgt_cd": "8 ",
+            "adm_dept_desc": "Finance",
+            "adm_dept_cd_char": "08"
+        }
+    },
+    {
+        "adm_dept_cd": "10",
+        "field_dept_cd": 135,
+        "field_dept_desc": "Ecology & Environment",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Eco and Env",
+        "adm_dept": {
+            "adm_dept_cd": 10,
+            "adm_bdgt_cd": "10",
+            "adm_dept_desc": "Forests & Environment",
+            "adm_dept_cd_char": "10"
+        }
+    },
+    {
+        "adm_dept_cd": "7",
+        "field_dept_cd": 121,
+        "field_dept_desc": "SCERT",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "SCERT",
+        "adm_dept": {
+            "adm_dept_cd": 7,
+            "adm_bdgt_cd": "7 ",
+            "adm_dept_desc": "Education",
+            "adm_dept_cd_char": "07"
+        }
+    },
+    {
+        "adm_dept_cd": "8",
+        "field_dept_cd": 111,
+        "field_dept_desc": "Small Savings",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Small Savings",
+        "adm_dept": {
+            "adm_dept_cd": 8,
+            "adm_bdgt_cd": "8 ",
+            "adm_dept_desc": "Finance",
+            "adm_dept_cd_char": "08"
+        }
+    },
+    {
+        "adm_dept_cd": "8",
+        "field_dept_cd": 149,
+        "field_dept_desc": "Excise",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Excise",
+        "adm_dept": {
+            "adm_dept_cd": 8,
+            "adm_bdgt_cd": "8 ",
+            "adm_dept_desc": "Finance",
+            "adm_dept_cd_char": "08"
+        }
+    },
+    {
+        "adm_dept_cd": "8",
+        "field_dept_cd": 150,
+        "field_dept_desc": "Taxation",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Taxation",
+        "adm_dept": {
+            "adm_dept_cd": 8,
+            "adm_bdgt_cd": "8 ",
+            "adm_dept_desc": "Finance",
+            "adm_dept_cd_char": "08"
+        }
+    },
+    {
+        "adm_dept_cd": "9",
+        "field_dept_cd": 159,
+        "field_dept_desc": "Fisheries",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Fisheries",
+        "adm_dept": {
+            "adm_dept_cd": 9,
+            "adm_bdgt_cd": "37",
+            "adm_dept_desc": "Fisheries",
+            "adm_dept_cd_char": "09"
+        }
+    },
+    {
+        "adm_dept_cd": "10",
+        "field_dept_cd": 136,
+        "field_dept_desc": "Forest",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Forest",
+        "adm_dept": {
+            "adm_dept_cd": 10,
+            "adm_bdgt_cd": "10",
+            "adm_dept_desc": "Forests & Environment",
+            "adm_dept_cd_char": "10"
+        }
+    },
+    {
+        "adm_dept_cd": "8",
+        "field_dept_cd": 112,
+        "field_dept_desc": "Lotteries",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Lotteries",
+        "adm_dept": {
+            "adm_dept_cd": 8,
+            "adm_bdgt_cd": "8 ",
+            "adm_dept_desc": "Finance",
+            "adm_dept_cd_char": "08"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 307,
+        "field_dept_desc": "Dy. Comm. Bishnupur",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Dy. Comm. Bishnupur",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "32",
+        "field_dept_cd": 197,
+        "field_dept_desc": "Adc",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Adc",
+        "adm_dept": {
+            "adm_dept_cd": 32,
+            "adm_bdgt_cd": "32",
+            "adm_dept_desc": "Art & Culture",
+            "adm_dept_cd_char": "32"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 301,
+        "field_dept_desc": "Dy. Comm. Chandel",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Dy. Comm. Chandel",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 305,
+        "field_dept_desc": "Dy. Comm. Churachandpur",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Dy. Comm. Churachand",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 303,
+        "field_dept_desc": "Dy. Comm. Imphal-East",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Dy. Comm. Imphal-Eas",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 304,
+        "field_dept_desc": "Dy. Comm. Imphal-West",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Dy. Comm. Imphal-Wes",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 309,
+        "field_dept_desc": "Dy. Comm. Senapati",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Dy. Comm. Senapati",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 308,
+        "field_dept_desc": "Dy. Comm. Tamenglong",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Dy. Comm. Tamenglong",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 302,
+        "field_dept_desc": "Dy. Comm. Thoubal",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Dy. Comm. Thoubal",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 306,
+        "field_dept_desc": "Dy. Comm. Ukhrul",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Dy. Comm. Ukhrul",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "97",
+        "field_dept_cd": 777,
+        "field_dept_desc": "Nicpune Demo",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Nicpune Demo",
+        "adm_dept": {
+            "adm_dept_cd": 97,
+            "adm_bdgt_cd": "XX",
+            "adm_dept_desc": "NIC Admin Department",
+            "adm_dept_cd_char": "97"
+        }
+    },
+    {
+        "adm_dept_cd": "97",
+        "field_dept_cd": 222,
+        "field_dept_desc": "Import to",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Import to",
+        "adm_dept": {
+            "adm_dept_cd": 97,
+            "adm_bdgt_cd": "XX",
+            "adm_dept_desc": "NIC Admin Department",
+            "adm_dept_cd_char": "97"
+        }
+    },
+    {
+        "adm_dept_cd": "79",
+        "field_dept_cd": 1,
+        "field_dept_desc": "District Admin Demo",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "District Admin Demo",
+        "adm_dept": {
+            "adm_dept_cd": 79,
+            "adm_bdgt_cd": "79",
+            "adm_dept_desc": "Manipur Demo",
+            "adm_dept_cd_char": "79"
+        }
+    },
+    {
+        "adm_dept_cd": "97",
+        "field_dept_cd": 0,
+        "field_dept_desc": "Import",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Import",
+        "adm_dept": {
+            "adm_dept_cd": 97,
+            "adm_bdgt_cd": "XX",
+            "adm_dept_desc": "NIC Admin Department",
+            "adm_dept_cd_char": "97"
+        }
+    },
+    {
+        "adm_dept_cd": "21",
+        "field_dept_cd": 916,
+        "field_dept_desc": "MPS",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "MPS",
+        "adm_dept": {
+            "adm_dept_cd": 21,
+            "adm_bdgt_cd": "21",
+            "adm_dept_desc": "Department Of Personnel",
+            "adm_dept_cd_char": "21"
+        }
+    },
+    {
+        "adm_dept_cd": "21",
+        "field_dept_cd": 203,
+        "field_dept_desc": "DP & AR(MSS)",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "DP & AR(MSS)",
+        "adm_dept": {
+            "adm_dept_cd": 21,
+            "adm_bdgt_cd": "21",
+            "adm_dept_desc": "Department Of Personnel",
+            "adm_dept_cd_char": "21"
+        }
+    },
+    {
+        "adm_dept_cd": "21",
+        "field_dept_cd": 892,
+        "field_dept_desc": "Jr MCS",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Jr MCS",
+        "adm_dept": {
+            "adm_dept_cd": 21,
+            "adm_bdgt_cd": "21",
+            "adm_dept_desc": "Department Of Personnel",
+            "adm_dept_cd_char": "21"
+        }
+    },
+    {
+        "adm_dept_cd": "97",
+        "field_dept_cd": 999,
+        "field_dept_desc": "Manipur Demo",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Manipur Demo",
+        "adm_dept": {
+            "adm_dept_cd": 97,
+            "adm_bdgt_cd": "XX",
+            "adm_dept_desc": "NIC Admin Department",
+            "adm_dept_cd_char": "97"
+        }
+    },
+    {
+        "adm_dept_cd": "21",
+        "field_dept_cd": 202,
+        "field_dept_desc": "DP & AR",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "DP & AR",
+        "adm_dept": {
+            "adm_dept_cd": 21,
+            "adm_bdgt_cd": "21",
+            "adm_dept_desc": "Department Of Personnel",
+            "adm_dept_cd_char": "21"
+        }
+    },
+    {
+        "adm_dept_cd": "1",
+        "field_dept_cd": 165,
+        "field_dept_desc": "Horticulture & Soil Conservation",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Horti and Soil ",
+        "adm_dept": {
+            "adm_dept_cd": 1,
+            "adm_bdgt_cd": "1 ",
+            "adm_dept_desc": "Agriculture",
+            "adm_dept_cd_char": "01"
+        }
+    },
+    {
+        "adm_dept_cd": "5",
+        "field_dept_cd": 137,
+        "field_dept_desc": "Rural Development",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "RD",
+        "adm_dept": {
+            "adm_dept_cd": 5,
+            "adm_bdgt_cd": "5 ",
+            "adm_dept_desc": "Rural Development & Panchayati Raj",
+            "adm_dept_cd_char": "05"
+        }
+    },
+    {
+        "adm_dept_cd": "6",
+        "field_dept_cd": 175,
+        "field_dept_desc": "Ashram (Tribal Dev.)",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Ashram",
+        "adm_dept": {
+            "adm_dept_cd": 6,
+            "adm_bdgt_cd": "6 ",
+            "adm_dept_desc": "TA & Hills",
+            "adm_dept_cd_char": "06"
+        }
+    },
+    {
+        "adm_dept_cd": "7",
+        "field_dept_cd": 117,
+        "field_dept_desc": "Adult Education",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Adult Edu",
+        "adm_dept": {
+            "adm_dept_cd": 7,
+            "adm_bdgt_cd": "7 ",
+            "adm_dept_desc": "Education",
+            "adm_dept_cd_char": "07"
+        }
+    },
+    {
+        "adm_dept_cd": "7",
+        "field_dept_cd": 118,
+        "field_dept_desc": "Technical Education",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Tech Edu",
+        "adm_dept": {
+            "adm_dept_cd": 7,
+            "adm_bdgt_cd": "7 ",
+            "adm_dept_desc": "Education",
+            "adm_dept_cd_char": "07"
+        }
+    },
+    {
+        "adm_dept_cd": "7",
+        "field_dept_cd": 119,
+        "field_dept_desc": "Education (S)",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Edu (S)",
+        "adm_dept": {
+            "adm_dept_cd": 7,
+            "adm_bdgt_cd": "7 ",
+            "adm_dept_desc": "Education",
+            "adm_dept_cd_char": "07"
+        }
+    },
+    {
+        "adm_dept_cd": "7",
+        "field_dept_cd": 120,
+        "field_dept_desc": "Education (U)",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Edu (U)",
+        "adm_dept": {
+            "adm_dept_cd": 7,
+            "adm_bdgt_cd": "7 ",
+            "adm_dept_desc": "Education",
+            "adm_dept_cd_char": "07"
+        }
+    },
+    {
+        "adm_dept_cd": "12",
+        "field_dept_cd": 104,
+        "field_dept_desc": "GAD, Secretariat",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "GAD",
+        "adm_dept": {
+            "adm_dept_cd": 12,
+            "adm_bdgt_cd": "12",
+            "adm_dept_desc": "Manipur Secretariat",
+            "adm_dept_cd_char": "12"
+        }
+    },
+    {
+        "adm_dept_cd": "12",
+        "field_dept_cd": 556,
+        "field_dept_desc": "Stationary, Secretariat",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Stationary",
+        "adm_dept": {
+            "adm_dept_cd": 12,
+            "adm_bdgt_cd": "12",
+            "adm_dept_desc": "Manipur Secretariat",
+            "adm_dept_cd_char": "12"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 558,
+        "field_dept_desc": "Directorate of Prison",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Prison",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 511,
+        "field_dept_desc": "Manipur Rifles",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "MR",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 523,
+        "field_dept_desc": "CID (Crime Branch)",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "CID CB",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 559,
+        "field_dept_desc": "C.I.D. Special Branch",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "CID SB",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 543,
+        "field_dept_desc": "Civil Defence",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Civil Def",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 529,
+        "field_dept_desc": "Rajya Sainik Board",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Rajya Sainik",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 531,
+        "field_dept_desc": "Manipur Police wireless",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Wireless",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 532,
+        "field_dept_desc": "Manipur Police Training School",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "MPTS",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 539,
+        "field_dept_desc": "Manipur Police",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "MP",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 153,
+        "field_dept_desc": "Manipur Fire Service, Manipur",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Fire Service",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    },
+    {
+        "adm_dept_cd": "16",
+        "field_dept_cd": 125,
+        "field_dept_desc": "Craftsmanship Training",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Craftsmanship",
+        "adm_dept": {
+            "adm_dept_cd": 16,
+            "adm_bdgt_cd": "16",
+            "adm_dept_desc": "Labour",
+            "adm_dept_cd_char": "16"
+        }
+    },
+    {
+        "adm_dept_cd": "17",
+        "field_dept_cd": 102,
+        "field_dept_desc": "Assembly Secretariat, Manipur",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Assembly Sect",
+        "adm_dept": {
+            "adm_dept_cd": 17,
+            "adm_bdgt_cd": "17",
+            "adm_dept_desc": "Law & Legislative Affairs",
+            "adm_dept_cd_char": "17"
+        }
+    },
+    {
+        "adm_dept_cd": "17",
+        "field_dept_cd": 145,
+        "field_dept_desc": "PP,Ghty-HC.",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "PP,Ghty-HC",
+        "adm_dept": {
+            "adm_dept_cd": 17,
+            "adm_bdgt_cd": "17",
+            "adm_dept_desc": "Law & Legislative Affairs",
+            "adm_dept_cd_char": "17"
+        }
+    },
+    {
+        "adm_dept_cd": "19",
+        "field_dept_cd": 158,
+        "field_dept_desc": "Minor Irrigation Department, Manipur",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "MI",
+        "adm_dept": {
+            "adm_dept_cd": 19,
+            "adm_bdgt_cd": "19",
+            "adm_dept_desc": "Minor Irrigation Department",
+            "adm_dept_cd_char": "19"
+        }
+    },
+    {
+        "adm_dept_cd": "24",
+        "field_dept_cd": 140,
+        "field_dept_desc": "P.H.E.D. ",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "PHED",
+        "adm_dept": {
+            "adm_dept_cd": 24,
+            "adm_bdgt_cd": "24",
+            "adm_dept_desc": "PHED",
+            "adm_dept_cd_char": "24"
+        }
+    },
+    {
+        "adm_dept_cd": "25",
+        "field_dept_cd": 115,
+        "field_dept_desc": "Public Works Department",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "PWD",
+        "adm_dept": {
+            "adm_dept_cd": 25,
+            "adm_bdgt_cd": "25",
+            "adm_dept_desc": "Public Works Department",
+            "adm_dept_cd_char": "25"
+        }
+    },
+    {
+        "adm_dept_cd": "26",
+        "field_dept_cd": 116,
+        "field_dept_desc": "Publicity & Information",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "DIPR",
+        "adm_dept": {
+            "adm_dept_cd": 26,
+            "adm_bdgt_cd": "26",
+            "adm_dept_desc": "Information & Public Relation",
+            "adm_dept_cd_char": "26"
+        }
+    },
+    {
+        "adm_dept_cd": "28",
+        "field_dept_cd": 168,
+        "field_dept_desc": "Science & Technology",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Sc and Tech",
+        "adm_dept": {
+            "adm_dept_cd": 28,
+            "adm_bdgt_cd": "28",
+            "adm_dept_desc": "Science and Technology",
+            "adm_dept_cd_char": "28"
+        }
+    },
+    {
+        "adm_dept_cd": "32",
+        "field_dept_cd": 163,
+        "field_dept_desc": "Art & Culture ",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Art and Cul",
+        "adm_dept": {
+            "adm_dept_cd": 32,
+            "adm_bdgt_cd": "32",
+            "adm_dept_desc": "Art & Culture",
+            "adm_dept_cd_char": "32"
+        }
+    },
+    {
+        "adm_dept_cd": "35",
+        "field_dept_cd": 143,
+        "field_dept_desc": "Youth Affairs and Sports",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "YAS",
+        "adm_dept": {
+            "adm_dept_cd": 35,
+            "adm_bdgt_cd": "35",
+            "adm_dept_desc": "Youth Affairs and Sports",
+            "adm_dept_cd_char": "35"
+        }
+    },
+    {
+        "adm_dept_cd": "40",
+        "field_dept_cd": 891,
+        "field_dept_desc": "Information Technology",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "MIT",
+        "adm_dept": {
+            "adm_dept_cd": 40,
+            "adm_bdgt_cd": "40",
+            "adm_dept_desc": "Information Technology",
+            "adm_dept_cd_char": "40"
+        }
+    },
+    {
+        "adm_dept_cd": "8",
+        "field_dept_cd": 113,
+        "field_dept_desc": "Treasuries And Accounts",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Treasuries",
+        "adm_dept": {
+            "adm_dept_cd": 8,
+            "adm_bdgt_cd": "8 ",
+            "adm_dept_desc": "Finance",
+            "adm_dept_cd_char": "08"
+        }
+    },
+    {
+        "adm_dept_cd": "36",
+        "field_dept_cd": 888,
+        "field_dept_desc": "State Election Commission, Manipur",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Election Com",
+        "adm_dept": {
+            "adm_dept_cd": 36,
+            "adm_bdgt_cd": "36",
+            "adm_dept_desc": "Election",
+            "adm_dept_cd_char": "36"
+        }
+    },
+    {
+        "adm_dept_cd": "8",
+        "field_dept_cd": 542,
+        "field_dept_desc": "Finance Commission",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Finance Com",
+        "adm_dept": {
+            "adm_dept_cd": 8,
+            "adm_bdgt_cd": "8 ",
+            "adm_dept_desc": "Finance",
+            "adm_dept_cd_char": "08"
+        }
+    },
+    {
+        "adm_dept_cd": "8",
+        "field_dept_cd": 110,
+        "field_dept_desc": "Local Fund Audit",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Local Fund",
+        "adm_dept": {
+            "adm_dept_cd": 8,
+            "adm_bdgt_cd": "8 ",
+            "adm_dept_desc": "Finance",
+            "adm_dept_cd_char": "08"
+        }
+    },
+    {
+        "adm_dept_cd": "5",
+        "field_dept_cd": 555,
+        "field_dept_desc": "Development Dept.(monitoring Cell)",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Monitoring",
+        "adm_dept": {
+            "adm_dept_cd": 5,
+            "adm_bdgt_cd": "5 ",
+            "adm_dept_desc": "Rural Development & Panchayati Raj",
+            "adm_dept_cd_char": "05"
+        }
+    },
+    {
+        "adm_dept_cd": "14",
+        "field_dept_cd": 138,
+        "field_dept_desc": "Commerce And Industries",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Com And Indus",
+        "adm_dept": {
+            "adm_dept_cd": 14,
+            "adm_bdgt_cd": "14",
+            "adm_dept_desc": "Commerce and Industries",
+            "adm_dept_cd_char": "14"
+        }
+    },
+    {
+        "adm_dept_cd": "44",
+        "field_dept_cd": 164,
+        "field_dept_desc": "State Academy of Training, Manipur",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "SAT",
+        "adm_dept": {
+            "adm_dept_cd": 44,
+            "adm_bdgt_cd": "44",
+            "adm_dept_desc": "Administrative Reforms",
+            "adm_dept_cd_char": "44"
+        }
+    },
+    {
+        "adm_dept_cd": "3",
+        "field_dept_cd": 103,
+        "field_dept_desc": "Manipur Public Service Commission.",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "MPSC",
+        "adm_dept": {
+            "adm_dept_cd": 3,
+            "adm_bdgt_cd": "3 ",
+            "adm_dept_desc": "Confidential and Cabinet",
+            "adm_dept_cd_char": "03"
+        }
+    },
+    {
+        "adm_dept_cd": "8",
+        "field_dept_cd": 904,
+        "field_dept_desc": "Directorate Of Management Information System",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "DMIS",
+        "adm_dept": {
+            "adm_dept_cd": 8,
+            "adm_bdgt_cd": "8 ",
+            "adm_dept_desc": "Finance",
+            "adm_dept_cd_char": "08"
+        }
+    },
+    {
+        "adm_dept_cd": "45",
+        "field_dept_cd": 151,
+        "field_dept_desc": "Economics N Statistics",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Eco N Stats",
+        "adm_dept": {
+            "adm_dept_cd": 45,
+            "adm_bdgt_cd": "45",
+            "adm_dept_desc": "Economics & Statistics",
+            "adm_dept_cd_char": "45"
+        }
+    },
+    {
+        "adm_dept_cd": "5",
+        "field_dept_cd": 905,
+        "field_dept_desc": "Rural Engineering Department (red)",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "RED",
+        "adm_dept": {
+            "adm_dept_cd": 5,
+            "adm_bdgt_cd": "5 ",
+            "adm_dept_desc": "Rural Development & Panchayati Raj",
+            "adm_dept_cd_char": "05"
+        }
+    },
+    {
+        "adm_dept_cd": "15",
+        "field_dept_cd": 162,
+        "field_dept_desc": "Water Resources Department",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "WRD",
+        "adm_dept": {
+            "adm_dept_cd": 15,
+            "adm_bdgt_cd": "15",
+            "adm_dept_desc": "Water Resources",
+            "adm_dept_cd_char": "15"
+        }
+    },
+    {
+        "adm_dept_cd": "14",
+        "field_dept_cd": 915,
+        "field_dept_desc": "Directorate of Handloom and Textiles",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Handl and Tex",
+        "adm_dept": {
+            "adm_dept_cd": 14,
+            "adm_bdgt_cd": "14",
+            "adm_dept_desc": "Commerce and Industries",
+            "adm_dept_cd_char": "14"
+        }
+    },
+    {
+        "adm_dept_cd": "41",
+        "field_dept_cd": 893,
+        "field_dept_desc": "High Court Of Manipur",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "High Court",
+        "adm_dept": {
+            "adm_dept_cd": 41,
+            "adm_bdgt_cd": "41",
+            "adm_dept_desc": "High Court",
+            "adm_dept_cd_char": "41"
+        }
+    },
+    {
+        "adm_dept_cd": "3",
+        "field_dept_cd": 101,
+        "field_dept_desc": "Governors Secretariat",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Gov Sectt",
+        "adm_dept": {
+            "adm_dept_cd": 3,
+            "adm_bdgt_cd": "3 ",
+            "adm_dept_desc": "Confidential and Cabinet",
+            "adm_dept_cd_char": "03"
+        }
+    },
+    {
+        "adm_dept_cd": "17",
+        "field_dept_cd": 898,
+        "field_dept_desc": "District And Sessions Judge",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "DSJ",
+        "adm_dept": {
+            "adm_dept_cd": 17,
+            "adm_bdgt_cd": "17",
+            "adm_dept_desc": "Law & Legislative Affairs",
+            "adm_dept_cd_char": "17"
+        }
+    },
+    {
+        "adm_dept_cd": "6",
+        "field_dept_cd": 129,
+        "field_dept_desc": "Tribal Affairs & Hills Department",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "TA Hills",
+        "adm_dept": {
+            "adm_dept_cd": 6,
+            "adm_bdgt_cd": "6 ",
+            "adm_dept_desc": "TA & Hills",
+            "adm_dept_cd_char": "06"
+        }
+    },
+    {
+        "adm_dept_cd": "80",
+        "field_dept_cd": 970,
+        "field_dept_desc": "Ag Office Manipur/Other Central Departments",
+        "field_secrt": "F",
+        "dept_scope": "All Dept",
+        "dept_short": "Ag Office",
+        "adm_dept": {
+            "adm_dept_cd": 80,
+            "adm_bdgt_cd": "80",
+            "adm_dept_desc": "Accountant General",
+            "adm_dept_cd_char": "80"
+        }
+    },
+    {
+        "adm_dept_cd": "21",
+        "field_dept_cd": 201,
+        "field_dept_desc": "Department Of Personnel",
+        "field_secrt": "F",
+        "dept_scope": "All Dept",
+        "dept_short": "DP",
+        "adm_dept": {
+            "adm_dept_cd": 21,
+            "adm_bdgt_cd": "21",
+            "adm_dept_desc": "Department Of Personnel",
+            "adm_dept_cd_char": "21"
+        }
+    },
+    {
+        "adm_dept_cd": "12",
+        "field_dept_cd": 107,
+        "field_dept_desc": "Manpower Planning",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Manpower Plng",
+        "adm_dept": {
+            "adm_dept_cd": 12,
+            "adm_bdgt_cd": "12",
+            "adm_dept_desc": "Manipur Secretariat",
+            "adm_dept_cd_char": "12"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 310,
+        "field_dept_desc": "Settlement & Land Records",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Settl and LR",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 109,
+        "field_dept_desc": "Stamps & Registration",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "Stamps and Reg",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 562,
+        "field_dept_desc": "Land Reform Cell",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "LRC",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "27",
+        "field_dept_cd": 561,
+        "field_dept_desc": "State Land Use Board",
+        "field_secrt": "N",
+        "dept_scope": "Own Dept",
+        "dept_short": "SLUB",
+        "adm_dept": {
+            "adm_dept_cd": 27,
+            "adm_bdgt_cd": "27",
+            "adm_dept_desc": "Revenue",
+            "adm_dept_cd_char": "27"
+        }
+    },
+    {
+        "adm_dept_cd": "2",
+        "field_dept_cd": 134,
+        "field_dept_desc": "Animal Husbandry And Veterinary",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Veterinary",
+        "adm_dept": {
+            "adm_dept_cd": 2,
+            "adm_bdgt_cd": "2 ",
+            "adm_dept_desc": "Animal Husbandry and Veterinary",
+            "adm_dept_cd_char": "02"
+        }
+    },
+    {
+        "adm_dept_cd": "18",
+        "field_dept_cd": 123,
+        "field_dept_desc": "Medical & Health Services ",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Med and Health ",
+        "adm_dept": {
+            "adm_dept_cd": 18,
+            "adm_bdgt_cd": "18",
+            "adm_dept_desc": "Health & Family Welfare",
+            "adm_dept_cd_char": "18"
+        }
+    },
+    {
+        "adm_dept_cd": "11",
+        "field_dept_cd": 139,
+        "field_dept_desc": "Weight & Measures",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Wt and Measures",
+        "adm_dept": {
+            "adm_dept_cd": 11,
+            "adm_bdgt_cd": "11",
+            "adm_dept_desc": "CAF & PD",
+            "adm_dept_cd_char": "11"
+        }
+    },
+    {
+        "adm_dept_cd": "13",
+        "field_dept_cd": 527,
+        "field_dept_desc": "Directorate Of Forensic Sciences, Manipur ",
+        "field_secrt": "F",
+        "dept_scope": "Own Dept",
+        "dept_short": "Forensic Sc",
+        "adm_dept": {
+            "adm_dept_cd": 13,
+            "adm_bdgt_cd": "13",
+            "adm_dept_desc": "Home",
+            "adm_dept_cd_char": "13"
+        }
+    }
+]

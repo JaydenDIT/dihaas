@@ -99,4 +99,15 @@ class CmisController extends Controller
 
         return response()->json($response, CmisApiService::$status_code);
     }
+
+    public function getAllDepartments()
+    {
+        $all_departments = CmisApiService::apiFieldDepartments();
+        return response()->json($all_departments);
+    }
+    public function getAllAdminDepartments()
+    {
+        $all_admin_departments = CmisApiService::apiAdminDepartments();
+        return response()->json($all_admin_departments);
+    }
 }
