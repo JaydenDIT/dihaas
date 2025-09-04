@@ -127,11 +127,13 @@ class Proforma extends Model
     //Get the departmental seniority index
     public function scopeGetDepartmentalSeniorityIndex($query, $proforma_id)
     {
+
         $user = Auth::user();
         $field_dept_cd = ($user->role_id == 999) ? null : $user->field_dept_cd;
 
-        /** Either if the user is super admin or if the user belongs to Department of Personel */
-        if (($user->role_id == 999) || ($user->field_dept_cd == 201)) {
+        /** Either if the user is super admin or DP Nodal or DP Assistant */
+
+        if (in_array($user->role->role_name, ['Superadmin', 'DP Nodal', 'DP Assistant'])) {
             $proforma = Proforma::find($proforma_id);
             $query->where('deceased_field_dept_cd', $proforma->deceased_field_dept_cd);
         } else if (!is_null($field_dept_cd)) {

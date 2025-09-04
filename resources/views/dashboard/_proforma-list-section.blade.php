@@ -7,7 +7,7 @@
                     <table class="table table-stripped table-bordered" id="application-table">
                         <thead>
                             <tr>
-                                <th rowspan="2">#</th>
+                                {{-- <th rowspan="2">#</th> --}}
                                 <th colspan="2" class="text-center">Seniority</th>
                                 <th rowspan="2">EIN</th>
                                 <th rowspan="2">Deceased Name</th>
@@ -46,9 +46,9 @@
             $(this).addClass('btn-success');
             $(".statusBtn[data-application_status='" + application_status + "']").addClass('btn-success');
             let columns = [
-                "DT_RowIndex|nonorderable|nonsearchable",
-                "overall_seniority_idx|nonorderable|nonsearchable",
-                "dept_seniority_idx|nonorderable|nonsearchable",
+                //"DT_RowIndex|nonorderable|nonsearchable",
+                "overall_seniority_idx|nonsearchable",
+                "dept_seniority_idx|nonsearchable",
                 "deceased_ein",
                 "deceased_emp_name",
                 "deceased_doe",
@@ -62,6 +62,7 @@
                 url: proforma_list_url,
                 message: "No Performa Found",
                 columns: columns,
+                order: [0, 'asc'],
                 param: {
                     application_status: application_status
                 },

@@ -12,7 +12,7 @@
                     </div>
                     <div class="ps-3">
                         <h6>{{ $totalAppCount }}</h6>
-                        <span class="text-muted small pt-2 ps-1">Total applications submitted so far.</span>
+                        <span class="text-muted small pt-2 ps-1">Total applications submitted.</span>
 
                     </div>
                 </div>

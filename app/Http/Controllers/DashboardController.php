@@ -30,10 +30,13 @@ class DashboardController extends Controller
     {
         //Get proforma counts
         list($totalAppCount, $pendingAppCount, $completedAppCount) = $this->getProformaCounts();
+        //getting notifications
+        $notifications = Notification::all();
         return view('dashboard.nodal-dashboard', compact(
             'totalAppCount',
             'pendingAppCount',
-            'completedAppCount'
+            'completedAppCount',
+            'notifications'
         ));
     }
 
