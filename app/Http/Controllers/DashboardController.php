@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\Proforma;
 use App\Models\Role;
 use App\Models\User;
@@ -37,6 +38,9 @@ class DashboardController extends Controller
             //Finding number of applications pending
             $completedAppCount = Proforma::where('proforma_status', '=', 'completed')->count();
 
+            //getting notifications
+            $notifications = Notification::all();
+
             return view(
                 'dashboard.superadmin-dashboard',
                 compact(
@@ -45,6 +49,7 @@ class DashboardController extends Controller
                     'totalAppCount',
                     'pendingAppCount',
                     'completedAppCount',
+                    'notifications',
                 )
             );
         }

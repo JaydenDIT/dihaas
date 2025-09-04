@@ -167,8 +167,11 @@
                         <h5 class="card-title">Notifications <span>| Today</span></h5>
 
                         <div class="activity">
+                            @if (count($notifications) == 0)
+                                <div class="text-muted">No notifications</div>
+                            @endif
 
-                            <div class="activity-item d-flex">
+                            {{-- <div class="activity-item d-flex">
                                 <div class="activite-label">32 min</div>
                                 <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                                 <div class="activity-content">
@@ -216,7 +219,7 @@
                                 <div class="activity-content">
                                     Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
                                 </div>
-                            </div><!-- End activity item-->
+                            </div><!-- End activity item--> --}}
 
                         </div>
 
