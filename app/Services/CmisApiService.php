@@ -73,17 +73,17 @@ class CmisApiService
     public static function apiAdminDepartments(int $adm_dept_cd = 0): array
     {
         if (env('CMIS_MODE', 'offline') === 'offline') {
+            //In case of offline, retrieve the results from stored json file
+
             if (!Storage::disk('private')->exists('allAdminDepartments.json')) {
                 return [];
             }
+
+            //Retrieve all the administrative departments from the json file
             $admin_departments = json_decode(Storage::disk('private')->get('allAdminDepartments.json'), true);
 
             if ($adm_dept_cd !== 0) {
-
-                /* return Storage::disk('private')->exists('departMentList.json')
-                    ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
-                    : []; */
-
+                //Get the exact administrative department if the code is not zero
                 $filtered_admn_dept = array_values(array_filter($admin_departments, function ($item) use ($adm_dept_cd) {
                     return ($item['adm_dept_cd'] == $adm_dept_cd);
                 }));
@@ -99,16 +99,19 @@ class CmisApiService
                     }));
 
                     if (!empty($filtered_departments)) {
-
+                        //If there are field departments found for the admin department
                         foreach ($filtered_departments as &$dept) {
                             unset($dept['adm_dept']);
                         }
+                        //then include those departments in the admin departments
                         $admn_dept['field_dept'] = $filtered_departments;
                     }
                 }
 
                 return $admn_dept;
             }
+
+            //Otherwise return all the available administrative departments
             return $admin_departments;
         } else {
             $payload = [];
@@ -134,9 +137,6 @@ class CmisApiService
 
             if ($field_dept_cd !== 0) {
 
-                /* return Storage::disk('private')->exists('departmentDetail.json')
-                    ? json_decode(Storage::disk('private')->get('departmentDetail.json'), true)
-                    : []; */
                 $filtered_depts = array_values(array_filter($departmentList, function ($item) use ($field_dept_cd) {
                     return ($field_dept_cd == $item['field_dept_cd']);
                 }));
