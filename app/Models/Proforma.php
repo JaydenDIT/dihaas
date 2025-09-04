@@ -94,7 +94,7 @@ class Proforma extends Model
                     'step3-completed',
                 ])->orWhereNull('mini_sequence');
             })
-            ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob")->get();
+            ->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob")->get();
         //get Only the proforma id and index
         $data = [];
         foreach ($list as $key => $item) {
@@ -114,7 +114,7 @@ class Proforma extends Model
                     'step3-completed',
                 ])->orWhereNull('mini_sequence');
             })
-            ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob")->get();
+            ->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob")->get();
         foreach ($list as $key => $item) {
             if ($item->proforma_id == $proforma_id) {
                 //returning the index
@@ -139,15 +139,15 @@ class Proforma extends Model
         }
 
         $list = $query->where('proforma_status', '!=', 'completed')
-                        ->where(function ($q) {
-                            $q->whereNotIn('mini_sequence', [
-                                'step1-completed',
-                                'step2-completed',
-                                'step3-completed',
-                            ])->orWhereNull('mini_sequence');
-                        })
-                        ->orderByRaw("expire_on_duty = 0, deceased_doe, created_at, applicant_dob")
-                        ->get();
+            ->where(function ($q) {
+                $q->whereNotIn('mini_sequence', [
+                    'step1-completed',
+                    'step2-completed',
+                    'step3-completed',
+                ])->orWhereNull('mini_sequence');
+            })
+            ->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob")
+            ->get();
         foreach ($list as $key => $item) {
             if ($item->proforma_id == $proforma_id) {
                 //returning the index
