@@ -11,7 +11,7 @@ class CmisApiService
 {
     private static string $cmis_token = '';
     private static string $cmis_api   = '';
-    public static int $status_code = 0;
+    public static int $status_code = 500; // By default
     public static $error_response = null;
 
     private static function init(): void
@@ -73,14 +73,43 @@ class CmisApiService
     public static function apiAdminDepartments(int $adm_dept_cd = 0): array
     {
         if (env('CMIS_MODE', 'offline') === 'offline') {
-            if ($adm_dept_cd !== 0) {
-                return Storage::disk('private')->exists('departMentList.json')
-                    ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
-                    : [];
+            if (!Storage::disk('private')->exists('allAdminDepartments.json')) {
+                return [];
             }
-            return Storage::disk('private')->exists('allAdmList.json')
-                ? json_decode(Storage::disk('private')->get('allAdmList.json'), true)
-                : [];
+            $admin_departments = json_decode(Storage::disk('private')->get('allAdminDepartments.json'), true);
+
+            if ($adm_dept_cd !== 0) {
+
+                /* return Storage::disk('private')->exists('departMentList.json')
+                    ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
+                    : []; */
+
+                $filtered_admn_dept = array_values(array_filter($admin_departments, function ($item) use ($adm_dept_cd) {
+                    return ($item['adm_dept_cd'] == $adm_dept_cd);
+                }));
+
+                $admn_dept = $filtered_admn_dept[0] ?? [];
+                if (!empty($admn_dept)) {
+                    //get field departments for the admin department code
+                    $allDepartmentList = Storage::disk('private')->exists('allDepartments.json')
+                        ? json_decode(Storage::disk('private')->get('allDepartments.json'), true)
+                        : [];
+                    $filtered_departments = array_values(array_filter($allDepartmentList, function ($item) use ($admn_dept) {
+                        return ($item['adm_dept_cd'] == $admn_dept['adm_dept_cd']);
+                    }));
+
+                    if (!empty($filtered_departments)) {
+
+                        foreach ($filtered_departments as &$dept) {
+                            unset($dept['adm_dept']);
+                        }
+                        $admn_dept['field_dept'] = $filtered_departments;
+                    }
+                }
+
+                return $admn_dept;
+            }
+            return $admin_departments;
         } else {
             $payload = [];
             if ($adm_dept_cd !== 0) {
@@ -98,15 +127,24 @@ class CmisApiService
     public static function apiFieldDepartments(int $field_dept_cd = 0): array
     {
         if (env('CMIS_MODE', 'offline') === 'offline') {
-            if ($field_dept_cd !== 0) {
-                return Storage::disk('private')->exists('departmentDetail.json')
-                    ? json_decode(Storage::disk('private')->get('departmentDetail.json'), true)
-                    : [];
-            }
-            $departMentList = Storage::disk('private')->exists('departMentList.json')
-                ? json_decode(Storage::disk('private')->get('departMentList.json'), true)
+
+            $departmentList = Storage::disk('private')->exists('allDepartments.json')
+                ? json_decode(Storage::disk('private')->get('allDepartments.json'), true)
                 : [];
-            return $departMentList['field_dept'] ?? [];
+
+            if ($field_dept_cd !== 0) {
+
+                /* return Storage::disk('private')->exists('departmentDetail.json')
+                    ? json_decode(Storage::disk('private')->get('departmentDetail.json'), true)
+                    : []; */
+                $filtered_depts = array_values(array_filter($departmentList, function ($item) use ($field_dept_cd) {
+                    return ($field_dept_cd == $item['field_dept_cd']);
+                }));
+
+                return $filtered_depts[0] ?? [];
+            }
+
+            return $departmentList;
         } else {
             $payload = [];
             if ($field_dept_cd !== 0) {

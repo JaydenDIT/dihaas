@@ -73,17 +73,15 @@ class CmisController extends Controller
         try {
             $result = CmisApiService::apiAdminDepartments($id);
 
-            usort($result['field_dept'], function ($a, $b) {
-                return strcasecmp($a['field_dept_desc'], $b['field_dept_desc']);
-            });
+            if (isset($result['field_dept'])) {
+                usort($result['field_dept'], function ($a, $b) {
+                    return strcasecmp($a['field_dept_desc'], $b['field_dept_desc']);
+                });
+            }
 
             return response()->json( //test
                 $result,
                 200
-            );
-            return response()->json(
-                $result->json(),
-                $result->status()
             );
         } catch (Exception $e) {
             return $this->sendResponse($e);
@@ -100,14 +98,33 @@ class CmisController extends Controller
         return response()->json($response, CmisApiService::$status_code);
     }
 
+    public function getDepartment(int $field_dept_cd = 0)
+    {
+        try {
+            $result = CmisApiService::apiFieldDepartments($field_dept_cd);
+            return response()->json($result, 200);
+        } catch (Exception $e) {
+            return $this->sendResponse($e);
+        }
+    }
+
     public function getAllDepartments()
     {
-        $all_departments = CmisApiService::apiFieldDepartments();
-        return response()->json($all_departments);
+        try {
+            $result = CmisApiService::apiFieldDepartments();
+            return response()->json($result, 200);
+        } catch (Exception $e) {
+            return $this->sendResponse($e);
+        }
     }
     public function getAllAdminDepartments()
     {
-        $all_admin_departments = CmisApiService::apiAdminDepartments();
-        return response()->json($all_admin_departments);
+
+        try {
+            $result = CmisApiService::apiAdminDepartments();
+            return response()->json($result, 200);
+        } catch (Exception $e) {
+            return $this->sendResponse($e);
+        }
     }
 }
