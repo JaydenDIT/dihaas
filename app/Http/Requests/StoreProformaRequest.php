@@ -69,6 +69,7 @@ class StoreProformaRequest extends FormRequest
             'applicant_mobile' => 'required|string|size:10',
             'applicant_email' => 'required|email|max:255',
             'applicant_sex' => 'required|in:male,female,transgender',
+            'proforma_submission_date' => 'nullable|date',
 
             // Other details
             'caste_id' => 'required|integer|exists:castes,caste_id',
