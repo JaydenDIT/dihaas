@@ -5,7 +5,7 @@ return [
             'menu_label'    => 'Dashboard',
             'menu_name'     => 'dashboard',
             'route'         => 'home',
-            'allowed_roles' => [77, 999], //arbitrary, anyone is allowed if empty array, 77 means for citizen
+            'allowed_roles' => [5, 6, 77, 999], //arbitrary, anyone is allowed if empty array, 77 means for citizen
             'sub_menus'     => [],
             'displayOrder'  => 1,
             'icon'          => 'bi bi-grid',
@@ -14,7 +14,7 @@ return [
             'menu_label'    => 'Dashboard',
             'menu_name'     => 'department_dashboard',
             'route'         => 'tasks.performa.all',
-            'allowed_roles' => [1, 2, 3, 4, 5, 6, 7, 8, 9], //Only for department users
+            'allowed_roles' => [1, 2, 3, 4, 7, 8, 9], //Only for department users
             'sub_menus'     => [],
             'displayOrder'  => 1,
             'icon'          => 'bi bi-grid',

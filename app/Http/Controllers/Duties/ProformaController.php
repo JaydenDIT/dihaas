@@ -19,6 +19,7 @@ use App\Services\ProcessMatcher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProformaController extends Controller
 {
@@ -204,5 +205,72 @@ class ProformaController extends Controller
             DB::rollBack();
             return response()->json(['message' => 'Transaction failed', 'error' => $e->getMessage()], 422);
         }
+    }
+
+    //Method to display overall proforma in data table
+    public function getProformaForDataTable(Request $request)
+    {
+        $application_status = $request->input('application_status');
+        $overallSeniorityIndex = Proforma::getOverallSeniorityList();
+
+        switch ($application_status) {
+            case 'all':
+                $data = Proforma::where(function ($query) {
+                    $query->whereNotIn('mini_sequence', [
+                        'step1-completed',
+                        'step2-completed',
+                        'step3-completed',
+                    ])->orWhereNull('mini_sequence');
+                })->get();
+                break;
+            case 'pending':
+                $data = Proforma::where(function ($query) {
+                    $query->whereNotIn('mini_sequence', [
+                        'step1-completed',
+                        'step2-completed',
+                        'step3-completed',
+                    ])->orWhereNull('mini_sequence');
+                })->where('proforma_status', '!=', 'completed')->get();
+                break;
+            case 'completed':
+                $data = Proforma::where('proforma_status', '=', 'completed')->get();
+                break;
+            default:
+                $data = Proforma::all();
+        }
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->editColumn('deceased_doe', function ($row) {
+                return date('d M, Y', strtotime($row->deceased_doe));
+            })
+            ->editColumn('created_at', function ($row) {
+                return date('d M, Y', strtotime($row->created_at));
+            })
+            ->editColumn('proforma_submission_date', function ($row) {
+                return date('d M, Y', strtotime($row->created_at));
+            })
+            ->editColumn('applicant_dob', function ($row) {
+                return date('d M, Y', strtotime($row->applicant_dob));
+            })
+            ->addColumn('remarks', function ($row) {
+                return $row->proformaLogs()
+                    ->whereIn('action_name', ['forwarded', 'rejected', 'reverted', 'completed'])
+                    ->latest()
+                    ->value('action_remark') ?? 'N/A';
+            })
+            ->addColumn('action', function ($row) {
+                return "<div class='d-flex gap-2'>" .
+                    "<a href='" . route('duties.proforma.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>View</a>" .
+                    "</div>";
+            })
+            ->addColumn('overall_seniority_idx', function ($row) use ($overallSeniorityIndex) {
+                return $overallSeniorityIndex[$row->proforma_id] ?? 'N/A';
+            })
+            ->addColumn('dept_seniority_idx', function ($row) {
+                return Proforma::getDepartmentalSeniorityIndex($row->proforma_id);
+            })
+            ->rawColumns(['status', 'action'])
+            ->make(true);
     }
 }

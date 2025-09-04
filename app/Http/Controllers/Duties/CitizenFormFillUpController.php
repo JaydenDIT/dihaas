@@ -166,13 +166,18 @@ class CitizenFormFillUpController extends Controller
     }
 
     //final form submission
-    public function forward($id)
+    public function forward(Request $request, $id)
     {
         try {
             DB::beginTransaction();
             // Find the proforma
             $proforma = Proforma::where('mini_sequence', 'step3-completed')->where('proforma_id', $id)->first();
             $this->authorize('canForward',  [$proforma, 'client_form_submission']);
+
+            //Final submission date for proforma
+            $proforma->proforma_submission_date = $request->input('proforma_submission_date', now()->toDateString());
+            $proforma->save();
+
             //WorkflowHandler comes after LogService
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
