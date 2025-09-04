@@ -115,7 +115,7 @@ class TaskApplicationController extends Controller
         $task = Task::findOrFail($tasks_id);
 
         $application_status = $request->input('application_status');
-
+        $overallSeniorityIndex = Proforma::getOverallSeniorityList();
 
         switch ($application_status) {
             case 'completed':
@@ -151,6 +151,12 @@ class TaskApplicationController extends Controller
                 return "<div class='d-flex gap-2'>
                             <a href='" . route('duties.proforma.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>view</a>
                         </div>";
+            })
+            ->addColumn('overall_seniority_idx', function ($row) use ($overallSeniorityIndex) {
+                return $overallSeniorityIndex[$row->proforma_id] ?? 'N/A';
+            })
+            ->addColumn('dept_seniority_idx', function ($row) {
+                return Proforma::getDepartmentalSeniorityIndex($row->proforma_id);
             })
             ->rawColumns(['status', 'action'])
             ->make(true);
