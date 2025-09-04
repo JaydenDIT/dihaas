@@ -169,6 +169,19 @@
                         <div class="activity">
                             @if (count($notifications) == 0)
                                 <div class="text-muted">No notifications</div>
+                            @else
+                                @foreach ($notifications as $notification)
+                                    <div class="activity-item d-flex">
+                                        <div class="activite-label">
+                                            {{ date('d M, Y', strtotime($notification->created_at)) }}</div>
+                                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                        <div class="activity-content">
+                                            {{ $notification->document_caption }}<a
+                                                href="{{ $notification->document_link }}" target="_blank"
+                                                class="fw-bold text-dark">Click to download</a>
+                                        </div>
+                                    </div>
+                                @endforeach
                             @endif
 
                             {{-- <div class="activity-item d-flex">
