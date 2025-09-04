@@ -6,16 +6,10 @@
     <section class="section dashboard">
         <div class="row">
             <!-- Left side columns -->
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 @include('dashboard._proforma-counts')
-            </div><!-- End Left side columns -->
-
-            <!-- Right side columns -->
-            <div class="col-lg-4">
-                <!-- Notifications -->
-                @include('dashboard._notifications', compact('notifications'))
-                <!-- End Notifications -->
-            </div><!-- End Right side columns -->
+            </div>
+            <!-- End Left side columns -->
         </div>
     </section>
     @include('dashboard._proforma-list-section')
