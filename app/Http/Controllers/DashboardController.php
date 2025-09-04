@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Proforma;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,7 +19,34 @@ class DashboardController extends Controller
         } else if ($user->role->role_group == "superadmin") {
             $officialCount = User::whereNotIn('role_id', Role::where('role_group', 'citizen')->pluck('role_id'))->count();
             $citizenCount = User::whereIn('role_id', Role::where('role_group', 'citizen')->pluck('role_id'))->count();
-            return view('dashboard.superadmin-dashboard', compact('officialCount', 'citizenCount'));
+
+            //Finding total applications submitted
+            $totalAppCount = Proforma::whereNotIn('mini_sequence', [
+                'step1-completed',
+                'step2-completed',
+                //'step3-completed',
+            ])->count();
+
+            //Finding number of applications pending
+            $pendingAppCount = Proforma::whereNotIn('mini_sequence', [
+                'step1-completed',
+                'step2-completed',
+                'step3-completed',
+            ])->where('proforma_status', '!=', 'completed')->count();
+
+            //Finding number of applications pending
+            $completedAppCount = Proforma::where('proforma_status', '=', 'completed')->count();
+
+            return view(
+                'dashboard.superadmin-dashboard',
+                compact(
+                    'officialCount',
+                    'citizenCount',
+                    'totalAppCount',
+                    'pendingAppCount',
+                    'completedAppCount',
+                )
+            );
         }
 
         return redirect(route('tasks.performa.all'));

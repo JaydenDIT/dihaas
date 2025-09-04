@@ -86,7 +86,7 @@
                                         <i class="bi bi-card-list"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>145</h6>
+                                        <h6>{{ $totalAppCount }}</h6>
                                         <span class="text-muted small pt-2 ps-1">Total applications submitted so far.</span>
 
                                     </div>
@@ -106,7 +106,7 @@
                                         <i class="bi bi-card-list"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>145</h6>
+                                        <h6>{{ $pendingAppCount }}</h6>
                                         <span class="text-muted small pt-2 ps-1">Applications under process</span>
 
                                     </div>
@@ -126,7 +126,7 @@
                                         <i class="bi bi-card-list"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>145</h6>
+                                        <h6>{{ $completedAppCount }}</h6>
                                         <span class="text-muted small pt-2 ps-1">Appointment given</span>
 
                                     </div>
