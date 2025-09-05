@@ -118,7 +118,8 @@ class CmisApiService
             if ($adm_dept_cd !== 0) {
                 $payload['adm_dept_cd'] = $adm_dept_cd;
             }
-
+            //Retrieve all available administrative departments via CMIS Api if $adm_dept_cd == 0, otherwise 
+            //fetch the specific administrative department of the $adm_dept_cd
             return self::safePost('/get-adm-department-list', $payload);
         }
     }
