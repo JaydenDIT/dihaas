@@ -46,17 +46,6 @@ Route::group(['prefix' => 'misc', 'as' => 'misc.option.'], function () {
     Route::get('/{id}/subdivision', [SubDivisionController::class, 'loadByDistrict'])->name('subdivision');
 });
 
-Route::group(['prefix' => 'password', 'as' => 'password.'], function () {
-    Route::get('/forgot', function () {
-        return "Under Development";
-    })->name('forgot');
-});
-Route::group(['prefix' => 'citizen', 'as' => 'citizen.'], function () {
-    Route::get('/register', function () {
-        return "Under development";
-    })->name('register');
-});
-
 /*** Route for sms ****/
 Route::post('smsLoginCitizenOTP', [SmsController::class, 'smsLoginCitizenOTP'])->name('smsLoginCitizenOTP');
 Route::get('smsLoginCitizenOTP', [SmsController::class, 'smsLoginCitizenOTP'])->name('smsLoginCitizenOTP');
