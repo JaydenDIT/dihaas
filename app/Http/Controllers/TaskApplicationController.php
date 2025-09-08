@@ -76,12 +76,12 @@ class TaskApplicationController extends Controller
                     $apps->where('create_by', $user->user_id);
                 }
                 // Here, we need to check if the authenticated user is super admin or if the user belongs to Department of Personel,
-                else if ($user->role->role_group == 'superadmin' || $user->field_dept_cd == '201') {
+                else if (in_array($user->role->role_name, ['Superadmin', 'DP Nodal', 'DP Assistant']))  {
                     //do nothing
                 } else if (!is_null($user->field_dept_cd)) {
                     //Otherwise, we should filter only the proformas that belong to department of the currently authenticated user.
                     $apps->where('deceased_field_dept_cd', $user->field_dept_cd);
-                }
+                }                
 
                 $result = $apps->get();
 
