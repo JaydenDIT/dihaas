@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Process;
 use App\Models\Proforma;
 use App\Models\Role;
 use App\Models\Task;
@@ -51,9 +52,27 @@ class TaskApplicationController extends Controller
         return view('duties.list_of_applications', compact('departments', 'task'));
     }
 
-    public function allProcess()
+    public function allProcess($process_name = null)
     {
+        //By default we are directly getting a process for Die-in-Harness
+        $process = (!is_null($process_name)) ? Process::where('process_name', $process_name)->first() : Process::first();
+
+        //We are giving error response if there are no processes in the system.
+        if (is_null($process)) {
+            return response()->view('errors.custom', ['title' => 'Process Error', 'message' => 'No processes found in the system. Please contact system administrator.'], 500);
+        }
+
+        // Getting all tasks under this process order by sequence from pivot table
+        $processTasks = $process ? $process->tasks() : collect();
+
+        //If there is no tasks in the precess then also, we will return error response
+        if ($processTasks->count() == 0) {
+            return response()->view('errors.custom', ['title' => 'Process Error', 'message' => 'No tasks found under the selected process. Please contact system administrator.'], 500);
+        }
+
+        // Get currently authenticated user
         $user = Auth::user();
+
         // Eager load role's duties (tasks) and their related processes
         $tasks = $user->role->duties()->with('processes')->get();
 
@@ -63,7 +82,6 @@ class TaskApplicationController extends Controller
             $forwarded = 0;
             $completed = 0;
             $total = 0;
-
 
             foreach ($task->processes as $process) {
                 $sequence = $process->pivot->sequence;
@@ -76,12 +94,12 @@ class TaskApplicationController extends Controller
                     $apps->where('create_by', $user->user_id);
                 }
                 // Here, we need to check if the authenticated user is super admin or if the user belongs to Department of Personel,
-                else if (in_array($user->role->role_name, ['Superadmin', 'DP Nodal', 'DP Assistant']))  {
+                else if (in_array($user->role->role_name, ['Superadmin', 'DP Nodal', 'DP Assistant'])) {
                     //do nothing
                 } else if (!is_null($user->field_dept_cd)) {
                     //Otherwise, we should filter only the proformas that belong to department of the currently authenticated user.
                     $apps->where('deceased_field_dept_cd', $user->field_dept_cd);
-                }                
+                }
 
                 $result = $apps->get();
 
@@ -104,8 +122,24 @@ class TaskApplicationController extends Controller
             ];
         }
 
-        $cards = array_values($taskSummaries); // Reset keys for blade loop
-        return view('duties.allprocess', compact('cards'));
+        //$cards = array_values($taskSummaries); // Reset keys for blade loop
+
+        //Now reordering the task based on processTasks sequence
+        $orderedCards = [];
+
+        $availableTaskIds = $processTasks->orderBy('sequence')->pluck('tasks.tasks_id')->toArray();
+        // Filter cards to include only those tasks that are part of the current process
+        foreach ($availableTaskIds as $taskId) {
+            if (isset($taskSummaries[$taskId])) {
+                $orderedCards[] = $taskSummaries[$taskId];
+            }
+        }
+
+        return view('duties.allprocess', [
+            'cards' => $orderedCards,
+            'process_name' => ucwords(str_replace('_', ' ', $process_name)),
+            'processes' => Process::all()
+        ]);
     }
 
 

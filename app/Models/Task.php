@@ -27,6 +27,7 @@ class Task extends Model
     public function processes()
     {
         return $this->belongsToMany(Process::class, 'process_tasks_mappings', 'tasks_id', 'process_id')
-            ->withPivot('sequence', 'allow_drop', 'allow_reject', 'allow_esign');
+            ->withPivot('sequence', 'allow_drop', 'allow_reject', 'allow_esign')
+            ->orderBy('sequence');;
     }
 }

@@ -24,16 +24,16 @@
         <h5 class="mb-2">Proforma</h5>
 
         <div class="row">
-            @forelse($cards as $card)
+            @forelse($cards as $key => $card)
                 <div class="col-sm-4">
 
-                    <div class="card mb-4 shadow-lg text-center">
+                    <div class="card mb-4 shadow-lg">
                         <div class="card-body">
-                            <div class="card-heading">
-                                <h6 class="card-title mb-3">{{ $card['task'] }}</h6>
+                            <div class="card-heading text-start">
+                                <h6 class="card-title mb-3">{{ $key + 1 }}. {{ $card['task'] }}</h6>
                             </div>
 
-                            <div class="row counts-section">
+                            <div class="row counts-section text-center">
                                 <div class="col">
                                     <div class="stat-box text-primary">
                                         <h5 class="font-bold">{{ $card['pending'] }}</h5>

@@ -20,7 +20,6 @@ class Process extends Model
     {
         return $this->belongsToMany(Task::class, 'process_tasks_mappings', 'process_id', 'tasks_id')
             ->withPivot('sequence', 'allow_drop', 'allow_reject', 'allow_esign')
-            ->withTimestamps()
             ->orderBy('sequence');
     }
 }
