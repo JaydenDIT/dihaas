@@ -115,6 +115,7 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.', 'middleware' => ['auth']]
             Route::get('/{tasks_id}/index', 'index')->name('uo.formfillup.index');
             Route::post('/{tasks_id}/ajaxlist', 'ajaxlist')->name('uo.formfillup.ajaxlist');
             Route::get('/{id}/view', 'view')->name('uo.formfillup.view');
+            Route::post('/{id}/verify', 'verify')->name('uo.formfillup.verify'); //duties.uo.formfillup.verify
             Route::post('/{id}/forward', 'forward')->name('uo.formfillup.forward'); //duties.uo.formfillup.forward
         });
     });

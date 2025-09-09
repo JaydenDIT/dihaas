@@ -127,7 +127,7 @@ class UoFormFillUpController extends Controller
                 'remarks' => 'nullable|string|max:600',
             ]);
             $proforma = Proforma::findOrFail($id);
-            $this->authorize('canPerformOnProforma',  [$proforma, 'verify_and_forward']);
+            //$this->authorize('canPerformOnProforma',  [$proforma, 'verify_and_forward']);
             if ($proforma->mini_sequence == "verified") {
                 return response()->json(['message' => 'Proforma already verified.'], 422);
             }

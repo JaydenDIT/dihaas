@@ -268,19 +268,7 @@
                                 <div class="d-flex justify-content-center gap-2 mt-5">
                                     @include('duties.tasks._revert')
                                     @include('duties.tasks._reject')
-
-
-                                    @if ($tasks['can_forward'])
-                                        @if ($tasks['next'])
-                                            <button class="btn btn-md btn-success" type="submit">Save and
-                                                Forward
-                                                to {{ $tasks['next']['tasks_name'] }} </button>
-                                        @else
-                                            <button class="btn btn-md btn-success" type="submit">Submit
-                                            </button>
-                                        @endif
-                                    @endif
-
+                                    @include('duties.tasks._forward')
                                 </div>
                             </form>
                         </div>
@@ -291,7 +279,6 @@
     </div>
 
     @include('duties.tasks.modals._confirmation_modal')
-
 @endsection
 
 @push('js')
@@ -303,7 +290,7 @@
         const revertUrl =
             "{{ route('tasks.performa.revert', ['proforma_id' => $proforma->proforma_id, 'tasks_id' => $tasks['current']['tasks_id']]) }}";
         const forwardUrl = "{{ route('duties.uo.formfillup.forward', $proforma->proforma_id) }}";
-        const verifyUrl = "{{ route('duties.verify.form.verify', $proforma->proforma_id) }}";
+        const verifyUrl = "{{ route('duties.uo.formfillup.verify', $proforma->proforma_id) }}";
         const confirmRedirectUrl = "{{ route('duties.verify.form.index', $tasks['current']['tasks_id']) }}";
         const proformaDashboardUrl = "{{ route('tasks.performa.all') }}";
 
