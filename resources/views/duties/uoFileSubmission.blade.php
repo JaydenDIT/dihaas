@@ -163,14 +163,18 @@
                     url: formSubmitUrl,
                     param: param,
                 });
+
+                console.log(res);
+
                 await showConfirmation({
                     title: "Successfully Save",
-                    text: "You can now Forward",
+                    text: res.message,
                     type: "success",
                     showCancelButton: false,
                 });
-                window.location.reload();
-
+                //window.location.reload();
+                //window.location.href = confirmRedirectUrl;
+                window.location.assign(confirmRedirectUrl)
 
             } catch (error) {
                 console.log(error);
