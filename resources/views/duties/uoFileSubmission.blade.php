@@ -56,8 +56,8 @@
             <div class="setup-content" id="step-4">
                 <div class="form-group">
                     <div class="bg-committee p-0 pb-5 rounded">
-                        <h5 class="py-2 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">UO File Submission
-                            Form </h5>
+                        <h5 class="py-2 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">Process for
+                            approval of appointment</h5>
                         <div class="col-sm-12 mb-3 px-4">
                             <form id="uo_file_submit_form" name="uo_file_submit_form">
                                 <div class="form-group">
@@ -75,7 +75,8 @@
                                         id="remarks" rows="3"></textarea>
                                 </div>
                                 <div class="form-group mt-4">
-                                    <label class="form-label" id="fileLabel">Choose File</label>
+                                    <label class="form-label" id="fileLabel">Choose File (Office Order / Minus of
+                                        meeting)</label>
 
                                     <input type="file" class="form-control" name="document_file"
                                         id="upload_document_file" required />

@@ -30,7 +30,7 @@ class DistrictsSeeder extends Seeder
             ['state_id' => 1, 'district_name' => 'Tengnoupal'],
             ['state_id' => 1, 'district_name' => 'Thoubal'],
             ['state_id' => 1, 'district_name' => 'Ukhrul'],
-            ['state_id' => 2, 'district_name' => 'Aizawl'],
+            /* ['state_id' => 2, 'district_name' => 'Aizawl'],
             ['state_id' => 2, 'district_name' => 'Champhai'],
             ['state_id' => 2, 'district_name' => 'Hnahthial'],
             ['state_id' => 2, 'district_name' => 'Kolasib'],
@@ -48,13 +48,13 @@ class DistrictsSeeder extends Seeder
             ['state_id' => 3, 'district_name' => 'Phek'],
             ['state_id' => 3, 'district_name' => 'Tuensang'],
             ['state_id' => 3, 'district_name' => 'Wokha'],
-            ['state_id' => 3, 'district_name' => 'Zunheboto'],
+            ['state_id' => 3, 'district_name' => 'Zunheboto'], */
         ];
 
         DB::table('districts')->upsert(
             $districts,
             ['district_name'], // unique column for check
-            ['state_id']       // update state_id if district already exists
+            ['state_id', 'district_name']       // update state_id if district already exists
         );
     }
 }

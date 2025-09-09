@@ -35,7 +35,7 @@ class CasteSeeder extends Seeder
         Caste::upsert(
             $castes,
             ['caste_name'], // unique
-            [] // nothing to update
+            ['caste_name'], // update if exists
         );
     }
 }

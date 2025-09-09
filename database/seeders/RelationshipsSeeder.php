@@ -31,11 +31,12 @@ class RelationshipsSeeder extends Seeder
             ['relationship_name' => 'Daughter'],
             ['relationship_name' => 'Unmarried Sister'],
             ['relationship_name' => 'Unmarried Brother'],
+            ['relationship_name' => 'Other'],
         ];
         Relationship::upsert(
             $relationships,
             ['relationship_name'],
-            []
+            ['relationship_name'],
         );
     }
 }
