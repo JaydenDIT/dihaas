@@ -6,9 +6,9 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-12">
                 <h3 class="row py-1 mb-3 text-center fw-bold">
-                    Proforma View
+                    Proforma View / UO Form Generation
                 </h3>
             </div>
         </div>
