@@ -19,8 +19,8 @@
                                 <th rowspan="2"></th>
                             </tr>
                             <tr>
-                                <th>Intra-Dept</th>
                                 <th>Inter-Dept</th>
+                                <th>Intra-Dept</th>
                             </tr>
                         </thead>
                     </table>
@@ -33,6 +33,10 @@
     <script>
         //route: duties.proforma.ajaxlist
         const proforma_list_url = "{{ route('duties.proforma.ajaxlist') }}";
+        var params = {};
+        @if (Auth::user()->role->role_group == 'citizen')
+            params['created_by'] = "{{ auth()->id() }}";
+        @endif
 
         $(document).ready(function() {
             setTimeout(function() {
@@ -45,6 +49,8 @@
             $(".statusBtn").removeClass('btn-success').addClass('btn-primary');
             $(this).addClass('btn-success');
             $(".statusBtn[data-application_status='" + application_status + "']").addClass('btn-success');
+
+            params['application_status'] = application_status;
             let columns = [
                 //"DT_RowIndex|nonorderable|nonsearchable",
                 "overall_seniority_idx|nonsearchable",
@@ -63,9 +69,7 @@
                 message: "No Performa Found",
                 columns: columns,
                 order: [0, 'asc'],
-                param: {
-                    application_status: application_status
-                },
+                param: params,
                 action: true,
             });
         }

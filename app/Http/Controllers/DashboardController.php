@@ -16,7 +16,7 @@ class DashboardController extends Controller
 
         $user = Auth::user();
         if ($user->role->role_group == "citizen") {
-            return view('dashboard.citizen-dashboard');
+            return $this->citizenDashboard();
         } else if ($user->role->role_group == "superadmin") {
             return $this->superAdminDashboard();
         } else if ($user->role->role_name == "DP Nodal" || $user->role->role_name == "DP Assistant") {
@@ -24,6 +24,20 @@ class DashboardController extends Controller
         }
 
         return redirect(route('tasks.performa.all'));
+    }
+
+    private function citizenDashboard()
+    {
+
+        list($totalAppCount, $pendingAppCount, $completedAppCount) = $this->getProformaCounts(auth()->id());
+        //getting notifications
+        $notifications = Notification::all();
+        return view('dashboard.citizen-dashboard', compact(
+            'totalAppCount',
+            'pendingAppCount',
+            'completedAppCount',
+            'notifications'
+        ));
     }
 
     private function nodalAndDpDashboard()
@@ -66,7 +80,7 @@ class DashboardController extends Controller
         );
     }
 
-    private function getProformaCounts()
+    private function getProformaCounts($created_by = null)
     {
         //Finding total applications submitted
         $totalAppCount = Proforma::where(function ($query) {
@@ -75,7 +89,8 @@ class DashboardController extends Controller
                 'step2-completed',
                 'step3-completed',
             ])->orWhereNull('mini_sequence');
-        })->count();
+        });
+
 
         //Finding number of applications pending
         $pendingAppCount = Proforma::where(function ($query) {
@@ -84,12 +99,18 @@ class DashboardController extends Controller
                 'step2-completed',
                 'step3-completed',
             ])->orWhereNull('mini_sequence');
-        })->where('proforma_status', '!=', 'completed')->count();
+        })->where('proforma_status', '!=', 'completed');
 
 
         //Finding number of applications pending
-        $completedAppCount = Proforma::where('proforma_status', '=', 'completed')->count();
+        $completedAppCount = Proforma::where('proforma_status', '=', 'completed');
 
-        return [$totalAppCount, $pendingAppCount, $completedAppCount];
+        if (auth()->user()->role->role_group == 'citizen') {
+            $totalAppCount = $totalAppCount->where('create_by', $created_by);
+            $pendingAppCount = $pendingAppCount->where('create_by', $created_by);
+            $completedAppCount = $completedAppCount->where('create_by', $created_by);
+        }
+
+        return [$totalAppCount->count(), $pendingAppCount->count(), $completedAppCount->count()];
     }
 }

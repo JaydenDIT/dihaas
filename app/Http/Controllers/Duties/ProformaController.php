@@ -207,37 +207,53 @@ class ProformaController extends Controller
         }
     }
 
+    //method to prepare data for data table and returns data
+    private function prepareDataForDataTable($application_status, $created_by = null)
+    {
+        switch ($application_status) {
+            case 'all':
+                $query = Proforma::where(function ($qry) {
+                    $qry->whereNotIn('mini_sequence', [
+                        'step1-completed',
+                        'step2-completed',
+                        'step3-completed',
+                    ])->orWhereNull('mini_sequence');
+                });
+                break;
+            case 'pending':
+                $query = Proforma::where(function ($qry) {
+                    $qry->whereNotIn('mini_sequence', [
+                        'step1-completed',
+                        'step2-completed',
+                        'step3-completed',
+                    ])->orWhereNull('mini_sequence');
+                })->where('proforma_status', '!=', 'completed');
+                break;
+            case 'completed':
+                $query = Proforma::where('proforma_status', '=', 'completed');
+                break;
+            default:
+                if (!empty($created_by)) {
+                    return Proforma::where('create_by', $created_by)->get();
+                }
+                return Proforma::all();
+                // Do nothing
+        }
+
+        if (!empty($created_by)) {
+            return $query->where('create_by', $created_by)->get();
+        }
+        return $query->get();
+    }
+
     //Method to display overall proforma in data table
     public function getProformaForDataTable(Request $request)
     {
         $application_status = $request->input('application_status');
+        $created_by = $request->input('created_by', null);
         $overallSeniorityIndex = Proforma::getOverallSeniorityList();
 
-        switch ($application_status) {
-            case 'all':
-                $data = Proforma::where(function ($query) {
-                    $query->whereNotIn('mini_sequence', [
-                        'step1-completed',
-                        'step2-completed',
-                        'step3-completed',
-                    ])->orWhereNull('mini_sequence');
-                })->get();
-                break;
-            case 'pending':
-                $data = Proforma::where(function ($query) {
-                    $query->whereNotIn('mini_sequence', [
-                        'step1-completed',
-                        'step2-completed',
-                        'step3-completed',
-                    ])->orWhereNull('mini_sequence');
-                })->where('proforma_status', '!=', 'completed')->get();
-                break;
-            case 'completed':
-                $data = Proforma::where('proforma_status', '=', 'completed')->get();
-                break;
-            default:
-                $data = Proforma::all();
-        }
+        $data = $this->prepareDataForDataTable($application_status, $created_by);
 
         return DataTables::of($data)
             ->addIndexColumn()
