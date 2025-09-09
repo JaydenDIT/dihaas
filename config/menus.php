@@ -148,7 +148,7 @@ return [
             'allowed_roles' => [999], //Only superadmin
             'sub_menus'     => [],
             'displayOrder'  => 1,
-            'icon'          => 'bi bi-person',
+            'icon'          => 'bi bi-person-plus',
         ],
         [
             'menu_label'    => 'Users',
