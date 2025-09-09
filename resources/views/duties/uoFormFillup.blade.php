@@ -148,8 +148,8 @@
                                                 <option value="">Select Post</option>
                                                 @foreach ($preferredPosts as $post)
                                                     <option value="{{ $post['request_dsg_srno'] }}"
-                                                        data-dept="{{ $proforma->deceased_field_dept_desc }}"
-                                                        data-dept_cd="{{ $proforma->deceased_field_dept_cd }}"
+                                                        data-dept="{{ $post['request_field_dept_desc'] }}"
+                                                        data-dept_cd="{{ $post['request_field_dept_cd'] }}"
                                                         data-adm_dept_cd="{{ $post['request_adm_dept_cd'] }}"
                                                         data-adm_dept_desc="{{ $post['request_adm_dept_desc'] }}"
                                                         data-group_code="{{ $post['request_group_code'] }}">
