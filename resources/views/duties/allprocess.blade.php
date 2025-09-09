@@ -21,7 +21,7 @@
 
 @section('content')
     <div class="container">
-        <h5 class="mb-2">Proforma</h5>
+        <h5 class="mb-2">{{ $process_name ? 'Jobs for ' . $process_name : 'Proforma jobs' }}</h5>
 
         <div class="row">
             @forelse($cards as $key => $card)

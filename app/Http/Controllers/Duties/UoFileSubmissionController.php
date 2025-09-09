@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Duties;
 
 use App\Http\Controllers\Controller;
 use App\Models\Proforma;
+use App\Models\Remark;
 use App\Models\Task;
 use App\Models\UoFileSubmission;
 use App\Services\CmisApiService;
@@ -97,8 +98,16 @@ class UoFileSubmissionController extends Controller
         $proforma = Proforma::findOrFail($id);
         $total_step = 4;
         $tasks = getPrevNextTasks($id);
+        $remarks = Remark::where('is_active', 1)->get();
         $this->authorize('canPerformOnProforma',  [$proforma, 'uo_file_submission']);
-        return view('duties.uoFileSubmission', compact('proforma', 'total_step', 'tasks'));
+
+        $doc = UoFileSubmission::where('proforma_id', $id)
+            ->first();
+
+        // Whether UO Document file is submitted and exists in storage
+        $doc_submitted = ($doc && Storage::disk('public')->exists($doc->file_path));
+
+        return view('duties.uoFileSubmission', compact('proforma', 'total_step', 'tasks', 'remarks', 'doc_submitted'));
     }
 
 
@@ -134,12 +143,16 @@ class UoFileSubmissionController extends Controller
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => Auth::user()->user_id,
-                'action_name' => 'file_uploaded',
-                'action_remark' => $request->remarks,
+                'action_name' => 'forwarded', //'file_uploaded',
+                'action_remark' => $request->remarks ?? 'UO file submitted.',
                 'process_sequence' => $proforma->process_sequence
             ]);
+
+            //WorkflowHandler comes after LogService            
+            WorkflowHandler::forwardApplication($proforma);
+
             DB::commit();
-            return response()->json(['message' => 'Proforma verified successfully.'], 200);
+            return response()->json(['message' => 'UO file submitted and proforma has been forwarded successfully.'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Error verifying proforma: ' . $e->getMessage()], 422);

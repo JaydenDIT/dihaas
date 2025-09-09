@@ -52,14 +52,22 @@ class TaskApplicationController extends Controller
         return view('duties.list_of_applications', compact('departments', 'task'));
     }
 
-    public function allProcess($process_name = null)
+    public function allProcess(Request $request)
     {
-        //By default we are directly getting a process for Die-in-Harness
-        $process = (!is_null($process_name)) ? Process::where('process_name', $process_name)->first() : Process::first();
-
-        //We are giving error response if there are no processes in the system.
-        if (is_null($process)) {
-            return response()->view('errors.custom', ['title' => 'Process Error', 'message' => 'No processes found in the system. Please contact system administrator.'], 500);
+        $process_name = $request->input('process_name', null);
+        //By default we are directly getting a process for process_name
+        if (!is_null($process_name)) {
+            $process = Process::where('process_name', $process_name)->first();
+            //We are giving error response if there are no processes in the system.
+            if (is_null($process)) {
+                return response()->view('errors.custom', ['title' => 'Process Error', 'message' => 'No such processe called \'' . $process_name . '\' found in the system. Please contact system administrator.'], 500);
+            }
+        } else {
+            //We are giving error response if there are no processes in the system.
+            $process = Process::first();
+            if (is_null($process)) {
+                return response()->view('errors.custom', ['title' => 'Process Error', 'message' => 'No processes found in the system. Please contact system administrator.'], 500);
+            }
         }
 
         // Getting all tasks under this process order by sequence from pivot table
@@ -137,7 +145,7 @@ class TaskApplicationController extends Controller
 
         return view('duties.allprocess', [
             'cards' => $orderedCards,
-            'process_name' => ucwords(str_replace('_', ' ', $process_name)),
+            'process_name' => ucwords(str_replace('_', ' ', $process->process_name)),
             'processes' => Process::all()
         ]);
     }

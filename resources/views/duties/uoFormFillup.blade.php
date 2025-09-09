@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-sm-4">
                 <h3 class="row py-1 mb-3 text-center fw-bold">
-                    Proforma View
+                    Proforma View / UO Form Fill Up
                 </h3>
             </div>
         </div>
@@ -290,7 +290,7 @@
         </div>
     </div>
 
-    {{-- @include('duties.tasks.modals._confirmation_modal') --}}
+    @include('duties.tasks.modals._confirmation_modal')
 
 @endsection
 
