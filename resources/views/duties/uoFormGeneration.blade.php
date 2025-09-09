@@ -116,6 +116,7 @@
                                         <div class="d-flex gap-1.5 text-center">
                                             <button type="submit" class="btn btn-primary btn-sm"
                                                 title="Click to e-Sign the UO Generated document">E-Sign</button>
+                                            &nbsp;
                                             <button type="button" class="btn btn-success btn-sm" id="uploadSignedUO-btn"
                                                 title="Upload the signed UO Generated document">Upload</button>
                                         </div>
