@@ -121,17 +121,17 @@ class UoFileApprovalController extends Controller
         try {
             $request->validate([
                 'remarks' => 'nullable|string|max:600',
-                'dp_nodal_user_id' => 'required|exists:users,user_id',
+                //'dp_nodal_user_id' => 'required|exists:users,user_id',
             ]);
 
             //Getting the proforma and uo file submission detail
             $proforma = Proforma::findOrFail($id);
             $this->authorize('canForward', [$proforma, 'uo_file_approval']);
-            $uo_file_submission = UoFileSubmission::where('proforma_id', $id)->first();
+            //$uo_file_submission = UoFileSubmission::where('proforma_id', $id)->first();
 
             DB::beginTransaction();
-            $uo_file_submission->verified_by = $request->dp_nodal_user_id;
-            $uo_file_submission->save();
+            //$uo_file_submission->verified_by = $request->dp_nodal_user_id;
+            //$uo_file_submission->save();
 
             //WorkflowHandler comes after LogService
             LogService::addProformaLog([
