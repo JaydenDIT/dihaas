@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 class UoGeneration extends Model
 {
     use HasFactory;
+    protected $table = 'uo_generations';
+    protected $primaryKey = 'uo_generation_id';
 
     protected $fillable = [
         'proforma_id',

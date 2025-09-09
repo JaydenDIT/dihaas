@@ -24,6 +24,7 @@ class UoFormFillupRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'proforma_id' => 'required',
             'post_option' => 'required|in:applicant-prefered,department-prefered',
 
             // If applicant-prefered

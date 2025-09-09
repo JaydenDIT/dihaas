@@ -15,8 +15,8 @@
             <th rowspan="2">Action</th>
         </tr>
         <tr>
-            <th>Intra-Dept.</th>
             <th>Inter-Dept.</th>
+            <th>Intra-Dept.</th>
         </tr>
     </thead>
     <tbody></tbody>

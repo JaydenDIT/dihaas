@@ -98,6 +98,9 @@
                             <form id="uo_form_fillup" name="uo_form_fillup" method="POST"
                                 action="{{ route('duties.uo.formfillup.forward', $proforma->proforma_id) }}">
                                 @csrf
+                                <input type="hidden" name="proforma_id" value="{{ $proforma->proforma_id }}">
+
+                                {{-- When applicant's choice is available --}}
                                 <div class="row">
                                     <div class=" col-sm-4 form-check">
                                         <input class="form-check-input" type="radio" name="post_option"
@@ -268,7 +271,22 @@
                                 <div class="d-flex justify-content-center gap-2 mt-5">
                                     @include('duties.tasks._revert')
                                     @include('duties.tasks._reject')
-                                    @include('duties.tasks._forward')
+                                    {{-- @include('duties.tasks._forward') --}}
+                                    @if ($tasks['can_forward'])
+                                        @if ($tasks['next'])
+                                            <button type="submit" class="btn btn-md btn-success btn-sm"
+                                                data-bs-html="true" data-bs-toggle="tooltip" data-bs-placement="right"
+                                                title="Forward to next step: <u>{{ $tasks['next']['tasks_name'] }}</u>. Click to forward.">
+                                                Forward
+                                            </button>
+                                        @else
+                                            <button type="submit" class="btn btn-md btn-success btn-sm"
+                                                data-bs-html="true" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                title="You are at the final step, clicking this will complete the process.">
+                                                Submit
+                                            </button>
+                                        @endif
+                                    @endif
                                 </div>
                             </form>
                         </div>
@@ -442,14 +460,19 @@
                     if (result.isConfirmed) {
                         //document.forms['uo_form_fillup'].submit();
                         var formData = new FormData(document.forms['uo_form_fillup']);
+                        console.log('Forwarding to url:', document.forms['uo_form_fillup'].action);
+                        //return;
                         $.ajax({
                             url: document.forms['uo_form_fillup'].action,
                             data: formData,
+                            async: false,
                             type: document.forms['uo_form_fillup'].method,
-                            contentType: "application/json",
+                            //contentType: "application/json",
+                            Accept: "application/json",
                             processData: false,
                             contentType: false,
                             success: function(response) {
+                                console.log(response);
                                 Swal.fire({
                                     title: "Done!",
                                     text: response.message,

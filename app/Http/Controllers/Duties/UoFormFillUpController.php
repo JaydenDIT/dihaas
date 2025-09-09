@@ -188,7 +188,7 @@ class UoFormFillUpController extends Controller
             $preference = str_replace('-', '_', $validated['post_option']);
 
             $params = [];
-            $params['proforma_id'] = $data['proforma_id'];
+            //$params['proforma_id'] = $data['proforma_id'];
             $params['alloted_adm_dept_cd'] = $data[$preference . '_adm_dept_cd'];
             $params['alloted_adm_dept_desc'] = $data[$preference . '_adm_dept_desc'];
             $params['alloted_field_dept_cd'] = $data[$preference . '_dept_cd'];
@@ -216,16 +216,10 @@ class UoFormFillUpController extends Controller
             ]);
             WorkflowHandler::forwardApplication($proforma);
             DB::commit();
-            if ($request->wantsJson()) {
-                return response()->json(['message' => 'Proforma forwarded successfully.'], 200);
-            }
-            return redirect()->back()->with('success', 'Proforma forwarded successfully.');
+            return response()->json(['message' => 'Proforma forwarded successfully.'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            if ($request->wantsJson()) {
-                return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
-            }
-            return redirect()->back()->with('error', 'Error forwarding proforma: ' . $e->getMessage());
+            return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
         }
     }
 }
