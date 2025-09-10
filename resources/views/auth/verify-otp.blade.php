@@ -51,6 +51,7 @@
         let countdown = 30; // seconds
         const countdownEl = document.getElementById('countdown');
         const resendBtn = document.getElementById('resendOtpBtn');
+        const otp = document.getElementById('otp');
 
         const timer = setInterval(() => {
             countdown--;
@@ -61,5 +62,9 @@
                 countdownEl.textContent = "";
             }
         }, 1000);
+
+        if (otp) {
+            otp.focus();
+        }
     </script>
 @endsection
