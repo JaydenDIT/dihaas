@@ -65,6 +65,9 @@ class VerifyAndForwardController extends Controller
             ->editColumn('created_at', function ($row) {
                 return date('d M, Y', strtotime($row->created_at));
             })
+            ->editColumn('proforma_submission_date', function ($row) {
+                return date('d M, Y', strtotime($row->proforma_submission_date));
+            })
             ->editColumn('applicant_dob', function ($row) {
                 return date('d M, Y', strtotime($row->applicant_dob));
             })
@@ -162,6 +165,80 @@ class VerifyAndForwardController extends Controller
             return response()->json(['message' => 'Proforma forwarded successfully.'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+            return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
+        }
+    }
+
+
+    //Verification of multiple proformas in bulk
+    public function bulkVerify(Request $request)
+    {
+        // Testing response
+        // return response()->json(['message' => 'Reached bulk verify method', 'data' => $request->all()], 200);
+
+        DB::beginTransaction();
+        $request->validate([
+            'selected_proforma' => 'required|array|min:1',
+            'selected_proforma.*' => 'exists:proforma,proforma_id',
+            'remarks' => 'nullable|string|max:600',
+        ]);
+        try {
+            $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
+            foreach ($proformas as $proforma) {
+                $this->authorize('canForward',  [$proforma, 'verify_and_forward']);
+                $proforma->mini_sequence = "verified";
+                $proforma->save();
+
+                //WorkflowHandler comes after LogService
+                LogService::addProformaLog([
+                    'proforma_id' => $proforma->proforma_id,
+                    'action_by' => Auth::user()->user_id,
+                    'action_name' => 'verified',
+                    'action_remark' => $request->remarks,
+                    'process_sequence' => $proforma->process_sequence
+                ]);
+            }
+            DB::commit();
+            return response()->json(['message' => 'Selected Proformas forwarded successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
+        }
+    }
+
+    //Forwarding for multiple proformas in bulk
+    public function bulkForward(Request $request)
+    {
+
+        // Testing response
+        // return response()->json(['message' => 'Reached bulk forward method', 'data' => $request->all()], 200);
+
+
+        DB::beginTransaction();
+        $request->validate([
+            'selected_proforma' => 'required|array|min:1',
+            'selected_proforma.*' => 'exists:proforma,proforma_id',
+            'remarks' => 'nullable|string|max:600',
+        ]);
+        try {
+            $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
+            foreach ($proformas as $proforma) {
+                $this->authorize('canForward',  [$proforma, 'verify_and_forward']);
+
+                //WorkflowHandler comes after LogService
+                LogService::addProformaLog([
+                    'proforma_id' => $proforma->proforma_id,
+                    'action_by' => Auth::user()->user_id,
+                    'action_name' => 'forwarded',
+                    'action_remark' => $request->remarks,
+                    'process_sequence' => $proforma->process_sequence
+                ]);
+                WorkflowHandler::forwardApplication($proforma);
+            }
+            DB::commit();
+            return response()->json(['message' => 'Selected Proformas forwarded successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
             return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
         }
     }

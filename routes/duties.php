@@ -69,7 +69,10 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.', 'middleware' => ['auth']]
             Route::get('/{id}/view', 'viewVerifyAndForward')->name('verify.form.view');
 
             Route::post('/{id}/verify', 'verify')->name('verify.form.verify');
+            Route::post('/verify-in-bulk', 'bulkVerify')->name('verify.form.bulkVerify'); //duties.verify.form.bulkVerify
+
             Route::post('/{id}/forward', 'forward')->name('verify.form.forward');
+            Route::post('/forward-in-bulk', 'bulkForward')->name('verify.form.bulkForward'); //duties.verify.form.bulkForward
         });
     });
     Route::group(['prefix' => 'verify/document'], function () {

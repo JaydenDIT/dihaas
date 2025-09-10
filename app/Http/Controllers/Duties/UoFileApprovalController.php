@@ -68,6 +68,10 @@ class UoFileApprovalController extends Controller
             ->addIndexColumn()
             ->editColumn('deceased_doe', fn($row) => $row->deceased_doe ? date('d M, Y', strtotime($row->deceased_doe)) : 'N/A')
             ->editColumn('created_at', fn($row) => $row->created_at ? date('d M, Y', strtotime($row->created_at)) : 'N/A')
+
+            ->editColumn('proforma_submission_date', function ($row) {
+                return date('d M, Y', strtotime($row->proforma_submission_date));
+            })
             ->editColumn('applicant_dob', fn($row) => $row->applicant_dob ? date('d M, Y', strtotime($row->applicant_dob)) : 'N/A')
             ->addColumn('remarks', function ($row) {
                 return $row->proformaLogs()
@@ -108,12 +112,6 @@ class UoFileApprovalController extends Controller
             $query->where('role_name', 'DP Nodal');
         })->get();
         return view('duties.uoFileApproval', compact('proforma', 'total_step', 'tasks', 'dpNodalUsers'));
-    }
-
-    public function submit(Request $request, $id)
-    {
-        //
-
     }
 
     public function forward(Request $request, $id)

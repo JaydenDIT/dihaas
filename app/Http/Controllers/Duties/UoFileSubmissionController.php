@@ -62,6 +62,9 @@ class UoFileSubmissionController extends Controller
             ->editColumn('created_at', function ($row) {
                 return date('d M, Y', strtotime($row->created_at));
             })
+            ->editColumn('proforma_submission_date', function ($row) {
+                return date('d M, Y', strtotime($row->proforma_submission_date));
+            })
             ->editColumn('applicant_dob', function ($row) {
                 return date('d M, Y', strtotime($row->applicant_dob));
             })

@@ -13,7 +13,7 @@
                                 <th rowspan="2">Deceased Name</th>
                                 <th rowspan="2">Expired On</th>
                                 <th rowspan="2">Submitted On</th>
-                                <th rowspan="2">Submitted By</th>
+                                <th rowspan="2">Applicant Name</th>
                                 <th rowspan="2">Department</th>
                                 <th rowspan="2">Status</th>
                                 <th rowspan="2"></th>

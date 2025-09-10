@@ -70,6 +70,9 @@ class DocumentVerificationController extends Controller
             ->editColumn('created_at', function ($row) {
                 return date('d M, Y', strtotime($row->created_at));
             })
+            ->editColumn('proforma_submission_date', function ($row) {
+                return date('d M, Y', strtotime($row->proforma_submission_date));
+            })
             ->editColumn('applicant_dob', function ($row) {
                 return date('d M, Y', strtotime($row->applicant_dob));
             })
@@ -110,12 +113,6 @@ class DocumentVerificationController extends Controller
         $this->authorize('canPerformOnProforma',  [$proforma, 'verify_physical_copy']);
         return view('duties.documentVerification', compact('proforma', 'total_step', 'tasks'));
     }
-
-
-
-
-
-
 
     public function verify(Request $request, $id)
     {

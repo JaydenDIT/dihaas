@@ -17,11 +17,11 @@
                 "deceased_ein",
                 "deceased_emp_name",
                 "deceased_doe",
-                "created_at",
+                "deceased_field_dept_desc",
                 "applicant_name",
                 "applicant_dob",
+                "proforma_submission_date",
                 "proforma_status",
-                "deceased_field_dept_desc",
                 "remarks"
             ];
             loadAjaxTable({

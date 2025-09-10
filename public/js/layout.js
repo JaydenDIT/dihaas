@@ -99,6 +99,15 @@ function loadAjaxTable(data, callbackfn = "") {
     // Define columns and handle custom attributes
     var columns = data["columns"].map((ele) => {
         let col = { data: ele };
+        /**
+         * Here, we check if the ele is an object with custom attribute or not.
+         * If it is an object, we use it directly. If it is a string with '|',
+         * we split it and set attributes accordingly.
+         */
+        if (typeof ele === "object") {
+            return ele; // Use the object directly if it's already in the correct format
+        }
+
         if (ele.includes("|")) {
             let parts = ele.split("|");
             col = { data: parts[0] };
@@ -283,6 +292,7 @@ function loadAjaxTable(data, callbackfn = "") {
         select: select,
         stateSave: false,
         lengthMenu: lengthMenu,
+        searching: data["searching"] !== false,
     });
 
     return dTable;
@@ -292,7 +302,7 @@ function colourTable(id) {
     $(id).addClass("table");
     $(id).addClass("table-striped");
     $(id).addClass("table-bordered");
-    $(id).addClass("border-primary");
+    // $(id).addClass("border-primary");
 }
 
 function error_message(message, timeout = 3000) {
