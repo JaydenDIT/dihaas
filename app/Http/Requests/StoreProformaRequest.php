@@ -3,12 +3,13 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreProformaRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // Add permission checks if needed
+        return Auth::check(); // Add permission checks if needed
     }
 
     /**
@@ -29,7 +30,7 @@ class StoreProformaRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $rules = [
             // Deceased details
             'deceased_ein' => 'required|string|max:10',
             'deceased_emp_name' => 'required|string|max:255',
@@ -69,7 +70,6 @@ class StoreProformaRequest extends FormRequest
             'applicant_mobile' => 'required|string|size:10',
             'applicant_email' => 'required|email|max:255',
             'applicant_sex' => 'required|in:male,female,transgender',
-            'proforma_submission_date' => 'nullable|date',
 
             // Other details
             'caste_id' => 'required|integer|exists:castes,caste_id',
@@ -91,5 +91,11 @@ class StoreProformaRequest extends FormRequest
             'applicant_permanent_subdivision_id' => 'required|integer|exists:subdivisions,subdivision_id',
             'applicant_permanent_pincode' => 'required|digits:6',
         ];
+
+        if (Auth::user()->role->role_group != 'citizen') {
+            //'proforma_submission_date' is required for non-citizen users,
+            $rules['proforma_submission_date'] = 'required|date';
+        }
+        return $rules;
     }
 }

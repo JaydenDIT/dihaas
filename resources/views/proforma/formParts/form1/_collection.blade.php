@@ -16,6 +16,8 @@
                 @include('proforma.formParts.form1._5applicant_address_permanent')
                 @include('proforma.formParts.form1._6prefer_post_parent_department')
                 @include('proforma.formParts.form1._7prefer_post_other_department')
+                @includeWhen(Auth::user()->role->role_group != 'citizen',
+                    'proforma.formParts.form1._8form_submission_date')
 
                 <!-- I agree -->
                 <div class="row mb-4 ps-5 mt-5">

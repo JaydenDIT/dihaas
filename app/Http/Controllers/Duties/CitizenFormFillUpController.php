@@ -174,9 +174,12 @@ class CitizenFormFillUpController extends Controller
             $proforma = Proforma::where('mini_sequence', 'step3-completed')->where('proforma_id', $id)->first();
             $this->authorize('canForward',  [$proforma, 'client_form_submission']);
 
-            //Final submission date for proforma
-            $proforma->proforma_submission_date = $request->input('proforma_submission_date', now()->toDateString());
-            $proforma->save();
+            //Final submission date for proforma if in case of citizen
+            if (Auth::user()->role->role_group == 'citizen') {
+                $proforma->proforma_submission_date = now()->toDateString();
+                $proforma->save();
+            }
+
 
             //WorkflowHandler comes after LogService
             LogService::addProformaLog([
