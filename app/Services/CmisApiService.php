@@ -171,4 +171,12 @@ class CmisApiService
             ]);
         }
     }
+
+    /**
+     * Fetch all availabe vaccant posts, irrespective of department
+     */
+    public static function apiAllVaccantPosts(): array
+    {
+        return self::safePost('/get-all-post-vacancy');
+    }
 }

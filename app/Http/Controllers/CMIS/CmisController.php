@@ -117,12 +117,31 @@ class CmisController extends Controller
             return $this->sendResponse($e);
         }
     }
+
+
     public function getAllAdminDepartments()
     {
 
         try {
             $result = CmisApiService::apiAdminDepartments();
             return response()->json($result, 200);
+        } catch (Exception $e) {
+            return $this->sendResponse($e);
+        }
+    }
+
+    //End point to get all vaccant posts irrespective of department
+    public function getAllVaccantPosts()
+    {
+        try {
+            $result = CmisApiService::apiAllVaccantPosts();
+            /*  usort($result, function ($a, $b) {
+                return strcasecmp($a['dsg_desc'], $b['dsg_desc']);
+            }); */
+            return response()->json( //test
+                $result,
+                200
+            );
         } catch (Exception $e) {
             return $this->sendResponse($e);
         }

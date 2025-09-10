@@ -15,7 +15,8 @@ Route::group(['prefix' => 'cmis', 'as' => 'cmis.'], function () {
             Route::get('department/{id}', 'getDepartment')->name('department.field_dept_cd'); //cmis.api.department.field_dept_cd
             Route::get('department/all/{id}/adm_cd', 'getDepartmentByAdmCd')->name('department.adm_cd'); //cmis.api.department.adm_cd
             Route::get('department/all/', 'getAllDepartments')->name('department.all'); //cmis.api.department.all
-            Route::get('admin-department/all/', 'getAllAdminDepartments')->name('admin-department.all'); //cmis.api.admin-department.all
+            Route::get('admin-department/all/', 'getAllAdminDepartments')->name('admin-department.all'); //cmis.api.admin-department.all 
+            Route::get('all-posts', 'getAllVaccantPosts')->name('vaccantposts.all'); //cmis.api.vaccantposts.all
         });
     });
 });
