@@ -4,8 +4,8 @@
 
     <h2 class="text-center mt-5">REGISTER</h2>
     <div class="text-center mb-3 text-danger">
-        <small>Information: Install Sandes App from Google Playstore to receive OTP and
-            Message from the Portal</small>
+        {{-- <small>Information: Install Sandes App from Google Playstore to receive OTP and
+            Message from the Portal</small> --}}
     </div>
     <div class="card bg-light my-3 py-2">
         <div class="card-header" style="color: blue;text-align: center;">
