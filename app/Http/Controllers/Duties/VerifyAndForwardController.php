@@ -173,8 +173,6 @@ class VerifyAndForwardController extends Controller
     //Verification of multiple proformas in bulk
     public function bulkVerify(Request $request)
     {
-        // Testing response
-        // return response()->json(['message' => 'Reached bulk verify method', 'data' => $request->all()], 200);
 
         DB::beginTransaction();
         $request->validate([
@@ -209,9 +207,6 @@ class VerifyAndForwardController extends Controller
     //Forwarding for multiple proformas in bulk
     public function bulkForward(Request $request)
     {
-
-        // Testing response
-        // return response()->json(['message' => 'Reached bulk forward method', 'data' => $request->all()], 200);
 
 
         DB::beginTransaction();
