@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Duties;
 use App\Http\Controllers\Controller;
 use App\Models\PostVaccancy;
 use App\Models\Proforma;
+use App\Models\Remark;
 use App\Models\Task;
 use App\Models\UoGeneration;
 use App\Models\User;
@@ -69,10 +70,21 @@ class UoGenerationController extends Controller
                 return date('d M, Y', strtotime($row->applicant_dob));
             })
             ->addColumn('remarks', function ($row) {
-                return $row->proformaLogs()
+
+                $log = $row->proformaLogs()
                     ->whereIn('action_name', ['forwarded', 'rejected', 'reverted', 'completed'])
                     ->latest()
-                    ->value('action_remark') ?? 'N/A';
+                    ->first();
+                if ($log) {
+                    return (object)[
+                        'remark' => $log->action_remark,
+                        'date' => $log->created_at->format('d M, Y'),
+                        'time' => $log->created_at->format('h:i A'),
+                        'by' => $log->actionBy->fullname ?? 'N/A'
+                    ];
+                } else {
+                    return null;
+                }
             })
             ->addColumn('action', function ($row) use ($application_status) {
                 // $data = urlencode(json_encode($row));
@@ -105,7 +117,8 @@ class UoGenerationController extends Controller
 
         $total_step = 4;
         $tasks = getPrevNextTasks($id);
-        return view('duties.uoFormGeneration', compact('proforma', 'total_step', 'tasks'));
+        $remarks = Remark::where('is_active', true)->orderBy('id')->get();
+        return view('duties.uoFormGeneration', compact('proforma', 'total_step', 'tasks', 'remarks'));
     }
 
     public function submit(Request  $request, $id)

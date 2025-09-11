@@ -4,17 +4,7 @@
 
 @section('content')
     <div class="container-fluid">
-
-
-
-        <div class="row">
-            <div class="col-sm-4">
-                <h3 class="row py-1 mb-3 text-center fw-bold">
-                    Proforma View / UO Form Fill Up
-                </h3>
-            </div>
-        </div>
-
+        @include('duties.tasks._proforma_task_heading')
         <!-- NEW STEP TRACKER -->
         <div class="step-tracker">
             <div class="btn-go-through btn-step" data-step="1">
@@ -145,9 +135,16 @@
                                             ];
                                         @endphp
                                         <div class="mb-3">
-                                            <label for="applicant_prefered_post_id">Prefered Post</label>
-                                            <select name="applicant_prefered_post_id" id="applicant_prefered_post_id"
-                                                class="form-select applicant-prefered" required>
+                                            <div class="row mb-2">
+                                                <div class="col-6"><label for="applicant_prefered_post_id">Prefered
+                                                        Post</label></div>
+                                                <div class="col-6">No. of vaccant posts: <span
+                                                        id="applicant_preferred_vacc_posts" class="fw-bold">0</span></div>
+                                            </div>
+
+                                            <select name="applicant_prefered_post_id" data-prefered="applicant"
+                                                id="applicant_prefered_post_id"
+                                                class="form-select applicant-prefered post-select" required>
                                                 <option value="">Select Post</option>
                                                 @foreach ($preferredPosts as $post)
                                                     <option value="{{ $post['request_dsg_srno'] }}"
@@ -196,8 +193,16 @@
                                     </div>
                                     <div class="col-sm-8">
                                         <div class="mb-3">
-                                            <label for="department_prefered_dept_cd" class="form-label">Department:
-                                            </label>
+
+
+                                            <div class="row mb-2">
+                                                <div class="col-6"><label for="department_prefered_dept_cd"
+                                                        class="form-label">Department:
+                                                    </label></div>
+                                                <div class="col-6">No. of vaccant posts: <span
+                                                        id="department_preferred_vacc_posts" class="fw-bold">0</span>
+                                                </div>
+                                            </div>
 
                                             <select class="form-select dept-prefered" aria-label="Default select example"
                                                 id="department_prefered_dept_cd" name="department_prefered_dept_cd"
@@ -226,7 +231,8 @@
                                         <!-- Get availabe posts in the selected departments -->
                                         <div class="mb-3">
                                             <label for="dept_prefered_post_id" class="form-label">Posts: </label>
-                                            <select class="form-select dept-prefered" aria-label="Default select example"
+                                            <select class="form-select dept-prefered post-select"
+                                                data-prefered="department" aria-label="Default select example"
                                                 id="dept_prefered_post_id" name="department_prefered_post_id" disabled>
                                                 <option value="" selected>Select Post</option>
                                             </select>
@@ -311,6 +317,8 @@
         const verifyUrl = "{{ route('duties.uo.formfillup.verify', $proforma->proforma_id) }}";
         const confirmRedirectUrl = "{{ route('duties.verify.form.index', $tasks['current']['tasks_id']) }}";
         const proformaDashboardUrl = "{{ route('tasks.performa.all') }}";
+        var vaccantCountUrl =
+            "{{ route('admin.postvaccancies.get-vaccant-count', ['fieldDeptCd' => '__field_dept_cd__', 'dsgSrno' => '__dsg_srno__']) }}";
 
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -322,30 +330,6 @@
                         showStep(1);
                     @endif
                 });
-            });
-
-            var uo_form_fillup = document.forms['uo_form_fillup'];
-
-            const preferredPostSelect = document.getElementById("applicant_prefered_post_id");
-
-            preferredPostSelect.addEventListener("change", function() {
-                // get selected option
-                const selectedOption = preferredPostSelect.options[preferredPostSelect.selectedIndex];
-                //Filling up group code
-                uo_form_fillup.applicant_prefered_group_code.value = selectedOption.getAttribute(
-                    "data-group_code");
-                uo_form_fillup.applicant_prefered_dept_desc.value = selectedOption.getAttribute(
-                    "data-dept");
-                uo_form_fillup.applicant_prefered_dept_cd.value = selectedOption.getAttribute(
-                    "data-dept_cd");
-                uo_form_fillup.applicant_prefered_adm_dept_cd.value = selectedOption.getAttribute(
-                    "data-adm_dept_cd");
-                uo_form_fillup.applicant_prefered_adm_dept_desc.value = selectedOption.getAttribute(
-                    "data-adm_dept_desc");
-                uo_form_fillup.applicant_prefered_adm_dept_desc.value = selectedOption.getAttribute(
-                    "data-adm_dept_desc");
-                uo_form_fillup.applicant_prefered_post_desc.value = selectedOption.text || "";
-
             });
 
             document.querySelectorAll(`input[type='radio'][name='post_option']`).forEach(radiioBtn => {
@@ -502,6 +486,66 @@
                     }
                 });
             }
+        });
+
+        // Function to get the vaccant counts of a particular designation/post in a department
+        async function getVaccantCount(fieldDeptCd, dsgSrno) {
+
+            var url = vaccantCountUrl.replace('__field_dept_cd__', fieldDeptCd);
+            url = url.replace('__dsg_srno__', dsgSrno);
+
+            var response = await fetch(url);
+            var jsonData = await response.json();
+            console.log(jsonData);
+            return (jsonData.count);
+        }
+
+        //applicant_prefered_dept_cd
+        //department_prefered_dept_cd
+
+        var postSelects = document.querySelectorAll("select.post-select");
+        postSelects.forEach((selectElement) => {
+
+            selectElement.addEventListener('change', async (event) => {
+                let dsgSrno = selectElement.value.trim();
+                if (dsgSrno == "") {
+                    return;
+                }
+                let choice = selectElement.getAttribute("data-prefered");
+                let fieldDeptElement = document.querySelector(`#${choice}_prefered_dept_cd`);
+                if (choice == "applicant") {
+                    var uo_form_fillup = document.forms['uo_form_fillup'];
+
+                    const preferredPostSelect = document.getElementById(choice + "_prefered_post_id");
+
+                    //preferredPostSelect.addEventListener("change", function() {
+                    // get selected option
+                    const selectedOption = preferredPostSelect.options[preferredPostSelect
+                        .selectedIndex];
+                    //Filling up group code
+                    uo_form_fillup.applicant_prefered_group_code.value = selectedOption.getAttribute(
+                        "data-group_code");
+                    uo_form_fillup.applicant_prefered_dept_desc.value = selectedOption.getAttribute(
+                        "data-dept");
+                    uo_form_fillup.applicant_prefered_dept_cd.value = selectedOption.getAttribute(
+                        "data-dept_cd");
+                    uo_form_fillup.applicant_prefered_adm_dept_cd.value = selectedOption.getAttribute(
+                        "data-adm_dept_cd");
+                    uo_form_fillup.applicant_prefered_adm_dept_desc.value = selectedOption.getAttribute(
+                        "data-adm_dept_desc");
+                    uo_form_fillup.applicant_prefered_adm_dept_desc.value = selectedOption.getAttribute(
+                        "data-adm_dept_desc");
+                    uo_form_fillup.applicant_prefered_post_desc.value = selectedOption.text || "";
+
+                    //});
+                }
+
+                if (fieldDeptElement && fieldDeptElement.value != "") {
+                    let count = await getVaccantCount(fieldDeptElement.value, dsgSrno);
+                    document.querySelector(`#${choice}_preferred_vacc_posts`).text = count;
+                }
+            });
+
         });
     </script>
     <script src="{{ asset('js/duties-btn.js') }}"></script>

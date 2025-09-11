@@ -19,6 +19,7 @@ Route::group(['prefix' => 'tasks', 'as' => 'tasks.performa.', 'middleware' => ['
     Route::get('/{tasks_id}/performa', [TaskApplicationController::class, 'index'])->name('index');
     Route::post('/{tasks_id}/performa/ajaxlist', [TaskApplicationController::class, 'ajaxlist'])->name('ajaxlist');
     Route::post('/{proforma_id}/{tasks_id}/revert', [TaskApplicationController::class, 'revert'])->name('revert');
+    Route::post('/revert-proformas-in-bulk/{tasks_id}', [TaskApplicationController::class, 'bulkRevert'])->name('bulkRevert'); //tasks.proforma.bulkRevert
     Route::post('/{proforma_id}/{tasks_id}/reject', [TaskApplicationController::class, 'reject'])->name('reject');
 });
 /*

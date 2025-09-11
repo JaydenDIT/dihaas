@@ -12,4 +12,9 @@ class ProformaLog extends Model
     protected $primaryKey = 'proforma_log_id';
 
     protected $guarded = ['proforma_log_id'];
+
+    public function actionBy()
+    {
+        return $this->belongsTo(User::class, 'action_by', 'user_id');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Duties;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UoFormFillupRequest;
 use App\Models\Proforma;
+use App\Models\Remark;
 use App\Models\Task;
 use App\Models\UoGeneration;
 use App\Models\User;
@@ -69,10 +70,21 @@ class UoFormFillUpController extends Controller
                 return date('d M, Y', strtotime($row->applicant_dob));
             })
             ->addColumn('remarks', function ($row) {
-                return $row->proformaLogs()
+
+                $log = $row->proformaLogs()
                     ->whereIn('action_name', ['forwarded', 'rejected', 'reverted', 'completed'])
                     ->latest()
-                    ->value('action_remark') ?? 'N/A';
+                    ->first();
+                if ($log) {
+                    return (object)[
+                        'remark' => $log->action_remark,
+                        'date' => $log->created_at->format('d M, Y'),
+                        'time' => $log->created_at->format('h:i A'),
+                        'by' => $log->actionBy->fullname ?? 'N/A'
+                    ];
+                } else {
+                    return null;
+                }
             })
             ->addColumn('action', function ($row) use ($application_status) {
                 // $data = urlencode(json_encode($row));
@@ -112,6 +124,8 @@ class UoFormFillUpController extends Controller
             $adminDepts[$dept['adm_dept_cd']] = $dept['adm_dept_desc'];
         }
 
+        $remarks = Remark::where('is_active', true)->orderBy('id')->get();
+
         $departments = CmisApiService::apiFieldDepartments();
 
         //Retrieving Nodal Officers for Department of personels for signing authority
@@ -119,7 +133,7 @@ class UoFormFillUpController extends Controller
             ->whereHas('role', function ($query) {
                 $query->where('role_name', '=', 'DP Nodal');
             })->get();
-        return view('duties.uoFormFillup', compact('proforma', 'total_step', 'tasks', 'departments', 'dpNodals', 'adminDepts'));
+        return view('duties.uoFormFillup', compact('proforma', 'total_step', 'tasks', 'departments', 'dpNodals', 'adminDepts', 'remarks'));
     }
 
     public function verify(Request $request, $id)

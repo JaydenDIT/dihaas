@@ -126,4 +126,11 @@ class VaccancyController extends Controller
             ], 403);
         }
     }
+
+    // End point to get the number of vaccancies (counts) for a particular post in a department
+    public function getVaccancyCount(Request $request, $fieldDeptCd, $dsgSrno)
+    {
+        $count = PostVaccancy::getDepartmentPostVaccancy($fieldDeptCd, $dsgSrno);
+        return response()->json(compact('count'));
+    }
 }

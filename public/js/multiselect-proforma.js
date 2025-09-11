@@ -34,10 +34,8 @@ function enableFirstProformaCheckbox(application_status, overall_seniority_index
                     "First checkbox index does not match smallest index. Something went wrong.");
             }
         }
-
     }
 }
-
 
 //function to set onchange event for the proforma checkbox
 function setEventsForProformaCheckBox(application_status) {
@@ -49,15 +47,31 @@ function setEventsForProformaCheckBox(application_status) {
             //enable next checkbox or disable successive checkbox based on the checked one
             enableOrDisableNextCheckbox(this);
 
+            let verifyButton = document.getElementById('verify-button');
+            let forwardButton = document.getElementById('forward-button');
+            let revertButton = document.getElementById('revert-button');
+
             let anyChecked = document.querySelectorAll('.proforma-checkbox:checked').length > 0;
             if (application_status == 'un-verified') {
-                document.getElementById('verify-button').disabled = !anyChecked;
-                document.getElementById('forward-button').disabled = anyChecked;
+                if(verifyButton){
+                    verifyButton.disabled = !anyChecked;
+                }
+                
+                if(forwardButton){
+                    forwardButton.disabled = anyChecked;
+                }
+                                
             } else if (application_status == 'verified') {
-                document.getElementById('verify-button').disabled = anyChecked;
-                document.getElementById('forward-button').disabled = !anyChecked;
+                if(verifyButton){
+                    verifyButton.disabled = anyChecked;
+                }                
+                if(forwardButton){
+                    forwardButton.disabled = !anyChecked;
+                }
             }
-            
+            if(revertButton){
+                revertButton.disabled = !anyChecked;
+            }
         });
     });
 }

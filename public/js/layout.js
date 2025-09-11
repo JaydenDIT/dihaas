@@ -146,6 +146,7 @@ function loadAjaxTable(data, callbackfn = "") {
     });
 
     // Add action column if required
+    /* 
     if (data["action"] === true) {
         columns.push({
             data: "action",
@@ -153,7 +154,7 @@ function loadAjaxTable(data, callbackfn = "") {
             searchable: false,
             print: false, // Exclude from print/export
         });
-    }
+    } */
 
     // Parameter function for server-side data
     let param;

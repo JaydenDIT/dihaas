@@ -81,14 +81,17 @@
 
     <main id="main" class="main">
         @isset($pagetitle)
+            <!-- Page Title -->
             <div class="pagetitle">
                 <h1>{{ $pagetitle }}</h1>
-            </div><!-- End Page Title -->
+            </div>
+            <!-- End Page Title -->
         @endisset
-
-
         @yield('content')
 
+        <!-- Area for bootstrap modals -->
+        @stack('modals')
+        <!-- End Modals -->
     </main><!-- End #main -->
 
     @include('layouts.niceadmin._footer')

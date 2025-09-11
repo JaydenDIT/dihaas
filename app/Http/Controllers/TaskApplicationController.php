@@ -204,6 +204,7 @@ class TaskApplicationController extends Controller
             ->make(true);
     }
 
+    // Method to revert a single proforma to the previous step
     public function revert(Request $request, $proforma_id, $tasks_id)
     {
         try {
@@ -231,6 +232,44 @@ class TaskApplicationController extends Controller
         }
     }
 
+    // Method to revert multipe proformas to the previous step at one time
+    public function bulkRevert(Request $request, $tasks_id)
+    {
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'selected_proforma' => 'required|array',
+                'remarks' => 'required|string|max:600',
+            ]);
+
+            // Since all the proformas are at the same task i.e. at the same step, so we just fetch the task once
+            $tasks = Task::findOrFail($tasks_id);
+
+            // Fetching all the proformas to be reverted
+            $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
+            foreach ($proformas as $proforma) {
+                $this->authorize('canDrop',  [$proforma, $tasks->tasks_duty]);
+
+                //WorkflowHandler comes after LogService
+                LogService::addProformaLog([
+                    'proforma_id' => $proforma->proforma_id,
+                    'action_by' => Auth::user()->user_id,
+                    'action_name' => 'reverted',
+                    'action_remark' => $request->remarks,
+                    'process_sequence' => $proforma->process_sequence
+                ]);
+                WorkflowHandler::dropApplication($proforma);
+            }
+            DB::commit();
+            return response()->json(['message' => 'Selected proformas reverted successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'An error has occured while reverting proformas. Cause: ' . $e->getMessage()], 422);
+        }
+    }
+
+
+    // Method to reject a single proforma to the initial step
     public function reject(Request $request, $proforma_id, $tasks_id)
     {
         try {
@@ -255,6 +294,42 @@ class TaskApplicationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Error rejecting proforma: ' . $e->getMessage()], 422);
+        }
+    }
+
+    // Now is the method for multiple proformas to be rejected at one time
+    public function bulkReject(Request $request, $tasks_id)
+    {
+        try {
+            DB::beginTransaction();
+            $request->validate([
+                'selected_proforma' => 'required|array',
+                'remarks' => 'required|string|max:600',
+            ]);
+
+            // Since all the proformas are at the same task i.e. at the same step, so we just fetch the task once
+            $tasks = Task::findOrFail($tasks_id);
+
+            // Fetching all the proformas to be rejected
+            $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
+            foreach ($proformas as $proforma) {
+                $this->authorize('canReject',  [$proforma, $tasks->tasks_duty]);
+
+                //WorkflowHandler comes after LogService
+                LogService::addProformaLog([
+                    'proforma_id' => $proforma->proforma_id,
+                    'action_by' => Auth::user()->user_id,
+                    'action_name' => 'rejected',
+                    'action_remark' => $request->remarks,
+                    'process_sequence' => $proforma->process_sequence
+                ]);
+                WorkflowHandler::rejectApplication($proforma);
+            }
+            DB::commit();
+            return response()->json(['message' => 'Selected proformas rejected successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'An error has occured while rejecting proformas. Cause: ' . $e->getMessage()], 422);
         }
     }
 }

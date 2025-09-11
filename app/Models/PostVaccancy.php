@@ -90,6 +90,8 @@ class PostVaccancy extends Model
      * @param int|string $fieldDeptCd  The field department code.
      * @param int|string $dsgSrno      The designation serial number.
      * @return bool Returns true if a post was deducted, false otherwise.
+     * 
+     * Note: dia means Die-In-Harness
      */
     public static function deductDiaPost($fieldDeptCd, $dsgSrno)
     {
@@ -105,5 +107,17 @@ class PostVaccancy extends Model
         }
 
         return false; // no vacant post available
+    }
+
+    /**
+     * Method to get the total number of vaccant posts for a particular post (designation) in a 
+     * department
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Support\Collection
+     */
+    public function scopeGetDepartmentPostVaccancy($query, $fieldDeptCd, $dsgSrno): int
+    {
+        return $query->where('field_dept_cd', $fieldDeptCd)->where('dsg_srno', $dsgSrno)->sum('no_of_posts_dia');
     }
 }

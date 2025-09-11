@@ -10,7 +10,7 @@
         });
 
         function applicationTable(application_status = 'pending') {
-            let columns = [
+            /* let columns = [
                 "DT_RowIndex|nonorderable|nonsearchable",
                 "overall_seniority_idx|nonorderable|nonsearchable",
                 "dept_seniority_idx|nonorderable|nonsearchable",
@@ -23,6 +23,48 @@
                 "proforma_submission_date",
                 "proforma_status",
                 "remarks"
+            ]; */
+            let columns = [
+                "DT_RowIndex|nonorderable|nonsearchable",
+                "overall_seniority_idx|nonorderable|nonsearchable",
+                "dept_seniority_idx|nonorderable|nonsearchable",
+                //"deceased_ein",
+                {
+                    data: "deceased_emp_name",
+                    render: (data, type, row) => {
+                        return `<div>${data}</div><div cass="text-muted"><strong>(${row.deceased_ein})</strong></div>`;
+                    }
+                },
+                "deceased_doe",
+                "deceased_field_dept_desc",
+                "applicant_name",
+                "applicant_dob",
+
+                //"proforma_submission_date",
+                {
+                    data: "remarks",
+                    render: (data, type, row) => {
+                        if (data == null) {
+                            return 'N/A';
+                        }
+                        return `
+                        <div>${data.by}</div>
+                        <div class="text-muted">${data.date}</div>
+                        `;
+                    }
+                },
+
+                "proforma_status",
+                {
+                    data: "remarks",
+                    render: (data, type, row) => {
+                        if (data == null) {
+                            return 'N/A';
+                        }
+                        return `<div>${data.remark}</div>`;
+                    }
+                },
+                "action|nonorderable|nonsearchable",
             ];
             loadAjaxTable({
                 id: "#application-table",

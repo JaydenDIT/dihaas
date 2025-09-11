@@ -5,13 +5,7 @@
 @section('content')
     <div class="container-fluid">
 
-        <div class="row">
-            <div class="col-sm-12">
-                <h3 class="row py-1 mb-3 text-center fw-bold">
-                    Proforma View / UO Form Generation
-                </h3>
-            </div>
-        </div>
+        @include('duties.tasks._proforma_task_heading')
 
         <!-- NEW STEP TRACKER -->
         <div class="step-tracker">

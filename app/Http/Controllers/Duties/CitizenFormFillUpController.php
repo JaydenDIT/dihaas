@@ -74,10 +74,21 @@ class CitizenFormFillUpController extends Controller
                 return date('d M, Y', strtotime($row->applicant_dob));
             })
             ->addColumn('remarks', function ($row) {
-                return $row->proformaLogs()
+
+                $log = $row->proformaLogs()
                     ->whereIn('action_name', ['forwarded', 'rejected', 'reverted', 'completed'])
                     ->latest()
-                    ->value('action_remark') ?? 'N/A';
+                    ->first();
+                if ($log) {
+                    return (object)[
+                        'remark' => $log->action_remark,
+                        'date' => $log->created_at->format('d M, Y'),
+                        'time' => $log->created_at->format('h:i A'),
+                        'by' => $log->actionBy->fullname ?? 'N/A'
+                    ];
+                } else {
+                    return null;
+                }
             })
             ->addColumn('action', function ($row) use ($application_status) {
                 // $data = urlencode(json_encode($row));

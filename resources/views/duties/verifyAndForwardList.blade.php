@@ -11,13 +11,60 @@
     </style>
 @endpush
 
+@section('content')
+    <div class="pt-3">
+        <h3>Applications for Task: <b>{{ $task->tasks_name }}</b></h3>
+        <div class="table-container p-2">
+            <div class="d-flex justify-content-between">
+                <div class="my-2">
+                    <button class="btn btn-sm btn-success statusBtn" data-application_status="un-verified"
+                        type="button">Un-Verified</button> |
+                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="verified"
+                        type="button">Verified</button> |
+                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In
+                        Progress</button> |
+                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed"
+                        type="button">Completed</button> |
+                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected"
+                        type="button">Rejected</button>
+                </div>
+                <div class="my-2 d-flex gap-2">
+                    <button type="button" class="btn btn-secondary btn-sm" id="revert-button" style="display:none;"
+                        disabled>
+                        <i class="bi bi-arrow-left"></i> Revert Selected Proforma
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm" id="verify-button" style="display:none;" disabled>
+                        Verify Selected Proforma <i class="bi bi-check2-all"></i>
+                    </button>
+                    <button type="button" class="btn btn-warning btn-sm" id="forward-button" style="display:none;"
+                        disabled>
+                        Forward Selected Proforma <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            <form action="#" name="select_proforma_form">
+                @csrf
+                @include('duties._report-table')
+            </form>
+        </div>
+    </div>
+@endsection
+
+@push('modals')
+    @include('duties.tasks.modals._remarks_modal', ['remarks' => $remarks])
+@endpush
+
 @push('js')
     <script src="{{ asset('js/multiselect-proforma.js') }}"></script>
     <script type="text/javascript">
         var overall_seniority_indexes = [];
+        const bulkRevertUrl = "{{ route('tasks.performa.bulkRevert', $task->tasks_id) }}";
         const bulkVerifyUrl = "{{ route('duties.verify.form.bulkVerify') }}";
         const bulkForwardUrl = "{{ route('duties.verify.form.bulkForward') }}";
         const select_proforma_form = document.forms['select_proforma_form'];
+        const verifyButton = document.getElementById('verify-button');
+        const forwardButton = document.getElementById('forward-button');
+        const revertButton = document.getElementById('revert-button');
 
         $(document).ready(function() {
             setTimeout(function() {
@@ -25,17 +72,20 @@
             }, 300);
         });
 
-        //function to manipulate the verify button and forward button based on the application status
+        //function to hide or show the buttons like revert button, verify button and forward button based on the application status
         function manipulateActionButtons(application_status) {
             if (application_status == 'un-verified') {
                 $('#verify-button').show();
                 $('#forward-button').hide();
+                $('#revert-button').show();
             } else if (application_status == 'verified') {
                 $('#verify-button').hide();
                 $('#forward-button').show();
+                $('#revert-button').show();
             } else {
                 $('#verify-button').hide();
                 $('#forward-button').hide();
+                $('#revert-button').hide();
             }
         }
 
@@ -61,16 +111,54 @@
                 },
                 "overall_seniority_idx|nonorderable|nonsearchable",
                 "dept_seniority_idx|nonorderable|nonsearchable",
-                "deceased_ein|nonorderable",
-                "deceased_emp_name|nonorderable",
+                //"deceased_ein|nonorderable",
+                {
+                    data: "deceased_emp_name",
+                    render: (data, type, row) => {
+                        return `<div>${data}</div><div cass="text-muted"><strong>(${row.deceased_ein})</strong></div>`;
+                    },
+                    orderable: false
+                },
                 "deceased_doe|nonorderable",
                 "deceased_field_dept_desc|nonorderable",
                 "applicant_name|nonorderable",
                 "applicant_dob|nonorderable",
-                "proforma_submission_date|nonorderable",
+                //"proforma_submission_date",
+                {
+                    data: "remarks",
+                    render: (data, type, row) => {
+                        if (data == null) {
+                            return 'N/A';
+                        }
+                        return `
+                        <div>${data.by}</div>
+                        <div class="text-muted">${data.date}</div>
+                        `;
+                    },
+                    orderable: false
+                },
                 "proforma_status|nonorderable",
-                "remarks|nonorderable"
+                {
+                    data: "remarks",
+                    render: (data, type, row) => {
+                        if (data == null) {
+                            return 'N/A';
+                        }
+                        return `<div>${data.remark}</div>`;
+                    },
+                    orderable: false
+                },
+                {
+                    data: "action",
+                    render: (data, type, row) => {
+                        /* if (application_status == "un-verified" || application_status == "verified") {
+                            return '';
+                        } */
+                        return data;
+                    }
+                }
             ];
+
             var dataTable = loadAjaxTable({
                 id: "#application-table",
                 url: "{{ route('duties.verify.form.ajaxlist', $task->tasks_id) }}",
@@ -80,7 +168,6 @@
                 param: {
                     application_status: application_status
                 },
-                action: true,
                 searching: !(application_status == "un-verified" || application_status == "verified"),
             }, () => {
                 // This function 'getOverallSeniorityIndexes' is defined in multiselect-proforma.js
@@ -90,6 +177,11 @@
             dataTable.on('draw.dt', () => {
                 // This function 'afterDataTableLoad' is defined in multiselect-proforma.js
                 afterDataTableLoad(application_status, overall_seniority_indexes);
+
+                //disabling all the action buttons after data table loads
+                revertButton.disabled = true;
+                verifyButton.disabled = true;
+                forwardButton.disabled = true;
             });
         }
 
@@ -99,16 +191,34 @@
             applicationTable(application_status); // Reload with selected status
         });
 
+        //Onclick event for bulk revert button
+        $('#revert-button').on('click', function(e) {
+            e.preventDefault();
+            $("#remarkModal").modal('show');
+            $("#remarkModal .modal-title").text("Give remarks for reverting the selected proformas");
+            $("#remarkModal button[type='submit']").text("Confirm Revert");
+            $("#action_type").val("revert");
+            //bulkAction(bulkVerifyUrl, 'revert');
+        });
+
         //Onclick event for bulk verify button
         $('#verify-button').on('click', function(e) {
             e.preventDefault();
-            bulkAction(bulkVerifyUrl, 'verify');
+            $("#remarkModal").modal('show');
+            $("#remarkModal .modal-title").text("Give remarks for verification of the selected proformas");
+            //bulkAction(bulkVerifyUrl, 'verify');
+            $("#remarkModal button[type='submit']").text("Confirm Verify");
+            $("#action_type").val("verify");
         });
 
         //Onclick event for bulk forward button
         $('#forward-button').on('click', function(e) {
             e.preventDefault();
-            bulkAction(bulkForwardUrl, 'forward');
+            //bulkAction(bulkForwardUrl, 'forward');
+            $("#remarkModal").modal('show');
+            $("#remarkModal .modal-title").text("Give remarks for forwarding the selected proformas");
+            $("#remarkModal button[type='submit']").text("Confirm Forward");
+            $("#action_type").val("forward");
         });
 
         //Defining bulk action function
@@ -135,7 +245,7 @@
                 if (result.isConfirmed) {
                     // Create FormData from your form
                     let formData = new FormData(select_proforma_form);
-                    formData.append('remarks', 'Bulk ' + action + ' by {{ Auth::user()->fullname }}');
+                    formData.append('remarks', document.getElementById('remarks').value);
 
                     fetch(url, {
                             method: 'POST',
@@ -144,11 +254,18 @@
                             },
                             body: formData
                         })
-                        .then(response => {
+                        .then(async response => {
+                            const data = await response.json(); // parse once
+
                             if (!response.ok) {
-                                throw new Error("Network response was not ok");
+                                // throw server error message if available
+                                const errorMsg = data.message || 'An error occurred while trying to ' +
+                                    action +
+                                    ' the selected proforma(s). Please try again.';
+                                throw new Error(errorMsg);
                             }
-                            return response.json(); // if backend returns JSON
+
+                            return data; // if successful, return parsed JSON
                         })
                         .then(data => {
 
@@ -157,22 +274,23 @@
                                 title: 'Success',
                                 text: 'Selected proforma(s) have been successfully ' +
                                     (action === 'verify' ? 'verified' : 'forwarded') + '.'
+                            }).then(() => {
+                                $("#remarkModal").modal('hide');
+                                // Disable buttons
+                                document.getElementById('verify-button').disabled = true;
+                                document.getElementById('forward-button').disabled = true;
+
+                                // Reload the table with the appropriate status
+                                let status = (action === 'verify') ? 'un-verified' : 'verified';
+                                applicationTable(status);
                             });
 
-                            // Disable buttons
-                            document.getElementById('verify-button').disabled = true;
-                            document.getElementById('forward-button').disabled = true;
-
-                            // Reload the table with the appropriate status
-                            let status = (action === 'verify') ? 'un-verified' : 'verified';
-                            applicationTable(status);
                         })
                         .catch(error => {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
-                                text: 'An error occurred while trying to ' + action +
-                                    ' the selected proforma(s). Please try again.'
+                                text: error
                             });
                             console.error("Error:", error);
                         });
@@ -180,40 +298,21 @@
                 }
             });
         }
+
+        handleRemarkSubmission(() => {
+            let action_type = document.getElementById('action_type').value;
+            let url = '';
+            if (action_type === 'revert') {
+                url = bulkRevertUrl;
+            } else if (action_type === 'verify') {
+                url = bulkVerifyUrl;
+            } else if (action_type === 'forward') {
+                url = bulkForwardUrl;
+            } else {
+                alert('Invalid action type.');
+                return;
+            }
+            bulkAction(url, action_type);
+        });
     </script>
 @endpush
-
-@section('content')
-    <div class="pt-3">
-        <h3><b>Applications for Task: {{ $task->tasks_name }}</b></h3> <!-- Add this -->
-        <div class="table-container p-2">
-            <div class="d-flex justify-content-between">
-                <div class="my-2">
-                    <button class="btn btn-sm btn-success statusBtn" data-application_status="un-verified"
-                        type="button">Un-Verified</button> |
-                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="verified"
-                        type="button">Verified</button> |
-                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In
-                        Progress</button> |
-                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed"
-                        type="button">Completed</button> |
-                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected"
-                        type="button">Rejected</button>
-                </div>
-                <div class="my-2">
-                    <button type="button" class="btn btn-success btn-sm" id="verify-button" style="display:none;" disabled>
-                        Verify Selected Proforma <i class="bi bi-check2-all"></i>
-                    </button>
-                    <button type="button" class="btn btn-warning btn-sm" id="forward-button" style="display:none;"
-                        disabled>
-                        Forward Selected Proforma <i class="bi bi-forward"></i>
-                    </button>
-                </div>
-            </div>
-            <form action="#" name="select_proforma_form">
-                @csrf
-                @include('duties._report-table')
-            </form>
-        </div>
-    </div>
-@endsection

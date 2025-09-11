@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Duties;
 
 use App\Http\Controllers\Controller;
 use App\Models\Proforma;
+use App\Models\Remark;
 use App\Models\Task;
 use App\Models\UploadedDocument;
 use App\Services\CmisApiService;
@@ -77,10 +78,20 @@ class DocumentVerificationController extends Controller
                 return date('d M, Y', strtotime($row->applicant_dob));
             })
             ->addColumn('remarks', function ($row) {
-                return $row->proformaLogs()
+                $log = $row->proformaLogs()
                     ->whereIn('action_name', ['forwarded', 'rejected', 'reverted', 'completed'])
                     ->latest()
-                    ->value('action_remark') ?? 'N/A';
+                    ->first();
+                if ($log) {
+                    return (object)[
+                        'remark' => $log->action_remark,
+                        'date' => $log->created_at->format('d M, Y'),
+                        'time' => $log->created_at->format('h:i A'),
+                        'by' => $log->actionBy->fullname ?? 'N/A'
+                    ];
+                } else {
+                    return null;
+                }
             })
             ->addColumn('action', function ($row) use ($application_status) {
                 // $data = urlencode(json_encode($row));
@@ -110,8 +121,9 @@ class DocumentVerificationController extends Controller
         $proforma = Proforma::findOrFail($id);
         $total_step = 3;
         $tasks = getPrevNextTasks($id);
+        $remarks = Remark::where('is_active', true)->orderBy('id')->get();
         $this->authorize('canPerformOnProforma',  [$proforma, 'verify_physical_copy']);
-        return view('duties.documentVerification', compact('proforma', 'total_step', 'tasks'));
+        return view('duties.documentVerification', compact('proforma', 'total_step', 'tasks', 'remarks'));
     }
 
     public function verify(Request $request, $id)
@@ -192,6 +204,8 @@ class DocumentVerificationController extends Controller
             return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
         }
     }
+
+    //Method for reverting the proforma to the previous step
     public function revert(Request $request, $id)
     {
         try {

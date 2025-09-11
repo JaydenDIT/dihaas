@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Duties;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Proforma;
+use App\Models\Remark;
 use App\Models\Task;
 use App\Models\UoFileSubmission;
 use App\Models\User;
@@ -74,10 +75,21 @@ class UoFileApprovalController extends Controller
             })
             ->editColumn('applicant_dob', fn($row) => $row->applicant_dob ? date('d M, Y', strtotime($row->applicant_dob)) : 'N/A')
             ->addColumn('remarks', function ($row) {
-                return $row->proformaLogs()
+
+                $log = $row->proformaLogs()
                     ->whereIn('action_name', ['forwarded', 'rejected', 'reverted', 'completed'])
                     ->latest()
-                    ->value('action_remark') ?? 'N/A';
+                    ->first();
+                if ($log) {
+                    return (object)[
+                        'remark' => $log->action_remark,
+                        'date' => $log->created_at->format('d M, Y'),
+                        'time' => $log->created_at->format('h:i A'),
+                        'by' => $log->actionBy->fullname ?? 'N/A'
+                    ];
+                } else {
+                    return null;
+                }
             })
             ->addColumn('action', function ($row) use ($application_status) {
                 $resp = "<div class='d-flex gap-2'>";
@@ -107,11 +119,13 @@ class UoFileApprovalController extends Controller
         $tasks      = getPrevNextTasks($id);
         $this->authorize('canPerformOnProforma', [$proforma, 'uo_file_approval']);
 
+        $remarks = Remark::where('is_active', true)->orderBy('id')->get();
+
         //retrieving DP Nodal officers                
         $dpNodalUsers = User::whereHas('role', function ($query) {
             $query->where('role_name', 'DP Nodal');
         })->get();
-        return view('duties.uoFileApproval', compact('proforma', 'total_step', 'tasks', 'dpNodalUsers'));
+        return view('duties.uoFileApproval', compact('proforma', 'total_step', 'tasks', 'dpNodalUsers', 'remarks'));
     }
 
     public function forward(Request $request, $id)
