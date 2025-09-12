@@ -236,10 +236,10 @@ class ProformaController extends Controller
                 if (!empty($created_by)) {
                     return Proforma::where('create_by', $created_by)->get();
                 }
-                return Proforma::all();
+                return Proforma::orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob")->get();
                 // Do nothing
         }
-
+        $query->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob");
         if (!empty($created_by)) {
             return $query->where('create_by', $created_by)->get();
         }
@@ -270,10 +270,32 @@ class ProformaController extends Controller
                 return date('d M, Y', strtotime($row->applicant_dob));
             })
             ->addColumn('remarks', function ($row) {
+                /*
                 return $row->proformaLogs()
                     ->whereIn('action_name', ['forwarded', 'rejected', 'reverted', 'completed'])
                     ->latest()
                     ->value('action_remark') ?? 'N/A';
+                */
+                $log = $row->proformaLogs()
+                    ->whereIn('action_name', [
+                        // 'verified', 
+                        'forwarded',
+                        'rejected',
+                        'reverted',
+                        'completed'
+                    ])
+                    ->latest()
+                    ->first();
+                if ($log) {
+                    return (object)[
+                        'remark' => $log->action_remark,
+                        'date' => $log->created_at->format('d M, Y'),
+                        'time' => $log->created_at->format('h:i A'),
+                        'by' => $log->actionBy->fullname ?? 'N/A'
+                    ];
+                } else {
+                    return null;
+                }
             })
             ->addColumn('action', function ($row) {
                 return "<div class='d-flex gap-2'>" .

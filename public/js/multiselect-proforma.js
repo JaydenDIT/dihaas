@@ -13,7 +13,7 @@ function afterDataTableLoad(application_status, overall_seniority_indexes) {
 function enableFirstProformaCheckbox(application_status, overall_seniority_indexes) {
     console.log("Enabling first checkbox if applicable...");
 
-    if (application_status == "un-verified" || application_status == "verified") {
+    if (application_status == "un-verified" || application_status == "verified" ||  application_status == "pending") {
 
         let firstCheckbox = document.querySelector('.proforma-checkbox');
         if (firstCheckbox) {
@@ -52,6 +52,7 @@ function setEventsForProformaCheckBox(application_status) {
             let revertButton = document.getElementById('revert-button');
 
             let anyChecked = document.querySelectorAll('.proforma-checkbox:checked').length > 0;
+            
             if (application_status == 'un-verified') {
                 if(verifyButton){
                     verifyButton.disabled = !anyChecked;
@@ -67,6 +68,11 @@ function setEventsForProformaCheckBox(application_status) {
                 }                
                 if(forwardButton){
                     forwardButton.disabled = !anyChecked;
+                }
+            }
+            else if(application_status == "pending"){
+                if(forwardButton){
+                    forwardButton.disabled = false;
                 }
             }
             if(revertButton){
@@ -108,4 +114,27 @@ function getOverallSeniorityIndexes() {
 //function to get the smallest seniority index
 function getSmallestSeniorityIndex(overall_seniority_indexes) {    
     return overall_seniority_indexes.length ? overall_seniority_indexes[0] : null;
+}
+
+//function to hide or show the buttons like revert button, verify button and forward button based on the application status
+function manipulateActionButtons(application_status) {
+    if (application_status == 'un-verified') {
+        $('#verify-button').show();
+        $('#forward-button').hide();
+        $('#revert-button').show();
+    } else if (application_status == 'verified') {
+        $('#verify-button').hide();
+        $('#forward-button').show();
+        $('#revert-button').show();
+    } 
+    else if(application_status == 'pending'){
+        $('#verify-button').hide();
+        $('#forward-button').show();
+        $('#revert-button').show();    
+    }
+    else {
+        $('#verify-button').hide();
+        $('#forward-button').hide();
+        $('#revert-button').hide();
+    }
 }

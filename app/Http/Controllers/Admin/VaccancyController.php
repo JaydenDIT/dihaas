@@ -91,7 +91,7 @@ class VaccancyController extends Controller
         return view('admin.vaccantPosts.configureVaccancy', compact('vaccancyPercentage'));
     }
 
-    //Method to update the vaccancy configureation
+    //Method to update the vaccancy configuration
     public function saveVaccancyConfigureation(Request $request)
     {
 

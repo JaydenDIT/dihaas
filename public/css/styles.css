@@ -123,3 +123,11 @@
     border-radius: 0.5rem;
     overflow-x: auto;
 }
+
+.proforma-checkbox {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed !important;
+}

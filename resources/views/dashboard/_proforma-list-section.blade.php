@@ -9,18 +9,19 @@
                             <tr>
                                 {{-- <th rowspan="2">#</th> --}}
                                 <th colspan="2" class="text-center">Seniority</th>
-                                <th rowspan="2">EIN</th>
-                                <th rowspan="2">Deceased Name</th>
-                                <th rowspan="2">Expired On</th>
-                                <th rowspan="2">Submitted On</th>
+                                <th colspan="3" class="text-center">Deceased Employee Detail</th>
+                                {{-- <th rowspan="2">Submitted On</th> --}}
                                 <th rowspan="2">Applicant Name</th>
-                                <th rowspan="2">Department</th>
                                 <th rowspan="2">Status</th>
                                 <th rowspan="2"></th>
                             </tr>
                             <tr>
-                                <th>Inter-Dept</th>
-                                <th>Intra-Dept</th>
+                                <th style="max-width:40px;">Inter-Dept</th>
+                                <th style="max-width:40px;">Intra-Dept</th>
+                                <th title="Employee Identification Number">EIN</th>
+                                <th>Name</th>
+                                {{-- <th title="Date of expiry of the employee">DOE</th> --}}
+                                <th title="Department">Dept.</th>
                             </tr>
                         </thead>
                     </table>
@@ -52,16 +53,42 @@
 
             params['application_status'] = application_status;
             let columns = [
-                //"DT_RowIndex|nonorderable|nonsearchable",
                 "overall_seniority_idx|nonsearchable",
                 "dept_seniority_idx|nonsearchable",
                 "deceased_ein",
-                "deceased_emp_name",
-                "deceased_doe",
-                "proforma_submission_date",
-                "applicant_name",
+                {
+                    data: "deceased_emp_name",
+                    render: (data, type, row) => {
+                        return `
+                            <div>${data}</div>
+                            <div class="text-muted" title="Date of Expiry"><span class="fw-bold">Expired On:</span> ${row.deceased_doe}</div>
+                        `;
+                    },
+                },
+                //"deceased_doe",
                 "deceased_field_dept_desc",
-                "proforma_status"
+                /* "proforma_submission_date", */
+                {
+                    data: "applicant_name",
+                    render: (data, type, row) => {
+                        return `
+                            <div>${data}</div>
+                            <div class="fw-bold text-muted">Submitted On:</div>
+                            <div class="text-muted">${row.proforma_submission_date}</div>
+                        `;
+                    }
+                },
+                {
+                    data: "proforma_status",
+                    render: (data, type, row) => {
+                        return `
+                            <div>${data}</div>
+                            <div class="text-muted">By: ${row.remarks.by}</div>
+                            <div class="text-muted small">${row.remarks.date}</div>
+                        `;
+                    }
+                },
+                "action|nonorderable|nonsearchable"
             ];
             loadAjaxTable({
                 id: "#application-table",

@@ -98,6 +98,7 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.', 'middleware' => ['auth']]
             Route::post('/{id}/forward', 'forward')->name('uo.filesubmission.forward');;
 
             Route::post('file/{id}/submit', 'submit')->name('uo.filesubmission.submit');
+            Route::post('file/bulk-submit-forward', 'bulkSubmitUOFileAndForward')->name('uo.filesubmission.bulk-submit-and-forward');
         });
     });
 

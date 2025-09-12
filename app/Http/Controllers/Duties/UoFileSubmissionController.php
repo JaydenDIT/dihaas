@@ -9,7 +9,9 @@ use App\Models\Task;
 use App\Models\UoFileSubmission;
 use App\Services\CmisApiService;
 use App\Services\LogService;
+use App\Services\UOFileStorageService;
 use App\Services\WorkflowHandler;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +26,8 @@ class UoFileSubmissionController extends Controller
         $task = Task::findOrFail($tasks_id);
         $departments = CmisApiService::apiFieldDepartments();
         $view = $request->input('view', '');
-        return view('duties.uoFileSubmissionList', compact('departments', 'task', 'view'));
+        $remarks = Remark::orderBy('id')->get();
+        return view('duties.uoFileSubmissionList', compact('departments', 'task', 'view', 'remarks'));
     }
 
     public function ajaxlist(Request $request, $tasks_id)
@@ -125,6 +128,7 @@ class UoFileSubmissionController extends Controller
     }
 
 
+    // This method is for submiting UO file of a single proforma
     public function submit(Request $request, $id)
     {
         try {
@@ -173,6 +177,16 @@ class UoFileSubmissionController extends Controller
         }
     }
 
+
+    /**
+     * Purpose: To put forward for a single proforma
+     * Business Logic:
+     * After UO file is submitted, the proforma can be moved/forwarded to the next step.
+     * Find if the field 'mini_sequence' is equal to 'file_uploaded' which means file has been uploaded
+     * 
+     * @param $request is the HTTP request of type Illuminate\Http\Request
+     * @param int $id  The proforma id which is the primary key of the proforma table.
+     */
     public function forward(Request $request, $id)
     {
         try {
@@ -185,11 +199,12 @@ class UoFileSubmissionController extends Controller
             if ($proforma->mini_sequence != "file_uploaded") {
                 return response()->json(['message' => 'Upload file before forwarding.'], 422);
             }
+
             //WorkflowHandler comes after LogService
             LogService::addProformaLog([
                 'proforma_id' => $proforma->proforma_id,
                 'action_by' => Auth::user()->user_id,
-                'action_name' => 'forwarded', //compulsory always forwarded for forwarded
+                'action_name' => 'forwarded', //compulsory always set 'forwarded' if the proforma application is  forwarded
                 'action_remark' => $request->remarks,
                 'process_sequence' => $proforma->process_sequence
             ]);
@@ -199,6 +214,56 @@ class UoFileSubmissionController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
+        }
+    }
+
+    /**
+     * Purpose: To upload a common UO file for a group of proforma, and then forward those proformas to the 
+     * next step in bulk at one go.
+     * 
+     * Business Logic:
+     * 1. Get the proforma Ids for the desired proforma
+     * 2. Get a remark if present
+     * 3. Grab the uploaded file and save in storage and the get the physical path 
+     * 4. For every proforma id (perform a loop), set the same path in uo_file_submissions table using UoFileSubmission Model.
+     * 5. Add a log service to tell that the proforma has been forwarded
+     * 6. Forward the proforma using WorkFlowHandler
+     * 
+     * @param $request is the HTTP request of type Illuminate\Http\Request
+     */
+
+    public function bulkSubmitUOFileAndForward(Request $request)
+    {
+        $request->validate([
+            'selected_proforma' => 'required|array|min:1',
+            'selected_proforma.*' => 'exists:proforma,proforma_id',
+            'remarks' => 'nullable|string|max:600',
+            'document_file' => 'required|file|mimes:pdf|max:5120',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            // Save the file in storage and save the path in uo_file_submissions table
+            UOFileStorageService::saveUOFile($request->file('document_file'), $request->selected_proforma);
+
+            $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
+            foreach ($proformas as $proforma) {
+                //WorkflowHandler comes after LogService
+                LogService::addProformaLog([
+                    'proforma_id' => $proforma->proforma_id,
+                    'action_by' => Auth::user()->user_id,
+                    'action_name' => 'forwarded', //compulsory always set 'forwarded' if the proforma application is  forwarded
+                    'action_remark' => $request->remarks,
+                    'process_sequence' => $proforma->process_sequence
+                ]);
+                //Forward the application
+                WorkflowHandler::forwardApplication($proforma);
+            }
+            DB::commit();
+            return response()->json(['message' => 'Your document has been uploaded successfully and forwarded.'], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'An error occurs while uploading document and forwarding proforma: ' . $e->getMessage()], 422);
         }
     }
 }

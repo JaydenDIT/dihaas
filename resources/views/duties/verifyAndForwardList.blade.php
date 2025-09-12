@@ -1,15 +1,4 @@
 @extends('layouts.app')
-@push('css')
-    <style>
-        .proforma-checkbox {
-            cursor: pointer;
-        }
-
-        button:disabled {
-            cursor: not-allowed !important;
-        }
-    </style>
-@endpush
 
 @section('content')
     <div class="pt-3">
@@ -61,6 +50,8 @@
         const bulkRevertUrl = "{{ route('tasks.performa.bulkRevert', $task->tasks_id) }}";
         const bulkVerifyUrl = "{{ route('duties.verify.form.bulkVerify') }}";
         const bulkForwardUrl = "{{ route('duties.verify.form.bulkForward') }}";
+        const ajaxDataListUrl = "{{ route('duties.verify.form.ajaxlist', $task->tasks_id) }}";
+
         const select_proforma_form = document.forms['select_proforma_form'];
         const verifyButton = document.getElementById('verify-button');
         const forwardButton = document.getElementById('forward-button');
@@ -71,23 +62,6 @@
                 applicationTable('un-verified');
             }, 300);
         });
-
-        //function to hide or show the buttons like revert button, verify button and forward button based on the application status
-        function manipulateActionButtons(application_status) {
-            if (application_status == 'un-verified') {
-                $('#verify-button').show();
-                $('#forward-button').hide();
-                $('#revert-button').show();
-            } else if (application_status == 'verified') {
-                $('#verify-button').hide();
-                $('#forward-button').show();
-                $('#revert-button').show();
-            } else {
-                $('#verify-button').hide();
-                $('#forward-button').hide();
-                $('#revert-button').hide();
-            }
-        }
 
         function applicationTable(application_status = "{{ $view ?? 'un-verified' }}") {
             $(".statusBtn").removeClass('btn-success').addClass('btn-primary');
@@ -161,7 +135,7 @@
 
             var dataTable = loadAjaxTable({
                 id: "#application-table",
-                url: "{{ route('duties.verify.form.ajaxlist', $task->tasks_id) }}",
+                url: ajaxDataListUrl,
                 message: "No Performa Found",
                 columns: columns,
                 order: [1, 'asc'],

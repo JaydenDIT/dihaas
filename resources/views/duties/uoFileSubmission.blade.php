@@ -65,7 +65,7 @@
                                         id="remarks" rows="3"></textarea>
                                 </div>
                                 <div class="form-group mt-4">
-                                    <label class="form-label" id="fileLabel">Choose File (Office Order / Minus of
+                                    <label class="form-label" id="fileLabel">Choose File (Office Order / Minutes of
                                         meeting)</label>
 
                                     <input type="file" class="form-control" name="document_file"
