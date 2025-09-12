@@ -223,7 +223,11 @@
                 if (result.isConfirmed) {
                     // Create FormData from your form
                     let formData = new FormData(remark_form);
-                    formData.append('selected_proforma[]', selectedProformas);
+                    //formData.append('selected_proforma[]', selectedProformas);
+
+                    selectedProformas.forEach(id => {
+                        formData.append('selected_proforma[]', id);
+                    });
 
                     fetch(url, {
                             method: 'POST',
