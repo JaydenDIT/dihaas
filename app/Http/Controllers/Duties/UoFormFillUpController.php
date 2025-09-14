@@ -114,7 +114,7 @@ class UoFormFillUpController extends Controller
         $proforma = Proforma::findOrFail($id);
         $this->authorize('canPerformOnProforma',  [$proforma, 'uo_formfillup']);
 
-        $total_step = 4;
+        $total_step = 5;
         $tasks = getPrevNextTasks($id);
 
         $adminDepartments = CmisApiService::apiAdminDepartments();

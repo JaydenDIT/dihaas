@@ -21,6 +21,10 @@
             </div>
             <div class="btn-go-through btn-step" data-step="4">
                 <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
+                <div>UO File</div>
+            </div>
+            <div class="btn-go-through btn-step" data-step="5">
+                <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
                 <div>UO Form Fill Up</div>
             </div>
         </div>
@@ -44,8 +48,33 @@
                 </div>
             </div>
 
-            {{-- Step 4 --}}
+            {{-- STEP 4 --}}
             <div class="setup-content" id="step-4">
+                <div class="form-group">
+                    <div class="bg-committee p-0 pb-5 rounded">
+                        <h5 class="py-1 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">
+                            Approved UO File
+                        </h5>
+                        <div class="col-sm-12 mb-3 px-4">
+                            <iframe style="width:100%;height:100vh;"
+                                src="{{ route('uo-file.get', $proforma->proforma_id) }}" frameborder="0"></iframe>
+
+                        </div>
+                    </div>
+                    <div class="hstack gap-3 my-3 p-3">
+                        <div class="ms-auto">
+                            <button class="btn btn-md btn-success prevBtn" type="button" data-step="3">Prev</button>
+                            @if (isset($total_step) && $total_step > 4)
+                                <button class="btn btn-md btn-success nextBtn" type="button" data-step="3">Next</button>
+                            @endif
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {{-- Step 5 --}}
+            <div class="setup-content" id="step-5">
                 <div class="form-group card">
                     <div class="small card-body">
                         <h5 class="card-title">UO Form Fill Up</h5>
@@ -157,7 +186,8 @@
                                                 @endforeach
                                             </select>
                                             <input type="hidden" name="applicant_prefered_post_desc"
-                                                class="applicant-prefered" id="applicant_prefered_post_desc" value="">
+                                                class="applicant-prefered" id="applicant_prefered_post_desc"
+                                                value="">
                                         </div>
                                         <div class="mb-3">
                                             <label for="applicant_prefered_group_code">Prefered Group Code:</label>

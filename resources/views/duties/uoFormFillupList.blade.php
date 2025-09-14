@@ -40,7 +40,6 @@
                 "deceased_field_dept_desc",
                 "applicant_name",
                 "applicant_dob",
-
                 //"proforma_submission_date",
                 {
                     data: "remarks",
@@ -49,13 +48,13 @@
                             return 'N/A';
                         }
                         return `
-                        <div>${data.by}</div>
+                        <div>${row.proforma_status}</div>
+                        <div>By: ${data.by}</div>
                         <div class="text-muted">${data.date}</div>
                         `;
                     }
                 },
-
-                "proforma_status",
+                //"proforma_status",
                 {
                     data: "remarks",
                     render: (data, type, row) => {
@@ -65,7 +64,12 @@
                         return `<div>${data.remark}</div>`;
                     }
                 },
-                "action|nonorderable|nonsearchable",
+                {
+                    data: "action",
+                    orderable: false,
+                    searchable: false,
+                    print: false,
+                },
             ];
 
             loadAjaxTable({
@@ -76,7 +80,6 @@
                 param: {
                     application_status: application_status
                 },
-                action: true,
             });
         }
 
