@@ -96,6 +96,7 @@
                     application_status: application_status
                 },
                 searching: !(application_status == "un-verified" || application_status == "verified"),
+                export: true,
             }, () => {
                 // This function 'getOverallSeniorityIndexes' is defined in multiselect-proforma.js
                 overall_seniority_indexes = getOverallSeniorityIndexes();

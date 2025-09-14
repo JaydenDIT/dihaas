@@ -108,7 +108,7 @@ function loadAjaxTable(data, callbackfn = "") {
             return ele; // Use the object directly if it's already in the correct format
         }
 
-        if (ele.includes("|")) {
+        if (typeof ele === "string" && ele.includes("|")) {
             let parts = ele.split("|");
             col = { data: parts[0] };
             parts.slice(1).forEach((part) => {
@@ -147,18 +147,7 @@ function loadAjaxTable(data, callbackfn = "") {
         }
         return col;
     });
-
-    // Add action column if required
-    /* 
-    if (data["action"] === true) {
-        columns.push({
-            data: "action",
-            orderable: false,
-            searchable: false,
-            print: false, // Exclude from print/export
-        });
-    }
-    */
+    
     // Parameter function for server-side data
     let param;
     if (typeof data["param"] === "function") {
@@ -176,12 +165,15 @@ function loadAjaxTable(data, callbackfn = "") {
         };
     }
 
+    let exportButtonDom = data["export"] == true?"<'col text-end' B>":"";
+    let searchingDom = data["searching"] == true?"<'col' f>":"";
+
     // Default DOM structure and length menu
     let dom =
         data["dom"] ||
-        "<'row'<'col-sm-12 col-md-6 mb-1'B><'col-sm-2 col-md-2 mb-1'l><'col-sm-4 col-md-4  mb-1'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 mt-1'p>>";
+        "<'row d-flex justify-content-between gap-2'<'col' l>"+exportButtonDom+searchingDom+">" +
+        "<'row'<'col-12'tr>>" +
+        "<'row'<'col-md-5'i><'col-md-7'p>>";
 
     let lengthMenu = data["lengthMenu"] || [
         [10, 25, 50],
@@ -194,11 +186,11 @@ function loadAjaxTable(data, callbackfn = "") {
     if ($.fn.DataTable.isDataTable(table)) {
         $(table).DataTable().destroy();
     }
-    $(table + " body").empty();
-
+    $(table + " tbody").empty();
+    
     // Define export button options
     let exportButtonOptions = [];
-    if (data["export"] != false) {
+    if (data["export"] == true) {
         exportButtonOptions = [
             {
                 extend: "excelHtml5",
@@ -294,9 +286,9 @@ function loadAjaxTable(data, callbackfn = "") {
         dom: dom,
         buttons: exportButtonOptions,
         select: select,
-        stateSave: false,
+        stateSave: data["stateSave"] || false,
         lengthMenu: lengthMenu,
-        searching: data["searching"] !== false,
+        searching: data["searching"] || false,
     });
 
     return dTable;
@@ -306,7 +298,7 @@ function colourTable(id) {
     $(id).addClass("table");
     $(id).addClass("table-striped");
     $(id).addClass("table-bordered");
-    // $(id).addClass("border-primary");
+    // $(id).addClass("border-warning");
 }
 
 function error_message(message, timeout = 3000) {
