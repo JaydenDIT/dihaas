@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Services\CmisApiService;
 use App\Services\LogService;
 use App\Services\WorkflowHandler;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -25,8 +26,9 @@ class UoFileApprovalController extends Controller
         $task        = Task::findOrFail($tasks_id);
         $departments = CmisApiService::apiFieldDepartments();
         $view        = $request->input('view', '');
+        $remarks = Remark::where('is_active', true)->orderBy('id')->get();
 
-        return view('duties.uoFileApprovalList', compact('departments', 'task', 'view'));
+        return view('duties.uoFileApprovalList', compact('departments', 'task', 'view', 'remarks'));
     }
 
     public function ajaxlist(Request $request, $tasks_id)
@@ -139,11 +141,12 @@ class UoFileApprovalController extends Controller
             //Getting the proforma and uo file submission detail
             $proforma = Proforma::findOrFail($id);
             $this->authorize('canForward', [$proforma, 'uo_file_approval']);
-            //$uo_file_submission = UoFileSubmission::where('proforma_id', $id)->first();
+            $uo_file_submission = UoFileSubmission::where('proforma_id', $id)->first();
 
             DB::beginTransaction();
-            //$uo_file_submission->verified_by = $request->dp_nodal_user_id;
-            //$uo_file_submission->save();
+            $uo_file_submission->verified = true;
+            $uo_file_submission->verified_by = Auth::id();
+            $uo_file_submission->save();
 
             //WorkflowHandler comes after LogService
             LogService::addProformaLog([
@@ -158,6 +161,48 @@ class UoFileApprovalController extends Controller
             return response()->json(['message' => 'Proforma forwarded successfully.'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+            return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
+        }
+    }
+
+    // Endpoint to approve UO File for proforma and then forward in bulk
+    public function bulkApproveAndForward(Request $request)
+    {
+        $request->validate([
+            'selected_proforma' => 'required|array|min:1',
+            'selected_proforma.*' => 'exists:proforma,proforma_id',
+            'remarks' => 'nullable|string|max:600',
+        ]);
+
+        try {
+            $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
+            foreach ($proformas as $proforma) {
+                $this->authorize('canForward',  [$proforma, 'uo_file_approval']);
+
+                $uo_file_submission = UoFileSubmission::where('proforma_id', $proforma->proforma_id)->first();
+
+                if (empty($uo_file_submission)) {
+                    throw new Exception("Missing UO file for proforma.");
+                }
+
+                $uo_file_submission->verified = true;
+                $uo_file_submission->verified_by = Auth::id();
+                $uo_file_submission->save();
+
+                //WorkflowHandler comes after LogService
+                LogService::addProformaLog([
+                    'proforma_id' => $proforma->proforma_id,
+                    'action_by' => Auth::user()->user_id,
+                    'action_name' => 'forwarded',
+                    'action_remark' => $request->remarks,
+                    'process_sequence' => $proforma->process_sequence
+                ]);
+                WorkflowHandler::forwardApplication($proforma);
+            }
+            DB::commit();
+            return response()->json(['message' => 'UO files for the selected Proformas have been approved and forwarded successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
             return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
         }
     }

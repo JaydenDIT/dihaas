@@ -48,19 +48,23 @@
             <div class="setup-content" id="step-4">
                 <div class="form-group">
                     <div class="bg-committee p-0 pb-5 rounded">
-                        <h5 class="py-1 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">UO File Approval
+                        <h5 class="py-1 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">
+                            UO File
                         </h5>
                         <div class="col-sm-12 mb-3 px-4">
                             <iframe style="width:100%;height:100vh;"
                                 src="{{ route('uo-file.get', $proforma->proforma_id) }}" frameborder="0"></iframe>
 
                         </div>
-                        <!-- Bank Details -->
+                        <!-- Action Buttons -->
                         <div class="col-sm-12 mb-3 px-4">
                             <div class="d-flex justify-content-center gap-2 mt-5">
-                                @include('duties.tasks._revert')
+                                <a href="{{ route('duties.uo.file-approval.index', $tasks['current']['tasks_id']) }}"
+                                    class="btn btn-primary"><i class="bi bi-arrow-left"></i> Back To the List</a>
+                                {{--  @include('duties.tasks._revert')
                                 @include('duties.tasks._reject')
-                                @include('duties.tasks._forward')
+                                @include('duties.tasks._forward') --}}
+
                             </div>
                         </div>
                     </div>
