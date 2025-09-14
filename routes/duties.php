@@ -105,10 +105,12 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.', 'middleware' => ['auth']]
     Route::group(['prefix' => 'uo/file/approval'], function () {
         Route::controller(UoFileApprovalController::class)->group(function () {
             //compulsory
-            Route::get('/{tasks_id}/index', 'index')->name('uo.file-approval.index');
+            Route::get('/{tasks_id}/index', 'index')->name('uo.file-approval.index'); //duties.uo.file-approval.index
             Route::post('/{tasks_id}/ajaxlist', 'ajaxlist')->name('uo.file-approval.ajaxlist');
             Route::get('/{id}/view', 'view')->name('uo.file-approval.view');
-            Route::post('/{id}/forward', 'forward')->name('uo.file-approval.forward');;
+            Route::post('/{id}/forward', 'forward')->name('uo.file-approval.forward');
+            Route::post('/bulk-approve-forward', 'bulkApproveAndForward')
+                ->name('uo.file-approval.bulk-approve-and-forward'); //duties.uo.file-approval.bulk-approve-and-forward
 
             Route::post('file/{id}/submit', 'submit')->name('uo.file-approval.submit');
         });
