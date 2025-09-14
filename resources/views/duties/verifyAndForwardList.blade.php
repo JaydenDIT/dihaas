@@ -63,6 +63,16 @@
             }, 300);
         });
 
+        /**
+         * External Functions:
+         * -----------------------------------
+         * getOverallSeniorityIndexes(),
+         * manipulateActionButtons(), 
+         * -- are defined in public/js/mutiselect-proforma.js
+         * 
+         * getProformaColumnsForDataTable() -- is defined in _report-table.blade.php
+         * 
+         */
         function applicationTable(application_status = "{{ $view ?? 'un-verified' }}") {
             $(".statusBtn").removeClass('btn-success').addClass('btn-primary');
             $(this).addClass('btn-success');
@@ -70,68 +80,11 @@
 
             manipulateActionButtons(application_status);
 
-            let columns = [{
-                    data: 'DT_RowIndex',
-                    render: (data, type, row) => {
-                        if (application_status == "un-verified" || application_status == "verified") {
-                            return `<input type="checkbox" 
-                            data-overall_seniority_idx="${row.overall_seniority_idx}" class="select-single form-check-input proforma-checkbox" name="selected_proforma[]" 
-                            value="${row.proforma_id}" disabled/>`;
-                        }
-                        return row.DT_RowIndex;
-                    },
-                    orderable: false,
-                    searchable: false
-                },
-                "overall_seniority_idx|nonorderable|nonsearchable",
-                "dept_seniority_idx|nonorderable|nonsearchable",
-                //"deceased_ein|nonorderable",
-                {
-                    data: "deceased_emp_name",
-                    render: (data, type, row) => {
-                        return `<div>${data}</div><div cass="text-muted"><strong>(${row.deceased_ein})</strong></div>`;
-                    },
-                    orderable: false
-                },
-                "deceased_doe|nonorderable",
-                "deceased_field_dept_desc|nonorderable",
-                "applicant_name|nonorderable",
-                "applicant_dob|nonorderable",
-                //"proforma_submission_date",
-                {
-                    data: "remarks",
-                    render: (data, type, row) => {
-                        if (data == null) {
-                            return 'N/A';
-                        }
-                        return `
-                        <div>${data.by}</div>
-                        <div class="text-muted">${data.date}</div>
-                        `;
-                    },
-                    orderable: false
-                },
-                "proforma_status|nonorderable",
-                {
-                    data: "remarks",
-                    render: (data, type, row) => {
-                        if (data == null) {
-                            return 'N/A';
-                        }
-                        return `<div>${data.remark}</div>`;
-                    },
-                    orderable: false
-                },
-                {
-                    data: "action",
-                    render: (data, type, row) => {
-                        /* if (application_status == "un-verified" || application_status == "verified") {
-                            return '';
-                        } */
-                        return data;
-                    }
-                }
-            ];
+            let params = {
+                allow_multi_select: (application_status == "un-verified" || application_status ==
+                    "verified")
+            }
+            let columns = getProformaColumnsForDataTable(params);
 
             var dataTable = loadAjaxTable({
                 id: "#application-table",
@@ -170,9 +123,9 @@
             e.preventDefault();
             $("#remarkModal").modal('show');
             $("#remarkModal .modal-title").text("Give remarks for reverting the selected proformas");
-            $("#remarkModal button[type='submit']").text("Confirm Revert");
+            $("#remarkModal button[type='submit']").html(`<i class="bi bi-arrow-left-circle "></i> Confirm Revert`);
+            $("#remarkModal button[type='submit']").attr("class", "btn btn-warning");
             $("#action_type").val("revert");
-            //bulkAction(bulkVerifyUrl, 'revert');
         });
 
         //Onclick event for bulk verify button
@@ -180,18 +133,18 @@
             e.preventDefault();
             $("#remarkModal").modal('show');
             $("#remarkModal .modal-title").text("Give remarks for verification of the selected proformas");
-            //bulkAction(bulkVerifyUrl, 'verify');
-            $("#remarkModal button[type='submit']").text("Confirm Verify");
+            $("#remarkModal button[type='submit']").html(`<i class="bi bi-check-circle "></i> Confirm Verify`);
+            $("#remarkModal button[type='submit']").attr("class", "btn btn-success");
             $("#action_type").val("verify");
         });
 
         //Onclick event for bulk forward button
         $('#forward-button').on('click', function(e) {
             e.preventDefault();
-            //bulkAction(bulkForwardUrl, 'forward');
             $("#remarkModal").modal('show');
             $("#remarkModal .modal-title").text("Give remarks for forwarding the selected proformas");
-            $("#remarkModal button[type='submit']").text("Confirm Forward");
+            $("#remarkModal button[type='submit']").html(`<i class="bi bi-check-circle"></i> Confirm Forward`);
+            $("#remarkModal button[type='submit']").attr("class", "btn btn-primary");
             $("#action_type").val("forward");
         });
 
@@ -273,6 +226,7 @@
             });
         }
 
+        // this function 'handleRemarkSubmission' is defined in duties.tasks.modals._remarks_modal.blade.php
         handleRemarkSubmission(() => {
             let action_type = document.getElementById('action_type').value;
             let url = '';

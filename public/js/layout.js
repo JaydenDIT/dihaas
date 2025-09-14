@@ -121,6 +121,9 @@ function loadAjaxTable(data, callbackfn = "") {
                 if (part === "no-print") {
                     col.print = false;
                 }
+                if (part === "invisible") {
+                    col.visible = false;
+                }
                 if (part === "datetime") {
                     col.render = function (data) {
                         if (data) {
@@ -154,8 +157,8 @@ function loadAjaxTable(data, callbackfn = "") {
             searchable: false,
             print: false, // Exclude from print/export
         });
-    } */
-
+    }
+    */
     // Parameter function for server-side data
     let param;
     if (typeof data["param"] === "function") {

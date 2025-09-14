@@ -71,64 +71,9 @@
             $(".statusBtn[data-application_status='" + application_status + "']").addClass('btn-success');
 
             manipulateActionButtons(application_status);
-
-            let columns = [{
-                    data: 'DT_RowIndex',
-                    render: (data, type, row) => {
-                        if (application_status == "pending") {
-                            return `<input type="checkbox" 
-                            data-overall_seniority_idx="${row.overall_seniority_idx}" class="select-single form-check-input proforma-checkbox" name="selected_proforma[]" 
-                            value="${row.proforma_id}" disabled/>`;
-                        }
-                        return row.DT_RowIndex;
-                    },
-                    orderable: false,
-                    searchable: false
-                },
-                "overall_seniority_idx|nonorderable|nonsearchable",
-                "dept_seniority_idx|nonorderable|nonsearchable",
-                //"deceased_ein|nonorderable",
-                {
-                    data: "deceased_emp_name",
-                    render: (data, type, row) => {
-                        return `<div>${data}</div><div cass="text-muted"><strong>(${row.deceased_ein})</strong></div>`;
-                    },
-                    orderable: false
-                },
-                "deceased_doe|nonorderable",
-                "deceased_field_dept_desc|nonorderable",
-                "applicant_name|nonorderable",
-                "applicant_dob|nonorderable",
-                //"proforma_submission_date",
-                {
-                    data: "remarks",
-                    render: (data, type, row) => {
-                        if (data == null) {
-                            return 'N/A';
-                        }
-                        return `
-                        <div>${data.by}</div>
-                        <div class="text-muted">${data.date}</div>
-                        `;
-                    },
-                    orderable: false
-                },
-                "proforma_status|nonorderable",
-                {
-                    data: "remarks",
-                    render: (data, type, row) => {
-                        if (data == null) {
-                            return 'N/A';
-                        }
-                        return `<div>${data.remark}</div>`;
-                    },
-                    orderable: false
-                },
-                {
-                    data: "action",
-                    orderable: false,
-                }
-            ];
+            let columns = getProformaColumnsForDataTable({
+                allow_multi_select: (application_status == "pending")
+            });
 
             var dataTable = loadAjaxTable({
                 id: "#application-table",
@@ -279,6 +224,7 @@
             });
         }
 
+        // this function 'handleRemarkSubmission' is defined in duties.tasks.modals._UO_file_submission_with_remarks_modal.blade.php
         handleRemarkSubmission(() => {
             let file_upoad_layout = document.querySelector("#file_upoad_layout");
             let action_type = document.getElementById('action_type').value;

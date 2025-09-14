@@ -1,80 +1,5 @@
 @extends('layouts.app')
 
-@push('js')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            setTimeout(function() {
-                applicationTable();
-            }, 300);
-        });
-
-        function applicationTable(application_status = "{{ $view ?? 'pending' }}") {
-            $(".statusBtn").removeClass('btn-success').addClass('btn-primary');
-            // $(this).addClass('btn-success');
-            $(".statusBtn[data-application_status='" + application_status + "']").addClass('btn-success');
-            let user_id = document.querySelector("#user_id").value;
-            let columns = [
-                "DT_RowIndex|nonorderable|nonsearchable",
-                "overall_seniority_idx|nonorderable|nonsearchable",
-                "dept_seniority_idx|nonorderable|nonsearchable",
-                //"deceased_ein",
-                {
-                    data: "deceased_emp_name",
-                    render: (data, type, row) => {
-                        return `<div>${data}</div><div cass="text-muted"><strong>(${row.deceased_ein})</strong></div>`;
-                    }
-                },
-                "deceased_doe",
-                "deceased_field_dept_desc",
-                "applicant_name",
-                "applicant_dob",
-
-                //"proforma_submission_date",
-                {
-                    data: "remarks",
-                    render: (data, type, row) => {
-                        if (data == null) {
-                            return 'N/A';
-                        }
-                        return `
-                        <div>${data.by}</div>
-                        <div class="text-muted">${data.date}</div>
-                        `;
-                    }
-                },
-
-                "proforma_status",
-                {
-                    data: "remarks",
-                    render: (data, type, row) => {
-                        if (data == null) {
-                            return 'N/A';
-                        }
-                        return `<div>${data.remark}</div>`;
-                    }
-                },
-                "action|nonorderable|nonsearchable",
-            ];
-            loadAjaxTable({
-                id: "#application-table",
-                url: "{{ route('duties.form.ajaxlist', $task->tasks_id) }}",
-                message: "No Performa Found",
-                columns: columns,
-                param: {
-                    application_status: application_status,
-                    create_by: user_id,
-                },
-                action: true,
-            });
-        }
-
-        $(document).on('click', '.statusBtn', function(e) {
-            e.preventDefault();
-            let application_status = $(this).data('application_status');
-            applicationTable(application_status); // Reload with selected status
-        });
-    </script>
-@endpush
 
 @section('content')
     <div class="pt-3">
@@ -97,3 +22,40 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            setTimeout(function() {
+                applicationTable();
+            }, 300);
+        });
+
+        function applicationTable(application_status = "{{ $view ?? 'pending' }}") {
+            $(".statusBtn").removeClass('btn-success').addClass('btn-primary');
+            // $(this).addClass('btn-success');
+            $(".statusBtn[data-application_status='" + application_status + "']").addClass('btn-success');
+            let user_id = document.querySelector("#user_id").value;
+            let columns = getProformaColumnsForDataTable({
+                allow_multi_select: false
+            });
+            const proforma_list_url = "{{ route('duties.form.ajaxlist', $task->tasks_id) }}";
+            loadAjaxTable({
+                id: "#application-table",
+                url: proforma_list_url,
+                message: "No Performa Found",
+                columns: columns,
+                param: {
+                    application_status: application_status,
+                    create_by: user_id,
+                },
+            });
+        }
+
+        $(document).on('click', '.statusBtn', function(e) {
+            e.preventDefault();
+            let application_status = $(this).data('application_status');
+            applicationTable(application_status); // Reload with selected status
+        });
+    </script>
+@endpush

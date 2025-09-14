@@ -194,13 +194,13 @@ class VerifyAndForwardController extends Controller
     //Verification of multiple proformas in bulk
     public function bulkVerify(Request $request)
     {
-
-        DB::beginTransaction();
         $request->validate([
             'selected_proforma' => 'required|array|min:1',
             'selected_proforma.*' => 'exists:proforma,proforma_id',
             'remarks' => 'nullable|string|max:600',
         ]);
+
+        DB::beginTransaction();
         try {
             $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
             foreach ($proformas as $proforma) {
@@ -228,14 +228,14 @@ class VerifyAndForwardController extends Controller
     //Forwarding for multiple proformas in bulk
     public function bulkForward(Request $request)
     {
-
-
-        DB::beginTransaction();
         $request->validate([
             'selected_proforma' => 'required|array|min:1',
             'selected_proforma.*' => 'exists:proforma,proforma_id',
             'remarks' => 'nullable|string|max:600',
         ]);
+
+        DB::beginTransaction();
+
         try {
             $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
             foreach ($proformas as $proforma) {

@@ -5,7 +5,7 @@
             <th colspan="2" class="text-center">Seniority</th>
             <th colspan="3" class="text-center">Deceased Employee Details</th>
             <th colspan="2" class="text-center">Applicant Details</th>
-            <th rowspan="2">Sent By</th>
+            {{-- <th rowspan="2">Sent By</th> --}}
             <th rowspan="2">Status</th>
             <th rowspan="2">Remarks</th>
             <th rowspan="2"></th>
@@ -23,3 +23,86 @@
     </thead>
     <tbody></tbody>
 </table>
+@push('js')
+    <script>
+        //js function to prepare columns for the data table
+
+        /**
+         * @argument allow_multi_select means user will be allowed to select one or more rows
+         * Columns we have  [
+                "DT_RowIndex|nonorderable|nonsearchable",
+                "overall_seniority_idx|nonorderable|nonsearchable",
+                "dept_seniority_idx|nonorderable|nonsearchable",
+                "deceased_ein",
+                "deceased_emp_name",
+                "deceased_doe",
+                "deceased_field_dept_desc",
+                "applicant_name",
+                "applicant_dob",
+                "proforma_submission_date",
+                "proforma_status",
+                "remarks"
+            ]; 
+         */
+        function getProformaColumnsForDataTable(params) {
+            let columns = [{
+                    data: 'DT_RowIndex',
+                    render: (data, type, row) => {
+                        if (params.allow_multi_select) {
+                            return `<input type="checkbox" 
+                            data-overall_seniority_idx="${row.overall_seniority_idx}" class="select-single form-check-input proforma-checkbox" name="selected_proforma[]" 
+                            value="${row.proforma_id}" disabled/>`;
+                        }
+                        return row.DT_RowIndex;
+                    },
+                    orderable: false,
+                    searchable: false
+                },
+                "overall_seniority_idx|nonorderable|nonsearchable",
+                "dept_seniority_idx|nonorderable|nonsearchable",
+                {
+                    data: "deceased_emp_name",
+                    render: (data, type, row) => {
+                        return `<div>${data}</div><div cass="text-muted"><strong>(${row.deceased_ein})</strong></div>`;
+                    },
+                    orderable: false
+                },
+                "deceased_doe|nonorderable",
+                "deceased_field_dept_desc|nonorderable",
+                "applicant_name|nonorderable",
+                "applicant_dob|nonorderable",
+                {
+                    data: "remarks",
+                    render: (data, type, row) => {
+                        if (data == null) {
+                            return 'N/A';
+                        }
+                        return `
+                        <div class="${row.proforma_status}">${row.proforma_status}</div>
+                        <div>By: ${data.by}</div>
+                        <div class="text-muted">${data.date}</div>
+                        `;
+                    },
+                    orderable: false
+                },
+                {
+                    data: "remarks",
+                    render: (data, type, row) => {
+                        if (data == null) {
+                            return 'N/A';
+                        }
+                        return `<div>${data.remark}</div>`;
+                    },
+                    orderable: false
+                },
+                {
+                    data: "action",
+                    searchable: false,
+                    orderable: false,
+                    print: false,
+                }
+            ];
+            return columns;
+        }
+    </script>
+@endpush
