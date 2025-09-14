@@ -21,7 +21,7 @@
             </div>
             <div class="btn-go-through btn-step" data-step="4">
                 <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
-                <div>UO File</div>
+                <div>UO File (Approved)</div>
             </div>
             <div class="btn-go-through btn-step" data-step="5">
                 <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
