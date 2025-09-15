@@ -128,6 +128,41 @@
     cursor: pointer;
 }
 
-button:disabled {
+.proforma-checkbox:disabled, button:disabled {
     cursor: not-allowed !important;
+}
+
+.status{
+    padding: 3px 5px;
+    font-weight: bold;
+    border-radius: 6px;
+    background-color: #ebe4e4;
+    border-color: #ccc;
+    margin-top: 4px;
+    margin-bottom: 0px;
+}
+
+.status-verified{
+    color:rgba(77, 104, 3, 0.4) !important;    
+    background-color: #b6fcd3 !important;
+}
+.status-pending{
+    color:rgba(5, 33, 63, 0.4) !important;    
+    background-color: #a6e2d8 !important;
+}
+.status-forwarded{
+    color:rgba(2, 16, 31, 0.4) !important;    
+    background-color: #b6d3f3 !important;
+}
+.status-reverted{
+    color:rgba(243, 46, 177, 0.4) !important;    
+    background-color: #fabdd4 !important;
+}
+.status-rejected{
+    color:rgba(250, 23, 23, 0.4) !important;    
+    background-color: #e5a4a4 !important;
+}
+.status-completed{
+    color:rgba(4, 53, 15, 0.4) !important;    
+    background-color: #a0d8b9 !important;
 }

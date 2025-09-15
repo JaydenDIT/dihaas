@@ -109,6 +109,7 @@
                     searchable: false,
                     print: false,
                 },
+                /* 
                 {
                     data: "applicant_email",
                     name: "applicant_email",
@@ -118,7 +119,7 @@
                     data: "applicant_dob",
                     name: "applicant_dob",
                     visible: false
-                },
+                }, */
             ];
 
             loadAjaxTable({
@@ -132,7 +133,7 @@
                     [10, 15, 25, 50, -1],
                     [10, 15, 25, 50, "All"]
                 ],
-                action: true,
+                //action: true,
             });
 
             /*

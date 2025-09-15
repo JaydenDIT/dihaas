@@ -3,39 +3,39 @@
 @section('content')
     <div class="pt-3">
         <h3><b>Applications for Task: {{ $task->tasks_name }}</b></h3> <!-- Add this -->
-        <div class="table-container p-2">
-            <div class="d-flex justify-content-between">
-                <div class="my-2">
-                    <button class="btn btn-sm btn-success statusBtn" data-application_status="pending"
-                        type="button">Pending</button>
-                    |
-                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In
-                        Progress</button> |
-                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed"
-                        type="button">Completed</button> |
-                    <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected"
-                        type="button">Rejected</button>
 
-                </div>
-                <div class="my-2 d-flex gap-2">
-                    <button type="button" class="btn btn-secondary btn-sm" id="revert-button" style="display:none;"
-                        disabled>
-                        <i class="bi bi-arrow-left"></i> Revert Selected Proforma
-                    </button>
-                    <button type="button" class="btn btn-success btn-sm" id="verify-button" style="display:none;" disabled>
-                        Verify Selected Proforma <i class="bi bi-check2-all"></i>
-                    </button>
-                    <button type="button" class="btn btn-warning btn-sm" id="forward-button" style="display:none;"
-                        disabled>
-                        Upload Document and Forward <i class="bi bi-arrow-right"></i>
-                    </button>
-                </div>
+        <div class="d-flex justify-content-between">
+            <div class="my-2">
+                <button class="btn btn-sm btn-success statusBtn" data-application_status="pending"
+                    type="button">Pending</button>
+                |
+                <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In
+                    Progress</button> |
+                <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed"
+                    type="button">Completed</button> |
+                <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected"
+                    type="button">Rejected</button>
+
             </div>
-
-            <form action="#" name="select_proforma_form">
-                @csrf
-                @include('duties._report-table')
-            </form>
+            <div class="my-2 d-flex gap-2">
+                <button type="button" class="btn btn-secondary btn-sm" id="revert-button" style="display:none;" disabled>
+                    <i class="bi bi-arrow-left"></i> Revert Selected Proforma
+                </button>
+                <button type="button" class="btn btn-success btn-sm" id="verify-button" style="display:none;" disabled>
+                    Verify Selected Proforma <i class="bi bi-check2-all"></i>
+                </button>
+                <button type="button" class="btn btn-warning btn-sm" id="forward-button" style="display:none;" disabled>
+                    Upload Document and Forward <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <form action="#" name="select_proforma_form">
+                    @csrf
+                    @include('duties._report-table')
+                </form>
+            </div>
         </div>
     </div>
 @endsection

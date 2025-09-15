@@ -13,22 +13,7 @@
             $(".statusBtn").removeClass('btn-success').addClass('btn-primary');
             $(this).addClass('btn-success');
             $(".statusBtn[data-application_status='" + application_status + "']").addClass('btn-success');
-            /*
-            let columns = [
-                "DT_RowIndex|nonorderable|nonsearchable",
-                "overall_seniority_idx|nonorderable|nonsearchable",
-                "dept_seniority_idx|nonorderable|nonsearchable",
-                "deceased_ein",
-                "deceased_emp_name",
-                "deceased_doe",
-                "deceased_field_dept_desc",
-                "applicant_name",
-                "applicant_dob",
-                "proforma_submission_date",
-                "proforma_status",
-                "remarks"
-            ];
-            */
+
             let columns = getProformaColumnsForDataTable({
                 allow_multi_select: false
             });
@@ -55,22 +40,25 @@
 @section('content')
     <div class="pt-3">
         <h3><b>Applications for Task: {{ $task->tasks_name }}</b></h3> <!-- Add this -->
-        <div class="table-container p-2">
-            <div class="my-4">
-                <button class="btn btn-sm btn-success statusBtn" data-application_status="un-verified"
-                    type="button">Un-Verified</button> |
-                <button class="btn btn-sm btn-primary statusBtn" data-application_status="verified"
-                    type="button">Verified</button> |
-                <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In
-                    Progress</button> |
-                <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed"
-                    type="button">Completed</button> |
-                <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected"
-                    type="button">Rejected</button>
 
+        <div class="my-4">
+            <button class="btn btn-sm btn-success statusBtn" data-application_status="un-verified"
+                type="button">Un-Verified</button> |
+            <button class="btn btn-sm btn-primary statusBtn" data-application_status="verified"
+                type="button">Verified</button> |
+            <button class="btn btn-sm btn-primary statusBtn" data-application_status="forwarded" type="button">In
+                Progress</button> |
+            <button class="btn btn-sm btn-primary statusBtn" data-application_status="completed"
+                type="button">Completed</button> |
+            <button class="btn btn-sm btn-primary statusBtn" data-application_status="rejected"
+                type="button">Rejected</button>
+
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                @include('duties._report-table')
             </div>
-
-            @include('duties._report-table')
         </div>
     </div>
 @endsection

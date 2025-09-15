@@ -3,7 +3,7 @@
 <div class="row col-sm-6 mb-2 ps-5">
     <label class="col-form-label "><b class="required_label">EIN of the Deceased Employee (Govt. of Manipur) :
         </b></label>
-    <div class="row justify-content-between">
+    <div class="d-flex justify-content-between">
         <div class="col-8">
             <input type="text" name="deceased_ein" id="deceased_ein"
                 placeholder="EIN of the Deceased Employee (Govt. of Manipur)" class="form-control is_address"
@@ -13,7 +13,7 @@
                 This field is required.
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             <button type="button" class="ein-search-btn form-control btn btn-primary  rounded"> <i
                     class="fa fa-search"></i>
                 Search</button>

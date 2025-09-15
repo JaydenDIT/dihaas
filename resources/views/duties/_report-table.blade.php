@@ -4,8 +4,7 @@
             <th rowspan="2">#</th>
             <th colspan="2" class="text-center">Seniority</th>
             <th colspan="3" class="text-center">Deceased Employee Details</th>
-            <th colspan="2" class="text-center">Applicant Details</th>
-            {{-- <th rowspan="2">Sent By</th> --}}
+            <th rowspan="2" class="text-center">Applicant Details</th>
             <th rowspan="2">Status</th>
             <th rowspan="2">Remarks</th>
             <th rowspan="2"></th>
@@ -13,12 +12,10 @@
         <tr>
             <th title="Seniority index across the departments.">Inter-Dept.</th>
             <th title="Seniority index within the department.">Intra-Dept.</th>
-            {{-- <th title="Employee Identification Number of the Manipur Govt.'s employee">EIN</th> --}}
+            <th title="Employee Identification Number of the Manipur Govt.'s employee">EIN</th>
             <th title="Name of the deceased employee with EIN (Employee Identification Number)">Name</th>
-            <th title="Date of expiry of the deceased employee">DOE</th>
+            {{-- <th title="Date of expiry of the deceased employee">DOE</th> --}}
             <th title="Department">Dept.</th>
-            <th title="Name of the applicant">Name</th>
-            <th title="Date of birth of the applicant">DOB</th>
         </tr>
     </thead>
     <tbody></tbody>
@@ -60,17 +57,30 @@
                 },
                 "overall_seniority_idx|nonorderable|nonsearchable",
                 "dept_seniority_idx|nonorderable|nonsearchable",
+                "deceased_ein",
                 {
                     data: "deceased_emp_name",
                     render: (data, type, row) => {
-                        return `<div>${data}</div><div cass="text-muted"><strong>(${row.deceased_ein})</strong></div>`;
+                        return `<div>${data}</div>
+                        <div class="text-muted" title="Date of Expiry"><span class="fw-bold">DOE:</span> ${row.deceased_doe}</div>
+                        `;
                     },
                     orderable: false
                 },
-                "deceased_doe|nonorderable",
+                // "deceased_doe|nonorderable",
                 "deceased_field_dept_desc|nonorderable",
-                "applicant_name|nonorderable",
-                "applicant_dob|nonorderable",
+                //"applicant_name|nonorderable",
+                {
+                    data: "applicant_name",
+                    render: (data, type, row) => {
+                        return `
+                            <div>${data}</div>
+                            <div class="text-muted">${row.applicant_email}</div>
+                            <div class="text-muted" title="Date of Birth"><span class="fw-bold">DOB:</span> ${row.applicant_dob}</div>
+                        `;
+                    },
+                    orderable: false,
+                },
                 {
                     data: "remarks",
                     render: (data, type, row) => {
@@ -78,7 +88,7 @@
                             return 'N/A';
                         }
                         return `
-                        <div class="${row.proforma_status}">${row.proforma_status}</div>
+                        <div class="mb-1"><span class="status status-${row.proforma_status}">${row.proforma_status}</span></div>
                         <div>By: ${data.by}</div>
                         <div class="text-muted">${data.date}</div>
                         `;

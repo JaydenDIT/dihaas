@@ -72,7 +72,7 @@ function setEventsForProformaCheckBox(application_status) {
             }
             else if(application_status == "pending"){
                 if(forwardButton){
-                    forwardButton.disabled = false;
+                    forwardButton.disabled = !anyChecked;
                 }
             }
             if(revertButton){

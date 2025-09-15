@@ -171,7 +171,7 @@ function loadAjaxTable(data, callbackfn = "") {
     // Default DOM structure and length menu
     let dom =
         data["dom"] ||
-        "<'row d-flex justify-content-between gap-2'<'col' l>"+exportButtonDom+searchingDom+">" +
+        "<'row d-flex justify-content-between gap-2 mt-2'<'col' l>"+exportButtonDom+searchingDom+">" +
         "<'row'<'col-12'tr>>" +
         "<'row'<'col-md-5'i><'col-md-7'p>>";
 
@@ -296,7 +296,7 @@ function loadAjaxTable(data, callbackfn = "") {
 
 function colourTable(id) {
     $(id).addClass("table");
-    $(id).addClass("table-striped");
+    // $(id).addClass("table-striped");
     $(id).addClass("table-bordered");
     // $(id).addClass("border-warning");
 }

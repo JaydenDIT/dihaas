@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid pt-3">
         <h3><b>Applications for Task: {{ $task->tasks_name }}</b></h3> <!-- Add this -->
-        <div class="p-2">
+        <div>
             <div class="d-flex justify-content-between">
                 <div class="my-2">
                     <button class="btn btn-sm btn-success statusBtn" data-application_status="pending"
@@ -30,10 +30,14 @@
                     </button>
                 </div>
             </div>
-            <form action="#" name="select_proforma_form">
-                @csrf
-                @include('duties._report-table')
-            </form>
+            <div class="card">
+                <div class="card-body">
+                    <form action="#" name="select_proforma_form" class="mt-2">
+                        @csrf
+                        @include('duties._report-table')
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
