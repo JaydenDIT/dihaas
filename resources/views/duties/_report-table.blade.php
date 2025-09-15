@@ -75,7 +75,7 @@
                     render: (data, type, row) => {
                         return `
                             <div>${data}</div>
-                            <div class="text-muted">${row.applicant_email}</div>
+                            <div class="text-email">${row.applicant_email}</div>
                             <div class="text-muted" title="Date of Birth"><span class="fw-bold">DOB:</span> ${row.applicant_dob}</div>
                         `;
                     },

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="pagetitle">
-        <h4>Super Admin Dashboard</h4>
+        <h4>Dashboard</h4>
     </div>
     <section class="section dashboard">
         <div class="row">

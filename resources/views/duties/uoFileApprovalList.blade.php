@@ -21,9 +21,7 @@
                         disabled>
                         <i class="bi bi-arrow-left"></i> Revert Selected Proforma
                     </button>
-                    {{-- <button type="button" class="btn btn-success btn-sm" id="verify-button" style="display:none;" disabled>
-                        Verify Selected Proforma <i class="bi bi-check2-all"></i>
-                    </button> --}}
+
                     <button type="button" class="btn btn-warning btn-sm" id="forward-button" style="display:none;"
                         disabled>
                         Approve & Forward Selected Proforma <i class="bi bi-arrow-right"></i>

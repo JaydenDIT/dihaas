@@ -135,7 +135,9 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.', 'middleware' => ['auth']]
             Route::get('/{id}/view', 'view')->name('uo.formgeneration.view');
             Route::post('/upload-esigne-uo-doc', 'storeEsignUODocument')->name('uo.formgeneration.storeEsignUODocument'); //duties.uo.formgeneration.storeEsignUODocument
             Route::post('/{id}/submit', 'submit')->name('uo.formgeneration.submit'); //duties.uo.formgeneration.forward
+            Route::post('/bulk-esign-submit', 'bulkEsignAndSubmit')->name('uo.formgeneration.bulk-esign-and-submit'); //duties.uo.formgeneration.bulk-esign-and-submit
             Route::get('/{id}/loadProformaDocument', 'loadProformaDocument')->name('uo.formgeneration.document'); //duties.uo.formgeneration.document
+            Route::get('/loadProformaCollectionDocument', 'loadProformaCollectionDocument')->name('uo.formgeneration.document-collection'); //duties.uo.formgeneration.document-collection
         });
     });
 });

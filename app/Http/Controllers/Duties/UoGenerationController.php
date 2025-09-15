@@ -25,7 +25,8 @@ class UoGenerationController extends Controller
     {
         $task = Task::findOrFail($tasks_id);
         $departments = CmisApiService::apiFieldDepartments();
-        return view('duties.uoFormGenerationList', compact('departments', 'task'));
+        $remarks = Remark::where('is_active', true)->orderBy('id')->get();
+        return view('duties.uoFormGenerationList', compact('departments', 'task', 'remarks'));
     }
 
     public function ajaxlist(Request $request, $tasks_id)
@@ -187,6 +188,26 @@ class UoGenerationController extends Controller
         ]);
     }
 
+    // To load collections of proformas in a document 
+    public function loadProformaCollectionDocument(Request $request)
+    {
+        $request->validate([
+            'selected_proforma' => 'required|array|min:1',
+            'selected_proforma.*' => 'exists:proforma,proforma_id',
+        ]);
+
+        $proformas = Proforma::with('UoGeneration', 'uoFileSubmission')->whereIn('proforma_id', $request->selected_proforma)->get();
+        $countTotal = sizeof($proformas);
+        $pdf = Pdf::loadView('duties.pdfs.proforma-collection-doc', compact('proformas', 'countTotal'));
+        //to display in browser:
+        //return $pdf->stream('proforma-doc.pdf');
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="proforma-doc.pdf"')
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+    }
+
+
     //method to save esigned UO document
     public function storeEsignUODocument(Request $request)
     {
@@ -194,10 +215,72 @@ class UoGenerationController extends Controller
             'signed_UO_file' => 'required',
             'proforma_id' => ['required', 'exists:uo_generations,proforma_id'],
         ]);
+
         //getting esigned document in base64 format
         $signedBased64Doc = $request->post('signed_UO_file');
         $proforma_id = $request->post('proforma_id');
 
+        // get the storage path for DB
+        $signed_doc_path = $this->storeBase64EncodedFile($signedBased64Doc);
+
+        // update record
+
+        UoGeneration::where('proforma_id', $proforma_id)->update([
+            'signed_proforma_doc' => $signed_doc_path
+        ]);
+
+        return response()->json([
+            'message' => 'You have successfully uploaded the signed document'
+        ]);
+    }
+
+    // Esign and forward set of proformas(in bulk)
+    public function bulkEsignAndSubmit(Request $request)
+    {
+        $request->validate([
+            'selected_proforma' => 'required|array|min:1',
+            'selected_proforma.*' => 'exists:proforma,proforma_id',
+            'signed_UO_file' => 'required',
+            'remarks' => 'nullable|string|max:600',
+        ]);
+
+        //getting esigned document in base64 format
+        $signedBased64Doc = $request->post('signed_UO_file');
+        $signed_doc_path = $this->storeBase64EncodedFile($signedBased64Doc);
+        DB::beginTransaction();
+
+        try {
+            UoGeneration::whereIn('proforma_id', $request->selected_proforma)->update([
+                'signed_proforma_doc' => $signed_doc_path
+            ]);
+
+            $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
+            foreach ($proformas as $proforma) {
+                //WorkflowHandler comes after LogService
+                LogService::addProformaLog([
+                    'proforma_id' => $proforma->proforma_id,
+                    'action_by' => Auth::user()->user_id,
+                    'action_name' => 'completed',
+                    'action_remark' => $request->remarks,
+                    'process_sequence' => $proforma->process_sequence
+                ]);
+                WorkflowHandler::forwardApplication($proforma);
+            }
+            DB::commit();
+            return response()->json(['message' => 'Selected Proformas have been esigned successfully.'], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Error submitting proforma: ' . $e->getMessage()], 422);
+        }
+    }
+
+    /**
+     * 
+     * Method to decode a based 64 encoded string to file and store in disk and then return the physical storage path.
+     * 
+     * */
+    private function storeBase64EncodedFile($signedBased64Doc): string
+    {
         //Here, convert the based64 encoded data to file and store.
 
         // get the storage path in the variable $signed_doc_path
@@ -210,7 +293,7 @@ class UoGenerationController extends Controller
         $decodedFile = base64_decode($signedBased64Doc);
 
         // create a unique filename
-        $fileName = 'signed_uo_' . $proforma_id . '_' . time() . '.pdf';
+        $fileName = 'signed_uo_' . time() . '.pdf';
 
         // define storage path
         $filePath = 'signed_uo_docs/' . $fileName;
@@ -218,17 +301,7 @@ class UoGenerationController extends Controller
         // store file inside storage/app/signed_uo_docs
         Storage::disk('local')->put($filePath, $decodedFile);
 
-        // get the storage path for DB
-        $signed_doc_path = $filePath;
-
-        // update record
-
-        UoGeneration::where('proforma_id', $proforma_id)->update([
-            'signed_proforma_doc' => $signed_doc_path
-        ]);
-
-        return response()->json([
-            'message' => 'You have successfully uploaded the signed document'
-        ]);
+        // return the storage path for DB
+        return $filePath;
     }
 }

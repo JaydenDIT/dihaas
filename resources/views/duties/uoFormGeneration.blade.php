@@ -166,7 +166,7 @@
                 $(document).ready(function() {
                     showStep(4);
                 });
-                loadPdfAsBase64().then(base64Pdf => {
+                loadPdfAsBase64(proformaDocUrl).then(base64Pdf => {
                     //console.log(base64Pdf);
                     // Set iframe source
                     document.querySelector("#proforma_document").src =
@@ -179,7 +179,7 @@
             });
         });
 
-        async function loadPdfAsBase64() {
+        async function loadPdfAsBase64(proformaDocUrl) {
             const response = await fetch(proformaDocUrl);
             const blob = await response.blob();
 
