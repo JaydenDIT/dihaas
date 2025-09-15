@@ -130,13 +130,6 @@
                                     </div>
                                 </div>
 
-
-                                <div id="eSignResult" class="d-none">
-                                    <h6>E-signed PDF as <strong>Base64</strong> encoded string</h6>
-                                    <div class="mb-1">
-                                        <textarea name="esigned_pdf_base64" id="esigned_pdf_base64" class="form-control" rows="2" readonly></textarea>
-                                    </div>
-                                </div>
                                 <input type="hidden" name="pdf_worker_js" id="pdf_worker_js"
                                     value="{{ asset('esign/pdf/pdf.worker.js') }}">
                             </form>
@@ -144,6 +137,10 @@
                             <form method="POST" name="submit_esigned_doc_form" id="submit_esigned_doc_form"
                                 action="#" class="d-none">
                                 @csrf
+                                <h5>Give remarks and submit the signed document.</h5>
+                                <div id="eSignResult" class="d-none">
+                                    <textarea name="esigned_pdf_base64" id="esigned_pdf_base64" class="form-control" rows="2" readonly></textarea>
+                                </div>
                                 <!-- Remarks Selection -->
                                 <div class="mb-4">
                                     <label for="remark_selection" class="form-label fw-semibold">
@@ -167,13 +164,17 @@
                                     </div>
                                     <small class="text-muted">Maximum 200 characters</small>
                                 </div>
-                                <div class="mt-2 d-flex justify-content-between">
-                                    <button type="button" class="btn btn-light btn-sm border" id="resign-btn">
-                                        <i class="bi bi-x-circle"></i> Re-Sign
-                                    </button>
-                                    <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-check-circle"></i> Submit Signed Doc
-                                    </button>
+                                <div class="d-flex text-end">
+                                    <div class="col">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="resign-btn">
+                                            <i class="bi bi-x-circle"></i> Re-Sign
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-check-circle"></i> Submit Signed Doc
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
 
@@ -234,7 +235,8 @@
             const submit_esigned_doc_form = document.forms['submit_esigned_doc_form'];
             submit_esigned_doc_form.addEventListener('submit', (event) => {
                 event.preventDefault();
-                callback();
+                let formData = new FormData(submit_esigned_doc_form);
+                callback(formData);
             });
         }
     </script>

@@ -122,6 +122,10 @@ class UoGenerationController extends Controller
         return view('duties.uoFormGeneration', compact('proforma', 'total_step', 'tasks', 'remarks'));
     }
 
+
+    /**
+     * To submit a single proforma
+     */
     public function submit(Request  $request, $id)
     {
         //signed_proforma_doc
@@ -240,12 +244,12 @@ class UoGenerationController extends Controller
         $request->validate([
             'selected_proforma' => 'required|array|min:1',
             'selected_proforma.*' => 'exists:proforma,proforma_id',
-            'signed_UO_file' => 'required',
+            'esigned_pdf_base64' => 'required', //This is the digitaly signed UO file
             'remarks' => 'nullable|string|max:600',
         ]);
 
         //getting esigned document in base64 format
-        $signedBased64Doc = $request->post('signed_UO_file');
+        $signedBased64Doc = $request->post('esigned_pdf_base64');
         $signed_doc_path = $this->storeBase64EncodedFile($signedBased64Doc);
         DB::beginTransaction();
 
@@ -254,7 +258,8 @@ class UoGenerationController extends Controller
                 'signed_proforma_doc' => $signed_doc_path
             ]);
 
-            $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
+            $proformas = Proforma::with('UoGeneration', 'uoFileSubmission')->whereIn('proforma_id', $request->selected_proforma)->get();
+            //$proformas = Proforma::with('UoGeneration', 'uoFileSubmission')->whereIn('proforma_id', $request->selected_proforma)->get();
             foreach ($proformas as $proforma) {
                 //WorkflowHandler comes after LogService
                 LogService::addProformaLog([
@@ -265,6 +270,10 @@ class UoGenerationController extends Controller
                     'process_sequence' => $proforma->process_sequence
                 ]);
                 WorkflowHandler::forwardApplication($proforma);
+                /**
+                 * Here we will reduce the no of posts in Die-in-harness from post_vaccancies table             * 
+                 * */
+                PostVaccancy::deductDiaPost($proforma->uoGeneration->alloted_field_dept_cd, $proforma->uoGeneration->alloted_dsg_srno);
             }
             DB::commit();
             return response()->json(['message' => 'Selected Proformas have been esigned successfully.'], 200);

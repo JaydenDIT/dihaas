@@ -142,27 +142,7 @@
             return selected;
         }
 
-        /* function loadProformaPDF(selectedProformas) {
 
-            // Build query string from array
-            let query = selectedProformas.map(id => 'selected_proforma[]=' + id).join('&');
-            let url = proformaDocCollectionUrl + '?' + query;
-
-            // Set iframe src
-            //Loading proforma collection document
-
-            loadPdfAsBase64(url).then(base64Pdf => {
-                //console.log(base64Pdf);
-                // Set iframe source
-                // pdf_preview.src = "data:application/pdf;base64," +
-                //     base64Pdf;
-                pdfControls.style.display = "block";
-                renderPDF(base64Pdf, parseInt(currentPage) || 1);
-                if (document.forms['esignPdfForm']) {
-                    document.forms['esignPdfForm'].pdf_base64.value = base64Pdf;
-                }
-            });
-        } */
         function loadProformaPDF(selectedProformas) {
             let query = selectedProformas.map(id => 'selected_proforma[]=' + id).join('&');
             let url = proformaDocCollectionUrl + '?' + query;
@@ -198,5 +178,45 @@
                     alert("Failed to load PDF");
                 });
         }
+
+        //Handling Esign Submit
+        handleEsignSubmission((formData) => {
+            let selectedProformas = getSelectedProformas();
+            selectedProformas.forEach(id => {
+                formData.append('selected_proforma[]', id);
+            });
+
+            fetch(bulkForwardUrl, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    accept: 'application/json'
+                }
+            }).then(async response => {
+                let jsonResult = await response.json();
+                if (!response.ok) {
+                    throw new Error(jsonResult.message || `${response.status}: An error has occured`);
+                }
+                return jsonResult;
+            }).then(data => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: data.message
+                }).then(() => {
+                    $("#esignModal").modal('hide');
+                    applicationTable("pending");
+                });
+
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error
+                });
+                console.error("Error:", error);
+            });
+
+        });
     </script>
 @endpush

@@ -13,7 +13,7 @@ const thumbnailContainer = document.getElementById("thumbnail-container");
 const drawSignatureBtn = document.getElementById("draw-signature-btn");
 const responseDiv = document.getElementById("serverResponse");
 const spinner = document.getElementById("spinner");
-const eSignResult = document.getElementById("eSignResult");
+// const eSignResult = document.getElementById("eSignResult");
 const docPreviewContainer = document.querySelector("div.document-preview");
 
 const esignPdfForm = document.getElementById("esignPdfForm");
@@ -303,7 +303,7 @@ esignPdfForm.addEventListener("submit", async (event) => {
     responseDiv.innerHTML = "Uploading and signing...";
     spinner.classList.remove("d-none");
     esigned_pdf_base64.value = "";
-    eSignResult.classList.add("d-none");
+    // eSignResult.classList.add("d-none");
     
     try {
         const response = await fetch(esignPdfForm.action, {
