@@ -200,9 +200,20 @@ class UoGenerationController extends Controller
             'selected_proforma.*' => 'exists:proforma,proforma_id',
         ]);
 
-        $proformas = Proforma::with('UoGeneration', 'uoFileSubmission')->whereIn('proforma_id', $request->selected_proforma)->get();
+        $proformas = Proforma::with('UoGeneration', 'uoFileSubmission')
+            ->whereIn('proforma_id', $request->selected_proforma)
+            ->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob")
+            ->get();
+
         $countTotal = sizeof($proformas);
-        $pdf = Pdf::loadView('duties.pdfs.proforma-collection-doc', compact('proformas', 'countTotal'));
+
+        if ($countTotal == 1) {
+            $proforma = $proformas[0];
+            $pdf = Pdf::loadView('duties.pdfs.proforma-doc', compact('proforma'));
+        } else {
+            $pdf = Pdf::loadView('duties.pdfs.proforma-collection-doc', compact('proformas', 'countTotal'));
+        }
+
         //to display in browser:
         //return $pdf->stream('proforma-doc.pdf');
         return response($pdf->output(), 200)
