@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Duties;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UoFormFillupRequest;
+use App\Models\PostVaccancy;
 use App\Models\Proforma;
 use App\Models\Remark;
 use App\Models\Task;
@@ -169,7 +170,7 @@ class UoFormFillUpController extends Controller
     public function forward(UoFormFillupRequest  $request, $id)
     {
         try {
-            DB::beginTransaction();
+
             $validated = $request->validated();
             $proforma = Proforma::findOrFail($id);
 
@@ -219,6 +220,16 @@ class UoFormFillUpController extends Controller
             $params['generated_on'] = Carbon::now();
             $params['is_applicant_choice_post'] = ($validated['post_option'] == "applicant-prefered");
 
+            //Check for post vaccancy
+            $vaccantCount = PostVaccancy::getDepartmentPostVaccancy($params['alloted_field_dept_cd'], $params['alloted_dsg_srno']);
+            if ($vaccantCount == 0) {
+                return response()->json([
+                    'message' => 'Sorry there is no vaccant post for ' . $params['alloted_dsg_desc'] . ' in the selected department  ' . $params['alloted_field_dept_desc'],
+                    'count' => $vaccantCount
+                ], 422);
+            }
+
+            DB::beginTransaction();
             UoGeneration::updateOrCreate([
                 'proforma_id' => $data['proforma_id']
             ], $params);
