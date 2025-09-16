@@ -73,9 +73,10 @@
                                     </h6>
                                 </div>
 
-                                <button type="button" class="btn btn-outline-primary btn-sm field-btn"
-                                    data-drawing-mode="false" id="draw-signature-btn"><i
-                                        class="bi bi-pencil-square"></i>
+                                <button type="button" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Click to draw signature area on the document."
+                                    class="btn btn-outline-primary btn-sm field-btn" data-drawing-mode="false"
+                                    id="draw-signature-btn"><i class="bi bi-pencil-square"></i>
                                     Draw on PDF</button>
 
                                 <div class="row mt-2 mb-2">
@@ -112,7 +113,7 @@
                                             readonly>
                                     </div>
                                 </div>
-                                <div class="d-flex text-end">
+                                <div class="row text-end">
                                     <div class="col">
                                         <button type="button" class="btn btn-secondary btn-sm"
                                             data-bs-dismiss="modal">
