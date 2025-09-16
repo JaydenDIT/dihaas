@@ -36,7 +36,7 @@ class StoreProformaRequest extends FormRequest
             'deceased_emp_name' => 'required|string|max:255',
             'deceased_field_dept_cd' => 'required|string|max:20',
             'deceased_field_dept_desc' => 'required|string|max:255',
-            'deceased_adm_dept_cd' => 'nullable|integer',
+            'deceased_adm_dept_cd' => 'required|integer',
             'deceased_adm_dept_desc' => 'required|string|max:255',
             'deceased_emp_desig' => 'required|string|max:255',
             'deceased_emp_group' => 'required|string|max:255',
