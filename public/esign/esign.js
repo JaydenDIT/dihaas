@@ -386,37 +386,3 @@ window.addEventListener('resize', () => {
         renderPage(currentPage);
     }
 });
-/*
-// Prevent default drag behaviors
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    docPreviewContainer.addEventListener(eventName, (e) => e.preventDefault(), false);
-});
-
-// Highlight the canvas on dragover
-docPreviewContainer.addEventListener('dragover', () => {
-    docPreviewContainer.classList.add('dragover-highlight');
-});
-
-docPreviewContainer.addEventListener('dragleave', () => {
-    docPreviewContainer.classList.remove('dragover-highlight');
-});
-
-docPreviewContainer.addEventListener('drop', (e) => {
-    docPreviewContainer.classList.remove('dragover-highlight');
-    const droppedFiles = e.dataTransfer.files;
-    if (droppedFiles.length > 0 && droppedFiles[0].type === 'application/pdf') {
-        file = droppedFiles[0];
-        const fileURL = URL.createObjectURL(file);
-        currentPage = 1;
-        pageNoInput.value = 1;
-        renderPDF(fileURL, currentPage);
-        pdfControls.style.display = "block";
-        disableDownloadSignedDocBtn();
-        fileInput.files = e.dataTransfer.files; // update input as well
-        toggleCanvasMessage(false);
-        pdfCanvas.classList.remove("d-none");
-        reader.readAsDataURL(file); // Triggers base64 conversion
-    } else {
-        alert("Please drop a valid PDF file.");
-    }
-});*/
