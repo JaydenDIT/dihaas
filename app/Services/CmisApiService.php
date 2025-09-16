@@ -55,15 +55,23 @@ class CmisApiService
      */
     public static function apiEmployeeDetailByEIN(string $ein): array
     {
+        $data = [];
         if (env('CMIS_MODE', 'offline') === 'offline') {
-            return Storage::disk('private')->exists('empDetail.json')
+            $data = Storage::disk('private')->exists('empDetail.json')
                 ? json_decode(Storage::disk('private')->get('empDetail.json'), true)
                 : [];
         } else {
-            return self::safePost('/get-employee-profile', [
+            $data = self::safePost('/get-employee-profile', [
                 'ein' => $ein,
             ]);
         }
+
+        if (!empty($data)) {
+            $department = self::apiFieldDepartments($data[0]['dept_cd']);
+            $data[0]['adm_dept_cd'] = $department['adm_dept_cd'];
+        }
+
+        return $data;
     }
 
     /**

@@ -30,11 +30,6 @@ class CmisController extends Controller
                 $result,
                 200
             );
-
-            return response()->json(
-                $result->json(),
-                $result->status()
-            );
         } catch (Exception $e) {
             $response = is_null(CmisApiService::$error_response) ? [
                 'message' => 'Internal Server Error',
@@ -55,10 +50,6 @@ class CmisController extends Controller
             return response()->json( //test
                 $result,
                 200
-            );
-            return response()->json(
-                $result->json(),
-                $result->status()
             );
         } catch (Exception $e) {
             /* return response()->json([
