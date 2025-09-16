@@ -462,6 +462,30 @@
             document.forms['uo_form_fillup'].onsubmit = function(event) {
                 event.preventDefault();
 
+                //validation of vaccant posts
+
+                postSelection = document.querySelector(`input[type='radio'][name='post_option']:checked`);
+                if (!postSelection || postSelection == null) {
+                    alert(
+                        "Please select whether you are opting 'Employee Preferred Post' or 'Allot Post when Employee preferred post is not vacant'. "
+                    );
+                    return false;
+                }
+
+                if (postSelection.value == "applicant-prefered") {
+                    let vaccPostCount = document.querySelector(`#applicant_preferred_vacc_posts`).innerText;
+                    if (vaccPostCount == "0") {
+                        alert("There is no vaccant post for the applicant preferred post in the department");
+                        return;
+                    }
+                } else if (postSelection.value == "department-prefered") {
+                    let vaccPostCount = document.querySelector(`#department_preferred_vacc_posts`).innerText;
+                    if (vaccPostCount == "0") {
+                        alert("There is no vaccant post for the selected department");
+                        return;
+                    }
+                }
+
                 Swal.fire({
                     title: "Are you sure?",
                     text: "You are saving and forwarding this!",
@@ -572,7 +596,12 @@
 
                 if (fieldDeptElement && fieldDeptElement.value != "") {
                     let count = await getVaccantCount(fieldDeptElement.value, dsgSrno);
-                    document.querySelector(`#${choice}_preferred_vacc_posts`).text = count;
+                    console.log("vaccant count: " + count);
+                    //applicant_preferred_vacc_posts
+                    let spanElement = document.querySelector(`#${choice}_preferred_vacc_posts`);
+                    if (spanElement) {
+                        spanElement.innerText = count;
+                    }
                 }
             });
 

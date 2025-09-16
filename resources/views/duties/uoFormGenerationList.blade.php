@@ -282,9 +282,8 @@
                                 document.getElementById('verify-button').disabled = true;
                                 document.getElementById('forward-button').disabled = true;
 
-                                // Reload the table with the appropriate status
-                                let status = (action === 'verify') ? 'un-verified' : 'verified';
-                                applicationTable(status);
+                                // Reload the table with the appropriate status                                
+                                applicationTable("pending");
                             });
 
                         })
