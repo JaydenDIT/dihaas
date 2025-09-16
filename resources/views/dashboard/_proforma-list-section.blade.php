@@ -97,7 +97,7 @@
                     data: "proforma_status",
                     render: (data, type, row) => {
                         return `
-                            <div>${data}</div>
+                            <div><span class="status status-${data}">${data}</span></div>
                             <div class="text-muted">By: ${row.remarks.by}</div>
                             <div class="text-muted small">${row.remarks.date}</div>
                         `;
