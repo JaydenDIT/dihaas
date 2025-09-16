@@ -68,9 +68,8 @@
                                 </div>
 
                                 <div class="mt-4 mb-2 border-bottom">
-                                    <h6>Signature <span class="fw-bold">Area</span>, <span
-                                            class="fw-bold">Position</span> &
-                                        <span class="fw-bold">Dimention</span>
+                                    <h6>Signature <span class="fw-bold">Position</span> &
+                                        <span class="fw-bold">Dimension</span>
                                     </h6>
                                 </div>
 
@@ -117,7 +116,7 @@
                                     <div class="col">
                                         <button type="button" class="btn btn-secondary btn-sm"
                                             data-bs-dismiss="modal">
-                                            <i class="bi bi-x-circle"></i> Cancel
+                                            <i class="bi bi-x-circle"></i> Cancel e-Sign
                                         </button>
                                     </div>
                                     <div class="col">

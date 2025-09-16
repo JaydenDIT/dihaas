@@ -6,19 +6,41 @@
         .text-center {
             text-align: center;
         }
+
+        .lead-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .dihas-header {
+            line-height: 1.0;
+        }
+
+        .dihas_style {
+            color: rgb(115, 19, 206);
+            text-decoration: underline;
+        }
     </style>
 </head>
 
 <body>
-    <div style="background-color: #363333; color:#FFFFFF; text-align:center; padding:10px 10px;vertical-align:middle;">
-        <h2>{{ env('APP_NAME', 'DIHAS') }}</h2>
-    </div>
-
+    {{-- Header --}}
     <div class="text-center">
-        <h3>Die-in-Harness Appointment System</h3>
-        <h3>Department of Personnel</h3>
-        <h3>Government of Manipur</h3>
+        <div class="dihas-header">
+            <img src="{{ asset('assets/images/kanglasha.png') }}" alt="emblem" height="80">
+            <h2>
+                <span class="dihas_style">Die-in-Harness Appoinment System
+                </span>
+            </h2>
+            <h4 class="section-heading">(DIHAS)</h3>
+        </div>
+        <div class="lead-text">
+            Empowering <i><strong>Families</strong></i>, Continuing <i><strong>Legacies</strong></i>.
+            <h4>Department of Personnel, Government of Manipur</h4>
+        </div>
+        <hr>
     </div>
+    {{-- End Header --}}
 
     <div style="margin-top:20px;margin-bottom:20px;">
         <h4><strong>DP's File No.:</strong> <span>{{ $proforma->uoFileSubmission->uo_file_submission_id }}</span></h4>
