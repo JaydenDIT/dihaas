@@ -343,10 +343,19 @@ esignPdfForm.addEventListener("submit", async (event) => {
         document.forms['submit_esigned_doc_form'].classList.remove("d-none");
     }
     catch (err) {
-        responseDiv.innerHTML = `<div class="alert alert-danger alert-dismissible fade show">
+        if(err.message == "Failed to fetch"){
+            responseDiv.innerHTML = `<div class="alert alert-danger alert-dismissible fade show">
+            Unable to reach digital signing server, make sure that the 'Digital Signing App' is running and up. 
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>                    
+            </div>`;
+        }
+        else{
+            responseDiv.innerHTML = `<div class="alert alert-danger alert-dismissible fade show">
             ${err.message}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>                    
             </div>`;
+        }
+        
         spinner.classList.add("d-none");
     }
 
