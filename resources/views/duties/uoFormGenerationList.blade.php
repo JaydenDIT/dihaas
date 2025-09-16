@@ -218,5 +218,93 @@
             });
 
         });
+
+        //Handling remark submission
+        handleRemarkSubmission(() => {
+            const remark_form = document.forms['remark_form'];
+        });
+
+        //Defining bulk action function
+        function bulkAction(url, action) {
+            let selectedProformas = [];
+            document.querySelectorAll('.proforma-checkbox:checked').forEach((checkbox) => {
+                selectedProformas.push(checkbox.value);
+            });
+
+            if (selectedProformas.length === 0) {
+                alert('Please select at least one proforma to ' + action + '.');
+                return;
+            }
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You are about to " + action + " these selected proformas!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, " + action + " it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Create FormData from your form
+                    let formData = new FormData(select_proforma_form);
+                    formData.append('remarks', document.getElementById('remarks').value);
+
+                    fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'accept': 'application/json',
+                            },
+                            body: formData
+                        })
+                        .then(async response => {
+                            const data = await response.json(); // parse once
+
+                            if (!response.ok) {
+                                // throw server error message if available
+                                const errorMsg = data.message || 'An error occurred while trying to ' +
+                                    action +
+                                    ' the selected proforma(s). Please try again.';
+                                throw new Error(errorMsg);
+                            }
+
+                            return data; // if successful, return parsed JSON
+                        })
+                        .then(data => {
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: data.message
+                            }).then(() => {
+                                $("#remarkModal").modal('hide');
+                                // Disable buttons
+                                document.getElementById('verify-button').disabled = true;
+                                document.getElementById('forward-button').disabled = true;
+
+                                // Reload the table with the appropriate status
+                                let status = (action === 'verify') ? 'un-verified' : 'verified';
+                                applicationTable(status);
+                            });
+
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: error
+                            });
+                            console.error("Error:", error);
+                        });
+
+                }
+            });
+        }
+
+        // this function 'handleRemarkSubmission' is defined in duties.tasks.modals._remarks_modal.blade.php
+        handleRemarkSubmission(() => {
+            let action_type = document.getElementById('action_type').value;
+            bulkAction(bulkRevertUrl, action_type);
+        });
     </script>
 @endpush

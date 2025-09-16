@@ -20,8 +20,13 @@
                             @endisset
                         </select>
                     </div>
+                    <!-- Remarks Textarea -->
                     <div class="mb-3 d-none" id="remarks_div">
-                        <textarea class="form-control" id="remarks" name="remarks" rows="4" maxlength="600" required></textarea>
+                        <div class="form-floating">
+                            <textarea class="form-control" id="remarks" name="remarks" style="height: 120px" maxlength="200" required></textarea>
+                            <label for="remarks">Enter your remarks</label>
+                        </div>
+                        <small class="text-muted">Maximum 200 characters</small>
                     </div>
                 </div>
                 <div class="modal-footer">

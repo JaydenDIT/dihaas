@@ -27,7 +27,6 @@
             <div class="modal-body">
                 <input type="hidden" value="{{ env('ESIGN_HTTP_PORT', 8095) }}" id="http_port" />
                 <input type="hidden" value="{{ env('ESIGN_HTTPS_PORT', 8443) }}" id="https_port" />
-                <input type="hidden" name="action_type" id="action_type" value="">
 
                 <div class="d-flex flex-column">
                     <div class="d-flex flex-grow-1 common-height body-section position-relative w-100">
@@ -159,8 +158,8 @@
                                 <!-- Remarks Textarea -->
                                 <div class="mb-3 d-none" id="remarks_div_layout">
                                     <div class="form-floating">
-                                        <textarea class="form-control" id="remarks" name="remarks" style="height: 120px" maxlength="200" required></textarea>
-                                        <label for="remarks">Enter your remarks</label>
+                                        <textarea class="form-control" id="esign_remarks" name="remarks" style="height: 120px" maxlength="200" required></textarea>
+                                        <label for="esign_remarks">Enter your remarks</label>
                                     </div>
                                     <small class="text-muted">Maximum 200 characters</small>
                                 </div>
@@ -207,19 +206,19 @@
         // Elements
         const remark_selection = document.getElementById('remark_selection');
         const remarks_div_layout = document.getElementById('remarks_div_layout');
-        const remarks = document.getElementById('remarks');
+        const esign_remarks = document.getElementById('esign_remarks');
         const resignBtn = document.getElementById('resign-btn');
 
         // Remarks dropdown handling
         remark_selection.addEventListener('change', (event) => {
             if (event.target.value === 'Others') {
                 remarks_div_layout.classList.remove('d-none');
-                remarks.setAttribute('required', 'required');
-                remarks.value = '';
+                esign_remarks.setAttribute('required', 'required');
+                esign_remarks.value = '';
             } else {
                 remarks_div_layout.classList.add('d-none');
-                remarks.removeAttribute('required');
-                remarks.value = event.target.value;
+                esign_remarks.removeAttribute('required');
+                esign_remarks.value = event.target.value;
             }
         });
 
