@@ -95,9 +95,17 @@ return [
             'menu_label'    => 'Add Post Vaccancy',
             'menu_name'     => 'add_vaccant_post',
             'route'         => 'admin.postvaccancies.addPostVaccancy',
-            'allowed_roles' => [1, 2, 999], //Only superadmin
+            'allowed_roles' => [999], //Only superadmin
             'sub_menus'     => [],
             'displayOrder'  => 1,
+        ],
+        [
+            'menu_label'    => 'Add Post Vaccancy',
+            'menu_name'     => 'add_dept_vaccant_post',
+            'route'         => 'admin.postvaccancies.add-dept-post-vaccancy',
+            'allowed_roles' => [1, 2, 3, 4, 5, 6, 7, 8], //Only nodal and other department users
+            'sub_menus'     => [],
+            'displayOrder'  => 2,
         ],
     ],
 

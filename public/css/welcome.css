@@ -78,3 +78,9 @@
     left: 100%;
     margin-left: 15px;
 }
+
+.dihas-title{
+    font-family: Hoefler Text, Georgia, Times New Roman, serif;
+    color: #2867c3;
+    text-shadow: 2px 2px 8px #6d6ea3;
+}

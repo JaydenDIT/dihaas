@@ -52,6 +52,64 @@ class TaskApplicationController extends Controller
         return view('duties.list_of_applications', compact('departments', 'task'));
     }
 
+
+    /**
+     * Retrieve and summarize the number of Proforma requests (pending, forwarded, completed, total)
+     * for each task in the Die-in-Harness process that the currently authenticated user can access.
+     *
+     * ---
+     * Purpose:
+     * This method determines which process to evaluate (based on `process_name` in the request,
+     * or the first available process if none is given). For that process, it finds all tasks
+     * and filters them by the user's role to determine accessibility. For each accessible task,
+     * it calculates:
+     *  - Pending requests
+     *  - Forwarded requests
+     *  - Completed requests
+     *  - Total requests
+     *
+     * ---
+     * Business Logic:
+     * 1. Select process:
+     *    - If `process_name` is given, find that process by name.
+     *    - If not provided, pick the first process in the system.
+     *    - Return error if no process is found.
+     * 
+     * 2. Retrieve tasks of the process (ordered by sequence).
+     *    - Return error if no tasks exist under the process.
+     *
+     * 3. Filter tasks by accessibility based on the authenticated user's role.
+     *
+     * 4. For each accessible task:
+     *    - Initialize counts (pending, forwarded, completed).
+     *    - For each process associated with the task:
+     *        i. Build a Proforma query filtered by the process and user context.
+     *       ii. If task duty is `uo_form_generation`, load UO Generation records and restrict
+     *           to those where the authenticated user is the signing authority.
+     *      iii. Apply role-based filters:
+     *           - Citizens: only their own Proformas.
+     *           - Superadmin/DP roles: unrestricted.
+     *           - Departmental roles: only within the same department.
+     *       iv. Calculate:
+     *           - `pending`: Proformas at the same sequence.
+     *           - `forwarded`: Proformas forwarded to higher sequences but not completed.
+     *           - `completed`: Proformas marked as completed.
+     *    - Compute total as the sum of the three counts.
+     *
+     * 5. Reorder tasks by the process sequence to maintain UI consistency.
+     *
+     * ---
+     * @param  \Illuminate\Http\Request  $request  Request containing optional `process_name`
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     *         Returns the `duties.allprocess` view with:
+     *           - `cards`: Task summary counts (pending, forwarded, completed, total)
+     *           - `process_name`: Current process (formatted)
+     *           - `processes`: All processes in the system
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException (500)
+     *         If no process or no tasks exist for the given process.
+     */
     public function allProcess(Request $request)
     {
         $process_name = $request->input('process_name', null);
@@ -63,7 +121,7 @@ class TaskApplicationController extends Controller
                 return response()->view('errors.custom', ['title' => 'Process Error', 'message' => 'No such processe called \'' . $process_name . '\' found in the system. Please contact system administrator.'], 500);
             }
         } else {
-            //We are giving error response if there are no processes in the system.
+            //We are the first process in the system.
             $process = Process::first();
             if (is_null($process)) {
                 return response()->view('errors.custom', ['title' => 'Process Error', 'message' => 'No processes found in the system. Please contact system administrator.'], 500);
@@ -78,11 +136,17 @@ class TaskApplicationController extends Controller
             return response()->view('errors.custom', ['title' => 'Process Error', 'message' => 'No tasks found under the selected process. Please contact system administrator.'], 500);
         }
 
+        //Getting accesible tasks(jobs)
+
         // Get currently authenticated user
         $user = Auth::user();
 
         // Eager load role's duties (tasks) and their related processes
-        $tasks = $user->role->duties()->with('processes')->get();
+        // $tasks = $user->role->duties()->with('processes')->get();
+
+        $tasks = $processTasks->get()->filter(function ($task) use ($user) {
+            return $task->isAccessibleByRole($user->role_id);
+        });
 
         $taskSummaries = [];
         foreach ($tasks as $task) {
@@ -92,25 +156,31 @@ class TaskApplicationController extends Controller
             $total = 0;
 
             foreach ($task->processes as $process) {
+                //Getting the sequence for the particular process task mapping
                 $sequence = $process->pivot->sequence;
 
                 // Proforma query initialized based on process id
                 $apps = Proforma::where('process_id', $process->process_id);
+
+                //Load UO form generation records in case if the task is about UO generation
                 if ($task->task_duty == 'uo_form_generation') {
                     $apps->with('uoGeneration');
                 }
-                // If the user is just a citizen
+                // If the user is just a citizen or if the task is about form submission, then only the proformas 
+                //submitted by the authenticated user will be counted
                 if ($user->role->role_group == "citizen" || $task->tasks_duty == "client_form_submission") {
                     $apps->where('create_by', $user->user_id);
                 }
                 // Here, we need to check if the authenticated user is super admin or if the user belongs to Department of Personel,
                 else if (in_array($user->role->role_name, ['Superadmin', 'DP Nodal', 'DP Assistant'])) {
+                    //We are not going to do anything
                 } else if (!is_null($user->field_dept_cd)) {
                     //Otherwise, we should filter only the proformas that belong to department of the currently authenticated user.
                     $apps->where('deceased_field_dept_cd', $user->field_dept_cd);
                 }
 
                 $result = ($task->tasks_duty == 'uo_form_generation') ? $apps->get()->filter(function ($item) {
+                    //Only the right signing authority will see proforma counts in case if the task is about UO generation
                     if (!is_null($item->uoGeneration)) {
                         return $item->uoGeneration->signing_authority == Auth::id();
                     }
@@ -136,8 +206,6 @@ class TaskApplicationController extends Controller
                 'total' => $total,
             ];
         }
-
-        //$cards = array_values($taskSummaries); // Reset keys for blade loop
 
         //Now reordering the task based on processTasks sequence
         $orderedCards = [];

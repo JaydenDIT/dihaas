@@ -103,7 +103,9 @@
 @endsection
 
 @push('js')
+    <script src="{{ asset('js/post-vaccancy/post-vaccancy.js') }}"></script>
     <script type="text/javascript">
+        const calculate_vaccancy_url = "{{ route('admin.postvaccancies.calculateVaccancy', '_total_') }}";
         const admin_dept = document.querySelector("#admin_dept");
         const field_dept = document.querySelector("#field_dept");
         const post_id = document.querySelector("#post_id");
@@ -168,38 +170,7 @@
                 });
             });
 
-            const calculate_vaccancy_url = "{{ route('admin.postvaccancies.calculateVaccancy', '_total_') }}";
-            //getting calculated vaccancy of the total
-            function getCalculatedValue(event) {
-                const totalPost = event.target.value; // get typed value
-                if (!totalPost) return;
 
-                let url = calculate_vaccancy_url.replace("_total_", totalPost);
-                fetch(url)
-                    .then(async response => {
-                        const data = await response.json();
-
-                        if (!response.ok) {
-                            // Server returned an error with a message
-                            const errorMsg = data?.message || `HTTP error ${response.status}`;
-                            throw new Error(errorMsg);
-                        }
-
-                        console.log("Calculated values:", data);
-                        $("#dia").val(data.dia);
-                        $("#dr").val(data.dr);
-                    })
-                    .catch(error => {
-                        const errorMessage = error.message || "An unknown error has occured";
-                        //alert("Something went wrong while calculating vacancy: " + errorMessage);
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops! Something went wrong while calculating vacancy",
-                            text: errorMessage
-                        });
-                        console.error(errorMessage);
-                    });
-            }
 
             // Wrap it with debounce
             const debouncedCalculation = debounceCall(getCalculatedValue, 1000);
@@ -213,7 +184,6 @@
                 $('select').val('').trigger('change'); //Resetting select2
             });
 
-            //On submit of the post-vaccancy-form form
             //On submit of the post-vaccancy-form form
             $('form[name="post-vaccancy-form"]').on('submit', function(event) {
                 event.preventDefault();

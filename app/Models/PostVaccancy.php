@@ -47,6 +47,16 @@ class PostVaccancy extends Model
         'no_of_posts_dr',
         'created_by',
     ];
+    /**
+     * Scope a query to get all vaccancy entries for a partifular department
+     */
+
+    public function scopeGetVaccancyEntries($query, $fieldDeptCd)
+    {
+        return $query->where('field_dept_cd', $fieldDeptCd)
+            ->orderBy('created_at')
+            ->get();
+    }
 
     /**
      * Scope a query to get grouped vacancy details.

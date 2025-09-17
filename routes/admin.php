@@ -54,10 +54,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::group(['prefix' => 'post-vaccancy', 'as' => 'postvaccancies.'], function () {
         Route::get('/get-vaccancies', [VaccancyController::class, 'getVaccancyData'])->name('getVaccancyData'); //admin.postvaccancies.getVaccancyData
         Route::get('/add', [VaccancyController::class, 'addPostVaccancy'])->name('addPostVaccancy'); //admin.postvaccancies.addPostVaccancy
+        Route::get('/dept/add', [VaccancyController::class, 'addPostVaccancyByDept'])->name('add-dept-post-vaccancy'); //admin.postvaccancies.add-dept-post-vaccancy
         Route::get('/calculate/{totalPost}', [VaccancyController::class, 'calculateVacancyDistribution'])->name('calculateVaccancy'); //admin.postvaccancies.calculateVaccancy
         Route::post('/store', [VaccancyController::class, 'storePostVaccancies'])->name('store'); //admin.postvaccancies.store
         Route::get('/configure', [VaccancyController::class, 'configureVaccancy'])->name('configure'); //admin.postvaccancies.configure
-        Route::post('/save-configuration', [VaccancyController::class, 'saveVaccancyConfigureation'])->name('save-configuration'); //admin.postvaccancies.save-configuration
+        Route::post('/save-configuration', [VaccancyController::class, 'saveVaccancyConfiguration'])->name('save-configuration'); //admin.postvaccancies.save-configuration
         Route::get('/get-vaccancy-count/{fieldDeptCd}/{dsgSrno}', [VaccancyController::class, 'getVaccancyCount'])->name('get-vaccant-count'); //admin.postvaccancies.get-vaccant-count
     });
 });

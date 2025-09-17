@@ -22,8 +22,8 @@
                             <img src="{{ asset('assets/images/kanglasha.png') }}" alt="emblem" height="80"
                                 class="my-1">
                             <h3>
-                                <a class="navbar-nav txtnone my-2" href="{{ route('home') }}">
-                                    <span class="my-2 dihas_style">Die-in-Harness Appoinment System
+                                <a class="dihas-title txtnone my-2" href="{{ route('home') }}">
+                                    <span>Die-in-Harness Appoinment System
                                     </span>
                                 </a>
                             </h3>

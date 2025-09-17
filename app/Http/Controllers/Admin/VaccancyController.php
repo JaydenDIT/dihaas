@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Auth;
 
 class VaccancyController extends Controller
 {
+    /**
+     * Only for super-admin
+     */
     public function addPostVaccancy(Request $request)
     {
         $adminDepts = CmisApiService::apiAdminDepartments();
@@ -22,6 +25,30 @@ class VaccancyController extends Controller
         $vaccancies = PostVaccancy::getVaccancy();
 
         return view('admin.vaccantPosts.add-post-vaccancy', compact('adminDepts', 'vaccancies'));
+    }
+
+    /**
+     * For departmental user
+     * 
+     * Post vacccancy data entry only for a department
+     */
+
+    public function addPostVaccancyByDept(Request $request)
+    {
+        //Current department
+        $user = Auth::user();
+        $department = CmisApiService::apiFieldDepartments($user->field_dept_cd);
+
+        //Retrieve current post vaccancies for the current department
+        $vaccancies = PostVaccancy::getVaccancyEntries($user->field_dept_cd);
+        $vaccancyPercentage = VaccancyPercentage::first();
+        $posts = CmisApiService::apiAllPostUnderDepartment($user->field_dept_cd);
+        //arranging in alphabetical order of designation
+        usort($posts, function ($a, $b) {
+            return strcasecmp($a['dsg_desc'], $b['dsg_desc']);
+        });
+
+        return view('admin.vaccantPosts.add-dept-post-vaccancy', compact('department', 'vaccancies', 'vaccancyPercentage', 'posts'));
     }
 
     /**
