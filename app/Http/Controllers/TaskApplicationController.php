@@ -100,7 +100,7 @@ class TaskApplicationController extends Controller
                     $apps->with('uoGeneration');
                 }
                 // If the user is just a citizen
-                if ($user->role->role_group == "citizen") {
+                if ($user->role->role_group == "citizen" || $task->tasks_duty == "client_form_submission") {
                     $apps->where('create_by', $user->user_id);
                 }
                 // Here, we need to check if the authenticated user is super admin or if the user belongs to Department of Personel,

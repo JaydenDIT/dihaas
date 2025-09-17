@@ -32,8 +32,8 @@
                             <div class="card-heading text-start d-flex justify-content-between">
                                 <h6 class="card-title">{{ $key + 1 }}. {{ $card['task'] }}</h6>
                                 <div class="card-title">
-                                    <a class="text-info small" data-bs-toggle="collapse" href="#desc{{ $key }}"
-                                        role="button" aria-expanded="false">
+                                    <a class="text-info small" title="About the job." data-bs-toggle="collapse"
+                                        href="#desc{{ $key }}" role="button" aria-expanded="false">
                                         <i class="bi bi-info-circle-fill"></i>
                                     </a>
                                 </div>
