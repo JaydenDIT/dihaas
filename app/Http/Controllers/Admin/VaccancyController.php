@@ -92,7 +92,7 @@ class VaccancyController extends Controller
     }
 
     //Method to update the vaccancy configuration
-    public function saveVaccancyConfigureation(Request $request)
+    public function saveVaccancyConfiguration(Request $request)
     {
 
         $request->validate([
