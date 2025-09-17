@@ -79,7 +79,7 @@ class WorkflowHandler
         $allApplications = collect();
 
         foreach ($mappings as $mapping) {
-            $query = Proforma::where('process_id', $mapping->process_id);
+            $query = Proforma::with('uoGeneration')->where('process_id', $mapping->process_id);
             /**
              * Only the concern department user will be able to see the proforma list.
              * However if the user is of the department 'Department of Personal' or if the user is 

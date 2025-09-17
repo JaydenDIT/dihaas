@@ -27,6 +27,7 @@ class UoGeneration extends Model
         'alloted_dsg_desc',
         'alloted_group_code',
         'signed_proforma_doc',
+        'signing_authority',
     ];
 
     public static function boot()

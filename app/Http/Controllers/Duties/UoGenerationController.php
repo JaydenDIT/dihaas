@@ -39,8 +39,14 @@ class UoGenerationController extends Controller
         switch ($application_status) {
             //proforma_status tells the current state of the application
 
-            case 'pending': // currently pending on me
-                $data = WorkflowHandler::proformaTaskCurrentData($task);        // collection where
+            case 'pending': // currently pending on me                
+                // Filter data according to signing authority      // collection where
+                $data = WorkflowHandler::proformaTaskCurrentData($task)->filter(function ($item) {
+                    if (!is_null($item->uoGeneration)) {
+                        return $item->uoGeneration->signing_authority == Auth::id();
+                    }
+                    return false;
+                });
                 break;
             case 'forwarded': //forwarded from me but entire process not completed
                 $data = WorkflowHandler::proformaTaskForwardedData($task);
@@ -56,6 +62,7 @@ class UoGenerationController extends Controller
                 break;
         }
 
+
         return DataTables::of($data)
             ->addIndexColumn()
             ->editColumn('deceased_doe', function ($row) {
@@ -69,6 +76,9 @@ class UoGenerationController extends Controller
             })
             ->editColumn('applicant_dob', function ($row) {
                 return date('d M, Y', strtotime($row->applicant_dob));
+            })
+            ->addColumn('signing_authority', function ($row) {
+                return Auth::id();
             })
             ->addColumn('remarks', function ($row) {
 

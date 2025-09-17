@@ -96,20 +96,26 @@ class TaskApplicationController extends Controller
 
                 // Proforma query initialized based on process id
                 $apps = Proforma::where('process_id', $process->process_id);
-
+                if ($task->task_duty == 'uo_form_generation') {
+                    $apps->with('uoGeneration');
+                }
                 // If the user is just a citizen
                 if ($user->role->role_group == "citizen") {
                     $apps->where('create_by', $user->user_id);
                 }
                 // Here, we need to check if the authenticated user is super admin or if the user belongs to Department of Personel,
                 else if (in_array($user->role->role_name, ['Superadmin', 'DP Nodal', 'DP Assistant'])) {
-                    //do nothing
                 } else if (!is_null($user->field_dept_cd)) {
                     //Otherwise, we should filter only the proformas that belong to department of the currently authenticated user.
                     $apps->where('deceased_field_dept_cd', $user->field_dept_cd);
                 }
 
-                $result = $apps->get();
+                $result = ($task->tasks_duty == 'uo_form_generation') ? $apps->get()->filter(function ($item) {
+                    if (!is_null($item->uoGeneration)) {
+                        return $item->uoGeneration->signing_authority == Auth::id();
+                    }
+                    return false;
+                }) : $apps->get();
 
                 // Counts are calculated from the collection of proformas retrieved by the query '$apps'
                 $pending += $result->where('process_sequence', $sequence)->count();
@@ -122,6 +128,7 @@ class TaskApplicationController extends Controller
             // Use tasks_id as key to avoid duplicates
             $taskSummaries[$task->tasks_id] = [
                 'task' => $task->tasks_name,
+                'task_description' => $task->tasks_description,
                 'tasks_id' => $task->tasks_id,
                 'pending' => $pending,
                 'forwarded' => $forwarded,
