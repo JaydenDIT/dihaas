@@ -194,11 +194,15 @@
             }).catch(error => {
                 const errorMessage = error.message || "An unknown error has occured";
                 //alert("Something went wrong while calculating vacancy: " + errorMessage);
-                Swal.fire({
-                    icon: "error",
-                    title: "Error!",
-                    text: errorMessage
-                });
+
+                let tbody = document.querySelector("#dept-post-vaccancy-table tbody");
+                if (vaccancy_data.length == 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td class="text-center text-danger" colspan="7"> No record found!</td>
+                        </tr>
+                        `;
+                }
             })
         }
 
