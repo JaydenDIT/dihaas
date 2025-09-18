@@ -196,13 +196,12 @@
                 //alert("Something went wrong while calculating vacancy: " + errorMessage);
 
                 let tbody = document.querySelector("#dept-post-vaccancy-table tbody");
-                if (vaccancy_data.length == 0) {
-                    tbody.innerHTML = `
+
+                tbody.innerHTML = `
                         <tr>
                             <td class="text-center text-danger" colspan="7"> No record found!</td>
                         </tr>
                         `;
-                }
             })
         }
 
