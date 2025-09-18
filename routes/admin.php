@@ -52,11 +52,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     //Post Vaccancies
     Route::group(['prefix' => 'post-vaccancy', 'as' => 'postvaccancies.'], function () {
-        Route::get('/get-vaccancies', [VaccancyController::class, 'getVaccancyData'])->name('getVaccancyData'); //admin.postvaccancies.getVaccancyData
+        Route::get('/get-vaccancies/{fieldDeptCd?}', [VaccancyController::class, 'getVaccancyData'])->name('getVaccancyData'); //admin.postvaccancies.getVaccancyData
+        Route::get('/get-vaccancy-entries/{fieldDeptCd?}', [VaccancyController::class, 'getPostVaccancyEntries'])->name('getPostVaccancyEntries'); //admin.postvaccancies.getPostVaccancyEntries
         Route::get('/add', [VaccancyController::class, 'addPostVaccancy'])->name('addPostVaccancy'); //admin.postvaccancies.addPostVaccancy
         Route::get('/dept/add', [VaccancyController::class, 'addPostVaccancyByDept'])->name('add-dept-post-vaccancy'); //admin.postvaccancies.add-dept-post-vaccancy
         Route::get('/calculate/{totalPost}', [VaccancyController::class, 'calculateVacancyDistribution'])->name('calculateVaccancy'); //admin.postvaccancies.calculateVaccancy
         Route::post('/store', [VaccancyController::class, 'storePostVaccancies'])->name('store'); //admin.postvaccancies.store
+        Route::post('/update', [VaccancyController::class, 'updatePostVaccancies'])->name('update'); //admin.postvaccancies.update
+        Route::delete('/delete/{id}', [VaccancyController::class, 'deletePostVaccancy'])->name('delete'); //admin.postvaccancies.delete
         Route::get('/configure', [VaccancyController::class, 'configureVaccancy'])->name('configure'); //admin.postvaccancies.configure
         Route::post('/save-configuration', [VaccancyController::class, 'saveVaccancyConfiguration'])->name('save-configuration'); //admin.postvaccancies.save-configuration
         Route::get('/get-vaccancy-count/{fieldDeptCd}/{dsgSrno}', [VaccancyController::class, 'getVaccancyCount'])->name('get-vaccant-count'); //admin.postvaccancies.get-vaccant-count

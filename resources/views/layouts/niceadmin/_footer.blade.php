@@ -6,4 +6,5 @@
     <div class="credits">
         Designed & developed by <a href="https://manipur.nic.in/" target="_blank">NIC, Manipur State Centre</a>
     </div>
-</footer><!-- End Footer -->
+</footer>
+<!-- End Footer -->

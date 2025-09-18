@@ -57,6 +57,12 @@
 
         </div>
     </div>
+    <!-- ======= Footer ======= -->
+    <div class="text-center my-2 small">
+        @include('layouts.niceadmin._footer')
+    </div>
+    <!-- End Footer -->
+
     <script src="{{ asset('assets/popper/popper.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap-5.2.3/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/sweetalert2/sweetalert3.js') }}"></script>

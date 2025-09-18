@@ -43,9 +43,11 @@ class PostVaccancy extends Model
         'field_dept_name',
         'dsg_srno',
         'dsg_name',
+        'total_vaccant_post',
         'no_of_posts_dia',
         'no_of_posts_dr',
         'created_by',
+        'updated_by',
     ];
     /**
      * Scope a query to get all vaccancy entries for a partifular department
@@ -63,12 +65,19 @@ class PostVaccancy extends Model
      *
      * This query fetches the vacancies by department and designation,
      * and sums up the DIA and DR posts.
+     * 
+     * Business Logic: 
+     * If $$fieldDeptCd is not zero (0), then the query will retrieve only the vaccancy record for
+     * the particular department.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Support\Collection
      */
-    public function scopeGetVaccancy($query)
+    public function scopeGetVaccancy($query, $fieldDeptCd = 0)
     {
+        if ($fieldDeptCd > 0) {
+            $query->where('field_dept_cd', $fieldDeptCd);
+        }
         return $query->select(
             'adm_dept_cd',
             'adm_dept_name',

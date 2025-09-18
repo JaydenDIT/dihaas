@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddPostVaccancyRequest;
+use App\Http\Requests\UpdatePostVaccancyRequest;
 use App\Models\PostVaccancy;
 use App\Models\VaccancyPercentage;
 use App\Services\CmisApiService;
@@ -102,14 +103,68 @@ class VaccancyController extends Controller
         }
     }
 
-    //Method to load vaccancy data
-    public function getVaccancyData()
+    /**
+     * To update post vaccancies
+     */
+    public function updatePostVaccancies(UpdatePostVaccancyRequest $request)
     {
-        $vaccancies = PostVaccancy::getVaccancy();
+        $data = $request->validated();
+        $data['updated_by'] = Auth::id();
+        try {
+            PostVaccancy::where('vaccancy_id', $data['vaccancy_id'])->update($data);
+
+            return response()->json([
+                'message' => 'You have successfully updated vaccant post.'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * This endpoint fetches the post vacancies of different posts/designation in a department,
+     * Business Logic: 
+     * If $fieldDeptCd is not zero (0), then the query will retrieve only the overall vaccancy record for
+     * the particular department, otherwise vaccancies for all departments.
+     * This will give only the sums up values the DIA and DR posts
+     * 
+     * @param integer $fieldDeptCd, this is the department code
+     * @return json data
+     */
+    public function getVaccancyData($fieldDeptCd = 0)
+    {
+        $vaccancies = PostVaccancy::getVaccancy($fieldDeptCd);
         return response()->json([
             'vaccancies' => $vaccancies
         ]);
     }
+
+    /**
+     * Method to delete a post vaccancy
+     */
+    public function deletePostVaccancy($vaccancyId)
+    {
+        $postVaccancy = PostVaccancy::find($vaccancyId);
+        if (empty($postVaccancy)) {
+            return response()->json([
+                'message' => 'Invalid request'
+            ], 404);
+        }
+
+        try {
+            $postVaccancy->delete();
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error occurs while trying to delete post vaccancy.'
+            ], 500);
+        }
+        return response()->json([
+            'message' => 'You have successfully deleted the vaccancy entry.'
+        ], 200);
+    }
+
 
     //Method to configure the percentage (%) of vaccancy
     public function configureVaccancy()
@@ -159,5 +214,24 @@ class VaccancyController extends Controller
     {
         $count = PostVaccancy::getDepartmentPostVaccancy($fieldDeptCd, $dsgSrno);
         return response()->json(compact('count'));
+    }
+
+    /**
+     *   Endpoint to retrieve all the vaccancy data entries for a particular department
+     *   (no sums up values of the DIA and DR posts)
+     *   But every single entry will be retrieved (Can be used for log activities)
+     */
+
+    public function getPostVaccancyEntries($fieldDeptCd = 0)
+    {
+        //Retrieve current post vaccancies for a department
+        $vaccancies = PostVaccancy::getVaccancyEntries($fieldDeptCd);
+        if ($vaccancies->count() == 0) {
+            return response()->json([
+                'message' => 'No data entries for vaccancy of the post for the department'
+            ], 404);
+        }
+
+        return response()->json(compact('vaccancies'), 200);
     }
 }
