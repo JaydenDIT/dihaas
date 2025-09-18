@@ -196,7 +196,7 @@
                 //alert("Something went wrong while calculating vacancy: " + errorMessage);
                 Swal.fire({
                     icon: "error",
-                    title: "Oops! Something went wrong while calculating vacancy",
+                    title: "Error!",
                     text: errorMessage
                 });
             })
