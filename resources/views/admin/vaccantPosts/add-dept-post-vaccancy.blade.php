@@ -199,7 +199,7 @@
 
                 tbody.innerHTML = `
                         <tr>
-                            <td class="text-center text-danger" colspan="7"> No record found!</td>
+                            <td class="text-center text-danger" colspan="7"> ${errorMessage}</td>
                         </tr>
                         `;
             })
