@@ -3,13 +3,13 @@
     <div class="card">
         <div class="card-body">
 
-            <h5 class="card-title">Post vaccancy for the department <strong>{{ $department['field_dept_desc'] }}</strong>
+            <h5 class="card-title">Post vaccancy for the department : <strong>{{ $department['field_dept_desc'] }}</strong>
             </h5>
             <p class="text-muted small">
                 The post vaccancy distribution is based on the criteria
                 that <strong>{{ $vaccancyPercentage->dia_percentage }}%</strong> of the total posts is
                 reserved for the <strong>'Die-in-Harness'</strong> and the remaining
-                will counted for <strong>'Direct Recruitment'</strong> posts as per the latest effective
+                will be counted for <strong>'Direct Recruitment'</strong> posts as per the latest effective
                 date <strong>{{ date('d M, Y', strtotime($vaccancyPercentage->effective_date)) }}</strong>.
             </p>
             <div class="small">
@@ -19,6 +19,7 @@
                             <th rowspan="2">#</th>
                             <th rowspan="2">Date of Entry</th>
                             <th rowspan="2">Post</th>
+                            <th rowspan="2">Total Post Entered</th>
                             <th colspan="2" class="text-center">Available Posts</th>
                             <th rowspan="2" class="text-end">
                                 <button class="btn btn-primary" onclick="showAddVancyModal();" data-bs-toggle="modal"
@@ -207,7 +208,7 @@
             if (vaccancy_data.length == 0) {
                 tbody.innerHTML = `
                 <tr>
-                    <td class="text-center" colspan="6"> No record found!</td>
+                    <td class="text-center" colspan="7"> No record found!</td>
                 </tr>
                 `;
                 return;
@@ -220,6 +221,7 @@
                         <td>${i+1}.</td>
                         <td>${getDate(row.created_at)}</td>
                         <td>${row.dsg_name}</td>
+                        <td class="text-center">${row.total_vaccant_post}</td>
                         <td class="text-center">${row.no_of_posts_dia}</td>
                         <td class="text-center">${row.no_of_posts_dr}</td>
                         <td>
@@ -296,9 +298,13 @@
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 if (result.isConfirmed) {
-
                     fetch(url, {
-                        method: "DELETE"
+                        method: "DELETE",
+                        headers: {
+                            accept: "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                "content"),
+                        }
                     }).then(async (response) => {
                         let result = await response.json();
                         if (!response.ok) {
@@ -312,6 +318,9 @@
                             title: "Deleted!",
                             text: data.message,
                             icon: "success"
+                        }).then(() => {
+                            //Load the remaining vaccancies
+                            getDepartmentVaccancies(field_dept_cd);
                         });
                     }).catch(error => {
                         const errorMessage = error.message || "An unknown error has occured";
