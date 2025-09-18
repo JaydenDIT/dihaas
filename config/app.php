@@ -14,9 +14,7 @@ return [
     | any other location as required by the application or its packages.
     |
     */
-
-    'name' => 'Die-in-Harness Appointment Approval System',
-    // 'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Die in harness'),
 
     /*
     |--------------------------------------------------------------------------
@@ -71,12 +69,12 @@ return [
     */
 
     'timezone' => 'UTC',
-	
-	/*
+
+    /*
      Date Format 
     */
-        'date_format' => 'd/m/Y',
-        'date_format_javascript' => 'DD/MM/YYYY',
+    'date_format' => 'd/m/Y',
+    'date_format_javascript' => 'DD/MM/YYYY',
 
     /*
     |--------------------------------------------------------------------------
@@ -188,7 +186,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-		
+
 
         /*
          * Package Service Providers...
@@ -205,8 +203,8 @@ return [
 
         // dompdf
         Barryvdh\DomPDF\ServiceProvider::class,
-		Yajra\Datatables\DatatablesServiceProvider::class,
-		Mews\Captcha\CaptchaServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
+        Mews\Captcha\CaptchaServiceProvider::class,
 
     ],
 
@@ -227,12 +225,10 @@ return [
         // 'PDF' => Barryvdh\DomPDF\Facade::class,
         // 'PDF' => Barryvdh\DomPDF\Facade::class,
         'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
-		'Datatables' => Yajra\Datatables\Facades\Datatables::class,
-		'Captcha' => Mews\Captcha\Facades\Captcha::class,
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,
 
     ])->toArray(),
-    
+
 
 ];
-
-
