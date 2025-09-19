@@ -19,12 +19,15 @@ return new class extends Migration {
 
             // Foreign Keys
             $table->foreign('proforma_id')->references('proforma_id')->on('proforma')->onDelete('cascade');
-            $table->foreign('relationship_id')->references('relationship_id')->on('relationships')->onDelete('restrict');
+            $table->foreign('relationship_id')->references('relationship_id')->on('relationships')->onDelete('cascade');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('families');
+        Schema::table('family_details', function (Blueprint $table) {
+            $table->dropForeign(['proforma_id']);
+        });
+        Schema::dropIfExists('family_details');
     }
 };

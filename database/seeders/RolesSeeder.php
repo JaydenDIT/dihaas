@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Library\Database\AutoIncrement;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -29,8 +31,11 @@ class RolesSeeder extends Seeder
 
         DB::table('roles')->upsert(
             $roles,
-            ['role_name'], // unique constraint to check existing
-            ['role_id', 'role_group']  // columns to update if exists
+            ['role_id'], // unique constraint to check existing
+            ['role_name', 'role_group']  // columns to update if exists
         );
+
+        // Reset sequence/auto increment for portability
+        AutoIncrement::resetIndex('roles', 'role_id');
     }
 }

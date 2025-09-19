@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('castes', function (Blueprint $table) {
             $table->id('caste_id');
-            $table->string('caste_name', 255);
+            $table->string('caste_name', 255)->unique();
             $table->timestamps();   // created_at and updated_at
             $table->softDeletes();  // deleted_at for soft deletion
         });

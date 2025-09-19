@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Library\Database\AutoIncrement;
 use App\Models\Caste;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -25,17 +26,20 @@ class CasteSeeder extends Seeder
         "); */
 
         $castes = [
-            ['caste_name' => 'OBCM'],
-            ['caste_name' => 'OBC-NCL'],
-            ['caste_name' => 'SC'],
-            ['caste_name' => 'ST'],
-            ['caste_name' => 'General'],
+            ['caste_id' => 1, 'caste_name' => 'OBCM'],
+            ['caste_id' => 2, 'caste_name' => 'OBC-NCL'],
+            ['caste_id' => 3, 'caste_name' => 'SC'],
+            ['caste_id' => 4, 'caste_name' => 'ST'],
+            ['caste_id' => 5, 'caste_name' => 'General'],
         ];
 
         Caste::upsert(
             $castes,
-            ['caste_name'], // unique
+            ['caste_id'], // unique
             ['caste_name'], // update if exists
         );
+
+        // reset auto increment / sequence
+        AutoIncrement::resetIndex('castes', 'caste_id');
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('states', function (Blueprint $table) {
             $table->id('state_id');
-            $table->string('state_name', 255);
+            $table->string('state_name', 255)->unique();
             $table->timestamps();   // created_at and updated_at
             $table->softDeletes();  // deleted_at for soft deletion
         });

@@ -68,6 +68,16 @@ return new class extends Migration
      */
     public function down()
     {
+
+        Schema::table('user_details', function (Blueprint $table) {
+            $table->dropForeign(['current_state_id']);
+            $table->dropForeign(['permanent_state_id']);
+            $table->dropForeign(['current_district_id']);
+            $table->dropForeign(['permanent_district_id']);
+            $table->dropForeign(['idproof_id']);
+            $table->dropForeign(['relationship_id']);
+        });
+
         Schema::dropIfExists('user_details');
     }
 };

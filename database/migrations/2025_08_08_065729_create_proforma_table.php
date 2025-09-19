@@ -52,7 +52,7 @@ return new class extends Migration
             $table->date('applicant_dob');
             $table->string('applicant_mobile', 10);
             $table->string('applicant_email', 255);
-            $table->string('applicant_sex', 20)->enum('male', 'female', 'transgender');
+            $table->enum('applicant_sex', ['male', 'female', 'transgender']);
 
             // applicant other details
             $table->unsignedBigInteger('caste_id');
@@ -75,12 +75,15 @@ return new class extends Migration
 
             // required for dynamic process
             $table->integer('process_id')->nullable();
-            $table->string('proforma_status', 30)->enum('forwarded', 'rejected', 'reverted', 'completed')
-                ->nullable()->comment("This status is to know the current state of the application");
+            $table->enum('proforma_status', ['forwarded', 'rejected', 'reverted', 'completed'])
+                ->nullable()
+                ->comment('This status is to know the current state of the application');
             $table->integer('process_sequence')->nullable();
             $table->string('mini_sequence', 30)->nullable()
                 ->comment("This is to track the mini process sequence within a sequence for example form fillup has 3 mini steps. This is set to NULL when main sequence changes");
 
+            //The date on which proforma is submitted
+            $table->date('proforma_submission_date')->nullable()->comment('The date on which proforma is submitted');
             // others
             $table->timestamps();
             $table->unsignedBigInteger('create_by');
@@ -104,6 +107,17 @@ return new class extends Migration
 
     public function down(): void
     {
+
+        Schema::table('proforma', function (Blueprint $table) {
+            $table->dropForeign(['relationship_id']);
+            $table->dropForeign(['applicant_current_state_id']);
+            $table->dropForeign(['applicant_permanent_state_id']);
+            $table->dropForeign(['applicant_current_district_id']);
+            $table->dropForeign(['applicant_permanent_district_id']);
+            $table->dropForeign(['applicant_current_subdivision_id']);
+            $table->dropForeign(['caste_id']);
+            $table->dropForeign(['applicant_qualification_id']);
+        });
         // Only disable foreign key checks if DB is MySQL
         if (DB::getDriverName() === 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS = 0');

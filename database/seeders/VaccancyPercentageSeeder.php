@@ -15,12 +15,13 @@ class VaccancyPercentageSeeder extends Seeder
      */
     public function run()
     {
-        $firstObject = VaccancyPercentage::first();
-        if (empty($firstObject)) {
-            VaccancyPercentage::create([
-                'dia_percentage' => 10, //By default 10 %
-                'effective_date' => date('m-d-Y'), //format: month-day-year
-            ]);
-        }
+        // Ensure at least one record always exists with defaults
+        VaccancyPercentage::updateOrCreate(
+            ['id' => 1], // assumes primary key is id
+            [
+                'dia_percentage' => 10, // Default 10%
+                'effective_date' => date('Y-m-d'), // ISO format for DB compatibility
+            ]
+        );
     }
 }

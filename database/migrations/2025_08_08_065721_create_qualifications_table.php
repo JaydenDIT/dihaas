@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('qualifications', function (Blueprint $table) {
             $table->id('qualification_id');
-            $table->string('qualification_name', 255);
+            $table->string('qualification_name', 255)->unique();
             $table->timestamps();   // created_at and updated_at
             $table->softDeletes();  // deleted_at for soft deletion
         });

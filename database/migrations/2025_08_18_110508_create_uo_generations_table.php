@@ -33,11 +33,17 @@ return new class extends Migration
             $table->unsignedBigInteger('signing_authority')->nullable();
 
             $table->timestamps(); // created_at, updated_at
+
+            // Foreign keys
+            $table->foreign('proforma_id')->references('proforma_id')->on('proforma');
         });
     }
 
     public function down(): void
     {
+        Schema::table('uo_generations', function (Blueprint $table) {
+            $table->dropForeign(['proforma_id']);
+        });
         Schema::dropIfExists('uo_generations');
     }
 };

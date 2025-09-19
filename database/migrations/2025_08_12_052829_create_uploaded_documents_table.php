@@ -28,6 +28,8 @@ return new class extends Migration
             $table->unsignedBigInteger('verified_by')->nullable();
 
             $table->timestamps();
+
+            // Foreign Keys
             $table->foreign('proforma_id')
                 ->references('proforma_id')
                 ->on('proforma')
@@ -52,6 +54,13 @@ return new class extends Migration
 
     public function down(): void
     {
+        Schema::table('uploaded_documents', function (Blueprint $table) {
+            $table->dropForeign(['proforma_id']);
+            $table->dropForeign(['document_list_id']);
+            $table->dropForeign(['uploaded_by']);
+            $table->dropForeign(['verified_by']);
+        });
+
         Schema::dropIfExists('uploaded_documents');
     }
 };

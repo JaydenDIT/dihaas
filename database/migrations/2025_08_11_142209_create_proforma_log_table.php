@@ -24,6 +24,8 @@ return new class extends Migration
             $table->text('action_remark')->nullable();
             $table->integer('process_sequence')->nullable();
             $table->timestamps();
+
+            // Foreign keys
             $table->foreign('proforma_id')->references('proforma_id')->on('proforma');
             $table->foreign('action_by')->references('user_id')->on('users');
         });
@@ -36,6 +38,9 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('proforma_log', function (Blueprint $table) {
+            $table->dropForeign(['proforma_id']);
+        });
         Schema::dropIfExists('proforma_log');
     }
 };

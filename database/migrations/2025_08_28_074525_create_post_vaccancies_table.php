@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('dsg_name', 150)->nullable()->comment('Post designation name');
             $table->integer('no_of_posts_dia')->comment('No. of post vaccancies for die in harness.');
             $table->integer('no_of_posts_dr')->comment('No. of post vaccancies for direct recruitment.');
+            $table->integer('total_vaccant_post')->default(0)->comment('Total number of vaccant posts submitted for a department');
+            $table->unsignedBigInteger('updated_by')->nullable()->comment('The user Id of the user who updates the record.');
             $table->unsignedBigInteger('created_by')->comment('The user who adds the record');
             $table->timestamps();
         });

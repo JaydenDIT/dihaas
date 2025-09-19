@@ -18,8 +18,8 @@ class UsersSeeder extends Seeder
         loginned, user can change email, fullname, mobile ... anything.
         */
         $defaultUsers = [
-            ['fullname' => 'System Administrator', 'mobile' => '9999999999', 'email' => 'lkonsam@gmail.com', 'role_id' => 999, 'password' => Hash::make('admin@123')],
-            ['fullname' => 'Citizen user', 'mobile' => '9999999999', 'email' => 'leecba@gmail.com', 'role_id' => 77, 'password' => Hash::make('12345678')],
+            ['fullname' => 'System Administrator', 'mobile' => '9999999999', 'email' => 'admin@gmail.com', 'role_id' => 999, 'password' => Hash::make('admin@123')], //super-admin
+            ['fullname' => 'Citizen user', 'mobile' => '9999999999', 'email' => 'leecba@gmail.com', 'role_id' => 77, 'password' => Hash::make('Test@123')], //citizen
         ];
 
         User::upsert(

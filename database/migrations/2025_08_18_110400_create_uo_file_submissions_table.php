@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -38,6 +39,13 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('approve_for_uo');
+        // Only disable foreign key checks if DB is MySQL
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+            Schema::dropIfExists('uo_file_submissions');
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        } else {
+            Schema::dropIfExists('uo_file_submissions');
+        }
     }
 };

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Library\Database\AutoIncrement;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,47 +16,31 @@ class DistrictsSeeder extends Seeder
     public function run(): void
     {
         $districts = [
-            ['state_id' => 1, 'district_name' => 'Bishnupur'],
-            ['state_id' => 1, 'district_name' => 'Chandel'],
-            ['state_id' => 1, 'district_name' => 'Churachandpur'],
-            ['state_id' => 1, 'district_name' => 'Imphal East'],
-            ['state_id' => 1, 'district_name' => 'Imphal West'],
-            ['state_id' => 1, 'district_name' => 'Jiribam'],
-            ['state_id' => 1, 'district_name' => 'Kakching'],
-            ['state_id' => 1, 'district_name' => 'Kamjong'],
-            ['state_id' => 1, 'district_name' => 'Kangpokpi'],
-            ['state_id' => 1, 'district_name' => 'Noney'],
-            ['state_id' => 1, 'district_name' => 'Pherzawl'],
-            ['state_id' => 1, 'district_name' => 'Senapati'],
-            ['state_id' => 1, 'district_name' => 'Tamenglong'],
-            ['state_id' => 1, 'district_name' => 'Tengnoupal'],
-            ['state_id' => 1, 'district_name' => 'Thoubal'],
-            ['state_id' => 1, 'district_name' => 'Ukhrul'],
-            /* ['state_id' => 2, 'district_name' => 'Aizawl'],
-            ['state_id' => 2, 'district_name' => 'Champhai'],
-            ['state_id' => 2, 'district_name' => 'Hnahthial'],
-            ['state_id' => 2, 'district_name' => 'Kolasib'],
-            ['state_id' => 2, 'district_name' => 'Lawngtlai'],
-            ['state_id' => 2, 'district_name' => 'Lunglei'],
-            ['state_id' => 2, 'district_name' => 'Mamit'],
-            ['state_id' => 2, 'district_name' => 'Saiha'],
-            ['state_id' => 2, 'district_name' => 'Serchhip'],
-            ['state_id' => 3, 'district_name' => 'Dimapur'],
-            ['state_id' => 3, 'district_name' => 'Kiphire'],
-            ['state_id' => 3, 'district_name' => 'Longleng'],
-            ['state_id' => 3, 'district_name' => 'Mokokchung'],
-            ['state_id' => 3, 'district_name' => 'Mon'],
-            ['state_id' => 3, 'district_name' => 'Peren'],
-            ['state_id' => 3, 'district_name' => 'Phek'],
-            ['state_id' => 3, 'district_name' => 'Tuensang'],
-            ['state_id' => 3, 'district_name' => 'Wokha'],
-            ['state_id' => 3, 'district_name' => 'Zunheboto'], */
+            ['district_id' => 1, 'state_id' => 1, 'district_name' => 'Bishnupur'],
+            ['district_id' => 2, 'state_id' => 1, 'district_name' => 'Chandel'],
+            ['district_id' => 3, 'state_id' => 1, 'district_name' => 'Churachandpur'],
+            ['district_id' => 4, 'state_id' => 1, 'district_name' => 'Imphal East'],
+            ['district_id' => 5, 'state_id' => 1, 'district_name' => 'Imphal West'],
+            ['district_id' => 6, 'state_id' => 1, 'district_name' => 'Jiribam'],
+            ['district_id' => 7, 'state_id' => 1, 'district_name' => 'Kakching'],
+            ['district_id' => 8, 'state_id' => 1, 'district_name' => 'Kamjong'],
+            ['district_id' => 9, 'state_id' => 1, 'district_name' => 'Kangpokpi'],
+            ['district_id' => 10, 'state_id' => 1, 'district_name' => 'Noney'],
+            ['district_id' => 11, 'state_id' => 1, 'district_name' => 'Pherzawl'],
+            ['district_id' => 12, 'state_id' => 1, 'district_name' => 'Senapati'],
+            ['district_id' => 13, 'state_id' => 1, 'district_name' => 'Tamenglong'],
+            ['district_id' => 14, 'state_id' => 1, 'district_name' => 'Tengnoupal'],
+            ['district_id' => 15, 'state_id' => 1, 'district_name' => 'Thoubal'],
+            ['district_id' => 16, 'state_id' => 1, 'district_name' => 'Ukhrul'],
         ];
 
         DB::table('districts')->upsert(
             $districts,
-            ['district_name'], // unique column for check
+            ['district_id'], // unique column for check
             ['state_id', 'district_name']       // update state_id if district already exists
         );
+
+        // Reset sequence/auto increment for portability
+        AutoIncrement::resetIndex('districts', 'district_id');
     }
 }

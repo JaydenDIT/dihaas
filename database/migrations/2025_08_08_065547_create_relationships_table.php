@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('relationships', function (Blueprint $table) {
             $table->id('relationship_id');
-            $table->string('relationship_name', 255);
+            $table->string('relationship_name', 255)->unique();
             $table->timestamps();   // created_at and updated_at
             $table->softDeletes();  // deleted_at for soft deletion
         });
