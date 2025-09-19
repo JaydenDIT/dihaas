@@ -28,7 +28,12 @@ class ProformaController extends Controller
     {
         $this->authorize('canPerform', [Proforma::class, 'client_form_submission']);
         $action = "create";
-        $relationships = Relationship::all();
+        $relationships = Relationship::whereNotIn('relationship_name', [
+            'Father',
+            'Mother',
+            'Spouse',
+            'Other',
+        ])->orderBy('relationship_id')->get();
         $qualifications = Qualification::all();
         $castes = Caste::all();
         $states = State::all();
@@ -116,7 +121,12 @@ class ProformaController extends Controller
         $action = "edit";
         $proforma = Proforma::findOrFail($id);
         $this->authorize('canPerformOnProforma',  [$proforma, 'client_form_submission']);
-        $relationships = Relationship::all();
+        $relationships = Relationship::whereNotIn('relationship_name', [
+            'Father',
+            'Mother',
+            'Spouse',
+            'Other',
+        ])->orderBy('relationship_id')->get();
         $qualifications = Qualification::all();
         $castes = Caste::all();
         $states = State::all();
