@@ -212,7 +212,7 @@ class UoGenerationController extends Controller
 
         $proformas = Proforma::with('UoGeneration', 'uoFileSubmission')
             ->whereIn('proforma_id', $request->selected_proforma)
-            ->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob")
+            ->orderByRaw("expire_on_duty = false, deceased_doe, proforma_submission_date, applicant_dob")
             ->get();
 
         $countTotal = sizeof($proformas);

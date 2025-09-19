@@ -246,10 +246,10 @@ class ProformaController extends Controller
                 if (!empty($created_by)) {
                     return Proforma::where('create_by', $created_by)->get();
                 }
-                return Proforma::orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob")->get();
+                return Proforma::orderByRaw("expire_on_duty = false, deceased_doe, proforma_submission_date, applicant_dob")->get();
                 // Do nothing
         }
-        $query->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob");
+        $query->orderByRaw("expire_on_duty = false, deceased_doe, proforma_submission_date, applicant_dob");
         if (!empty($created_by)) {
             return $query->where('create_by', $created_by)->get();
         }

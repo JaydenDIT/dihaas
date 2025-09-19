@@ -94,7 +94,7 @@ class Proforma extends Model
                     'step3-completed',
                 ])->orWhereNull('mini_sequence');
             })
-            ->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob")->get();
+            ->orderByRaw("expire_on_duty = false, deceased_doe, proforma_submission_date, applicant_dob")->get();
         //get Only the proforma id and index
         $data = [];
         foreach ($list as $key => $item) {
@@ -114,7 +114,7 @@ class Proforma extends Model
                     'step3-completed',
                 ])->orWhereNull('mini_sequence');
             })
-            ->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob")->get();
+            ->orderByRaw("expire_on_duty = false, deceased_doe, proforma_submission_date, applicant_dob")->get();
         foreach ($list as $key => $item) {
             if ($item->proforma_id == $proforma_id) {
                 //returning the index
@@ -148,7 +148,7 @@ class Proforma extends Model
                     'step3-completed',
                 ])->orWhereNull('mini_sequence');
             })
-            ->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob")
+            ->orderByRaw("expire_on_duty = false, deceased_doe, proforma_submission_date, applicant_dob")
             ->get();
         foreach ($list as $key => $item) {
             if ($item->proforma_id == $proforma_id) {

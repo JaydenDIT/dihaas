@@ -104,7 +104,7 @@ class WorkflowHandler
                 $query->where('deceased_field_dept_cd', $user->field_dept_cd);
             }
 
-            $query->orderByRaw("expire_on_duty = 0, deceased_doe, proforma_submission_date, applicant_dob");
+            $query->orderByRaw("expire_on_duty = false, deceased_doe, proforma_submission_date, applicant_dob");
 
             // Apply filter logic from the specific case
             $query = $filterCallback($query, $mapping);
