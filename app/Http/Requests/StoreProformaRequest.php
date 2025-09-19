@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,7 +44,7 @@ class StoreProformaRequest extends FormRequest
             'deceased_doa' => 'required|date',
             'deceased_dob' => 'required|date',
             'expire_on_duty' => 'required|boolean',
-            'deceased_doe' => 'required|date',
+            'deceased_doe' => 'required|date', // Date of expiry of the deceased person
             'deceased_causeofdeath' => 'nullable|string|max:300',
 
             // Request posts
@@ -93,9 +94,63 @@ class StoreProformaRequest extends FormRequest
         ];
 
         if (Auth::user()->role->role_group != 'citizen') {
-            //'proforma_submission_date' is required for non-citizen users,
+            /**
+             * 'proforma_submission_date' is required when data entry is done by non-citizen users, which means only 
+             * for back-locked data entry.            
+             */
             $rules['proforma_submission_date'] = 'required|date';
         }
         return $rules;
+    }
+
+    /**
+     * Add custom validation after the basic rules.
+     
+     * Configure the validator instance with custom logic.
+     *
+     * After the default validation rules are applied,
+     * this ensures that:
+     * proforma_submission_date must be within the 6 months after the expiry of the deceased person.
+     *
+     * @param \Illuminate\Validation\Validator $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $proforma_submission_date = $this->input('proforma_submission_date', date('Y-m-d'));
+            $doe = $this->input('deceased_doe');
+
+            /**
+             * The logic is simple:
+             * 
+             * If there is 'proforma_submission_date' in the request, then we consider that, otherwise
+             * we consider the current date on which request is submitted.
+             * 
+             * Point to be noted is that: 'proforma_submission_date' will be present only in case of back locked data entry, otherwise
+             * the current date (on which request is received) will be considered as 'proforma_submission_date'
+             * 
+             * Purpose:
+             * Our requirement is that we will allow receiving the proprorma application form submission only within the configured months 
+             * (generally 6 months) after the expiry of the deceased person, if exceeds, form submission will not be allowed. 
+             * 
+             * Check if submission date is more than 6 months after death
+             * 
+             * */
+
+            if ($doe) {
+                $dateOfDeath = Carbon::parse($doe);
+                $dateOfSubmission = Carbon::parse($proforma_submission_date);
+
+                // Check if submission date is more than the configured months after death
+                $months = config('proforma.proforma_validity', 6); //By default 6
+                if ($dateOfSubmission->gt($dateOfDeath->copy()->addMonth($months))) {
+                    $validator->errors()->add(
+                        'proforma_submission_date',
+                        'Your application must be submitted within ' . $months . ' months after the date of death.'
+                    );
+                }
+            }
+        });
     }
 }
