@@ -46,8 +46,8 @@ class TaskController extends Controller
                 ]));
 
                 return "<div class='d-flex gap-2'>
-                <button class='btn btn-sm btn-primary edit-button' data-row='{$data}'><i class='fa fa-edit'></i></button>
-                <button class='btn btn-sm btn-danger delete-button' data-row='{$data}'><i class='fa fa-trash'></i></button>
+                <button class='btn btn-sm btn-outline-primary edit-button' data-row='{$data}'><i class='fa fa-edit'></i></button>
+                <button class='btn btn-sm btn-outline-danger delete-button' data-row='{$data}'><i class='fa fa-trash'></i></button>
             </div>";
             })
 
