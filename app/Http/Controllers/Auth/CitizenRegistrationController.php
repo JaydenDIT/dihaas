@@ -29,7 +29,12 @@ class CitizenRegistrationController extends Controller
     public function citizenRegister()
     {
         $states        = State::getOption()->get();
-        $relationships = Relationship::orderBy('relationship_id')->get();
+        $relationships = Relationship::whereIn('relationship_name', [
+            'Father',
+            'Mother',
+            'Spouse',
+            'Other',
+        ])->orderBy('relationship_id')->get();
         return view('auth.register_citizen', compact('states', 'relationships'));
     }
 
