@@ -33,7 +33,7 @@ class CitizenRegistrationController extends Controller
             'Father',
             'Mother',
             'Spouse',
-            'Other',
+            //'Other',
         ])->orderBy('relationship_id')->get();
         return view('auth.register_citizen', compact('states', 'relationships'));
     }
