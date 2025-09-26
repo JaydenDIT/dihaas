@@ -22,6 +22,11 @@ class UserController extends Controller
 
         $departmentSigningAuthority = [];
 
+        //sorting ministry in alphabetical order
+        usort($ministry, function ($a, $b) {
+            return strcasecmp($a['adm_dept_desc'], $b['adm_dept_desc']);
+        });
+
         $data = [
             'roles'                      => $roles,
             'departments'                => $departments,
