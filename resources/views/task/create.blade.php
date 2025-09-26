@@ -41,7 +41,7 @@
             <div class="row mb-3">
                 <div class="col-sm-12">
                     <label><b>Activity of the Duty:</b></label>
-                    <select name="tasks_duty" class="form-control" required>
+                    <select name="tasks_duty" class="form-select" required>
                         <option value="" selected disabled>--Select--</option>
                         @foreach($tasks_file as $key => $label)
                         <option value="{{ $key }}" {{ (isset($task) && $task->tasks_duty === $key) ? 'selected' : '' }}>{{ $label }}</option>
