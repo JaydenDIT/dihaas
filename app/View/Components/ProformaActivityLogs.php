@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\ProcessTasksMapping;
 use App\Models\Proforma;
 use App\Models\ProformaLog;
 use Illuminate\View\Component;
@@ -10,6 +11,7 @@ class ProformaActivityLogs extends Component
 {
     public $proformaId;
     public $logs;
+    public $remainingTasks;
     /**
      * Create a new component instance.
      *
@@ -29,6 +31,22 @@ class ProformaActivityLogs extends Component
             ->where('process_sequence', '!=', 1)
             ->orderBy('created_at')
             ->get(['proforma_log.*', 't.tasks_name', 't.tasks_id']);
+
+        //Getting the remaining tasks
+        $this->remainingTasks = $this->getRemainingTasks($proforma->process_id);
+    }
+
+    private function getRemainingTasks($process_id)
+    {
+        if (sizeof($this->logs) == 0) {
+            return [];
+        }
+        $lastSequence = $this->logs[sizeof($this->logs) - 1]->process_sequence;
+        return ProcessTasksMapping::where('process_id', $process_id)
+            ->where('sequence', '>', $lastSequence)
+            ->orderBy('sequence')->get()->map(function ($item) {
+                return $item->task;
+            });
     }
 
     /**

@@ -22,6 +22,21 @@
                 @empty
                     <p class="p-3 text-gray-500">No activity found.</p>
                 @endforelse
+                @forelse ($remainingTasks as $task)
+                    <div class="activity-item d-flex">
+                        <div class="activite-label">Pending .......</div>
+                        <i class='bi bi-circle-fill activity-badge text-secondary align-self-start'></i>
+                        <div class="activity-content">
+                            <div class="fw-bold">{{ $task->tasks_name ?? 'Unknown Action' }}
+                            </div>
+                            <div class="small">{{ $task->tasks_description ?? '' }}</div>
+                            <p class="small text-muted">
+                                To be done by
+                                {{ $task->roles()->pluck('role_name')->implode(', ') }}
+                            </p>
+                        </div>
+                    </div><!-- End activity item-->
+                @endforeach
             </div>
 
         </div>
