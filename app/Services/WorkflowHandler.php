@@ -74,6 +74,7 @@ class WorkflowHandler
     protected static function getApplicationsByMapping($taskId, callable $filterCallback)
     {
         self::checkPermission($taskId);
+        $user = Auth::user(); //Retrieve the currently authenticated user
 
         $mappings = ProcessTasksMapping::where('tasks_id', $taskId)->get();
         $allApplications = collect();
@@ -87,8 +88,6 @@ class WorkflowHandler
              * departments of Manipur.
              */
 
-            $user = Auth::user(); //Retrieve the currently authenticated user
-
 
             if ($user->role->role_group == "citizen") {
                 $query->where('create_by', $user->user_id);
@@ -96,7 +95,7 @@ class WorkflowHandler
                 in_array($user->role->role_name, ['Superadmin', 'DP Nodal', 'DP Assistant'])
             ) {
                 //Do nothing
-            } else {
+            } else if ($user->role->role_group == "single_department") {
                 /* *
                 Here, it is found that user is a departmental user but doesn't belong to DP, so he/she must be able to see only the proforma list
                 that belong to the department which he/she belongs
