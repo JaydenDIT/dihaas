@@ -36,6 +36,7 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.', 'middleware' => ['auth']]
             Route::post('{id}/update', 'update')->name('proforma.update');
             Route::delete('{id}', 'destroy')->name('proforma.destroy');
             Route::post('/proforma-list', 'getProformaForDataTable')->name('proforma.ajaxlist'); //duties.proforma.ajaxlist
+            Route::get('/activities/{id}', 'getActivityLogs')->name('proforma.activities'); //duties.proforma.activities
         });
     });
     Route::group(['prefix' => 'upload/document'], function () {

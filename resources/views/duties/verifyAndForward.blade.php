@@ -12,72 +12,80 @@
                 </h3>
             </div>
         </div>
-
-        <!-- NEW STEP TRACKER -->
-        <div class="step-tracker">
-            <div class="btn-go-through btn-step" data-step="1">
-                <button class="btn btn-sm btn-circle statusBtn   completed" type="button">1</button>
-                <div>Details</div>
-            </div>
-            <div class="btn-go-through btn-step" data-step="2">
-                <button class="btn btn-sm btn-circle statusBtn completed" type="button">2</button>
-                <div>Family Members</div>
-            </div>
-            <div class="btn-go-through btn-step" data-step="3">
-                <button class="btn btn-sm btn-circle statusBtn completed" type="button">3</button>
-                <div>Documents Upload</div>
-            </div>
-            <div class="btn-go-through btn-step" data-step="4">
-                <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
-                <div>Verification</div>
-            </div>
-        </div>
-
-
         <div class="row">
-            <!-- STEP 1 -->
-            <div class="setup-content" id="step-1">
-                @include('proforma.viewParts.view1._collection')
-            </div>
-
-            <!-- STEP 2 -->
-            <div class="setup-content" id="step-2">
-                @include('proforma.viewParts.view2._familyDetail')
-            </div>
-
-            <!-- STEP 3 -->
-            <div class="setup-content" id="step-3">
-                <div class="form-group">
-                    @include('proforma.viewParts.view3._uploadDocument')
-
+            <div class="col-sm-8">
+                <!-- NEW STEP TRACKER -->
+                <div class="step-tracker">
+                    <div class="btn-go-through btn-step" data-step="1">
+                        <button class="btn btn-sm btn-circle statusBtn   completed" type="button">1</button>
+                        <div>Details</div>
+                    </div>
+                    <div class="btn-go-through btn-step" data-step="2">
+                        <button class="btn btn-sm btn-circle statusBtn completed" type="button">2</button>
+                        <div>Family Members</div>
+                    </div>
+                    <div class="btn-go-through btn-step" data-step="3">
+                        <button class="btn btn-sm btn-circle statusBtn completed" type="button">3</button>
+                        <div>Documents Upload</div>
+                    </div>
+                    <div class="btn-go-through btn-step" data-step="4">
+                        <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
+                        <div>Verification</div>
+                    </div>
                 </div>
-            </div>
-            <div class="setup-content" id="step-4">
-                <div class="form-group">
-                    <div class="bg-committee p-0 pb-5 rounded">
-                        <h5 class="py-1 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">Verification Form
-                        </h5>
-                        <!-- Bank Details -->
-                        <div class="col-sm-12 mb-3 px-4">
 
-                            <div class="d-flex justify-content-center gap-2 mt-5">
 
-                                @include('duties.tasks._revert')
-                                @include('duties.tasks._reject')
+                <div class="">
+                    <!-- STEP 1 -->
+                    <div class="setup-content" id="step-1">
+                        @include('proforma.viewParts.view1._collection')
+                    </div>
 
-                                @if ($proforma->mini_sequence != 'verified')
-                                    <button class="btn btn-md btn-primary verify-btn" type="button">Verify</button>
-                                @else
-                                    @include('duties.tasks._forward')
-                                @endif
+                    <!-- STEP 2 -->
+                    <div class="setup-content" id="step-2">
+                        @include('proforma.viewParts.view2._familyDetail')
+                    </div>
+
+                    <!-- STEP 3 -->
+                    <div class="setup-content" id="step-3">
+                        <div class="form-group">
+                            @include('proforma.viewParts.view3._uploadDocument')
+
+                        </div>
+                    </div>
+                    <div class="setup-content" id="step-4">
+                        <div class="form-group">
+                            <div class="bg-committee p-0 pb-5 rounded">
+                                <h5 class="py-1 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">
+                                    Verification
+                                    Form
+                                </h5>
+                                <!-- Bank Details -->
+                                <div class="col-sm-12 mb-3 px-4">
+
+                                    <div class="d-flex justify-content-center gap-2 mt-5">
+
+                                        @include('duties.tasks._revert')
+                                        @include('duties.tasks._reject')
+
+                                        @if ($proforma->mini_sequence != 'verified')
+                                            <button class="btn btn-md btn-primary verify-btn" type="button">Verify</button>
+                                        @else
+                                            @include('duties.tasks._forward')
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
 
+
                 </div>
             </div>
-
-
+            <div class="col-sm-4">
+                <x-proforma-activity-logs :proforma-id="$proforma->proforma_id" />
+            </div>
         </div>
     </div>
 

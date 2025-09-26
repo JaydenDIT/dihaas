@@ -5,331 +5,360 @@
 @section('content')
     <div class="container-fluid">
         @include('duties.tasks._proforma_task_heading')
-        <!-- NEW STEP TRACKER -->
-        <div class="step-tracker">
-            <div class="btn-go-through btn-step" data-step="1">
-                <button class="btn btn-sm btn-circle statusBtn   completed" type="button">1</button>
-                <div>Details</div>
-            </div>
-            <div class="btn-go-through btn-step" data-step="2">
-                <button class="btn btn-sm btn-circle statusBtn completed" type="button">2</button>
-                <div>Family Members</div>
-            </div>
-            <div class="btn-go-through btn-step" data-step="3">
-                <button class="btn btn-sm btn-circle statusBtn completed" type="button">3</button>
-                <div>Documents Upload</div>
-            </div>
-            <div class="btn-go-through btn-step" data-step="4">
-                <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
-                <div>UO File (Approved)</div>
-            </div>
-            <div class="btn-go-through btn-step" data-step="5">
-                <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
-                <div>UO Form Fill Up</div>
-            </div>
-        </div>
-
-
         <div class="row">
-            <!-- STEP 1 -->
-            <div class="setup-content" id="step-1">
-                @include('proforma.viewParts.view1._collection')
-            </div>
-
-            <!-- STEP 2 -->
-            <div class="setup-content" id="step-2">
-                @include('proforma.viewParts.view2._familyDetail')
-            </div>
-
-            <!-- STEP 3 -->
-            <div class="setup-content" id="step-3">
-                <div class="form-group">
-                    @include('proforma.viewParts.view3._uploadDocument')
-                </div>
-            </div>
-
-            {{-- STEP 4 --}}
-            <div class="setup-content" id="step-4">
-                <div class="form-group">
-                    <div class="bg-committee p-0 pb-5 rounded">
-                        <h5 class="py-1 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">
-                            Approved UO File
-                        </h5>
-                        <div class="col-sm-12 mb-3 px-4">
-                            <iframe style="width:100%;height:100vh;"
-                                src="{{ route('uo-file.get', $proforma->proforma_id) }}" frameborder="0"></iframe>
-
-                        </div>
+            <div class="col-sm-8">
+                <!-- NEW STEP TRACKER -->
+                <div class="step-tracker">
+                    <div class="btn-go-through btn-step" data-step="1">
+                        <button class="btn btn-sm btn-circle statusBtn   completed" type="button">1</button>
+                        <div>Details</div>
                     </div>
-                    <div class="hstack gap-3 my-3 p-3">
-                        <div class="ms-auto">
-                            <button class="btn btn-md btn-success prevBtn" type="button" data-step="3">Prev</button>
-                            @if (isset($total_step) && $total_step > 4)
-                                <button class="btn btn-md btn-success nextBtn" type="button" data-step="3">Next</button>
-                            @endif
-                        </div>
+                    <div class="btn-go-through btn-step" data-step="2">
+                        <button class="btn btn-sm btn-circle statusBtn completed" type="button">2</button>
+                        <div>Family Members</div>
+                    </div>
+                    <div class="btn-go-through btn-step" data-step="3">
+                        <button class="btn btn-sm btn-circle statusBtn completed" type="button">3</button>
+                        <div>Documents Upload</div>
+                    </div>
+                    <div class="btn-go-through btn-step" data-step="4">
+                        <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
+                        <div>UO File (Approved)</div>
+                    </div>
+                    <div class="btn-go-through btn-step" data-step="5">
+                        <button class="btn btn-sm btn-circle statusBtn completed" type="button">4</button>
+                        <div>UO Form Fill Up</div>
+                    </div>
+                </div>
+                <div class="">
+                    <!-- STEP 1 -->
+                    <div class="setup-content" id="step-1">
+                        @include('proforma.viewParts.view1._collection')
                     </div>
 
-                </div>
-            </div>
+                    <!-- STEP 2 -->
+                    <div class="setup-content" id="step-2">
+                        @include('proforma.viewParts.view2._familyDetail')
+                    </div>
 
-            {{-- Step 5 --}}
-            <div class="setup-content" id="step-5">
-                <div class="form-group card">
-                    <div class="small card-body">
-                        <h5 class="card-title">UO Form Fill Up</h5>
-                        <div class="col-sm-12 mb-3">
-                            <div class="row mb-2">
-                                <div class="col-sm-4" style="text-align: left;">
-                                    <strong>Applicant Name:</strong>
-                                </div>
-                                <div class="col-sm-8">
-                                    <span>{{ $proforma->applicant_name }}</span>
-                                </div>
-                            </div>
+                    <!-- STEP 3 -->
+                    <div class="setup-content" id="step-3">
+                        <div class="form-group">
+                            @include('proforma.viewParts.view3._uploadDocument')
+                        </div>
+                    </div>
 
-                            <div class="row mb-2">
-                                <div class="col-sm-4 " style="text-align: left;">
-                                    <strong>EIN of the Deceased:</strong>
-                                </div>
-                                <div class="col-sm-8">
-                                    <span>{{ $proforma->deceased_ein }}</span>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-sm-4 " style="text-align: left;">
-                                    <strong>Deceased Name:</strong>
-                                </div>
-                                <div class="col-sm-8 ">
-                                    <span>{{ $proforma->deceased_emp_name }}</span>
+                    {{-- STEP 4 --}}
+                    <div class="setup-content" id="step-4">
+                        <div class="form-group">
+                            <div class="bg-committee p-0 pb-5 rounded">
+                                <h5 class="py-1 ps-3 mt-0 bg-success bg-gradient text-white fw-bold rounded-top">
+                                    Approved UO File
+                                </h5>
+                                <div class="col-sm-12 mb-3 px-4">
+                                    <iframe style="width:100%;height:100vh;"
+                                        src="{{ route('uo-file.get', $proforma->proforma_id) }}" frameborder="0"></iframe>
+
                                 </div>
                             </div>
-
-                            <div class="row mb-3">
-                                <div class="col-sm-4" style="text-align: left;">
-                                    <strong>DP File No.</strong>
-                                </div>
-                                <div class="col-sm-8">
-                                    <span>{{ $proforma->uoFileSubmission->uo_file_submission_id }}</span>
-                                </div>
-                            </div>
-
-                            <form id="uo_form_fillup" name="uo_form_fillup" method="POST"
-                                action="{{ route('duties.uo.formfillup.forward', $proforma->proforma_id) }}">
-                                @csrf
-                                <input type="hidden" name="proforma_id" value="{{ $proforma->proforma_id }}">
-
-                                {{-- When applicant's choice is available --}}
-                                <div class="row">
-                                    <div class=" col-sm-4 form-check">
-                                        <input class="form-check-input" type="radio" name="post_option"
-                                            id="exampleRadios1" value="applicant-prefered" checked>
-                                        <label class="form-check-label cursor-pointer" for="exampleRadios1">
-                                            <b> Employee Preferred Post</b>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        @php
-                                            $preferredPosts = [
-                                                /** The first two must belong to the department the deceased one once belonged **/
-                                                [
-                                                    'request_dsg_srno' => $proforma->request_dsg_srno_1,
-                                                    'request_dsg_desc' => $proforma->request_dsg_desc_1,
-                                                    'request_group_code' => $proforma->request_group_code_1,
-                                                    'request_field_dept_cd' => $proforma->deceased_field_dept_cd, // Same as deceased one
-                                                    'request_field_dept_desc' => $proforma->deceased_field_dept_desc, // Same as deceased one
-                                                    'request_adm_dept_cd' => $proforma->deceased_adm_dept_cd, // Same as deceased one
-                                                    'request_adm_dept_desc' => $proforma->deceased_adm_dept_desc, // Same as deceased one
-                                                ],
-                                                [
-                                                    'request_dsg_srno' => $proforma->request_dsg_srno_2,
-                                                    'request_dsg_desc' => $proforma->request_dsg_desc_2,
-                                                    'request_group_code' => $proforma->request_group_code_2,
-                                                    'request_field_dept_cd' => $proforma->deceased_field_dept_cd, // Same as deceased one
-                                                    'request_field_dept_desc' => $proforma->deceased_field_dept_desc, // Same as deceased one
-                                                    'request_adm_dept_cd' => $proforma->deceased_adm_dept_cd, // Same as deceased one
-                                                    'request_adm_dept_desc' => $proforma->deceased_adm_dept_desc, // Same as deceased one
-                                                ],
-
-                                                /** The applicant has the right to prefer post from other departments also **/
-                                                [
-                                                    'request_dsg_srno' => $proforma->request_dsg_srno_3,
-                                                    'request_dsg_desc' => $proforma->request_dsg_desc_3,
-                                                    'request_group_code' => $proforma->request_group_code_3,
-                                                    'request_field_dept_cd' => $proforma->request_field_dept_cd_3,
-                                                    'request_field_dept_desc' => $proforma->request_field_dept_desc_3,
-                                                    'request_adm_dept_cd' => $proforma->request_adm_dept_cd_3,
-                                                    'request_adm_dept_desc' => $proforma->request_adm_dept_desc_3,
-                                                ],
-                                            ];
-                                        @endphp
-                                        <div class="mb-3">
-                                            <div class="row mb-2">
-                                                <div class="col-6"><label for="applicant_prefered_post_id">Prefered
-                                                        Post</label></div>
-                                                <div class="col-6">No. of vaccant posts: <span
-                                                        id="applicant_preferred_vacc_posts" class="fw-bold">0</span></div>
-                                            </div>
-
-                                            <select name="applicant_prefered_post_id" data-prefered="applicant"
-                                                id="applicant_prefered_post_id"
-                                                class="form-select applicant-prefered post-select" required>
-                                                <option value="">Select Post</option>
-                                                @foreach ($preferredPosts as $post)
-                                                    <option value="{{ $post['request_dsg_srno'] }}"
-                                                        data-dept="{{ $post['request_field_dept_desc'] }}"
-                                                        data-dept_cd="{{ $post['request_field_dept_cd'] }}"
-                                                        data-adm_dept_cd="{{ $post['request_adm_dept_cd'] }}"
-                                                        data-adm_dept_desc="{{ $post['request_adm_dept_desc'] }}"
-                                                        data-group_code="{{ $post['request_group_code'] }}">
-                                                        {{ $post['request_dsg_desc'] }}</option>
-                                                @endforeach
-                                            </select>
-                                            <input type="hidden" name="applicant_prefered_post_desc"
-                                                class="applicant-prefered" id="applicant_prefered_post_desc"
-                                                value="">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="applicant_prefered_group_code">Prefered Group Code:</label>
-                                            <input type="text" name="applicant_prefered_group_code"
-                                                class="form-control applicant-prefered" id="applicant_prefered_group_code"
-                                                readonly required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="department">Prefered Department</label>
-                                            <input type="text" name="applicant_prefered_dept_desc"
-                                                class="form-control applicant-prefered" id="applicant_prefered_dept_desc"
-                                                readonly required>
-                                            <input type="hidden" name="applicant_prefered_dept_cd"
-                                                class="applicant-prefered" id="applicant_prefered_dept_cd" readonly
-                                                required>
-
-                                            <input type="hidden" name="applicant_prefered_adm_dept_cd" value=""
-                                                class="applicant-prefered" id="applicant_prefered_adm_dept_cd">
-                                            <input type="hidden" name="applicant_prefered_adm_dept_desc" value=""
-                                                class="applicant-prefered" id="applicant_prefered_adm_dept_desc">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- When applicant's choice is not available, department will allot the available vaccant post --}}
-                                <div class="row mb-3">
-                                    <div class=" col-sm-4 form-check">
-                                        <input class="form-check-input" type="radio" name="post_option"
-                                            id="exampleRadios2" value="department-prefered">
-                                        <label class="form-check-label cursor-pointer" for="exampleRadios2">
-                                            <b> Allot Post when Employee preferred post is not vacant</b>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <div class="mb-3">
-
-
-                                            <div class="row mb-2">
-                                                <div class="col-6"><label for="department_prefered_dept_cd"
-                                                        class="form-label">Department:
-                                                    </label></div>
-                                                <div class="col-6">No. of vaccant posts: <span
-                                                        id="department_preferred_vacc_posts" class="fw-bold">0</span>
-                                                </div>
-                                            </div>
-
-                                            <select class="form-select dept-prefered" aria-label="Default select example"
-                                                id="department_prefered_dept_cd" name="department_prefered_dept_cd"
-                                                disabled>
-                                                <option value="" selected>Select Department</option>
-                                                @foreach ($departments as $dept)
-                                                    <option value="{{ $dept['field_dept_cd'] }}"
-                                                        data-adm_dept_cd="{{ $dept['adm_dept_cd'] }}"
-                                                        data-adm_dept_desc="{{ $adminDepts[$dept['adm_dept_cd']] }}">
-                                                        {{ $dept['field_dept_desc'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <input type="hidden" id="department_prefered_adm_dept_cd"
-                                                class="dept-prefered" name="department_prefered_adm_dept_cd"
-                                                value="">
-                                            <input type="hidden" id="department_prefered_adm_dept_desc"
-                                                class="dept-prefered" name="department_prefered_adm_dept_desc"
-                                                value="">
-
-                                            <input type="hidden" id="department_prefered_dept_desc"
-                                                class="dept-prefered" name="department_prefered_dept_desc"
-                                                value="">
-                                        </div>
-
-                                        <!-- Get availabe posts in the selected departments -->
-                                        <div class="mb-3">
-                                            <label for="dept_prefered_post_id" class="form-label">Posts: </label>
-                                            <select class="form-select dept-prefered post-select"
-                                                data-prefered="department" aria-label="Default select example"
-                                                id="dept_prefered_post_id" name="department_prefered_post_id" disabled>
-                                                <option value="" selected>Select Post</option>
-                                            </select>
-                                            <input type="hidden" name="department_prefered_post_desc"
-                                                class="dept-prefered" id="department_prefered_post_desc" value="">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="department_prefered_group_code" class="form-label ">Group
-                                                Code: </label>
-                                            <input type="text" id="department_prefered_group_code"
-                                                name="department_prefered_group_code" value=""
-                                                class="form-control dept-prefered" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4 " style="text-align: left;">
-                                        <strong>Signing Authority:</strong>
-                                    </div>
-                                    <div class="col-sm-8 ">
-                                        <select name="signing_authority" id="" class="form-select" required>
-                                            <option value="">Select signing authority</option>
-                                            @foreach ($dpNodals as $nodal)
-                                                <option value="{{ $nodal->user_id }}">{{ $nodal->fullname }}
-                                                    ({{ $nodal->role->role_name }})
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-2">
-                                    <div class="col-sm-4 " style="text-align: left;">
-                                        <strong>Do you want to give remarks? (Optional)</strong>
-                                    </div>
-                                    <div class="col-sm-8 ">
-                                        <textarea name="remarks" id="remarks" class="form-control" rows="6"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-center gap-2 mt-5">
-                                    @include('duties.tasks._revert')
-                                    @include('duties.tasks._reject')
-                                    {{-- @include('duties.tasks._forward') --}}
-                                    @if ($tasks['can_forward'])
-                                        @if ($tasks['next'])
-                                            <button type="submit" class="btn btn-md btn-success btn-sm"
-                                                data-bs-html="true" data-bs-toggle="tooltip" data-bs-placement="right"
-                                                title="Forward to next step: <u>{{ $tasks['next']['tasks_name'] }}</u>. Click to forward.">
-                                                Forward
-                                            </button>
-                                        @else
-                                            <button type="submit" class="btn btn-md btn-success btn-sm"
-                                                data-bs-html="true" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                title="You are at the final step, clicking this will complete the process.">
-                                                Submit
-                                            </button>
-                                        @endif
+                            <div class="hstack gap-3 my-3 p-3">
+                                <div class="ms-auto">
+                                    <button class="btn btn-md btn-success prevBtn" type="button"
+                                        data-step="4">Prev</button>
+                                    @if (isset($total_step) && $total_step > 4)
+                                        <button class="btn btn-md btn-success nextBtn" type="button"
+                                            data-step="4">Next</button>
                                     @endif
                                 </div>
-                            </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {{-- Step 5 --}}
+                    <div class="setup-content" id="step-5">
+                        <div class="form-group card">
+                            <div class="small card-body">
+                                <h5 class="card-title">UO Form Fill Up</h5>
+                                <div class="col-sm-12 mb-3">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4" style="text-align: left;">
+                                            <strong>Applicant Name:</strong>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span>{{ $proforma->applicant_name }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4 " style="text-align: left;">
+                                            <strong>EIN of the Deceased:</strong>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span>{{ $proforma->deceased_ein }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4 " style="text-align: left;">
+                                            <strong>Deceased Name:</strong>
+                                        </div>
+                                        <div class="col-sm-8 ">
+                                            <span>{{ $proforma->deceased_emp_name }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4" style="text-align: left;">
+                                            <strong>DP File No.</strong>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span>{{ $proforma->uoFileSubmission->uo_file_submission_id }}</span>
+                                        </div>
+                                    </div>
+
+                                    <form id="uo_form_fillup" name="uo_form_fillup" method="POST"
+                                        action="{{ route('duties.uo.formfillup.forward', $proforma->proforma_id) }}">
+                                        @csrf
+                                        <input type="hidden" name="proforma_id" value="{{ $proforma->proforma_id }}">
+
+                                        {{-- When applicant's choice is available --}}
+                                        <div class="row">
+                                            <div class=" col-sm-4 form-check">
+                                                <input class="form-check-input" type="radio" name="post_option"
+                                                    id="exampleRadios1" value="applicant-prefered" checked>
+                                                <label class="form-check-label cursor-pointer" for="exampleRadios1">
+                                                    <b> Employee Preferred Post</b>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                @php
+                                                    $preferredPosts = [
+                                                        /** The first two must belong to the department the deceased one once belonged **/
+                                                        [
+                                                            'request_dsg_srno' => $proforma->request_dsg_srno_1,
+                                                            'request_dsg_desc' => $proforma->request_dsg_desc_1,
+                                                            'request_group_code' => $proforma->request_group_code_1,
+                                                            'request_field_dept_cd' =>
+                                                                $proforma->deceased_field_dept_cd, // Same as deceased one
+                                                            'request_field_dept_desc' =>
+                                                                $proforma->deceased_field_dept_desc, // Same as deceased one
+                                                            'request_adm_dept_cd' => $proforma->deceased_adm_dept_cd, // Same as deceased one
+                                                            'request_adm_dept_desc' =>
+                                                                $proforma->deceased_adm_dept_desc, // Same as deceased one
+                                                        ],
+                                                        [
+                                                            'request_dsg_srno' => $proforma->request_dsg_srno_2,
+                                                            'request_dsg_desc' => $proforma->request_dsg_desc_2,
+                                                            'request_group_code' => $proforma->request_group_code_2,
+                                                            'request_field_dept_cd' =>
+                                                                $proforma->deceased_field_dept_cd, // Same as deceased one
+                                                            'request_field_dept_desc' =>
+                                                                $proforma->deceased_field_dept_desc, // Same as deceased one
+                                                            'request_adm_dept_cd' => $proforma->deceased_adm_dept_cd, // Same as deceased one
+                                                            'request_adm_dept_desc' =>
+                                                                $proforma->deceased_adm_dept_desc, // Same as deceased one
+                                                        ],
+
+                                                        /** The applicant has the right to prefer post from other departments also **/
+                                                        [
+                                                            'request_dsg_srno' => $proforma->request_dsg_srno_3,
+                                                            'request_dsg_desc' => $proforma->request_dsg_desc_3,
+                                                            'request_group_code' => $proforma->request_group_code_3,
+                                                            'request_field_dept_cd' =>
+                                                                $proforma->request_field_dept_cd_3,
+                                                            'request_field_dept_desc' =>
+                                                                $proforma->request_field_dept_desc_3,
+                                                            'request_adm_dept_cd' => $proforma->request_adm_dept_cd_3,
+                                                            'request_adm_dept_desc' =>
+                                                                $proforma->request_adm_dept_desc_3,
+                                                        ],
+                                                    ];
+                                                @endphp
+                                                <div class="mb-3">
+                                                    <div class="row mb-2">
+                                                        <div class="col-6"><label for="applicant_prefered_post_id">Prefered
+                                                                Post</label></div>
+                                                        <div class="col-6">No. of vaccant posts: <span
+                                                                id="applicant_preferred_vacc_posts" class="fw-bold">0</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <select name="applicant_prefered_post_id" data-prefered="applicant"
+                                                        id="applicant_prefered_post_id"
+                                                        class="form-select applicant-prefered post-select" required>
+                                                        <option value="">Select Post</option>
+                                                        @foreach ($preferredPosts as $post)
+                                                            <option value="{{ $post['request_dsg_srno'] }}"
+                                                                data-dept="{{ $post['request_field_dept_desc'] }}"
+                                                                data-dept_cd="{{ $post['request_field_dept_cd'] }}"
+                                                                data-adm_dept_cd="{{ $post['request_adm_dept_cd'] }}"
+                                                                data-adm_dept_desc="{{ $post['request_adm_dept_desc'] }}"
+                                                                data-group_code="{{ $post['request_group_code'] }}">
+                                                                {{ $post['request_dsg_desc'] }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <input type="hidden" name="applicant_prefered_post_desc"
+                                                        class="applicant-prefered" id="applicant_prefered_post_desc"
+                                                        value="">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="applicant_prefered_group_code">Prefered Group Code:</label>
+                                                    <input type="text" name="applicant_prefered_group_code"
+                                                        class="form-control applicant-prefered"
+                                                        id="applicant_prefered_group_code" readonly required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="department">Prefered Department</label>
+                                                    <input type="text" name="applicant_prefered_dept_desc"
+                                                        class="form-control applicant-prefered"
+                                                        id="applicant_prefered_dept_desc" readonly required>
+                                                    <input type="hidden" name="applicant_prefered_dept_cd"
+                                                        class="applicant-prefered" id="applicant_prefered_dept_cd"
+                                                        readonly required>
+
+                                                    <input type="hidden" name="applicant_prefered_adm_dept_cd"
+                                                        value="" class="applicant-prefered"
+                                                        id="applicant_prefered_adm_dept_cd">
+                                                    <input type="hidden" name="applicant_prefered_adm_dept_desc"
+                                                        value="" class="applicant-prefered"
+                                                        id="applicant_prefered_adm_dept_desc">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- When applicant's choice is not available, department will allot the available vaccant post --}}
+                                        <div class="row mb-3">
+                                            <div class=" col-sm-4 form-check">
+                                                <input class="form-check-input" type="radio" name="post_option"
+                                                    id="exampleRadios2" value="department-prefered">
+                                                <label class="form-check-label cursor-pointer" for="exampleRadios2">
+                                                    <b> Allot Post when Employee preferred post is not vacant</b>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="mb-3">
+
+
+                                                    <div class="row mb-2">
+                                                        <div class="col-6"><label for="department_prefered_dept_cd"
+                                                                class="form-label">Department:
+                                                            </label></div>
+                                                        <div class="col-6">No. of vaccant posts: <span
+                                                                id="department_preferred_vacc_posts"
+                                                                class="fw-bold">0</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <select class="form-select dept-prefered"
+                                                        aria-label="Default select example"
+                                                        id="department_prefered_dept_cd"
+                                                        name="department_prefered_dept_cd" disabled>
+                                                        <option value="" selected>Select Department</option>
+                                                        @foreach ($departments as $dept)
+                                                            <option value="{{ $dept['field_dept_cd'] }}"
+                                                                data-adm_dept_cd="{{ $dept['adm_dept_cd'] }}"
+                                                                data-adm_dept_desc="{{ $adminDepts[$dept['adm_dept_cd']] }}">
+                                                                {{ $dept['field_dept_desc'] }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <input type="hidden" id="department_prefered_adm_dept_cd"
+                                                        class="dept-prefered" name="department_prefered_adm_dept_cd"
+                                                        value="">
+                                                    <input type="hidden" id="department_prefered_adm_dept_desc"
+                                                        class="dept-prefered" name="department_prefered_adm_dept_desc"
+                                                        value="">
+
+                                                    <input type="hidden" id="department_prefered_dept_desc"
+                                                        class="dept-prefered" name="department_prefered_dept_desc"
+                                                        value="">
+                                                </div>
+
+                                                <!-- Get availabe posts in the selected departments -->
+                                                <div class="mb-3">
+                                                    <label for="dept_prefered_post_id" class="form-label">Posts: </label>
+                                                    <select class="form-select dept-prefered post-select"
+                                                        data-prefered="department" aria-label="Default select example"
+                                                        id="dept_prefered_post_id" name="department_prefered_post_id"
+                                                        disabled>
+                                                        <option value="" selected>Select Post</option>
+                                                    </select>
+                                                    <input type="hidden" name="department_prefered_post_desc"
+                                                        class="dept-prefered" id="department_prefered_post_desc"
+                                                        value="">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="department_prefered_group_code" class="form-label ">Group
+                                                        Code: </label>
+                                                    <input type="text" id="department_prefered_group_code"
+                                                        name="department_prefered_group_code" value=""
+                                                        class="form-control dept-prefered" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4 " style="text-align: left;">
+                                                <strong>Signing Authority:</strong>
+                                            </div>
+                                            <div class="col-sm-8 ">
+                                                <select name="signing_authority" id="" class="form-select"
+                                                    required>
+                                                    <option value="">Select signing authority</option>
+                                                    @foreach ($dpNodals as $nodal)
+                                                        <option value="{{ $nodal->user_id }}">{{ $nodal->fullname }}
+                                                            ({{ $nodal->role->role_name }})
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4 " style="text-align: left;">
+                                                <strong>Do you want to give remarks? (Optional)</strong>
+                                            </div>
+                                            <div class="col-sm-8 ">
+                                                <textarea name="remarks" id="remarks" class="form-control" rows="6"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-center gap-2 mt-5">
+                                            <button class="btn btn-md btn-secondary prevBtn" type="button"
+                                                data-step="5">Prev</button>
+                                            @include('duties.tasks._revert')
+                                            @include('duties.tasks._reject')
+                                            {{-- @include('duties.tasks._forward') --}}
+                                            @if ($tasks['can_forward'])
+                                                @if ($tasks['next'])
+                                                    <button type="submit" class="btn btn-md btn-success btn-sm"
+                                                        data-bs-html="true" data-bs-toggle="tooltip"
+                                                        data-bs-placement="right"
+                                                        title="Forward to next step: <u>{{ $tasks['next']['tasks_name'] }}</u>. Click to forward.">
+                                                        Forward
+                                                    </button>
+                                                @else
+                                                    <button type="submit" class="btn btn-md btn-success btn-sm"
+                                                        data-bs-html="true" data-bs-toggle="tooltip"
+                                                        data-bs-placement="bottom"
+                                                        title="You are at the final step, clicking this will complete the process.">
+                                                        Submit
+                                                    </button>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-sm-4">
+                <x-proforma-activity-logs :proforma-id="$proforma->proforma_id" />
+            </div>
         </div>
+
     </div>
 
     @include('duties.tasks.modals._confirmation_modal')

@@ -17,4 +17,9 @@ class ProformaLog extends Model
     {
         return $this->belongsTo(User::class, 'action_by', 'user_id');
     }
+
+    public function proforma()
+    {
+        return $this->belongsTo(Proforma::class, 'proforma_id', 'proforma_id');
+    }
 }
