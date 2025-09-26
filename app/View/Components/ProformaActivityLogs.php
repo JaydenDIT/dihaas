@@ -29,6 +29,7 @@ class ProformaActivityLogs extends Component
             })
             ->join('tasks as t', 't.tasks_id', '=', 'ptm.tasks_id')
             ->where('process_sequence', '!=', 1)
+            ->where('action_name', '!=', 'verified')
             ->orderBy('created_at')
             ->get(['proforma_log.*', 't.tasks_name', 't.tasks_id']);
 
@@ -41,7 +42,8 @@ class ProformaActivityLogs extends Component
         if (sizeof($this->logs) == 0) {
             return [];
         }
-        $lastSequence = $this->logs[sizeof($this->logs) - 1]->process_sequence;
+        $lastLog = $this->logs[sizeof($this->logs) - 1];
+        $lastSequence = $lastLog->action_name == "reverted" ? $lastLog->process_sequence - 2 : $lastLog->process_sequence;
         return ProcessTasksMapping::where('process_id', $process_id)
             ->where('sequence', '>', $lastSequence)
             ->orderBy('sequence')->get()->map(function ($item) {
