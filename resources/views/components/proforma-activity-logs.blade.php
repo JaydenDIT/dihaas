@@ -1,7 +1,7 @@
 <div class="dashboard">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Proforma Activity</h5>
+            <h5 class="card-title">Proforma Status</h5>
 
             <div class="activity">
                 @forelse ($logs as $log)
