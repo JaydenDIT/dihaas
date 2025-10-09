@@ -69,7 +69,7 @@
     </div>
 
     <div>
-        DP concurs to the proposal of {{ $countTotal }}
+        DP hereby appoints the following {{ $countTotal }}
         @if ($countTotal > 1)
             {{ 'applicants' }}
         @else

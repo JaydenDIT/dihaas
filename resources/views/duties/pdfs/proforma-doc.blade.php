@@ -46,7 +46,7 @@
         <h4><strong>DP's File No.:</strong> <span>{{ $proforma->uoFileSubmission->uo_file_submission_id }}</span></h4>
     </div>
     <div>
-        DP concurs to the Proposal of {{ $proforma->uoGeneration->alloted_field_dept_desc }} for appointment of
+        DP hereby appoints
         <strong>{{ $proforma->applicant_name }}</strong> {{ strtolower($proforma->relationship->relationship_name) }} of
         (L) Smt
         <strong>{{ $proforma->deceased_emp_name }}</strong>, ex-{{ $proforma->deceased_emp_desig }} to the post of

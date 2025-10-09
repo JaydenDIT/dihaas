@@ -169,3 +169,7 @@
 .text-email{
     color: #007bff;
 }
+table.report-table thead{
+    background-color: #ccc9c9;
+    color: #2e2d2d;
+}

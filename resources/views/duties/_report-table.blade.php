@@ -10,8 +10,8 @@
             <th rowspan="2"></th>
         </tr>
         <tr>
-            <th title="Seniority index across the departments.">Inter-Dept.</th>
-            <th title="Seniority index within the department.">Intra-Dept.</th>
+            <th title="Seniority index across the departments.">Inter-<br />Dept.</th>
+            <th title="Seniority index within the department.">Intra-<br />Dept.</th>
             <th title="Employee Identification Number of the Manipur Govt.'s employee">EIN</th>
             <th title="Name of the deceased employee">Name</th>
             {{-- <th title="Date of expiry of the deceased employee">DOE</th> --}}
