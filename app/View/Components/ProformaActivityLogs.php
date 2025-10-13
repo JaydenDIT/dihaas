@@ -40,7 +40,12 @@ class ProformaActivityLogs extends Component
     private function getRemainingTasks($process_id)
     {
         if (sizeof($this->logs) == 0) {
-            return [];
+            //return [];
+            return ProcessTasksMapping::where('process_id', $process_id)
+                ->where('sequence', '>', 1) //1 is always the citizen task which can be assumed to be completed
+                ->orderBy('sequence')->get()->map(function ($item) {
+                    return $item->task;
+                });
         }
         $lastLog = $this->logs[sizeof($this->logs) - 1];
         $lastSequence = $lastLog->action_name == "reverted" ? $lastLog->process_sequence - 2 : $lastLog->process_sequence;

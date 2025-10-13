@@ -4,7 +4,7 @@
             <h5 class="card-title">Proforma Status</h5>
 
             <div class="activity">
-                @forelse ($logs as $log)
+                @foreach ($logs as $log)
                     <div class="activity-item d-flex">
                         <div class="activite-label">{{ date('d M, Y', strtotime($log->created_at)) }}</div>
                         <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
@@ -17,11 +17,8 @@
                                     class="fw-bold">({{ $log->actionBy->role->role_name }})</span>
                             </p>
                         </div>
-
                     </div><!-- End activity item-->
-                @empty
-                    <p class="p-3 text-gray-500">No activity found.</p>
-                @endforelse
+                @endforeach
                 @forelse ($remainingTasks as $task)
                     <div class="activity-item d-flex">
                         <div class="activite-label">Pending .......</div>
