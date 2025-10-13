@@ -8,7 +8,7 @@ return [
     'caste' => [
         'required' => false, // not always required
         'required_if' => [
-            ['proforma', 'caste_id', 'in', [1, 2, 3, 4]],
+            ['proforma', 'caste_id', 'in', [3, 4]], // 3 for SC, 4 for ST
         ],
     ],
     'handicapped' => [

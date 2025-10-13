@@ -2,6 +2,7 @@
 
 return [
     'verify_and_forward' => 'Verification and forward',
+    'view_and_forward' => 'View and forward',
     'verify_physical_copy' => 'Verification of Documents by Department',
     'client_form_submission' => 'Citizen Form Submission',
     'uo_file_submission' => "Submit File for UO Form Fill Up", //DPassistant forward to nodal with a file and remark

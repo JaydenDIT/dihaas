@@ -31,7 +31,8 @@
                 action: true,
                 param: {
                     dept_id: dept_id
-                }
+                },
+                export: true
             });
         }
 

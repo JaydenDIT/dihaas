@@ -10,6 +10,7 @@ use App\Http\Controllers\Duties\UoFormFillUpController;
 use App\Http\Controllers\Duties\UoGenerationController;
 use App\Http\Controllers\Duties\UploadedDocumentController;
 use App\Http\Controllers\Duties\VerifyAndForwardController;
+use App\Http\Controllers\Duties\ViewAndForwardController;
 use App\Http\Controllers\TaskApplicationController;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +78,19 @@ Route::group(['prefix' => 'duties', 'as' => 'duties.', 'middleware' => ['auth']]
             Route::post('/forward-in-bulk', 'bulkForward')->name('verify.form.bulkForward'); //duties.verify.form.bulkForward
         });
     });
+
+    Route::group(['prefix' => 'view-and-forward'], function () {
+        Route::controller(ViewAndForwardController::class)->group(function () {
+            Route::get('/{tasks_id}/index', 'index')->name('view-and-forward.index');
+            Route::post('/{tasks_id}/ajaxlist', 'ajaxlist')->name('view-and-forward.ajaxlist');
+            Route::get('/{id}/view', 'viewVerifyAndForward')->name('view-and-forward.view');
+
+            Route::post('/{id}/forward', 'forward')->name('view-and-forward.forward');
+            Route::post('/forward-in-bulk', 'bulkForward')->name('view-and-forward.bulkForward'); //duties.view-and-forward.bulkForward
+        });
+    });
+
+
     Route::group(['prefix' => 'verify/document'], function () {
         Route::controller(DocumentVerificationController::class)->group(function () {
             //compulsory for a tasks

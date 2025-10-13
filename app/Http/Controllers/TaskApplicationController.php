@@ -32,6 +32,9 @@ class TaskApplicationController extends Controller
             case  'verify_and_forward':
                 return redirect()->route('duties.verify.form.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'un-verified')]);
                 break;
+            case  'view_and_forward':
+                return redirect()->route('duties.view-and-forward.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'pending')]);
+                break;
             case  'verify_physical_copy':
                 return redirect()->route('duties.verify.document.index', ['tasks_id' => $tasks_id, 'view' => $request->input('view', 'un-verified')]);
                 break;

@@ -26,6 +26,7 @@
                     application_status: application_status
                 },
                 action: true,
+                export: true
             });
         }
 

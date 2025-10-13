@@ -2,84 +2,75 @@
 
 namespace App\Http\Controllers\Duties;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Proforma;
 use App\Models\Remark;
 use App\Models\Task;
-use App\Models\UoFileSubmission;
-use App\Models\User;
 use App\Services\CmisApiService;
 use App\Services\LogService;
 use App\Services\WorkflowHandler;
-use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
-class UoFileApprovalController extends Controller
+class ViewAndForwardController extends Controller
 {
+    //
     public function index(Request $request, $tasks_id)
     {
-        $this->authorize('canPerform', [Proforma::class, 'uo_file_approval']);
-        $task        = Task::findOrFail($tasks_id);
-        $departments = CmisApiService::apiFieldDepartments();
-        $view        = $request->input('view', '');
-        $remarks = Remark::where('is_active', true)->orderBy('id')->get();
 
-        return view('duties.uoFileApprovalList', compact('departments', 'task', 'view', 'remarks'));
+        $task = Task::findOrFail($tasks_id);
+        $departments = CmisApiService::apiFieldDepartments();
+        $remarks = Remark::where('is_active', true)->orderBy('id')->get();
+        $view = $request->input('view', '');
+        return view('duties.viewAndForwardList', compact('departments', 'task', 'view', 'remarks'));
     }
+
+
 
     public function ajaxlist(Request $request, $tasks_id)
     {
-        $this->authorize('canPerform', [Proforma::class, 'uo_file_approval']);
         $task = Task::findOrFail($tasks_id);
 
         $application_status = $request->input('application_status');
         $overallSeniorityIndex = Proforma::getOverallSeniorityList();
-
         switch ($application_status) {
+            //proforma_status tells the current state of the application
             case 'pending':  // currently pending on the authenticated user
                 $data = WorkflowHandler::proformaTaskCurrentData($task);
                 break;
-
-            case 'forwarded': // forwarded but process not yet completed
+            case 'forwarded': //forwarded from me but entire process not completed
                 $data = WorkflowHandler::proformaTaskForwardedData($task);
                 break;
-
-            case 'completed': // fully completed applications
+            case 'completed': //forwarded from me but entire process not completed
                 $data = WorkflowHandler::proformaTaskCompletedData($task);
                 break;
-
-            case 'rejected': // rejected at or after my stage
+            case 'rejected': //forwarded from me or rejected during me but entire process is rejected later
                 $data = WorkflowHandler::proformaTaskRejectedData($task);
                 break;
-
             default:
-                return DataTables::of(collect())->make(true); // empty collection
+                return DataTables::of([])->make(true); // No data for other statuses
+                break;
         }
-
-        // Filter only applications verified by current user (via relationship)
-        /*
-        $data = $data->filter(function ($item) {
-            return $item->uoFileSubmission &&
-                $item->uoFileSubmission->verified_by == Auth::user()->user_id;
-        });*/
 
         return DataTables::of($data)
             ->addIndexColumn()
-            ->editColumn('deceased_doe', fn($row) => $row->deceased_doe ? date('d M, Y', strtotime($row->deceased_doe)) : 'N/A')
-            ->editColumn('created_at', fn($row) => $row->created_at ? date('d M, Y', strtotime($row->created_at)) : 'N/A')
-
+            ->editColumn('deceased_doe', function ($row) {
+                return date('d M, Y', strtotime($row->deceased_doe));
+            })
+            ->editColumn('created_at', function ($row) {
+                return date('d M, Y', strtotime($row->created_at));
+            })
             ->editColumn('proforma_submission_date', function ($row) {
                 return date('d M, Y', strtotime($row->proforma_submission_date));
             })
-            ->editColumn('applicant_dob', fn($row) => $row->applicant_dob ? date('d M, Y', strtotime($row->applicant_dob)) : 'N/A')
+            ->editColumn('applicant_dob', function ($row) {
+                return date('d M, Y', strtotime($row->applicant_dob));
+            })
             ->addColumn('remarks', function ($row) {
-
                 $log = $row->proformaLogs()
-                    ->whereIn('action_name', ['forwarded', 'rejected', 'reverted', 'completed'])
+                    ->whereIn('action_name', ['verified', 'forwarded', 'rejected', 'reverted', 'completed'])
                     ->latest()
                     ->first();
                 if ($log) {
@@ -93,13 +84,9 @@ class UoFileApprovalController extends Controller
                     return null;
                 }
             })
-            ->addColumn('action', function ($row) use ($application_status) {
+            ->addColumn('action', function ($row) {
                 $resp = "<div class='d-flex gap-2'>";
-                if ($application_status === 'pending') {
-                    $resp .= "<a href='" . route('duties.uo.file-approval.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>View</a>";
-                } else {
-                    $resp .= "<a href='" . route('duties.proforma.view', $row->proforma_id) . "' class='btn btn-sm btn-primary view-btn'>View</a>";
-                }
+                $resp .= "<a href='" . route('duties.proforma.view', $row->proforma_id) . "' target='_blank' class='btn btn-sm btn-primary view-btn'>View</a>";
                 $resp .= "</div>";
                 return $resp;
             })
@@ -109,52 +96,39 @@ class UoFileApprovalController extends Controller
             ->addColumn('dept_seniority_idx', function ($row) {
                 return Proforma::getDepartmentalSeniorityIndex($row->proforma_id);
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['status', 'action'])
             ->make(true);
     }
 
-
-    public function view($id)
+    public function viewAndForward($id)
     {
-        $proforma   = Proforma::findOrFail($id);
+        $proforma = Proforma::findOrFail($id);
         $total_step = 4;
-        $tasks      = getPrevNextTasks($id);
-        $this->authorize('canPerformOnProforma', [$proforma, 'uo_file_approval']);
-
+        $tasks = getPrevNextTasks($id);
         $remarks = Remark::where('is_active', true)->orderBy('id')->get();
-
-        //retrieving DP Nodal officers                
-        $dpNodalUsers = User::whereHas('role', function ($query) {
-            $query->where('role_name', 'DP Nodal');
-        })->get();
-        return view('duties.uoFileApproval', compact('proforma', 'total_step', 'tasks', 'dpNodalUsers', 'remarks'));
+        $this->authorize('canPerformOnProforma',  [$proforma, 'view_and_forward']);
+        return view('duties.viewAndForward', compact('proforma', 'total_step', 'tasks', 'remarks'));
     }
 
     public function forward(Request $request, $id)
     {
         try {
+            DB::beginTransaction();
             $request->validate([
                 'remarks' => 'nullable|string|max:600',
-                //'dp_nodal_user_id' => 'required|exists:users,user_id',
             ]);
-
-            //Getting the proforma and uo file submission detail
             $proforma = Proforma::findOrFail($id);
-            $this->authorize('canForward', [$proforma, 'uo_file_approval']);
-            $uo_file_submission = UoFileSubmission::where('proforma_id', $id)->first();
-
-            DB::beginTransaction();
-            $uo_file_submission->verified = true;
-            $uo_file_submission->verified_by = Auth::id();
-            $uo_file_submission->save();
-
+            $this->authorize('canForward',  [$proforma, 'verify_and_forward']);
+            if ($proforma->mini_sequence != "verified") {
+                return response()->json(['message' => 'Verify first before forwarding.'], 422);
+            }
             //WorkflowHandler comes after LogService
             LogService::addProformaLog([
-                'proforma_id'      => $proforma->proforma_id,
-                'action_by'        => Auth::user()->user_id,
-                'action_name'      => 'forwarded', //compulsory always forwarded for forwarded
-                'action_remark'    => $request->remarks,
-                'process_sequence' => $proforma->process_sequence,
+                'proforma_id' => $proforma->proforma_id,
+                'action_by' => Auth::user()->user_id,
+                'action_name' => 'forwarded',
+                'action_remark' => $request->remarks,
+                'process_sequence' => $proforma->process_sequence
             ]);
             WorkflowHandler::forwardApplication($proforma);
             DB::commit();
@@ -165,8 +139,8 @@ class UoFileApprovalController extends Controller
         }
     }
 
-    // Endpoint to approve UO File for proforma and then forward in bulk
-    public function bulkApproveAndForward(Request $request)
+    //Forwarding for multiple proformas in bulk
+    public function bulkForward(Request $request)
     {
         $request->validate([
             'selected_proforma' => 'required|array|min:1',
@@ -174,20 +148,12 @@ class UoFileApprovalController extends Controller
             'remarks' => 'nullable|string|max:600',
         ]);
 
+        DB::beginTransaction();
+
         try {
             $proformas = Proforma::whereIn('proforma_id', $request->selected_proforma)->get();
             foreach ($proformas as $proforma) {
-                $this->authorize('canForward',  [$proforma, 'uo_file_approval']);
-
-                $uo_file_submission = UoFileSubmission::where('proforma_id', $proforma->proforma_id)->first();
-
-                if (empty($uo_file_submission)) {
-                    throw new Exception("Missing UO file for proforma.");
-                }
-
-                $uo_file_submission->verified = true;
-                $uo_file_submission->verified_by = Auth::id();
-                $uo_file_submission->save();
+                $this->authorize('canForward',  [$proforma, 'verify_and_forward']);
 
                 //WorkflowHandler comes after LogService
                 LogService::addProformaLog([
@@ -200,7 +166,7 @@ class UoFileApprovalController extends Controller
                 WorkflowHandler::forwardApplication($proforma);
             }
             DB::commit();
-            return response()->json(['message' => 'UO files for the selected Proformas have been approved and forwarded successfully.'], 200);
+            return response()->json(['message' => 'Selected Proformas forwarded successfully.'], 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['message' => 'Error forwarding proforma: ' . $e->getMessage()], 422);
