@@ -68,6 +68,21 @@ class ViewAndForwardController extends Controller
             ->editColumn('applicant_dob', function ($row) {
                 return date('d M, Y', strtotime($row->applicant_dob));
             })
+            ->addColumn('pending_at', function ($row) {
+                $tasks = getPrevNextTasks($row->proforma_id);
+                if (isset($tasks['current']['tasks_id'])) {
+                    $currentTask = Task::find($tasks['current']['tasks_id']);
+
+                    //Here if currentTask is not null then we will return the user roles who can access this task
+                    if ($currentTask) {
+                        $roles = $currentTask->roles->pluck('role_name')->toArray();
+                        return implode(" / ", $roles);
+                    } else {
+                        return 'N/A';
+                    }
+                }
+                return 'N/A';
+            })
             ->addColumn('remarks', function ($row) {
                 $log = $row->proformaLogs()
                     ->whereIn('action_name', ['verified', 'forwarded', 'rejected', 'reverted', 'completed'])

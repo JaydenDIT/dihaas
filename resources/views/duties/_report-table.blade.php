@@ -6,6 +6,7 @@
             <th colspan="3" class="text-center">Deceased Employee Details</th>
             <th rowspan="2" class="text-center">Applicant Details</th>
             <th rowspan="2">Status</th>
+            <th rowspan="2">Pending At</th>
             <th rowspan="2">Remarks</th>
             <th rowspan="2"></th>
         </tr>
@@ -94,6 +95,9 @@
                         `;
                     },
                     orderable: false
+                },
+                {
+                    data: "pending_at"
                 },
                 {
                     data: "remarks",

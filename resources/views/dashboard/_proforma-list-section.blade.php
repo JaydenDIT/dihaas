@@ -13,6 +13,7 @@
                                 <th rowspan="2">Submitted On</th>
                                 <th rowspan="2">Applicant Name</th>
                                 <th rowspan="2">Status</th>
+                                <th rowspan="2">Pending At</th>
                                 <th rowspan="2"></th>
                             </tr>
                             <tr>
@@ -102,6 +103,9 @@
                             <div class="text-muted small">${row.remarks.date}</div>
                         `;
                     }
+                },
+                {
+                    data: "pending_at"
                 },
                 {
                     data: "action",
