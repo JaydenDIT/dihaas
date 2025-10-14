@@ -85,6 +85,7 @@
                     application_status: application_status
                 },
                 action: true,
+                export: true,
                 searching: !(application_status == "pending"),
             }, () => {
                 // This function 'getOverallSeniorityIndexes' is defined in multiselect-proforma.js

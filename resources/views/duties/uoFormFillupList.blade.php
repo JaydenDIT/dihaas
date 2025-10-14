@@ -24,6 +24,7 @@
                 param: {
                     application_status: application_status
                 },
+                export: true,
             });
         }
 

@@ -86,6 +86,7 @@
                     application_status: application_status
                 },
                 action: true,
+                export: true,
             }, () => {
                 // This function 'getOverallSeniorityIndexes' is defined in multiselect-proforma.js
                 overall_seniority_indexes = getOverallSeniorityIndexes();
