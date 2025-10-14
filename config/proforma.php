@@ -11,4 +11,8 @@ return [
      * 
      */
     'proforma_validity' => env('PROFORMA_VALIDITY', 6), //Only in terms of months
+    /**
+     * Eligibility age for applicant to apply for Die-in-Harness benefits.
+     */
+    'applicant_eligible_agee' => env('APPLICANT_ELIGIBLE_AGE', 15), //in years
 ];

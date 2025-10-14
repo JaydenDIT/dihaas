@@ -67,7 +67,7 @@ class StoreProformaRequest extends FormRequest
             // Applicant details
             'applicant_name' => 'required|string|max:255',
             'relationship_id' => 'required|integer|exists:relationships,relationship_id',
-            'applicant_dob' => 'required|date',
+            'applicant_dob' => ['required', 'date', 'before:' . now()->subYears(config('proforma.applicant_eligible_agee', 15))->toDateString()],
             'applicant_mobile' => 'required|string|size:10',
             'applicant_email' => 'required|email|max:255',
             'applicant_sex' => 'required|in:male,female,transgender',
@@ -101,6 +101,16 @@ class StoreProformaRequest extends FormRequest
             $rules['proforma_submission_date'] = 'required|date';
         }
         return $rules;
+    }
+
+    /**
+     * Adding custom message for validation rules.
+     */
+    public function messages(): array
+    {
+        return [
+            'applicant_dob.before' => 'Applicant must be at least ' . config('proforma.applicant_eligible_agee', 15) . ' years old to apply.',
+        ];
     }
 
     /**
